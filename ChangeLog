@@ -1,0 +1,143 @@
+2004-05-21  Karl Runge <runge@karlrunge.com>
+	* -accept: add view-only decision and other improvements.
+	* add -gone command option for when a client leaves.
+	  Thanks to Jesus Alvarez for these ideas.
+	* -passwdfile to keep passwd off of cmd line.
+	* -o logfile send stderr to a logfile.
+
+2004-05-14  Karl Runge <runge@karlrunge.com>
+	* improvements to -accept popup: yes/no buttons and timeout. 
+	* less fprintf under -q so '-q -inetd' has no stderr output. 
+
+2004-05-08  Karl Runge <runge@karlrunge.com>
+	* add -accept some-command/xmessage/popup to prompt local X11 user
+	  or otherwise decide to accept an incoming client. 
+	* clean up -Wall warnings.
+
+2004-05-05  Karl Runge <runge@karlrunge.com>
+	* enable mouse button -> keystrokes mapping in -buttonmap (mousewheel)
+	* enable keystroke -> mouse button mapping in -remap (touchpad paste)
+	  (-remap incompat ':' -> '-', sorry...)
+	* shm OS blacklist (i.e. <= SunOS 5.8) -> -onetile
+	* revert to check_user_input() under -nofb
+	* cleanup: lastmod, remove tile_shm and update_client_pointer,
+	  debug output, rfbPort failure. 
+	* user friendly last line: 'The VNC desktop is hostname:0'
+
+2004-04-28  Karl Runge <runge@karlrunge.com>
+	* -auth cmdline option for xauthority.
+	* decrease default deferupdate under -nofb.
+	* update_client_pointer() from Edoardo Tirtarahardja.
+	* remove some assumptions about libvncserver defaults.
+
+2004-04-19  Karl Runge <runge@karlrunge.com>
+	* support for cursor positions updates -cursorpos
+	* option for SIGPIPE handling -sigpipe
+
+2004-04-13  Karl Runge <runge@karlrunge.com>
+	* solve problem with sending selection when client initializing
+	  (not yet in RFB_NORMAL state).  Increase delay to 15s as well. 
+	* when threaded: limit rfbMaxClientWait to >= 20 secs and
+	  increase it to a huge value unless -rfbwait is supplied.
+
+2004-04-08  Karl Runge <runge@karlrunge.com>
+	* added support for blacking out regions of the screen, primarily
+	  for Xinerama usage, options: -blackout -xinerama
+	* Xinerama workaround mouse problem on 'embedded' system, 
+	  option -xwarppointer (XWarpPointer instead of XTEST)
+	* let -remap option take key remappings on cmdline as well as file.
+	* use cargs fix to test for invalid cmdline options. Add --option.
+	* remove copy_tile, use copy_tiles(..., 1) instead.
+
+2004-03-10  Karl Runge <runge@karlrunge.com>
+	* added reverse connection for vncconnect(1) and other means
+	  -vncconnect, -connect host:port, and -connect watchfile 
+	* added first pass at user keysym remapping feature via
+	  -remap file.  Ignores modifier state, need to generalize.
+	* debugging options for users -debug_pointer and -debug_keyboard
+	* clear -passwd from argv for privacy (if OS allows).
+
+2004-02-19  Karl Runge <runge@karlrunge.com>
+	* added handling of clipboard/selection exchange to/from clients,
+	  even holds PRIMARY which Xvnc does not do.  disable with -nosel.
+	  use -noprimary to disable polling of PRIMARY selection.
+	* added -visual option to force framebuffer visual.  not really
+	  of general use, more for testing and workarounds (e.g. win2vnc
+	  fails under 8bpp index color)
+	* improve cleanup and error handling WRT shm and other failures.
+
+2004-01-19  Karl Runge <runge@karlrunge.com>
+	* improvements to pointer event handling primarily during window
+	  dragging.  check_user_input() for non-threaded and pointer()
+	  for threaded.  Revert to old way via -old_pointer option.
+	* some memory I/O improvement by using copy_tiles() instead
+	  of copy_tile().  New one does rows of tiles at same time.
+	  Revert to old way via -old_copytile.
+	* handle case of more mouse buttons on client than on X server.
+	* added -buttonmap option for finer control over button differences.
+
+2004-01-09  Karl Runge <runge@karlrunge.com>
+	* options -allow / -localhost for simple IP based access screening
+	* option -nodragging to skip all screen updates during mouse drags
+	  (thanks to Michal Sabala)
+	* option -input_skip to allow users to tune watch_loop dropthru rate
+	* try to avoid wasting RAM for framebuffer under -nofb
+	* cleanup wrt bpp vs. depth
+
+2003-12-08  Karl Runge <runge@karlrunge.com>
+	* add Xbell support using XKEYBOARD extension (disable: -nobell)
+	* add "-nofb" to disable framebuffer, i.e. mouse + keyboard only (!)
+	* add "-notruecolor" to force indexed 8bpp color (when 8bpp) 
+	* make alias "-forever" for "-many"
+
+From Karl (x11vnc's father) on Apr 2, 2003:
+	
+New option -nocursor to not display the vncviewer local cursor if user
+does not want it (also caused some problems with older vncviewers)
+
+New option -mouse to show the position of the X server mouse (i.e. lagged
+from the user's vnc cursor position).  Also: -mouseX will try to show
+the a different cursor (X) when on the root background.
+
+New option -many to wait for more connections rather than exiting when
+the first client(s) disconnect.
+
+New option -flashcmap to try to follow installed colormaps under 8bpp
+indexed color as pointer is moved.
+
+New option -nap to watch for low activity and throttle down the polling
+rate.  Useful on shared machines to keep the load down.
+
+Experimental option -id <windowid> to show just that window and not
+the whole display.  Some remaining bugs and inconvenient behavior...
+(e.g. new toplevels can be unseen)
+
+Fixed bug on multi-headed machines where the screen number was being
+ignored in a number of places.
+
+Fixed bug wrt connect_once mode.  Now just refuses new clients unless
+shared rather than terminating all clients.
+
+Try to follow changing default colormap under 8bpp indexed color
+as color cells are added.
+
+Needed to pick up HAVE_LIBPTHREAD from autoconf.
+
+defined a select() macro for usleep() since usleep is not always thread
+safe.
+
+Catch and exit on errors in the shm setup work (XShmCreateImage, shmget,...)
+and moved the creation and removal work to separate utility functions.
+
+Added signal and X error handlers to try to clean out the shm objects
+before exiting on interrupt, etc.
+
+Improved performance a bit on the memcmp() in scan_display() by checking
+the whole line first.
+
+Added a workaround when threaded where libvncserver may disconnect too
+early if it does not hear from a client (a small heartbeat is sent).
+This may not be needed any longer.
+
+If -desktop has not been prescribed, try to choose a title based on DISPLAY
+and the hostname (and window name under -id).
