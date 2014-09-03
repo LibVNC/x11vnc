@@ -46,7 +46,7 @@ void initialize_watch_bell(void);
 void check_bell_event(void);
 
 
-#if LIBVNCSERVER_HAVE_XKEYBOARD
+#if HAVE_XKEYBOARD
 
 /*
  * check for XKEYBOARD, set up xkb_base_event_type

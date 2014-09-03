@@ -333,7 +333,7 @@ extern int xtrap_base_event_type;
 #include <X11/extensions/record.h>
 #endif
 
-#if LIBVNCSERVER_HAVE_XKEYBOARD
+#if HAVE_XKEYBOARD
 #include <X11/XKBlib.h>
 #endif
 

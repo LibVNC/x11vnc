@@ -296,7 +296,7 @@ void clear_locks(void) {
 	RAWFB_RET_VOID
 
 	/* n.b. caller decides to X_LOCK or not. */
-#if LIBVNCSERVER_HAVE_XKEYBOARD
+#if HAVE_XKEYBOARD
 	if (xkb_present) {
 		XkbStateRec kbstate;
 		XkbGetState(dpy, XkbUseCoreKbd, &kbstate);
@@ -754,7 +754,7 @@ static void add_dead_keysyms(char *str) {
 			if (XKeysymToKeycode(dpy, ksym)) {
 				inmap = 1;
 			}
-#if LIBVNCSERVER_HAVE_XKEYBOARD
+#if HAVE_XKEYBOARD
 			if (! inmap && xkb_present && dpy) {
 				int kc, grp, lvl;
 				for (kc = 0; kc < 0x100; kc++) {
@@ -966,7 +966,7 @@ int sloppy_key_check(int key, rfbBool down, rfbKeySym keysym, int *new_kc) {
 #endif	/* NO_X11 */
 }
 
-#if !LIBVNCSERVER_HAVE_XKEYBOARD || SKIP_XKB
+#if !HAVE_XKEYBOARD || SKIP_XKB
 
 /* empty functions for no xkb */
 static void initialize_xkb_modtweak(void) {}

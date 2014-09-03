@@ -4957,7 +4957,7 @@ int main(int argc, char* argv[]) {
 	
 	/* open the X display: */
 
-#if LIBVNCSERVER_HAVE_XKEYBOARD
+#if HAVE_XKEYBOARD
 	/*
 	 * Disable XKEYBOARD before calling XOpenDisplay()
 	 * this should be used if there is ambiguity in the keymapping. 
@@ -5566,7 +5566,7 @@ int main(int argc, char* argv[]) {
 #endif
 	}
 
-#if LIBVNCSERVER_HAVE_XKEYBOARD
+#if HAVE_XKEYBOARD
 	/* check for XKEYBOARD */
 	initialize_xkb();
 	initialize_watch_bell();
