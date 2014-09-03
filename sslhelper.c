@@ -52,7 +52,7 @@ so, delete this exception statement from your version.
 #define DO_DH 0
 
 #if LIBVNCSERVER_HAVE_FORK
-#if LIBVNCSERVER_HAVE_SYS_WAIT_H && LIBVNCSERVER_HAVE_WAITPID
+#if LIBVNCSERVER_HAVE_SYS_WAIT_H && HAVE_WAITPID
 #define FORK_OK
 #endif
 #endif
@@ -682,9 +682,11 @@ static int anontls_selected = 0;
 #if 0
 #undef LIBVNCSERVER_HAVE_LIBSSL
 #define LIBVNCSERVER_HAVE_LIBSSL 0
+#undef  HAVE_LIBSSL
+#define HAVE_LIBSSL 0
 #endif
 
-#if !LIBVNCSERVER_HAVE_LIBSSL
+#if !LIBVNCSERVER_HAVE_LIBSSL && !HAVE_LIBSSL
 
 static void badnews(char *name) {
 	use_openssl = 0;
@@ -716,7 +718,7 @@ static void ssl_xfer(int csock, int s_in, int s_out, int is_https) {
 	}
 }
 
-#else 	/* LIBVNCSERVER_HAVE_LIBSSL */
+#else 	/* LIBVNCSERVER_HAVE_LIBSSL or HAVE_LIBSSL */
 
 /*
  * This is because on older systems both zlib.h and ssl.h define
@@ -2611,7 +2613,7 @@ static void init_prng(void) {
 	}
 }
 #endif	/* FORK_OK */
-#endif	/* LIBVNCSERVER_HAVE_LIBSSL */
+#endif	/* LIBVNCSERVER_HAVE_LIBSSL or HAVE_LIBSSL  */
 
 void check_openssl(void) {
 	fd_set fds;
@@ -3126,7 +3128,7 @@ static int watch_for_http_traffic(char *buf_a, int *n_a, int raw_sock) {
 		n = read(raw_sock, buf, 2);
 		err = SSL_ERROR_NONE;
 	} else {
-#if LIBVNCSERVER_HAVE_LIBSSL 
+#if LIBVNCSERVER_HAVE_LIBSSL || HAVE_LIBSSL
 		n = SSL_read(ssl, buf, 2);
 		err = SSL_get_error(ssl, n);
 #else
@@ -3165,7 +3167,7 @@ static int watch_for_http_traffic(char *buf_a, int *n_a, int raw_sock) {
 	if (enc_str && !strcmp(enc_str, "none")) {
 		n2 = read(raw_sock, buf + n, ABSIZE - n);
 	} else {
-#if LIBVNCSERVER_HAVE_LIBSSL 
+#if LIBVNCSERVER_HAVE_LIBSSL || HAVE_LIBSSL
 		n2 = SSL_read(ssl, buf + n, ABSIZE - n);
 #else
 		n2 = 0;
@@ -3248,7 +3250,7 @@ void accept_openssl(int mode, int presock) {
 	static int first = 1;
 	unsigned char *rb;
 
-#if !LIBVNCSERVER_HAVE_LIBSSL 
+#if !LIBVNCSERVER_HAVE_LIBSSL && !HAVE_LIBSSL  
 	if (enc_str == NULL || strcmp(enc_str, "none")) {
 		badnews("0 accept_openssl");
 	}
@@ -3398,7 +3400,7 @@ void accept_openssl(int mode, int presock) {
 	 * here, since we use INADDR_LOOPBACK).
 	 */
 	rb = (unsigned char *) calloc(6, 1);
-#if LIBVNCSERVER_HAVE_LIBSSL 
+#if LIBVNCSERVER_HAVE_LIBSSL || HAVE_LIBSSL 
 	RAND_bytes(rb, 6);
 #endif
 	sprintf(cookie, "RB=%d%d%d%d%d%d/%f%f/%p",
@@ -3659,7 +3661,7 @@ void accept_openssl(int mode, int presock) {
 				if (strstr(buf, "/reverse.proxy")) {
 					char *buf2;
 					int n, ptr;
-#if !LIBVNCSERVER_HAVE_LIBSSL
+#if !LIBVNCSERVER_HAVE_LIBSSL && !HAVE_LIBSSL 
 					write(s_out, reply, strlen(reply));
 #else
 					SSL_write(ssl, reply, strlen(reply));
@@ -3669,7 +3671,7 @@ void accept_openssl(int mode, int presock) {
 					n = 0;
 					ptr = 0;
 					while (ptr < 8192) {
-#if !LIBVNCSERVER_HAVE_LIBSSL
+#if !LIBVNCSERVER_HAVE_LIBSSL && !HAVE_LIBSSL 
 						n = read(s_in, buf2 + ptr, 1);
 #else
 						n = SSL_read(ssl, buf2 + ptr, 1);
@@ -3697,7 +3699,7 @@ void accept_openssl(int mode, int presock) {
 				rfbLog("Handling Check HTTPS request via https GET. [%d]\n", getpid());
 				rfbLog("-- %s\n", buf);
 
-#if !LIBVNCSERVER_HAVE_LIBSSL
+#if !LIBVNCSERVER_HAVE_LIBSSL && !HAVE_LIBSSL 
 				write(s_out, reply, strlen(reply));
 #else
 				SSL_write(ssl, reply, strlen(reply));
@@ -4179,7 +4181,7 @@ void accept_openssl(int mode, int presock) {
 		if (vencrypt_sel != 0) {
 			client->protocolMajorVersion = 3;
 			client->protocolMinorVersion = 8;
-#if LIBVNCSERVER_HAVE_LIBSSL
+#if LIBVNCSERVER_HAVE_LIBSSL || HAVE_LIBSSL 
 			if (!finish_vencrypt_auth(client, vencrypt_sel)) {
 				rfbCloseClient(client);
 				client = NULL;
@@ -4303,7 +4305,7 @@ if (db) rfbLog("raw_xfer bad write:  %d -> %d | %d/%d  errno=%d\n", csock, s_out
 
 #define ENC_MODULE
 
-#if LIBVNCSERVER_HAVE_LIBSSL
+#if LIBVNCSERVER_HAVE_LIBSSL || HAVE_LIBSSL 
 #ifndef ENC_HAVE_OPENSSL
 #define ENC_HAVE_OPENSSL 1
 #endif
