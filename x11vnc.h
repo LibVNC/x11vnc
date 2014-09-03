@@ -64,6 +64,8 @@ so, delete this exception statement from your version.
 
 #include <netdb.h>
 
+#include "rfbconfig.h"
+
 #include <rfb/rfb.h>
 #include <rfb/rfbregion.h>
 
@@ -382,7 +384,7 @@ extern int h_errno;
 #define X11VNC_LISTEN6 0
 #endif
 
-#if LIBVNCSERVER_HAVE_PWD_H
+#if HAVE_PWD_H
 #include <pwd.h>
 #include <grp.h>
 #endif
