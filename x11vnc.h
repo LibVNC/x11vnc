@@ -71,7 +71,7 @@ so, delete this exception statement from your version.
 
 
 /* we can now build under --without-x: */
-#if LIBVNCSERVER_HAVE_X11
+#if HAVE_X11
 
 #define NO_X11 0
 #include <X11/Xlib.h>

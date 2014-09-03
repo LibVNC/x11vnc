@@ -7755,7 +7755,7 @@ Bool xcheckmaskevent(Display *d, long mask, XEvent *ev) {
 #endif
 }
 
-#include <rfb/default8x16.h>
+#include "default8x16.h"
 
 #define EVMAX 2048
 XEvent Ev[EVMAX];
