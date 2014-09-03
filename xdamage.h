@@ -35,7 +35,7 @@ so, delete this exception statement from your version.
 
 /* -- xdamage.h -- */
 
-#if LIBVNCSERVER_HAVE_LIBXDAMAGE
+#if HAVE_LIBXDAMAGE
 extern Damage xdamage;
 #endif
 extern int use_xdamage;

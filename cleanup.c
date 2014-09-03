@@ -230,7 +230,7 @@ void clean_up_exit(int ret) {
 	}
 	X_LOCK;
 	XTestDiscard_wr(dpy);
-#if LIBVNCSERVER_HAVE_LIBXDAMAGE
+#if HAVE_LIBXDAMAGE
 	if (xdamage) {
 		XDamageDestroy(dpy, xdamage);
 	}

@@ -245,12 +245,12 @@ so, delete this exception statement from your version.
 #undef SKIP_8TO24
 #undef HAVE_LIBXINERAMA
 #undef HAVE_LIBXFIXES
-#undef LIBVNCSERVER_HAVE_LIBXDAMAGE
+#undef HAVE_LIBXDAMAGE
 #define SKIP_XKB 1
 #define SKIP_8TO24 1
 #define HAVE_LIBXINERAMA 0
 #define HAVE_LIBXFIXES 0
-#define LIBVNCSERVER_HAVE_LIBXDAMAGE 0
+#define HAVE_LIBXDAMAGE 0
 #endif
 
 #if (SMALL_FOOTPRINT > 2)
@@ -460,7 +460,7 @@ extern int xrandr_base_event_type;
 #endif
 extern int xfixes_base_event_type;
 
-#if LIBVNCSERVER_HAVE_LIBXDAMAGE
+#if HAVE_LIBXDAMAGE
 #include <X11/extensions/Xdamage.h>
 #endif
 extern int xdamage_base_event_type;

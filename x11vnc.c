@@ -5283,7 +5283,7 @@ int main(int argc, char* argv[]) {
 		use_xfixes = 0;
 	}
 
-#if LIBVNCSERVER_HAVE_LIBXDAMAGE
+#if HAVE_LIBXDAMAGE
 	if (! XDamageQueryExtension(dpy, &xdamage_base_event_type, &er)) {
 		if (! quiet && ! raw_fb_str) {
 			rfbLog("Disabling X DAMAGE mode: display does not support it.\n");

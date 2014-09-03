@@ -37,7 +37,7 @@ so, delete this exception statement from your version.
 #include "userinput.h"
 #include "unixpw.h"
 
-#if LIBVNCSERVER_HAVE_LIBXDAMAGE
+#if HAVE_LIBXDAMAGE
 Damage xdamage = 0;
 #endif
 
@@ -210,7 +210,7 @@ if (debug_xdamage > 1) fprintf(stderr, "add_region_xdamage: prev_tick: %d reg %p
 }
 
 void clear_xdamage_mark_region(sraRegionPtr markregion, int flush) {
-#if LIBVNCSERVER_HAVE_LIBXDAMAGE
+#if HAVE_LIBXDAMAGE
 	XEvent ev;
 	sraRegionPtr tmpregion;
 	int count = 0;
@@ -388,7 +388,7 @@ if (call && debug_xdamage > 1) fprintf(stderr, "collect_non_X_xdamage: %d %d %d 
 }
 
 int collect_xdamage(int scancnt, int call) {
-#if LIBVNCSERVER_HAVE_LIBXDAMAGE
+#if HAVE_LIBXDAMAGE
 	XDamageNotifyEvent *dev;
 	XEvent ev;
 	sraRegionPtr tmpregion;
@@ -773,7 +773,7 @@ void create_xdamage_if_needed(int force) {
 
 	if (force) {}
 
-#if LIBVNCSERVER_HAVE_LIBXDAMAGE
+#if HAVE_LIBXDAMAGE
 	if (! xdamage || force) {
 		X_LOCK;
 		xdamage = XDamageCreate(dpy, window, XDamageReportRawRectangles); 
@@ -788,7 +788,7 @@ void destroy_xdamage_if_needed(void) {
 
 	RAWFB_RET_VOID
 
-#if LIBVNCSERVER_HAVE_LIBXDAMAGE
+#if HAVE_LIBXDAMAGE
 	if (xdamage) {
 		XEvent ev;
 		X_LOCK;
