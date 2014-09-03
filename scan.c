@@ -2454,7 +2454,7 @@ int copy_screen(void) {
 	return 0;
 }
 
-#include <rfb/default8x16.h>
+#include <default8x16.h>
 
 /*
  * Color values from the vcsadump program.
