@@ -79,7 +79,7 @@ void check_xrecord_reset(int force);
 void xrecord_watch(int start, int setby);
 
 
-#if LIBVNCSERVER_HAVE_RECORD
+#if HAVE_RECORD
 static XRecordRange *rr_CA = NULL;
 static XRecordRange *rr_CW = NULL;
 static XRecordRange *rr_GS = NULL;
@@ -96,7 +96,7 @@ static void xrecord_grabserver(int start);
 static int xrecord_vi_scroll_keysym(rfbKeySym keysym);
 static int xrecord_emacs_scroll_keysym(rfbKeySym keysym);
 static int lookup_attr_cache(Window win, int *cache_index, int *next_index);
-#if LIBVNCSERVER_HAVE_RECORD
+#if HAVE_RECORD
 static void record_CA(XPointer ptr, XRecordInterceptData *rec_data);
 static void record_CW(XPointer ptr, XRecordInterceptData *rec_data);
 static void record_switch(XPointer ptr, XRecordInterceptData *rec_data);
@@ -127,7 +127,7 @@ static void xrecord_grabserver(int start) {
 	if (! gdpy_ctrl || ! gdpy_data) {
 		return;
 	}
-#if LIBVNCSERVER_HAVE_RECORD
+#if HAVE_RECORD
 	if (!start) {
 		if (! rc_grab) {
 			return;
@@ -196,7 +196,7 @@ void initialize_xrecord(void) {
 		return;
 	}
 	RAWFB_RET_VOID
-#if LIBVNCSERVER_HAVE_RECORD
+#if HAVE_RECORD
 
 	if (rr_CA) XFree_wr(rr_CA);
 	if (rr_CW) XFree_wr(rr_CW);
@@ -283,7 +283,7 @@ void initialize_xrecord(void) {
 }
 
 void shutdown_xrecord(void) {
-#if LIBVNCSERVER_HAVE_RECORD
+#if HAVE_RECORD
 
 	if (debug_grabs) {
 		fprintf(stderr, "shutdown_xrecord%d %.5f\n",
@@ -531,7 +531,7 @@ if (0) fprintf(stderr, "lookup_attr_cache count: %d\n", count);
 static XID xrecord_seq = 0;
 static double xrecord_start = 0.0;
 
-#if LIBVNCSERVER_HAVE_RECORD
+#if HAVE_RECORD
 static void record_CA(XPointer ptr, XRecordInterceptData *rec_data) {
 	xCopyAreaReq *req;
 	Window src = None, dst = None, c;
@@ -1443,7 +1443,7 @@ static void record_grab(XPointer ptr, XRecordInterceptData *rec_data) {
 #endif
 
 static void check_xrecord_grabserver(void) {
-#if LIBVNCSERVER_HAVE_RECORD
+#if HAVE_RECORD
 	int last_val, cnt = 0, i, max = 10;
 	double d;
 	if (!gdpy_ctrl || !gdpy_data) {
@@ -1472,7 +1472,7 @@ fprintf(stderr, "check_xrecord_grabserver: cnt=%d i=%d %.4f\n", cnt, i, d);
 #endif
 }
 
-#if LIBVNCSERVER_HAVE_RECORD
+#if HAVE_RECORD
 static void shutdown_record_context(XRecordContext rc, int bequiet, int reopen) {
 	int ret1, ret2;
 	int verb = (!bequiet && !quiet);
@@ -1587,7 +1587,7 @@ void check_xrecord_reset(int force) {
 
 	if (unixpw_in_progress) return;
 
-#if LIBVNCSERVER_HAVE_RECORD
+#if HAVE_RECORD
 	if (! rc_scroll) {
 		return;
 	}
@@ -1662,7 +1662,7 @@ void check_xrecord_reset(int force) {
 	}
 
 void xrecord_watch(int start, int setby) {
-#if LIBVNCSERVER_HAVE_RECORD
+#if HAVE_RECORD
 	Window focus, wm, c, clast;
 	static double create_time = 0.0;
 	int rc;
@@ -1713,7 +1713,7 @@ if (db || debug_grabs) fprintf(stderr, "xrecord_watch: %d/%d  out xserver_grabbe
 		}
 	}
 
-#if LIBVNCSERVER_HAVE_RECORD
+#if HAVE_RECORD
 	if (! start) {
 		int shut_reopen = 2, shut_time = 25;
 if (db || debug_grabs) fprintf(stderr, "XRECORD OFF: %d/%d  %.4f\n", xrecording, setby, now - x11vnc_start);

@@ -5479,7 +5479,7 @@ int main(int argc, char* argv[]) {
 	if (! xrecord_present) {
 		tmpi = 0;
 	}
-#if !LIBVNCSERVER_HAVE_RECORD
+#if !HAVE_RECORD
 	tmpi = 0;
 #endif
 	if (! quiet && tmpi && ! raw_fb_str) {

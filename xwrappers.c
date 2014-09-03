@@ -1277,7 +1277,7 @@ void disable_grabserver(Display *in_dpy, int change) {
 
 Bool XRecordQueryVersion_wr(Display *dpy, int *maj, int *min) {
 	RAWFB_RET(False)
-#if LIBVNCSERVER_HAVE_RECORD
+#if HAVE_RECORD
 	return XRecordQueryVersion(dpy, maj, min);
 #else
 	if (!dpy || !maj || !min) {}

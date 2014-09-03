@@ -328,7 +328,7 @@ extern XETC *trap_ctx;
 #endif
 extern int xtrap_base_event_type;
 
-#if LIBVNCSERVER_HAVE_RECORD
+#if HAVE_RECORD
 #include <X11/Xproto.h>
 #include <X11/extensions/record.h>
 #endif

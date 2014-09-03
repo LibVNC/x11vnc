@@ -2611,7 +2611,7 @@ if (0 || db) fprintf(stderr, "check_xrecord: more keys: %.3f  0x%x "
 			flush2 = 1;
 			XFlush_wr(dpy);
 		}
-#if LIBVNCSERVER_HAVE_RECORD
+#if HAVE_RECORD
 		SCR_LOCK;
 		XRecordProcessReplies(rdpy_data);
 		SCR_UNLOCK;
@@ -2925,7 +2925,7 @@ if (db) fprintf(stderr, "check_xrecord: BUTTON_UP_SCROLL: %.3f\n", spin);
 			input++;
 		}
 		X_LOCK;
-#if LIBVNCSERVER_HAVE_RECORD
+#if HAVE_RECORD
 		SCR_LOCK;
 		XRecordProcessReplies(rdpy_data);
 		SCR_UNLOCK;
