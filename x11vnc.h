@@ -407,7 +407,7 @@ extern int h_errno;
 /* solaris/sun */
 #if defined (__SVR4) && defined (__sun)
 # define SOLARIS
-# ifdef LIBVNCSERVER_HAVE_SOLARIS_XREADSCREEN
+# ifdef HAVE_SOLARIS_XREADSCREEN
 #  define SOLARIS_OVERLAY
 #  define OVERLAY_OS
 # endif
