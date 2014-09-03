@@ -269,7 +269,7 @@ static void blackout_tiles(void) {
 static int did_xinerama_clip = 0;
 
 void check_xinerama_clip(void) {
-#if LIBVNCSERVER_HAVE_LIBXINERAMA
+#if HAVE_LIBXINERAMA
 	int n, k, i, ev, er, juse = -1;
 	int score[32], is = 0;
 	XineramaScreenInfo *x;
@@ -337,7 +337,7 @@ void check_xinerama_clip(void) {
 }
 
 static void initialize_xinerama (void) {
-#if !LIBVNCSERVER_HAVE_LIBXINERAMA
+#if !HAVE_LIBXINERAMA
 	if (!raw_fb_str) {
 		rfbLog("Xinerama: Library libXinerama is not available to determine\n");
 		rfbLog("Xinerama: the head geometries, consider using -blackout\n");

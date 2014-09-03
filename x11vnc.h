@@ -243,12 +243,12 @@ so, delete this exception statement from your version.
 #if (SMALL_FOOTPRINT > 1)
 #undef SKIP_XKB
 #undef SKIP_8TO24
-#undef LIBVNCSERVER_HAVE_LIBXINERAMA
+#undef HAVE_LIBXINERAMA
 #undef LIBVNCSERVER_HAVE_LIBXFIXES
 #undef LIBVNCSERVER_HAVE_LIBXDAMAGE
 #define SKIP_XKB 1
 #define SKIP_8TO24 1
-#define LIBVNCSERVER_HAVE_LIBXINERAMA 0
+#define HAVE_LIBXINERAMA 0
 #define LIBVNCSERVER_HAVE_LIBXFIXES 0
 #define LIBVNCSERVER_HAVE_LIBXDAMAGE 0
 #endif
@@ -337,7 +337,7 @@ extern int xtrap_base_event_type;
 #include <X11/XKBlib.h>
 #endif
 
-#if LIBVNCSERVER_HAVE_LIBXINERAMA
+#if HAVE_LIBXINERAMA
 #include <X11/extensions/Xinerama.h>
 #endif
 
