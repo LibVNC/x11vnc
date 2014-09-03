@@ -53,7 +53,7 @@ extern char *crypt(const char*, const char *);
 #include "sslhelper.h"
 #include "cursor.h"
 #include "rates.h"
-#include <rfb/default8x16.h>
+#include "default8x16.h"
 
 #if LIBVNCSERVER_HAVE_FORK
 #if LIBVNCSERVER_HAVE_SYS_WAIT_H && LIBVNCSERVER_HAVE_WAITPID
