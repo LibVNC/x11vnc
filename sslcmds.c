@@ -41,7 +41,7 @@ so, delete this exception statement from your version.
 
 #if LIBVNCSERVER_HAVE_FORK
 #if LIBVNCSERVER_HAVE_SYS_WAIT_H
-#if LIBVNCSERVER_HAVE_WAITPID
+#if HAVE_WAITPID
 #define SSLCMDS
 #endif
 #endif

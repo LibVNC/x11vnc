@@ -842,7 +842,7 @@ void client_gone(rfbClientPtr client) {
 			    cd->ssl_helper_pid);
 			kill(cd->ssl_helper_pid, SIGTERM);
 			usleep(200*1000);
-#if LIBVNCSERVER_HAVE_SYS_WAIT_H && LIBVNCSERVER_HAVE_WAITPID 
+#if LIBVNCSERVER_HAVE_SYS_WAIT_H && HAVE_WAITPID 
 			waitpid(cd->ssl_helper_pid, &status, WNOHANG); 
 #endif
 			ssl_helper_pid(cd->ssl_helper_pid, -1);	/* delete */

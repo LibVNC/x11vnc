@@ -1182,7 +1182,7 @@ static void solid_macosx(int restore) {
 			kill(solid_macosx_pid, SIGTERM);
 #if 0
 #if LIBVNCSERVER_HAVE_SYS_WAIT_H
-#if LIBVNCSERVER_HAVE_WAITPID
+#if HAVE_WAITPID
 			for (i=0; i < 7; i++) {
 				usleep(1000 * 1000);
 				waitpid(solid_macosx_pid, &status, WNOHANG); 

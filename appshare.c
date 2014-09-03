@@ -553,7 +553,7 @@ static void kill_helper_pid(void) {
 	usleep(50 * 1000);
 	kill(helper_pid, SIGKILL);
 	usleep(25 * 1000);
-#if LIBVNCSERVER_HAVE_SYS_WAIT_H && LIBVNCSERVER_HAVE_WAITPID 
+#if LIBVNCSERVER_HAVE_SYS_WAIT_H && HAVE_WAITPID 
 	waitpid(helper_pid, &status, WNOHANG); 
 #endif
 }

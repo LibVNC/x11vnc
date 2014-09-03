@@ -4490,7 +4490,7 @@ int main(int argc, char* argv[]) {
 
 #if LIBVNCSERVER_HAVE_FORK
 #if LIBVNCSERVER_HAVE_SYS_WAIT_H
-#if LIBVNCSERVER_HAVE_WAITPID
+#if HAVE_WAITPID
 		if (! found) {
 			pid_t pid = fork();
 			if (pid < 0) {
