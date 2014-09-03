@@ -19,8 +19,6 @@ else
 fi
 test "x$GCC" = "xyes" && CFLAGS="$CFLAGS -Wall"
 AC_PROG_MAKE_SET
-AC_LIBTOOL_WIN32_DLL
-AC_PROG_LIBTOOL
 AC_PATH_PROG([AR], [ar], [/usr/bin/ar],
                   [$PATH:/usr/ccs/bin])
 
@@ -163,12 +161,6 @@ fi
 AC_SUBST(VA_LIBS)
 AM_CONDITIONAL(CONFIG_LIBVA, test ! -z "$VA_LIBS")
 
-
-# See if we are to build x11vnc:
-AH_TEMPLATE(HAVE_SYSTEM_LIBVNCSERVER, [Use the system libvncserver build environment for x11vnc.])
-AC_ARG_WITH(system-libvncserver,
-[  --with-system-libvncserver     use installed libvncserver for x11vnc]
-[  --with-system-libvncserver=DIR use libvncserver installed in DIR for x11vnc],,)
 
 # FIXME always true, should be factored out
 build_x11vnc="yes"
@@ -452,90 +444,8 @@ fi
 AM_CONDITIONAL(OSX_OPENGL, test "$HAVE_MACOSX_OPENGL_H" = "true")
 
 # Checks for libraries.
-
-if test ! -z "$with_system_libvncserver" -a "x$with_system_libvncserver" != "xno"; then
-	printf "checking for system libvncserver... "
-	vneed="0.9.1"
-	if test "X$VNEED" != "X"; then
-		vneed=$VNEED
-	fi
-	if test "x$with_system_libvncserver" != "xyes"; then
-		rflag=""
-		if test "x$ld_minus_R" = "xno"; then
-			:
-		elif test "x$GCC" = "xyes"; then
-			rflag="-Xlinker -R$with_system_libvncserver/lib"
-		else
-			rflag="-R$with_system_libvncserver/lib"
-		fi
-		cmd="$with_system_libvncserver/bin/libvncserver-config"
-		if $cmd --version 1>/dev/null 2>&1; then
-			cvers=`$cmd --version 2>/dev/null`
-			cscore=`echo "$cvers" | tr '.' ' ' | awk '{print 10000 * $1 + 100 * $2 + $3}'`
-			nscore=`echo "$vneed" | tr '.' ' ' | awk '{print 10000 * $1 + 100 * $2 + $3}'`
-
-			if test $cscore -lt $nscore; then
-				echo "no"
-				with_system_libvncserver=no
-				AC_MSG_ERROR([
-==========================================================================
-*** Need libvncserver version $vneed, have version $cvers ***
-You are building with a system installed libvncserver and it is not
-new enough.
-==========================================================================
-])
-			else
-				SYSTEM_LIBVNCSERVER_CFLAGS="-I$with_system_libvncserver/include"
-				SYSTEM_LIBVNCSERVER_LIBS="-L$with_system_libvncserver/lib $rflag -lvncserver -lvncclient"
-				echo "using $with_system_libvncserver"
-				with_system_libvncserver=yes
-			fi
-		else
-			echo " *** cannot run $cmd *** " 1>&2
-			with_system_libvncserver=no
-			echo no
-		fi
-	elif libvncserver-config --version 1>/dev/null 2>&1; then
-		rflag=""
-		rprefix=`libvncserver-config --prefix`
-		if test "x$ld_minus_R" = "xno"; then
-			:
-		elif test "x$GCC" = "xyes"; then
-			rflag=" -Xlinker -R$rprefix/lib "
-		else
-			rflag=" -R$rprefix/lib "
-		fi
-		cvers=`libvncserver-config --version 2>/dev/null`
-		cscore=`echo "$cvers" | tr '.' ' ' | awk '{print 10000 * $1 + 100 * $2 + $3}'`
-		nscore=`echo "$vneed" | tr '.' ' ' | awk '{print 10000 * $1 + 100 * $2 + $3}'`
-
-		if test $cscore -lt $nscore; then
-			echo "no"
-				AC_MSG_ERROR([
-==========================================================================
-*** Need libvncserver version $vneed, have version $cvers ***
-You are building with a system installed libvncserver and it is not
-new enough.
-==========================================================================
-])
-		else
-			SYSTEM_LIBVNCSERVER_CFLAGS=`libvncserver-config --cflags`
-			SYSTEM_LIBVNCSERVER_LIBS="$rflag"`libvncserver-config --libs`
-			with_system_libvncserver=yes
-			echo yes
-		fi
-	else
-		with_system_libvncserver=no
-		echo no
-	fi
-fi
-
-if test "x$with_system_libvncserver" = "xyes"; then
-	AC_DEFINE(HAVE_SYSTEM_LIBVNCSERVER)
-	AC_SUBST(SYSTEM_LIBVNCSERVER_CFLAGS)
-	AC_SUBST(SYSTEM_LIBVNCSERVER_LIBS)
-fi
-AM_CONDITIONAL(HAVE_SYSTEM_LIBVNCSERVER, test "x$with_system_libvncserver" = "xyes")
+PKG_CHECK_MODULES(LIBVNCSERVER, libvncserver >= 0.9.8)
+PKG_CHECK_MODULES(LIBVNCCLIENT, libvncclient >= 0.9.8)
 
 
 AC_ARG_WITH(jpeg,
@@ -998,19 +908,6 @@ if test "$build_x11vnc" = "yes"; then
 	#
 	AC_CONFIG_FILES([Makefile misc/Makefile misc/turbovnc/Makefile])
 
-	if test ! -z "$with_system_libvncserver" -a "x$with_system_libvncserver" != "xno"; then
-		# need to move local tarball rfb headers aside:
-		hdrs="rfb.h rfbclient.h rfbproto.h rfbregion.h rfbint.h"
-		echo "with-system-libvncserver: moving aside headers $hdrs"
-		for hdr in $hdrs
-		do
-			if test -f "rfb/$hdr"; then
-				echo "with-system-libvncserver: moving rfb/$hdr to rfb/$hdr.ORIG"
-				mv rfb/$hdr rfb/$hdr.ORIG
-			fi
-		done
-		echo "with-system-libvncserver: *NOTE* move them back manually to start over."
-	fi
 fi
 
 AC_OUTPUT
