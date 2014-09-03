@@ -244,12 +244,12 @@ so, delete this exception statement from your version.
 #undef SKIP_XKB
 #undef SKIP_8TO24
 #undef HAVE_LIBXINERAMA
-#undef LIBVNCSERVER_HAVE_LIBXFIXES
+#undef HAVE_LIBXFIXES
 #undef LIBVNCSERVER_HAVE_LIBXDAMAGE
 #define SKIP_XKB 1
 #define SKIP_8TO24 1
 #define HAVE_LIBXINERAMA 0
-#define LIBVNCSERVER_HAVE_LIBXFIXES 0
+#define HAVE_LIBXFIXES 0
 #define LIBVNCSERVER_HAVE_LIBXDAMAGE 0
 #endif
 
@@ -455,7 +455,7 @@ extern int overlay_present;
 #endif
 extern int xrandr_base_event_type;
 
-#if LIBVNCSERVER_HAVE_LIBXFIXES
+#if HAVE_LIBXFIXES
 #include <X11/extensions/Xfixes.h>
 #endif
 extern int xfixes_base_event_type;

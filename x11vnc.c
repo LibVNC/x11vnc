@@ -5268,7 +5268,7 @@ int main(int argc, char* argv[]) {
 		spawn_grab_buster();
 	}
 
-#if LIBVNCSERVER_HAVE_LIBXFIXES
+#if HAVE_LIBXFIXES
 	if (! XFixesQueryExtension(dpy, &xfixes_base_event_type, &er)) {
 		if (! quiet && ! raw_fb_str) {
 			rfbLog("Disabling XFIXES mode: display does not support it.\n");

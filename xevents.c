@@ -1438,7 +1438,7 @@ void check_xevents(int reset) {
 		check_xrandr_event("check_xevents");
 	}
 #endif
-#if LIBVNCSERVER_HAVE_LIBXFIXES
+#if HAVE_LIBXFIXES
 	if (xfixes_present && use_xfixes && xfixes_first_initialized && xfixes_base_event_type) {
 		if (XCheckTypedEvent(dpy, xfixes_base_event_type +
 		    XFixesCursorNotify, &xev)) {

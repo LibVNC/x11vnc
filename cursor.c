@@ -988,7 +988,7 @@ static void tree_descend_cursor(int *depth, Window *w, win_str_info_t *winfo) {
 }
 
 void initialize_xfixes(void) {
-#if LIBVNCSERVER_HAVE_LIBXFIXES
+#if HAVE_LIBXFIXES
 	if (xfixes_present) {
 		X_LOCK;
 		if (use_xfixes) {
@@ -1319,7 +1319,7 @@ static int get_exact_cursor(int init) {
 		return which;
 	}
 	if (xfixes_present && dpy) {
-#if LIBVNCSERVER_HAVE_LIBXFIXES
+#if HAVE_LIBXFIXES
 		int last_idx = (int) get_cursor_serial(1);
 		XFixesCursorImage *xfc;
 
