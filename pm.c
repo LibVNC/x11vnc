@@ -39,7 +39,7 @@ void set_dpms_mode(char *mode);
 static void check_fbpm(void);
 static void check_dpms(void);
 
-#if LIBVNCSERVER_HAVE_FBPM
+#if HAVE_FBPM
 #include <X11/Xmd.h>
 #include <X11/extensions/fbpm.h>
 #endif
@@ -66,7 +66,7 @@ void check_pm(void) {
 
 static void check_fbpm(void) {
 	static int init_fbpm = 0;
-#if LIBVNCSERVER_HAVE_FBPM
+#if HAVE_FBPM
 	static int fbpm_capable = 0;
 	static time_t last_fbpm = 0;
 	int db = 0;

@@ -22,8 +22,8 @@
 #define HAVE_SOLARIS_XREADSCREEN 0
 #undef  HAVE_IRIX_XREADDISPLAY
 #define HAVE_IRIX_XREADDISPLAY 0
-#undef  LIBVNCSERVER_HAVE_FBPM
-#define LIBVNCSERVER_HAVE_FBPM 0
+#undef  HAVE_FBPM
+#define HAVE_FBPM 0
 
 /* default keysyms */
 #if 0

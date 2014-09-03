@@ -449,7 +449,7 @@ int all_input = 0;
 int handle_events_eagerly = 0;
 
 
-#if LIBVNCSERVER_HAVE_FBPM
+#if HAVE_FBPM
 int watch_fbpm = 1;	/* -nofbpm */
 #else
 int watch_fbpm = 0;
