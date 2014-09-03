@@ -60,7 +60,7 @@ static void handle_xrandr_change(int new_x, int new_y);
 
 void initialize_xrandr(void) {
 	if (xrandr_present && dpy) {
-#if LIBVNCSERVER_HAVE_LIBXRANDR
+#if HAVE_LIBXRANDR
 		Rotation rot;
 
 		X_LOCK;
@@ -191,7 +191,7 @@ int check_xrandr_event(char *msg) {
 	if (subwin) {
 		return handle_subwin_resize(msg);
 	}
-#if LIBVNCSERVER_HAVE_LIBXRANDR
+#if HAVE_LIBXRANDR
 	if (! xrandr_present) {
 		return 0;
 	}

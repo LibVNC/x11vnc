@@ -2741,7 +2741,7 @@ if (0) fprintf(stderr, "DefaultDepth: %d  visial_id: %d\n", depth, (int) visual_
 	} else if (fb == NULL) {
 		XEvent xev;
 		rfbLog("initialize_xdisplay_fb: *** fb creation failed: 0x%x try: %d\n", fb, try);
-#if LIBVNCSERVER_HAVE_LIBXRANDR
+#if HAVE_LIBXRANDR
 		if (xrandr_present && xrandr_base_event_type) {
 			int cnt = 0;
 			while (XCheckTypedEvent(dpy, xrandr_base_event_type + RRScreenChangeNotify, &xev)) {

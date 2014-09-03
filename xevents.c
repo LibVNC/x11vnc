@@ -1433,7 +1433,7 @@ void check_xevents(int reset) {
 		last_time_sync = now;
 	}
 
-#if LIBVNCSERVER_HAVE_LIBXRANDR
+#if HAVE_LIBXRANDR
 	if (xrandr || xrandr_maybe) {
 		check_xrandr_event("check_xevents");
 	}

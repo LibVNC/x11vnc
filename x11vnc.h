@@ -450,7 +450,7 @@ extern int h_errno;
 
 extern int overlay_present;
 
-#if LIBVNCSERVER_HAVE_LIBXRANDR
+#if HAVE_LIBXRANDR
 #include <X11/extensions/Xrandr.h>
 #endif
 extern int xrandr_base_event_type;

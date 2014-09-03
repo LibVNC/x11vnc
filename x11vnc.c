@@ -5584,7 +5584,7 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
-#if LIBVNCSERVER_HAVE_LIBXRANDR
+#if HAVE_LIBXRANDR
 	if (! XRRQueryExtension(dpy, &xrandr_base_event_type, &er)) {
 		if (xrandr && ! quiet && ! raw_fb_str) {
 			rfbLog("Disabling -xrandr mode: display does not support X RANDR.\n");
