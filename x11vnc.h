@@ -62,6 +62,8 @@ so, delete this exception statement from your version.
 #include <fcntl.h>
 #include <ctype.h>
 
+#include <netdb.h>
+
 #include <rfb/rfb.h>
 #include <rfb/rfbregion.h>
 
@@ -341,7 +343,6 @@ extern int xtrap_base_event_type;
 #include <sys/socket.h>
 #endif
 
-#include <netdb.h>
 #ifndef _AIX
 extern int h_errno;
 #endif
