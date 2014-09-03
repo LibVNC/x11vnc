@@ -5,7 +5,6 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AM_CONFIG_HEADER(rfbconfig.h)
 
 
-
 # Check for OpenSSL
 AH_TEMPLATE(HAVE_LIBCRYPT, [libcrypt library present])
 AC_ARG_WITH(crypt,
@@ -363,26 +362,6 @@ PKG_CHECK_MODULES(LIBVNCSERVER, libvncserver >= 0.9.8)
 PKG_CHECK_MODULES(LIBVNCCLIENT, libvncclient >= 0.9.8)
 
 
-AC_ARG_WITH(pthread,
-[  --without-pthread       disable support for libpthread],,)
-
-if test "x$with_pthread" != "xno"; then
-	AC_CHECK_HEADER(pthread.h, HAVE_PTHREAD_H="true")
-	if test ! -z "$HAVE_PTHREAD_H"; then
-		AC_CHECK_LIB(pthread, pthread_mutex_lock)
-		AC_CHECK_LIB(pthread, pthread_mutex_lock, HAVE_LIBPTHREAD="true")
-	fi
-fi
-AM_CONDITIONAL(HAVE_LIBPTHREAD, test ! -z "$HAVE_LIBPTHREAD")
-
-AC_MSG_CHECKING([for __thread])
-AC_LINK_IFELSE([AC_LANG_PROGRAM(, [static __thread int p = 0])],
-	       [AC_DEFINE(HAVE_TLS, 1,
-		      Define to 1 if compiler supports __thread)
-		AC_MSG_RESULT([yes])],
-	       [AC_MSG_RESULT([no])])
-
-
 
 AC_CANONICAL_HOST
 MINGW=`echo $host_os | grep mingw32  2>/dev/null`
@@ -393,80 +372,13 @@ if test ! -z "$MINGW"; then
 fi
 AC_SUBST(WSOCKLIB)
 
-# Check for libgcrypt
-AH_TEMPLATE(WITH_CLIENT_GCRYPT, [Enable support for libgcrypt in libvncclient])
-AC_ARG_WITH(gcrypt,
-[  --without-gcrypt        disable support for gcrypt],,)
-AC_ARG_WITH(client-gcrypt,
-[  --without-client-gcrypt disable support for gcrypt in libvncclient],,)
-
-if test "x$with_gcrypt" != "xno"; then
-	AM_PATH_LIBGCRYPT(1.4.0, , with_client_gcrypt=no)
-	CFLAGS="$CFLAGS $LIBGCRYPT_CFLAGS"
-	LIBS="$LIBS $LIBGCRYPT_LIBS"
-	if test "x$with_client_gcrypt" != "xno"; then
-		AC_DEFINE(WITH_CLIENT_GCRYPT)
-	fi
-fi
-
-# Checks for GnuTLS
-AH_TEMPLATE(HAVE_GNUTLS, [GnuTLS library present])
-AC_ARG_WITH(gnutls,
-[  --without-gnutls        disable support for gnutls]
-[  --with-gnutls=DIR       use gnutls include/library files in DIR],,)
-
-if test "x$with_gnutls" != "xno"; then
-	PKG_CHECK_MODULES(GNUTLS, gnutls >= 2.4.0,,:)
-	CFLAGS="$CFLAGS $GNUTLS_CFLAGS"
-	LIBS="$LIBS $GNUTLS_LIBS"
-fi
-AM_CONDITIONAL(HAVE_GNUTLS, test ! -z "$GNUTLS_LIBS")
-if test ! -z "$GNUTLS_LIBS" ; then
-  AC_DEFINE(HAVE_GNUTLS)
-fi
-
-
-# warn if neither GnuTLS nor OpenSSL are available
-if test -z "$SSL_LIBS" -a -z "$GNUTLS_LIBS"; then
-		AC_MSG_WARN([
-==========================================================================
-*** No encryption library could be found. ***
-A libvncserver/libvncclient built this way will not support SSL encryption.
-To enable SSL install the necessary development packages (perhaps it is named
-something like libssl-dev or gnutls-dev) and run configure again.
-==========================================================================
-])
-	sleep 5
-fi
-
-
-# IPv6
-AH_TEMPLATE(IPv6, [Enable IPv6 support])
-AC_ARG_WITH(ipv6,
-[  --without-ipv6          disable IPv6 support],,)
-if test "x$with_ipv6" != "xno"; then
-	AC_CHECK_FUNC(getaddrinfo, AC_DEFINE(IPv6,1),
-		AC_CHECK_LIB(socket, getaddrinfo, AC_DEFINE(IPv6,1), [
-			AC_MSG_CHECKING([for getaddrinfo in -lws2_32])
-		        LIBS="$LIBS -lws2_32"
-		        AC_TRY_LINK([#include <ws2tcpip.h>], [getaddrinfo(0, 0, 0, 0);], [
-				      AC_DEFINE(IPv6,1)
-		                      AC_MSG_RESULT([yes])
-				      ],
-				    AC_MSG_RESULT([no]))
-                   ]))
-fi
-
 
 
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([arpa/inet.h endian.h fcntl.h netdb.h netinet/in.h stdlib.h string.h sys/endian.h sys/socket.h sys/time.h sys/timeb.h syslog.h unistd.h ws2tcpip.h])
+AC_CHECK_HEADERS([pwd.h sys/wait.h utmpx.h termios.h sys/ioctl.h sys/stropts.h])
 
-# x11vnc only:
-if test "$build_x11vnc" = "yes"; then
-	AC_CHECK_HEADERS([pwd.h sys/wait.h utmpx.h termios.h sys/ioctl.h sys/stropts.h])
-fi
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -504,10 +416,8 @@ if test "x$uname_s" = "xHP-UX"; then
 fi
 
 AC_CHECK_FUNCS([ftime gethostbyname gethostname gettimeofday inet_ntoa memmove memset mmap mkfifo select socket strchr strcspn strdup strerror strstr])
-# x11vnc only:
-if test "$build_x11vnc" = "yes"; then
-	AC_CHECK_FUNCS([setsid setpgrp getpwuid getpwnam getspnam getuid geteuid setuid setgid seteuid setegid initgroups waitpid setutxent grantpt shmat])
-fi
+AC_CHECK_FUNCS([setsid setpgrp getpwuid getpwnam getspnam getuid geteuid setuid setgid seteuid setegid initgroups waitpid setutxent grantpt shmat])
+
 
 # check, if shmget is in cygipc.a
 AC_CHECK_LIB(cygipc,shmget)
@@ -548,23 +458,7 @@ AM_CONDITIONAL(HAVE_RPM, test "$RPMSOURCEDIR" != "NOT-FOUND")
 AM_CONDITIONAL(WITH_X11VNC,  test "$build_x11vnc" = "yes")
 AC_SUBST(RPMSOURCEDIR)
 
-
-# x11vnc only:
-#
-if test "$build_x11vnc" = "yes"; then
-	#
-	# NOTE: if you are using the LibVNCServer-X.Y.Z.tar.gz source
-	# tarball and nevertheless want to run autoconf (i.e. aclocal,
-	# autoheader, automake, autoconf) AGAIN (perhaps you have a
-	# special target system, e.g. embedded) then you will need to
-	# comment out the following 'AC_CONFIG_FILES' line to avoid
-	# automake error messages like:
-	#
-	# configure.ac:690: required file `x11vnc/Makefile.in' not found
-	#
-	AC_CONFIG_FILES([Makefile misc/Makefile misc/turbovnc/Makefile])
-
-fi
+AC_CONFIG_FILES([Makefile misc/Makefile misc/turbovnc/Makefile])
 
 AC_OUTPUT
 
