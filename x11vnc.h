@@ -420,7 +420,7 @@ extern int h_errno;
 /* irix/sgi */
 #if defined(__sgi)
 # define IRIX
-# ifdef LIBVNCSERVER_HAVE_IRIX_XREADDISPLAY
+# ifdef HAVE_IRIX_XREADDISPLAY
 #  define IRIX_OVERLAY
 #  define OVERLAY_OS
 # endif
