@@ -299,7 +299,7 @@ so, delete this exception statement from your version.
 
 /* Extensions and related includes: */
 
-#if LIBVNCSERVER_HAVE_XSHM
+#if HAVE_XSHM
 #  if defined(__hpux) && defined(__ia64)  /* something weird on hp/itanic */
 #    undef _INCLUDE_HPUX_SOURCE
 #  endif
@@ -502,7 +502,7 @@ extern XImage *snaprect;	/* for XShmGetImage (fs_factor) */
 extern XImage *snap;		/* the full snap fb */
 extern XImage *raw_fb_image;	/* the raw fb */
 
-#if !LIBVNCSERVER_HAVE_XSHM
+#if !HAVE_XSHM
 /*
  * for simplicity, define this struct since we'll never use them
  * under using_shm = 0.

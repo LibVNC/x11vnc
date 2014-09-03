@@ -5546,7 +5546,7 @@ int main(int argc, char* argv[]) {
 			rfbLog("For best performance the X Display should be local. (i.e.\n");
 			rfbLog("the x11vnc and X server processes should be running on\n");
 			rfbLog("the same machine.)\n");
-#if LIBVNCSERVER_HAVE_XSHM
+#if HAVE_XSHM
 			rfbLog("Restart with -noshm to override this.\n");
 		    }
 		    exit(1);

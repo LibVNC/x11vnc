@@ -189,7 +189,7 @@ Status XShmGetImage_wr(Display *disp, Drawable d, XImage *image, int x, int y,
 
 	/* Note: the Solaris overlay stuff is all non-shm (using_shm = 0) */
 
-#if LIBVNCSERVER_HAVE_XSHM
+#if HAVE_XSHM
 	return XShmGetImage(disp, d, image, x, y, mask); 
 #else
 	if (!disp || !d || !image || !x || !y || !mask) {}
@@ -201,7 +201,7 @@ XImage *XShmCreateImage_wr(Display* disp, Visual* vis, unsigned int depth,
     int format, char* data, XShmSegmentInfo* shminfo, unsigned int width,
     unsigned int height) {
 
-#if LIBVNCSERVER_HAVE_XSHM
+#if HAVE_XSHM
 	return XShmCreateImage(disp, vis, depth, format, data, shminfo,
 	    width, height); 
 #else
@@ -211,7 +211,7 @@ XImage *XShmCreateImage_wr(Display* disp, Visual* vis, unsigned int depth,
 }
 
 Status XShmAttach_wr(Display *disp, XShmSegmentInfo *shminfo) {
-#if LIBVNCSERVER_HAVE_XSHM
+#if HAVE_XSHM
 	return XShmAttach(disp, shminfo);
 #else
 	if (!disp || !shminfo) {}
@@ -220,7 +220,7 @@ Status XShmAttach_wr(Display *disp, XShmSegmentInfo *shminfo) {
 }
 
 Status XShmDetach_wr(Display *disp, XShmSegmentInfo *shminfo) {
-#if LIBVNCSERVER_HAVE_XSHM
+#if HAVE_XSHM
 	if (getenv("X11VNC_SHM_DEBUG")) fprintf(stderr, "XShmDetach_wr: %p disp: %p\n", (void *)shminfo, (void *)disp);
 	return XShmDetach(disp, shminfo);
 #else
@@ -230,7 +230,7 @@ Status XShmDetach_wr(Display *disp, XShmSegmentInfo *shminfo) {
 }
 
 Bool XShmQueryExtension_wr(Display *disp) {
-#if LIBVNCSERVER_HAVE_XSHM
+#if HAVE_XSHM
 	return XShmQueryExtension(disp);
 #else
 	if (!disp) {}
@@ -239,7 +239,7 @@ Bool XShmQueryExtension_wr(Display *disp) {
 }
 
 int XShmGetEventBase_wr(Display *disp) {
-#if LIBVNCSERVER_HAVE_XSHM
+#if HAVE_XSHM
 	return XShmGetEventBase(disp);
 #else
 	if (!disp) {}

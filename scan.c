@@ -318,7 +318,7 @@ static int shm_create(XShmSegmentInfo *shm, XImage **ximg_ptr, int w, int h,
 
 	*ximg_ptr = xim;
 
-#if LIBVNCSERVER_HAVE_XSHM
+#if HAVE_XSHM
 	shm->shmid = shmget(IPC_PRIVATE,
 	    xim->bytes_per_line * xim->height, IPC_CREAT | 0777);
 
@@ -372,7 +372,7 @@ static int shm_create(XShmSegmentInfo *shm, XImage **ximg_ptr, int w, int h,
 }
 
 void shm_delete(XShmSegmentInfo *shm) {
-#if LIBVNCSERVER_HAVE_XSHM
+#if HAVE_XSHM
 	if (getenv("X11VNC_SHM_DEBUG")) fprintf(stderr, "shm_delete:    %p\n", (void *) shm);
 	if (shm != NULL && shm->shmaddr != (char *) -1) {
 		shmdt(shm->shmaddr);
@@ -394,7 +394,7 @@ void shm_clean(XShmSegmentInfo *shm, XImage *xim) {
 
 	if (db) fprintf(stderr, "shm_clean: called:  %p\n", (void *)xim);
 	X_LOCK;
-#if LIBVNCSERVER_HAVE_XSHM
+#if HAVE_XSHM
 	if (shm != NULL && shm->shmid != -1 && dpy) {
 		if (db) fprintf(stderr, "shm_clean: XShmDetach_wr\n");
 		XShmDetach_wr(dpy, shm);
