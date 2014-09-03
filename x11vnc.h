@@ -319,7 +319,7 @@ so, delete this exception statement from your version.
 #endif
 extern int xtest_base_event_type;
 
-#if LIBVNCSERVER_HAVE_LIBXTRAP
+#if HAVE_LIBXTRAP
 #define NEED_EVENTS
 #define NEED_REPLIES
 #include <X11/extensions/xtraplib.h>

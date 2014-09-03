@@ -235,7 +235,7 @@ void clean_up_exit(int ret) {
 		XDamageDestroy(dpy, xdamage);
 	}
 #endif
-#if LIBVNCSERVER_HAVE_LIBXTRAP
+#if HAVE_LIBXTRAP
 	if (trap_ctx) {
 		XEFreeTC(trap_ctx);
 	}

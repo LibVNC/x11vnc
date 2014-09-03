@@ -880,7 +880,7 @@ void XTRAP_FakeKeyEvent_wr(Display* dpy, KeyCode key, Bool down,
 	/* unused vars warning: */
 	if (key || down || delay) {}
 
-# if LIBVNCSERVER_HAVE_LIBXTRAP
+# if HAVE_LIBXTRAP
 	XESimulateXEventRequest(trap_ctx, down ? KeyPress : KeyRelease,
 	    key, 0, 0, 0);
 	if (debug_keyboard) {
@@ -977,7 +977,7 @@ void XTRAP_FakeButtonEvent_wr(Display* dpy, unsigned int button, Bool is_press,
 	/* unused vars warning: */
 	if (button || is_press || delay) {}
 
-#if LIBVNCSERVER_HAVE_LIBXTRAP
+#if HAVE_LIBXTRAP
 	XESimulateXEventRequest(trap_ctx,
 	    is_press ? ButtonPress : ButtonRelease, button, 0, 0, 0);
 #else
@@ -1049,7 +1049,7 @@ void XTRAP_FakeMotionEvent_wr(Display* dpy, int screen, int x, int y,
 	/* unused vars warning: */
 	if (dpy || screen || x || y || delay) {}
 
-#if LIBVNCSERVER_HAVE_LIBXTRAP
+#if HAVE_LIBXTRAP
 	XESimulateXEventRequest(trap_ctx, MotionNotify, 0, x, y, 0);
 #else
 	DEBUG_SKIPPED_INPUT(debug_keyboard, "motion: no-XTRAP-build");
@@ -1151,7 +1151,7 @@ void XTestDiscard_wr(Display *dpy) {
 
 Bool XETrapQueryExtension_wr(Display *dpy, int *ev, int *er, int *op) {
 	RAWFB_RET(False)
-#if LIBVNCSERVER_HAVE_LIBXTRAP
+#if HAVE_LIBXTRAP
 	return XETrapQueryExtension(dpy, (INT32 *)ev, (INT32 *)er,
 	    (INT32 *)op);
 #else
@@ -1182,7 +1182,7 @@ int XTRAP_GrabControl_wr(Display *dpy, Bool impervious) {
 		return 0;
 	}
 	RAWFB_RET(0)
-#if LIBVNCSERVER_HAVE_LIBXTRAP
+#if HAVE_LIBXTRAP
 	  else {
 		ReqFlags requests;
 

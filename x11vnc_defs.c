@@ -40,7 +40,7 @@ int xrandr_base_event_type = 0;
 
 int xfixes_base_event_type = 0;
 int xtest_base_event_type = 0;
-#if LIBVNCSERVER_HAVE_LIBXTRAP
+#if HAVE_LIBXTRAP
 XETC *trap_ctx = NULL;
 #endif
 int xtrap_base_event_type = 0;
