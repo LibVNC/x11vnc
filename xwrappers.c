@@ -946,7 +946,7 @@ void XTestFakeKeyEvent_wr(Display* dpy, KeyCode key, Bool down,
 		rfbLog("calling XTestFakeKeyEvent(%d, %d)  %.4f\n",
 		    key, down, dnowx());	
 	}
-#if LIBVNCSERVER_HAVE_XTEST
+#if HAVE_XTEST
 	XTestFakeKeyEvent(dpy, key, down, delay);
 	if (regrab) {
 		adjust_grabs(1, 1);
@@ -1023,7 +1023,7 @@ void XTestFakeButtonEvent_wr(Display* dpy, unsigned int button, Bool is_press,
 		rfbLog("calling XTestFakeButtonEvent(%d, %d)  %.4f\n",
 		    button, is_press, dnowx());	
 	}
-#if LIBVNCSERVER_HAVE_XTEST
+#if HAVE_XTEST
     	XTestFakeButtonEvent(dpy, button, is_press, delay);
 #endif
 	if (regrab) {
@@ -1090,7 +1090,7 @@ void XTestFakeMotionEvent_wr(Display* dpy, int screen, int x, int y,
 		rfbLog("calling XTestFakeMotionEvent(%d, %d)  %.4f\n",
 		    x, y, dnowx());	
 	}
-#if LIBVNCSERVER_HAVE_XTEST
+#if HAVE_XTEST
 	XTestFakeMotionEvent(dpy, screen, x, y, delay);
 #endif
 	if (regrab) {
@@ -1105,7 +1105,7 @@ Bool XTestCompareCurrentCursorWithWindow_wr(Display* dpy, Window w) {
 	}
 	RAWFB_RET(False)
 
-#if LIBVNCSERVER_HAVE_XTEST
+#if HAVE_XTEST
 	return XTestCompareCurrentCursorWithWindow(dpy, w);
 #else
 	if (!w) {}
@@ -1118,7 +1118,7 @@ Bool XTestCompareCursorWithWindow_wr(Display* dpy, Window w, Cursor cursor) {
 		return False;
 	}
 	RAWFB_RET(False)
-#if LIBVNCSERVER_HAVE_XTEST
+#if HAVE_XTEST
 	return XTestCompareCursorWithWindow(dpy, w, cursor);
 #else
 	if (!dpy || !w || !cursor) {}
@@ -1129,7 +1129,7 @@ Bool XTestCompareCursorWithWindow_wr(Display* dpy, Window w, Cursor cursor) {
 Bool XTestQueryExtension_wr(Display *dpy, int *ev, int *er, int *maj,
     int *min) {
 	RAWFB_RET(False)
-#if LIBVNCSERVER_HAVE_XTEST
+#if HAVE_XTEST
 	return XTestQueryExtension(dpy, ev, er, maj, min);
 #else
 	if (!dpy || !ev || !er || !maj || !min) {}
@@ -1142,7 +1142,7 @@ void XTestDiscard_wr(Display *dpy) {
 		return;
 	}
 	RAWFB_RET_VOID
-#if LIBVNCSERVER_HAVE_XTEST
+#if HAVE_XTEST
 	XTestDiscard(dpy);
 #else
 	if (!dpy) {}
@@ -1166,7 +1166,7 @@ int XTestGrabControl_wr(Display *dpy, Bool impervious) {
 		return 0;
 	}
 	RAWFB_RET(0)
-#if LIBVNCSERVER_HAVE_XTEST && LIBVNCSERVER_HAVE_XTESTGRABCONTROL
+#if HAVE_XTEST && HAVE_XTESTGRABCONTROL
 	XTestGrabControl(dpy, impervious);
 	return 1;
 #else

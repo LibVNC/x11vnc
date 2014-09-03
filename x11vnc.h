@@ -314,7 +314,7 @@ so, delete this exception statement from your version.
 
 #include <dirent.h>
 
-#if LIBVNCSERVER_HAVE_XTEST
+#if HAVE_XTEST
 #include <X11/extensions/XTest.h>
 #endif
 extern int xtest_base_event_type;
