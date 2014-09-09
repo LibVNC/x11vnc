@@ -35,6 +35,8 @@ so, delete this exception statement from your version.
 #include "x11vnc.h"
 
 int overlay_present = 0;
+int xcomposite_present = 0;
+int use_xcomposite = 1;
 
 int xrandr_base_event_type = 0;
 

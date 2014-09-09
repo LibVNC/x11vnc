@@ -190,7 +190,18 @@ Status XShmGetImage_wr(Display *disp, Drawable d, XImage *image, int x, int y,
 	/* Note: the Solaris overlay stuff is all non-shm (using_shm = 0) */
 
 #if HAVE_XSHM
-	return XShmGetImage(disp, d, image, x, y, mask); 
+#if HAVE_LIBXCOMPOSITE
+	if(use_xcomposite && subwin && !rootshift) {
+	  XErrorHandler old_handler = XSetErrorHandler(trap_xerror);
+	  Pixmap pixmap = XCompositeNameWindowPixmap(disp, d);
+	  Status s = XShmGetImage(disp, pixmap, image, x, y, mask);
+	  XFreePixmap(dpy, pixmap);
+	  XSetErrorHandler(old_handler);
+	  if(!trapped_xerror)
+	    return s;
+	}
+#endif
+	  return XShmGetImage(disp, d, image, x, y, mask); 
 #else
 	if (!disp || !d || !image || !x || !y || !mask) {}
 	return (Status) 0;
@@ -307,6 +318,18 @@ XImage *XGetSubImage_wr(Display *disp, Drawable d, int x, int y,
 		XDestroyImage(xi);
 		return (dest_image);
 	}
+#if HAVE_LIBXCOMPOSITE
+	if(use_xcomposite && subwin && !rootshift) {
+	  XErrorHandler old_handler = XSetErrorHandler(trap_xerror);
+	  Pixmap pixmap = XCompositeNameWindowPixmap(disp, d);
+	  XImage* xi =  XGetSubImage(disp, pixmap, x, y, width, height, plane_mask,
+			     format, dest_image, dest_x, dest_y);
+	  XFreePixmap(dpy, pixmap);
+	  XSetErrorHandler(old_handler);
+	  if(!trapped_xerror)
+	    return xi;
+	}
+#endif
 	return XGetSubImage(disp, d, x, y, width, height, plane_mask,
 	    format, dest_image, dest_x, dest_y);
 #endif	/* NO_X11 */
@@ -327,6 +350,17 @@ XImage *XGetImage_wr(Display *disp, Drawable d, int x, int y,
 		return xreadscreen(disp, d, x, y, width, height,
 		    (Bool) overlay_cursor);
 	}
+#if HAVE_LIBXCOMPOSITE
+	if(use_xcomposite && subwin  && !rootshift) {
+	  XErrorHandler old_handler = XSetErrorHandler(trap_xerror);
+	  Pixmap pixmap = XCompositeNameWindowPixmap(disp, d);
+	  XImage* xi = XGetImage(disp, pixmap, x, y, width, height, plane_mask, format);
+	  XFreePixmap(dpy, pixmap);
+	  XSetErrorHandler(old_handler);
+	  if(!trapped_xerror)
+	    return xi;
+	}
+#endif
 	return XGetImage(disp, d, x, y, width, height, plane_mask, format);
 #endif	/* NO_X11 */
 }

@@ -2576,6 +2576,13 @@ if (0) fprintf(stderr, "vis_str %s\n", vis_str ? vis_str : "notset");
 		/* this may be overridden via visual_id below */
 		default_visual = attr.visual;
 
+#if HAVE_LIBXCOMPOSITE
+		if(use_xcomposite && !rootshift) {
+		  XCompositeRedirectWindow(dpy, window, CompositeRedirectAutomatic);
+		  XCompositeRedirectSubwindows(dpy, window, CompositeRedirectAutomatic);
+		}
+#endif
+
 		X_UNLOCK;
 		set_offset();
 		X_LOCK;
@@ -2641,7 +2648,7 @@ if (0) fprintf(stderr, "DefaultDepth: %d  visial_id: %d\n", depth, (int) visual_
 		    (int) XVisualIDFromVisual(default_visual));
 	}
 
-	if (subwin) {
+	if (subwin && (!use_xcomposite || rootshift)) {
 		int shift = 0, resize = 0;
 		int subwin_x, subwin_y;
 		int disp_x = DisplayWidth(dpy, scr);

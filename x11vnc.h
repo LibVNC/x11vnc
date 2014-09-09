@@ -465,6 +465,12 @@ extern int xfixes_base_event_type;
 #endif
 extern int xdamage_base_event_type;
 
+#if HAVE_LIBXCOMPOSITE
+#include <X11/extensions/Xcomposite.h>
+#endif
+extern int xcomposite_present;
+extern int use_xcomposite;
+
 #define RAWFB_RET(y)   if (raw_fb && ! dpy) return y;
 #define RAWFB_RET_VOID if (raw_fb && ! dpy) return;
 
