@@ -2,7 +2,7 @@
 AC_INIT(x11vnc, 0.9.14, https://github.com/LibVNC/x11vnc)
 AM_INIT_AUTOMAKE(x11vnc, 0.9.14)
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
-AM_CONFIG_HEADER(rfbconfig.h)
+AM_CONFIG_HEADER(config.h)
 
 
 # Check for OpenSSL

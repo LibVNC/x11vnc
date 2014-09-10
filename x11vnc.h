@@ -64,7 +64,7 @@ so, delete this exception statement from your version.
 
 #include <netdb.h>
 
-#include "rfbconfig.h"
+#include "config.h"
 
 #include <rfb/rfb.h>
 #include <rfb/rfbregion.h>

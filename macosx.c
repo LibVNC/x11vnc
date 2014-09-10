@@ -32,7 +32,7 @@ so, delete this exception statement from your version.
 
 /* -- macosx.c -- */
 
-#include "rfbconfig.h"
+#include "config.h"
 #if (defined(__MACH__) && defined(__APPLE__) && defined(LIBVNCSERVER_HAVE_MACOSX_NATIVE_DISPLAY))
 
 #define DOMAC 1
