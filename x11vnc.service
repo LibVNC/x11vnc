@@ -1,0 +1,7 @@
+[Unit]
+Description=VNC Server for X11
+Requires=graphical.target
+After=graphical.target
+
+[Service]
+ExecStart=/usr/bin/x11vnc
