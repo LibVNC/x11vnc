@@ -3,7 +3,7 @@ AC_INIT(x11vnc, 0.9.14, https://github.com/LibVNC/x11vnc)
 AM_INIT_AUTOMAKE(x11vnc, 0.9.14)
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AM_CONFIG_HEADER(config.h)
-
+AC_CONFIG_MACRO_DIR([m4])
 
 # Check for OpenSSL
 AH_TEMPLATE(HAVE_LIBCRYPT, [libcrypt library present])
@@ -397,7 +397,7 @@ AC_C_BIGENDIAN
 AC_TYPE_SIZE_T
 AC_HEADER_TIME
 AC_HEADER_SYS_WAIT
-AC_TYPE_SOCKLEN_T
+AX_TYPE_SOCKLEN_T
 AC_CACHE_CHECK([for in_addr_t],
         vnc_cv_inaddrt, [
                 AC_TRY_COMPILE([#include <sys/types.h>
