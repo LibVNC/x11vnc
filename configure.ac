@@ -90,6 +90,7 @@ AH_TEMPLATE(HAVE_LIBXINERAMA, [XINERAMA extension build environment present])
 AH_TEMPLATE(HAVE_LIBXRANDR, [XRANDR extension build environment present])
 AH_TEMPLATE(HAVE_LIBXFIXES, [XFIXES extension build environment present])
 AH_TEMPLATE(HAVE_LIBXDAMAGE, [XDAMAGE extension build environment present])
+AH_TEMPLATE(HAVE_LIBXCOMPOSITE, [XCOMPOSITE extension build environment present])
 AH_TEMPLATE(HAVE_LIBXTRAP, [DEC-XTRAP extension build environment present])
 AH_TEMPLATE(HAVE_RECORD, [RECORD extension build environment present])
 AH_TEMPLATE(HAVE_SOLARIS_XREADSCREEN, [Solaris XReadScreen available])
@@ -113,6 +114,8 @@ AC_ARG_WITH(xfixes,
 [  --without-xfixes        disable xfixes extension support],,)
 AC_ARG_WITH(xdamage,
 [  --without-xdamage       disable xdamage extension support],,)
+AC_ARG_WITH(xcomposite,
+[  --without-xcomposite    disable xcomposite extension support],,)
 AC_ARG_WITH(xtrap,
 [  --without-xtrap         disable xtrap extension support],,)
 AC_ARG_WITH(xrecord,
@@ -239,6 +242,13 @@ elif test "$X_CFLAGS" != "-DX_DISPLAY_MISSING"; then
 				X_PRELIBS="$X_PRELIBS -lXdamage"
 				[AC_DEFINE(HAVE_LIBXDAMAGE) HAVE_LIBXDAMAGE="true"], ,
 				$X_LIBS $X_PRELIBS -lX11 $X_EXTRA_LIBS)
+		fi
+
+		if test "x$with_xcomposite" != "xno"; then
+		   	AC_CHECK_LIB(Xcomposite, XCompositeQueryExtension,
+				X_PRELIBS="$X_PRELIBS -lXcomposite"
+			        [AC_DEFINE(HAVE_LIBXCOMPOSITE) HAVE_LIBXCOMPOSITE="true"], ,
+			        $X_LIBS $X_PRELIBS -lX11 $X_EXTRA_LIBS)
 		fi
 
 		if test ! -z "$HAVE_LIBXFIXES" -o ! -z "$HAVE_LIBXDAMAGE"; then

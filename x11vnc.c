@@ -1609,6 +1609,7 @@ static void print_settings(int try_http, int bg, char *gui_str) {
 	fprintf(stderr, " xdamage:    %d\n", use_xdamage);
 	fprintf(stderr, "  xd_area:   %d\n", xdamage_max_area);
 	fprintf(stderr, "  xd_mem:    %.3f\n", xdamage_memory);
+	fprintf(stderr, " xcomposite: %d\n", use_xcomposite);
 	fprintf(stderr, " sigpipe:    %s\n", sigpipe
 	    ? sigpipe : "null");
 	fprintf(stderr, " threads:    %d\n", use_threads);
@@ -3786,6 +3787,14 @@ int main(int argc, char* argv[]) {
 			}
 			continue;
 		}
+		if (!strcmp(arg, "-xcomposite")) {
+			use_xcomposite++;
+			continue;
+		}
+		if (!strcmp(arg, "-noxcomposite")) {
+			use_xcomposite = 0;
+			continue;
+		}
 		if (!strcmp(arg, "-sigpipe") || !strcmp(arg, "-sig")) {
 			CHECK_ARGC
 			if (known_sigpipe_mode(argv[++i])) {
@@ -5307,6 +5316,25 @@ int main(int argc, char* argv[]) {
 		rfbLog("  supply the x11vnc '-noxdamage' command line option.\n");
 	}
 
+#if HAVE_LIBXCOMPOSITE
+	XCompositeQueryVersion(dpy, &maj, &min);
+	/* we need version 0.2 to have XCompositeNameWindowPixmap() */
+	if ( maj > 0 || min >= 2 ) {
+	        xcomposite_present = 1;
+	} else {
+        if (! quiet && ! raw_fb_str)
+		  rfbLog("Disabling X COMPOSITE mode: display does not support required version.\n");
+	  xcomposite_present = 0;
+	}
+#endif
+	if (! xcomposite_present) {
+		use_xcomposite = 0;
+	}
+	if (! quiet && xcomposite_present && use_xcomposite && ! raw_fb_str) {
+		rfbLog("X COMPOSITE available on display, using it for window polling.\n");
+		rfbLog("  To disable this behavior use: '-noxcomposite'\n");
+	}
+	
 	if (! quiet && wireframe && ! raw_fb_str) {
 		rfbLog("\n");
 		rfbLog("Wireframing: -wireframe mode is in effect for window moves.\n");
