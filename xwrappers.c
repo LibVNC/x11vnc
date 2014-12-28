@@ -39,6 +39,7 @@ so, delete this exception statement from your version.
 #include "connections.h"
 #include "cleanup.h"
 #include "macosx.h"
+#include "xwrappers.h"
 
 int xshm_present = 0;
 int xshm_opcode = 0;
@@ -1500,7 +1501,88 @@ Bool XQueryPointer_wr(Display *display, Window w, Window *root_return,
 	return rc;
 #endif	/* NO_X11 */
 }
+
  
+Bool XIQueryPointer_wr( Display *display,
+                        int deviceid,
+                        Window win,
+                        Window *root_return,
+                        Window *child_return,
+                        double *root_x_return,
+                        double *root_y_return,
+                        double *win_x_return,
+                        double *win_y_return,
+                        XIButtonState *buttons_return,
+                        XIModifierState *modifiers_return,
+                        XIGroupState *group_return)
+{
+#if NO_X11
+  return False;
+#else
+  Bool rc;
+  XErrorHandler old_handler;
+
+  if (! display) {
+    return False;
+  }
+
+  /* there can be a race condition where this is called when the XI2 device has not yet been created */
+  old_handler = XSetErrorHandler(trap_xerror);
+  trapped_xerror = 0;
+
+  rc = XIQueryPointer(display, deviceid, win, root_return, child_return,
+                      root_x_return, root_y_return, win_x_return, win_y_return,
+                      buttons_return, modifiers_return, group_return);
+
+  XSetErrorHandler(old_handler);
+  if (trapped_xerror) {
+    trapped_xerror = 0;
+    rc = 0;
+  }
+
+  return rc;
+#endif	/* NO_X11 */
+}
+
+
+Bool XIWarpPointer_wr( Display *display,
+                       int deviceid,
+                       Window src_w,
+                       Window dest_w,
+                       double src_x,
+                       double src_y,
+                       int src_width,
+                       int src_height,
+                       double dest_x,
+                       double dest_y)
+{
+#if NO_X11
+  return False;
+#else
+  Bool rc;
+  XErrorHandler old_handler;
+
+  if (! display) {
+    return False;
+  }
+
+  /* there can be a race condition where this is called when the XI2 device has not yet been created */
+  old_handler = XSetErrorHandler(trap_xerror);
+  trapped_xerror = 0;
+
+  rc = XIWarpPointer(display, deviceid, src_w, dest_w, src_x, src_y, src_width, src_height, dest_x, dest_y);
+
+  XSetErrorHandler(old_handler);
+  if (trapped_xerror) {
+    trapped_xerror = 0;
+    rc = 0;
+  }
+
+  return rc;
+#endif	/* NO_X11 */
+}
+
+
 
 Status XQueryTree_wr(Display *display, Window w, Window *root_return,
     Window *parent_return, Window **children_return,

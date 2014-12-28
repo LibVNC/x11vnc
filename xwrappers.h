@@ -33,6 +33,10 @@ so, delete this exception statement from your version.
 #ifndef _X11VNC_XWRAPPERS_H
 #define _X11VNC_XWRAPPERS_H
 
+#ifdef HAVE_XI2
+#include <X11/extensions/XInput2.h>
+#endif
+
 /* -- xwrappers.h -- */
 
 extern int xshm_present;
@@ -110,6 +114,30 @@ extern int XCloseDisplay_wr(Display *display);
 extern Bool XQueryPointer_wr(Display *display, Window w, Window *root_return,
     Window *child_return, int *root_x_return, int *root_y_return,
     int *win_x_return, int *win_y_return, unsigned int *mask_return);
+
+extern Bool XIQueryPointer_wr( Display *display,
+                               int deviceid,
+                               Window win,
+                               Window *root_return,
+                               Window *child_return,
+                               double *root_x_return,
+                               double *root_y_return,
+                               double *win_x_return,
+                               double *win_y_return,
+                               XIButtonState *buttons_return,
+                               XIModifierState *modifiers_return,
+                               XIGroupState *group_return);
+
+extern Bool XIWarpPointer_wr(Display *display,
+                             int deviceid,
+                             Window src_w,
+                             Window dest_w,
+                             double src_x,
+                             double src_y,
+                             int src_width,
+                             int src_height,
+                             double dest_x,
+                             double dest_y);
 
 extern Status XQueryTree_wr(Display *display, Window w, Window *root_return,
     Window *parent_return, Window **children_return,
