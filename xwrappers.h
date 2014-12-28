@@ -101,6 +101,7 @@ extern int XTRAP_GrabControl_wr(Display *dpy, Bool impervious);
 extern void disable_grabserver(Display *in_dpy, int change);
 
 extern Bool XRecordQueryVersion_wr(Display *dpy, int *maj, int *min);
+extern Bool XInputQueryVersion_wr(Display *dpy, int *maj, int *min);
 
 extern int xauth_raw(int on);
 extern Display *XOpenDisplay_wr(char *display_name);

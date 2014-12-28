@@ -1319,6 +1319,27 @@ Bool XRecordQueryVersion_wr(Display *dpy, int *maj, int *min) {
 #endif
 }
 
+
+Bool XInputQueryVersion_wr(Display *dpy, int *maj, int *min) {
+	RAWFB_RET(False)
+#if NO_X11
+	rfbLog("This x11vnc was built without X11 support (-rawfb only).\n");
+	if (!display_name || !d || !db) {}
+	return NULL;
+#else
+	int ignore;
+	if(! XQueryExtension (dpy, "XInputExtension", &ignore, &ignore, &ignore))
+	  return False;
+#ifdef HAVE_XI2
+	if (XIQueryVersion(dpy, maj, min) != Success)
+	  return False;
+#endif
+
+	return True;
+#endif	/* NO_X11 */
+}
+
+
 int xauth_raw(int on) {
 	char tmp[] = "/tmp/x11vnc-xauth.XXXXXX";
 	int tmp_fd = -1;
