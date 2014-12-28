@@ -37,6 +37,8 @@ so, delete this exception statement from your version.
 #include "win_utils.h"
 #include "unixpw.h"
 #include "connections.h"
+#include "cursor.h"
+#include "xi2_devices.h"
 
 struct timeval _mysleep;
 
@@ -578,9 +580,31 @@ int rfbPE(long usec) {
 	}
 	if (! use_threads) {
 		rfbBool r;
+		rfbClientIteratorPtr iter;
+		rfbClientPtr cl;
+
+		if(use_multipointer) {
+		  iter = rfbGetClientIterator(screen);
+		  while( (cl = rfbClientIteratorNext(iter)) )
+		    save_under_cursor_buffer(cl);
+		  rfbReleaseClientIterator(iter);
+
+		  iter = rfbGetClientIterator(screen);
+		  while( (cl = rfbClientIteratorNext(iter)) )
+		    draw_cursor(cl);
+		  rfbReleaseClientIterator(iter);
+		}
+
 		r = rfbProcessEvents(screen, usec);
 		if (r) {
 			res = 1;
+		}
+
+		if(use_multipointer) {
+		  iter = rfbGetClientIterator(screen);
+		  while( (cl = rfbClientIteratorNext(iter)) )
+		    restore_under_cursor_buffer(cl);
+		  rfbReleaseClientIterator(iter);
 		}
 	}
 
