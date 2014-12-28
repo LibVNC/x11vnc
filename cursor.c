@@ -69,6 +69,7 @@ int set_cursor(int x, int y, int which);
 int check_x11_pointer(void);
 int store_cursor(int serial, unsigned long *data, int w, int h, int cbpp, int xhot, int yhot);
 unsigned long get_cursor_serial(int mode);
+rfbCursorPtr pixels2curs(unsigned long *pixels, int w, int h, int xhot, int yhot, int Bpp);
 
 
 typedef struct win_str_info {
@@ -91,8 +92,6 @@ static void curs_copy(cursor_info_t *dest, cursor_info_t *src);
 static void setup_cursors(void);
 static void set_rfb_cursor(int which);
 static void tree_descend_cursor(int *depth, Window *w, win_str_info_t *winfo);
-static rfbCursorPtr pixels2curs(unsigned long *pixels, int w, int h,
-    int xhot, int yhot, int Bpp);
 static int get_exact_cursor(int init);
 static void set_cursor_was_changed(rfbScreenInfoPtr s);
 
@@ -1003,7 +1002,7 @@ void initialize_xfixes(void) {
 #endif
 }
 
-static rfbCursorPtr pixels2curs(unsigned long *pixels, int w, int h,
+rfbCursorPtr pixels2curs(unsigned long *pixels, int w, int h,
     int xhot, int yhot, int Bpp) {
 	rfbCursorPtr c;
 	static unsigned long black = 0, white = 1;
