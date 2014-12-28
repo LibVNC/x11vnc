@@ -61,6 +61,7 @@ so, delete this exception statement from your version.
 #include "xrandr.h"
 #include "xrecord.h"
 #include "pm.h"
+#include "xi2_devices.h"
 
 #include <rfb/rfbclient.h>
 
@@ -3553,6 +3554,11 @@ void initialize_screen(int *argc, char **argv, XImage *fb) {
 		cmap8to24_fb = NULL;
 		rot_fb = NULL;
 
+		if (use_multipointer) {
+		  /* needed to allow multiple dragging actions at once */
+		  screen->deferPtrUpdateTime = 0; 
+		}
+
 		if (cmap8to24) {
 			int n = main_bytes_per_line * fb->height;
 			if (depth <= 8) {
@@ -4588,7 +4594,7 @@ void watch_loop(void) {
 			}
 		}
 
-		if (skip_scan_for_updates) {
+		if (skip_scan_for_updates || nofb) {
 			;
 		} else if (button_mask && (!show_dragging || pointer_mode == 0)) {
 			/*
@@ -4600,12 +4606,10 @@ void watch_loop(void) {
 			XFlush_wr(dpy);
 			X_UNLOCK;
 			dt = 0.0;
-		} else {
+		} else { /* scan for updates case */
 			static double last_dt = 0.0;
 			double xdamage_thrash = 0.4; 
 			static int tilecut = -1;
-
-			check_cursor_changes();
 
 			/* for timing the scan to try to detect thrashing */
 
@@ -4643,6 +4647,18 @@ void watch_loop(void) {
 				X_UNLOCK;
 			}
 #endif
+			/* Now, for scanning and drawing soft cursors (i.e. writing to the framebuffer),
+			   make sure we're not sending any updates to clients (i.e. reading the framebuffer).
+			   Otherwise we get flicker! */
+			{
+			  rfbClientPtr cl;
+			  rfbClientIteratorPtr iter = rfbGetClientIterator(screen);
+			  while( (cl = rfbClientIteratorNext(iter)) ) {
+			    LOCK(cl->sendMutex);
+			  }
+			  rfbReleaseClientIterator(iter);
+			}
+
 			if (use_snapfb) {
 				int t, tries = 3;
 				copy_snap();
@@ -4672,7 +4688,22 @@ void watch_loop(void) {
 				    tm - x11vnc_start, rate/1000000.0, nap_ok);
 			}
 
-		}
+			/* important to have this here since it draws cursors into framebuffer */
+			check_cursor_changes();
+
+			/* 
+			   Release the send ban again.
+			*/
+			{
+			  rfbClientPtr cl;
+			  rfbClientIteratorPtr iter = rfbGetClientIterator(screen);
+			  while( (cl = rfbClientIteratorNext(iter)) ) {
+			    UNLOCK(cl->sendMutex);
+			  }
+			  rfbReleaseClientIterator(iter);
+			}
+			
+		} /* END scan for updates case */
 
 		/* sleep a bit to lessen load */
 		wait = choose_delay(dt);
