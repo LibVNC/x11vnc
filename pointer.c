@@ -349,7 +349,7 @@ void update_x11_pointer_position(int x, int y, rfbClientPtr client) {
 
 	RAWFB_RET_VOID
 
-	if(client)
+	if(client && client->clientData)
 	  ptr_id = ((ClientData*)client->clientData)->ptr_id;
 
 	X_LOCK;
@@ -395,7 +395,7 @@ void do_button_mask_change(int mask, int button, rfbClientPtr client) {
 	int ptr_buttonmask = button_mask;
 	int ptr_id = -1, kbd_id = -1;
 
-	if(client) {
+	if(client && client->clientData) {
 	  ClientData *cd = (ClientData*)client->clientData;
 	  ptr_buttonmask  = cd->ptr_buttonmask;
 	  ptr_id = cd->ptr_id;
@@ -610,7 +610,7 @@ if (debug_scroll > 1) fprintf(stderr, "internal scrollbar: %dx%d\n", w, h);
 	 */
 	button_mask_prev = button_mask;
 	button_mask = mask;
-	if(client)
+	if(client && client->clientData)
 	  ((ClientData*)client->clientData)->ptr_buttonmask = mask;
 #endif	/* NO_X11 */
 }
@@ -702,7 +702,7 @@ void pointer_event(int mask, int x, int y, rfbClientPtr client) {
 	double now;
 	ClientData *cd = NULL;
         
-	if(client)
+	if(client && client->clientData)
 	  cd = (ClientData *) client->clientData;
 	
 	/* needed to allow multiple dragging actions at once */
