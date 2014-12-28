@@ -1617,7 +1617,7 @@ Bool XIWarpPointer_wr( Display *display,
                        double dest_x,
                        double dest_y)
 {
-#if NO_X11
+#if NO_X11 || !HAVE_XI2
   return False;
 #else
   Bool rc;

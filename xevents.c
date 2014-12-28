@@ -1901,7 +1901,7 @@ void set_single_window(rfbClientPtr cl, int x, int y) {
 		int rootx, rooty, wx, wy;
 		unsigned int mask;
 
-		update_x11_pointer_position(x, y);
+		update_x11_pointer_position(x, y, cl);
 		XSync(dpy, False);
 
 		if (XQueryPointer_wr(dpy, rootwin, &r, &c, &rootx, &rooty,
