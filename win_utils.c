@@ -40,26 +40,12 @@ so, delete this exception statement from your version.
 #include "connections.h"
 #include "xrandr.h"
 #include "macosx.h"
+#include "win_utils.h"
 
 winattr_t *stack_list = NULL;
 int stack_list_len = 0;
 int stack_list_num = 0;
-
-
-Window parent_window(Window win, char **name);
-int valid_window(Window win, XWindowAttributes *attr_ret, int bequiet);
-Bool xtranslate(Window src, Window dst, int src_x, int src_y, int *dst_x,
-    int *dst_y, Window *child, int bequiet);
-int get_window_size(Window win, int *w, int *h);
-void snapshot_stack_list(int free_only, double allowed_age);
-int get_boff(void);
-int get_bwin(void);
-void update_stack_list(void);
-Window query_pointer(Window start);
-unsigned int mask_state(void);
-int pick_windowid(unsigned long *num);
-Window descend_pointer(int depth, Window start, char *name_info, int len);
-void id_cmd(char *cmd);
+static Atom atom_wm_state = None;
 
 
 Window parent_window(Window win, char **name) {
@@ -769,3 +755,115 @@ void id_cmd(char *cmd) {
 #endif
 }
 
+
+
+/*
+ * Check if window has given property
+ */
+Bool window_has_property(Display * dpy, Window win, Atom atom)
+{
+    Atom type_ret;
+    int format_ret;
+    unsigned char *prop_ret;
+    unsigned long bytes_after, num_ret;
+
+    type_ret = None;
+    prop_ret = NULL;
+    XGetWindowProperty(dpy, win, atom, 0, 0, False, AnyPropertyType,
+                       &type_ret, &format_ret, &num_ret,
+                       &bytes_after, &prop_ret);
+    if (prop_ret)
+        XFree(prop_ret);
+
+    return (type_ret != None) ? True : False;
+}
+
+/*
+ * Check if window is viewable
+ */
+Bool window_is_viewable(Display * dpy, Window win)
+{
+    Bool ok;
+    XWindowAttributes xwa;
+
+    XGetWindowAttributes(dpy, win, &xwa);
+
+    ok = (xwa.class == InputOutput) && (xwa.map_state == IsViewable);
+
+    return ok;
+}
+
+
+/*
+ * Find a window that has WM_STATE set in the window tree below win.
+ * Unmapped/unviewable windows are not considered valid matches.
+ * Children are searched in top-down stacking order.
+ * The first matching window is returned, None if no match is found.
+ */
+static Window find_client_in_children(Display * dpy, Window win)
+{
+    Window root, parent;
+    Window *children;
+    unsigned int n_children;
+    int i;
+
+    if (!XQueryTree(dpy, win, &root, &parent, &children, &n_children))
+        return None;
+    if (!children)
+        return None;
+
+    /* Check each child for WM_STATE and other validity */
+    win = None;
+    for (i = (int) n_children - 1; i >= 0; i--) {
+        if (!window_is_viewable(dpy, children[i])) {
+            children[i] = None; /* Don't bother descending into this one */
+            continue;
+        }
+        if (!window_has_property(dpy, children[i], atom_wm_state))
+            continue;
+
+        /* Got one */
+        win = children[i];
+        goto done;
+    }
+
+    /* No children matched, now descend into each child */
+    for (i = (int) n_children - 1; i >= 0; i--) {
+        if (children[i] == None)
+            continue;
+        win = find_client_in_children(dpy, children[i]);
+        if (win != None)
+            break;
+    }
+
+  done:
+    XFree(children);
+
+    return win;
+}
+
+/*
+    find a client window, either subwin itself or one of its children
+*/
+Window find_client(Display * dpy, Window root, Window subwin)
+{
+    Window win;
+
+    if (atom_wm_state == None) {
+        atom_wm_state = XInternAtom(dpy, "WM_STATE", False);
+        if (!atom_wm_state)
+            return subwin;
+    }
+
+    /* Check if subwin has WM_STATE */
+    if (window_has_property(dpy, subwin, atom_wm_state))
+        return subwin;
+
+    /* Attempt to find a client window in subwin's children */
+    win = find_client_in_children(dpy, subwin);
+    if (win != None)
+        return win;             /* Found a client */
+
+    /* Did not find a client */
+    return subwin;
+}
