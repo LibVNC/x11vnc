@@ -1286,7 +1286,7 @@ rfbBool vnc_reflect_cursor_pos(rfbClient *cl, int x, int y) {
 		return TRUE; /* some clients initializing, cannot send */ 
 	}
 
-	cursor_position(x, y);
+	cursor_position(x, y, NULL);
 	set_cursor(x, y, get_which_cursor());
 
 	return TRUE;
@@ -1584,7 +1584,7 @@ rfbBool vnc_reflect_send_pointer(int x, int y, int mask) {
 	cursor_y = y;
 
 	/* record the x, y position for the rfb screen as well. */
-	cursor_position(x, y);
+	cursor_position(x, y, NULL);
 
 	/* change the cursor shape if necessary */
 	rc = set_cursor(x, y, get_which_cursor());

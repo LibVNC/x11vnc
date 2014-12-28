@@ -369,7 +369,7 @@ void update_x11_pointer_position(int x, int y) {
 	cursor_y = y;
 
 	/* record the x, y position for the rfb screen as well. */
-	cursor_position(x, y);
+	cursor_position(x, y, NULL);
 
 	/* change the cursor shape if necessary */
 	rc = set_cursor(x, y, get_which_cursor());
