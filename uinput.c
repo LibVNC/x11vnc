@@ -994,6 +994,7 @@ void uinput_pointer_command(int mask, int x, int y, rfbClientPtr client) {
 	int do_reset, reset_lower_right = 1;
 	double now;
 	static int first = 1;
+	ClientData *cd = (ClientData *) client->clientData;
 
 	if (first) {
 		if (getenv("RESET_ALWAYS")) {
@@ -1155,7 +1156,7 @@ void uinput_pointer_command(int mask, int x, int y, rfbClientPtr client) {
 		fprintf(stderr, "mask:        %s\n", bitprint(mask, 16));
 		fprintf(stderr, "bmask:       %s\n", bitprint(bmask, 16));
 		fprintf(stderr, "last_mask:   %s\n", bitprint(last_mask, 16));
-		fprintf(stderr, "button_mask: %s\n", bitprint(button_mask, 16));
+		fprintf(stderr, "button_mask: %s\n", bitprint(cd->ptr_buttonmask, 16));
 	}
 
 	if (uinput_touchscreen) {
