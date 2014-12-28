@@ -188,7 +188,7 @@ void clear_modifiers(int init) {
 			rfbLog("clear_modifiers: up: %-10s (0x%x) "
 			    "keycode=0x%x\n", keystrs[i], keysym, keycode);
 		}
-		XTestFakeKeyEvent_wr(dpy, keycode, False, CurrentTime);
+		XTestFakeKeyEvent_wr(dpy, -1, keycode, False, CurrentTime);
 	}
 	XFlush_wr(dpy);
 #endif	/* NO_X11 */
@@ -277,7 +277,7 @@ void clear_keys(void) {
 		if (keystate[k]) {
 			KeyCode keycode = (KeyCode) k;
 			rfbLog("clear_keys: keycode=%d\n", keycode);
-			XTestFakeKeyEvent_wr(dpy, keycode, False, CurrentTime);
+			XTestFakeKeyEvent_wr(dpy, -1, keycode, False, CurrentTime);
 		}
 	}
 	XFlush_wr(dpy);
@@ -331,9 +331,9 @@ void clear_locks(void) {
 					char *nm = XKeysymToString(ks);
 					rfbLog("toggling: %03d / %03d -- %s\n", key, ks, nm ? nm : "BadKey");
 					did = 1;
-					XTestFakeKeyEvent_wr(dpy, key, True, CurrentTime);
+					XTestFakeKeyEvent_wr(dpy, -1, key, True, CurrentTime);
 					usleep(10*1000);
-					XTestFakeKeyEvent_wr(dpy, key, False, CurrentTime);
+					XTestFakeKeyEvent_wr(dpy, -1, key, False, CurrentTime);
 					XFlush_wr(dpy);
 				}
 			}
@@ -2277,7 +2277,7 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 				    "inadvertent Multi_key from Shift "
 				    "(doing %03d up now)\n", shift_is_down);
 			}
-			XTestFakeKeyEvent_wr(dpy, shift_is_down, False,
+			XTestFakeKeyEvent_wr(dpy, -1, shift_is_down, False,
 			    CurrentTime);
 		} else {
 			involves_multi_key = 0;
@@ -2289,7 +2289,7 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 			if (sentmods[i] == 0) continue;
 			dn = (Bool) needmods[i];
 			if (dn) continue;
-			XTestFakeKeyEvent_wr(dpy, sentmods[i], dn, CurrentTime);
+			XTestFakeKeyEvent_wr(dpy, -1, sentmods[i], dn, CurrentTime);
 		}
 		for (j=0; j<8; j++) {
 			/* next, do the Mod downs */
@@ -2297,7 +2297,7 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 			if (sentmods[i] == 0) continue;
 			dn = (Bool) needmods[i];
 			if (!dn) continue;
-			XTestFakeKeyEvent_wr(dpy, sentmods[i], dn, CurrentTime);
+			XTestFakeKeyEvent_wr(dpy, -1, sentmods[i], dn, CurrentTime);
 		}
 
 		if (involves_multi_key) {
@@ -2309,14 +2309,14 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 				    "inadvertent Multi_key from Shift "
 				    "(doing %03d down now)\n", shift_is_down);
 			}
-			XTestFakeKeyEvent_wr(dpy, shift_is_down, True,
+			XTestFakeKeyEvent_wr(dpy, -1, shift_is_down, True,
 			    CurrentTime);
 		}
 
 		/*
 		 * With the above modifier work done, send the actual keycode:
 		 */
-		XTestFakeKeyEvent_wr(dpy, Kc_f, (Bool) down, CurrentTime);
+		XTestFakeKeyEvent_wr(dpy, -1, Kc_f, (Bool) down, CurrentTime);
 
 		/*
 		 * Now undo the modifier work:
@@ -2327,7 +2327,7 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 			if (sentmods[i] == 0) continue;
 			dn = (Bool) needmods[i];
 			if (!dn) continue;
-			XTestFakeKeyEvent_wr(dpy, sentmods[i], !dn,
+			XTestFakeKeyEvent_wr(dpy, -1, sentmods[i], !dn,
 			    CurrentTime);
 		}
 		for (j=7; j>=0; j--) {
@@ -2336,13 +2336,13 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 			if (sentmods[i] == 0) continue;
 			dn = (Bool) needmods[i];
 			if (dn) continue;
-			XTestFakeKeyEvent_wr(dpy, sentmods[i], !dn,
+			XTestFakeKeyEvent_wr(dpy, -1, sentmods[i], !dn,
 			    CurrentTime);
 		}
 
 	} else { /* for up case, hopefully just need to pop it up: */
 
-		XTestFakeKeyEvent_wr(dpy, Kc_f, (Bool) down, CurrentTime);
+	       XTestFakeKeyEvent_wr(dpy, -1, Kc_f, (Bool) down, CurrentTime);
 	}
 	X_UNLOCK;
 }
@@ -2628,20 +2628,20 @@ static void tweak_mod(signed char mod, rfbBool down) {
 	X_LOCK;
 	if (is_shift && mod != 1) {
 	    if (mod_state & LEFTSHIFT) {
-		XTestFakeKeyEvent_wr(dpy, left_shift_code, !dn, CurrentTime);
+		XTestFakeKeyEvent_wr(dpy, -1, left_shift_code, !dn, CurrentTime);
 	    }
 	    if (mod_state & RIGHTSHIFT) {
-		XTestFakeKeyEvent_wr(dpy, right_shift_code, !dn, CurrentTime);
+		XTestFakeKeyEvent_wr(dpy, -1, right_shift_code, !dn, CurrentTime);
 	    }
 	}
 	if ( ! is_shift && mod == 1 ) {
-	    XTestFakeKeyEvent_wr(dpy, left_shift_code, dn, CurrentTime);
+	    XTestFakeKeyEvent_wr(dpy, -1, left_shift_code, dn, CurrentTime);
 	}
 	if ( altgr && (mod_state & ALTGR) && mod != 2 ) {
-	    XTestFakeKeyEvent_wr(dpy, altgr, !dn, CurrentTime);
+	    XTestFakeKeyEvent_wr(dpy, -1, altgr, !dn, CurrentTime);
 	}
 	if ( altgr && ! (mod_state & ALTGR) && mod == 2 ) {
-	    XTestFakeKeyEvent_wr(dpy, altgr, dn, CurrentTime);
+	    XTestFakeKeyEvent_wr(dpy, -1, altgr, dn, CurrentTime);
 	}
 	X_UNLOCK;
 
@@ -2734,7 +2734,7 @@ static void modifier_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 	}
 	if ( k != NoSymbol ) {
 		X_LOCK;
-		XTestFakeKeyEvent_wr(dpy, k, (Bool) down, CurrentTime);
+		XTestFakeKeyEvent_wr(dpy, -1, k, (Bool) down, CurrentTime);
 		X_UNLOCK;
 	}
 
@@ -3407,7 +3407,7 @@ void keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 	}
 
 	if ( k != NoSymbol ) {
-		XTestFakeKeyEvent_wr(dpy, k, (Bool) down, CurrentTime);
+	        XTestFakeKeyEvent_wr(dpy, -1, k, (Bool) down, CurrentTime);
 		XFlush_wr(dpy);
 	}
 

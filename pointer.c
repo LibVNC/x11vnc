@@ -356,7 +356,7 @@ void update_x11_pointer_position(int x, int y) {
 		XWarpPointer(dpy, None, window, 0, 0, 0, 0, x + coff_x,
 		    y + coff_y);
 	} else {
-		XTestFakeMotionEvent_wr(dpy, scr, x + off_x + coff_x,
+	        XTestFakeMotionEvent_wr(dpy, -1, scr, x + off_x + coff_x,
 		    y + off_y + coff_y, CurrentTime);
 	}
 	X_UNLOCK;
@@ -412,7 +412,7 @@ void do_button_mask_change(int mask, int button) {
 				    " %s (event %d)\n", mb, bmask
 				    ? "down" : "up", k+1);
 			}
-			XTestFakeButtonEvent_wr(dpy, mb, (mask & (1<<i))
+			XTestFakeButtonEvent_wr(dpy, -1, mb, (mask & (1<<i))
 			    ? True : False, CurrentTime);
 		} else {
 			/* send keysym up or down */
@@ -434,11 +434,11 @@ void do_button_mask_change(int mask, int button) {
 				    "%s\n", down, up, str ? str : "null");
 			}
 			if (down) {
-				XTestFakeKeyEvent_wr(dpy, key, True,
+			        XTestFakeKeyEvent_wr(dpy, -1, key, True,
 				    CurrentTime);
 			}
 			if (up) {
-				XTestFakeKeyEvent_wr(dpy, key, False,
+			        XTestFakeKeyEvent_wr(dpy, -1, key, False,
 				    CurrentTime);
 			}
 		}

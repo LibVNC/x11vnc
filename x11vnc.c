@@ -5798,29 +5798,29 @@ int main(int argc, char* argv[]) {
 					k = XKeysymToKeycode(dpy, sym);
 					if (isupper(c)) {
 						k2 = XKeysymToKeycode(dpy, XK_Shift_L);
-						XTestFakeKeyEvent_wr(dpy, k2, True, CurrentTime);
+						XTestFakeKeyEvent_wr(dpy, -1, k2, True, CurrentTime);
 						XFlush_wr(dpy);
 						usleep(100*1000);
 					}
 					if (0) fprintf(stderr, "C/k %c/%x\n", c, k);
-					XTestFakeKeyEvent_wr(dpy, k, True, CurrentTime);
+					XTestFakeKeyEvent_wr(dpy, -1, k, True, CurrentTime);
 					XFlush_wr(dpy);
 					usleep(100*1000);
-					XTestFakeKeyEvent_wr(dpy, k, False, CurrentTime);
+					XTestFakeKeyEvent_wr(dpy, -1, k, False, CurrentTime);
 					XFlush_wr(dpy);
 					usleep(100*1000);
 					if (isupper(c)) {
 						k2 = XKeysymToKeycode(dpy, XK_Shift_L);
-						XTestFakeKeyEvent_wr(dpy, k2, False, CurrentTime);
+						XTestFakeKeyEvent_wr(dpy, -1, k2, False, CurrentTime);
 						XFlush_wr(dpy);
 						usleep(100*1000);
 					}
 				}
 				k2 = XKeysymToKeycode(dpy, XK_Tab);
-				XTestFakeKeyEvent_wr(dpy, k2, True, CurrentTime);
+				XTestFakeKeyEvent_wr(dpy, -1, k2, True, CurrentTime);
 				XFlush_wr(dpy);
 				usleep(100*1000);
-				XTestFakeKeyEvent_wr(dpy, k2, False, CurrentTime);
+				XTestFakeKeyEvent_wr(dpy, -1, k2, False, CurrentTime);
 				XFlush_wr(dpy);
 				usleep(100*1000);
 			}
