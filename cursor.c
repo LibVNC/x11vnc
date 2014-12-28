@@ -71,9 +71,9 @@ int check_x11_pointer(void);
 int store_cursor(int serial, unsigned long *data, int w, int h, int cbpp, int xhot, int yhot);
 unsigned long get_cursor_serial(int mode);
 rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h, int xhot, int yhot, int Bpp);
-static void save_under_cursor_buffer(rfbClientPtr cl);
-static void draw_cursor(rfbClientPtr cl);
-static void restore_under_cursor_buffer(rfbClientPtr cl);
+void save_under_cursor_buffer(rfbClientPtr cl);
+void draw_cursor(rfbClientPtr cl);
+void restore_under_cursor_buffer(rfbClientPtr cl);
 
 typedef struct win_str_info {
 	char *wm_name;
@@ -2143,7 +2143,7 @@ if (0) fprintf(stderr, "check_x11_pointer %d %d\n", root_x, root_y);
   notion of a single cursor, we draw the extra client cursor directly 
   into the framebuffer to provide some visual feedback to the user. 
 */
-static void save_under_cursor_buffer(rfbClientPtr cl)
+void save_under_cursor_buffer(rfbClientPtr cl)
 {
   ClientData *cd = (ClientData *) cl->clientData;
   rfbCursorPtr c;
@@ -2201,7 +2201,7 @@ static void save_under_cursor_buffer(rfbClientPtr cl)
   UNLOCK(cl->updateMutex);
 }
 
-static void draw_cursor(rfbClientPtr cl)
+void draw_cursor(rfbClientPtr cl)
 {
   ClientData *cd = (ClientData *) cl->clientData;
   rfbCursorPtr c;
@@ -2347,7 +2347,7 @@ static void draw_cursor(rfbClientPtr cl)
 
 /* this restores the under cursor buffer we saved in
    draw_cursor to the framebuffer */
-static void restore_under_cursor_buffer(rfbClientPtr cl)
+void restore_under_cursor_buffer(rfbClientPtr cl)
 {
   ClientData *cd = (ClientData *) cl->clientData;
   rfbCursorPtr c;

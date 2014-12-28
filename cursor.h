@@ -67,5 +67,8 @@ extern int check_x11_pointer(void);
 extern int store_cursor(int serial, unsigned long *data, int w, int h, int cbpp, int xhot, int yhot);
 extern unsigned long get_cursor_serial(int mode);
 extern rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h, int xhot, int yhot, int Bpp);
+void save_under_cursor_buffer(rfbClientPtr cl);
+void draw_cursor(rfbClientPtr cl);
+void restore_under_cursor_buffer(rfbClientPtr cl);
 
 #endif /* _X11VNC_CURSOR_H */
