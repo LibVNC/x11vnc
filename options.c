@@ -192,6 +192,12 @@ int avahi = AVAHI;		/* -avahi, -mdns */
 int vnc_redirect = 0;
 int vnc_redirect_sock = -1;
 
+#ifdef HAVE_XI2
+int use_multipointer = 1;       /* enable MPX support */
+#else
+int use_multipointer = 0;       /* disable MPX support */
+#endif
+
 int use_modifier_tweak = 1;	/* use the shift/altgr modifier tweak */
 int watch_capslock = 0;		/* -capslock */
 int skip_lockkeys = 0;		/* -skip_lockkeys */

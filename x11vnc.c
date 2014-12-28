@@ -161,6 +161,7 @@
 #include "selection.h"
 #include "pm.h"
 #include "solid.h"
+#include "xi2_devices.h"
 
 /*
  * main routine for the x11vnc program
@@ -1610,6 +1611,9 @@ static void print_settings(int try_http, int bg, char *gui_str) {
 	fprintf(stderr, "  xd_area:   %d\n", xdamage_max_area);
 	fprintf(stderr, "  xd_mem:    %.3f\n", xdamage_memory);
 	fprintf(stderr, " xcomposite: %d\n", use_xcomposite);
+#ifdef HAVE_XI2
+	fprintf(stderr, " multiptr:   %d\n", use_multipointer);
+#endif
 	fprintf(stderr, " sigpipe:    %s\n", sigpipe
 	    ? sigpipe : "null");
 	fprintf(stderr, " threads:    %d\n", use_threads);
@@ -3795,6 +3799,13 @@ int main(int argc, char* argv[]) {
 			use_xcomposite = 0;
 			continue;
 		}
+#ifdef HAVE_XI2
+                if (!strcmp(arg, "-multiptr")) {
+                        use_multipointer++;
+ 			continue;
+ 		}
+#endif
+
 		if (!strcmp(arg, "-sigpipe") || !strcmp(arg, "-sig")) {
 			CHECK_ARGC
 			if (known_sigpipe_mode(argv[++i])) {
@@ -5292,6 +5303,16 @@ int main(int argc, char* argv[]) {
 		use_xfixes = 0;
 	}
 
+        if(use_multipointer)
+          {
+	    /* XFixesGetCursorImage() gets confused with multiple pointers and crashes */
+            use_xfixes = 0;
+            rfbLog("Disabled XFIXES while using multiple pointer support.\n");
+            /* disable these as most clients expect only a single cursor */
+            cursor_shape_updates = 0;
+            rfbLog("Drawing cursors into framebuffer while using multiple pointer support.\n");
+          }
+
 #if HAVE_LIBXDAMAGE
 	if (! XDamageQueryExtension(dpy, &xdamage_base_event_type, &er)) {
 		if (! quiet && ! raw_fb_str) {
@@ -5493,6 +5514,30 @@ int main(int argc, char* argv[]) {
 	}
 
 	initialize_xrecord();
+
+#ifdef HAVE_XI2
+	/* check for XInput 2 */
+        maj = 2;
+        min = 0;
+	if (! XInputQueryVersion_wr(dpy, &maj, &min)) {
+		xinput2_present = 0;
+		if (! quiet) {
+			rfbLog("\n");
+			rfbLog("XInput2 support was not found on this display.\n");
+			rfbLog("Multi pointer support will not be available.\n");
+                        rfbLog("\n");
+		}
+	} else {
+		xinput2_present = 1;
+		/* set the virtual core pointer (id 2) as client pointer so 
+		   that ambigious calls like XQueryPointer() get this one */
+		XISetClientPointer(dpy, None, 2);
+	}
+        
+        if(!xinput2_present)
+          use_multipointer = 0;
+#endif
+
 
 	tmpi = 1;
 	if (scroll_copyrect) {
