@@ -46,6 +46,13 @@ extern int createMD(Display* dpy, char* name);
 */
 extern int removeMD(Display* dpy, int dev_id);
 
+
+/**
+   removes all created xi2 master devices.
+*/
+void removeAllMDs(Display *dpy);
+
+
 /*
   gets the paired pointer/keyboard id to dev_id
   returns -1 on error

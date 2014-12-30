@@ -213,16 +213,8 @@ void clean_up_exit(int ret) {
 	delete_added_keycodes(0);
 
 	/* remove all created XInput2 devices */
-	if(use_multipointer) {
-	  rfbClientIteratorPtr iter = rfbGetClientIterator(screen);
-	  rfbClientPtr cl;
-	  while((cl = rfbClientIteratorNext(iter))) {
-	    ClientData *cd = (ClientData *) cl->clientData;
-	    if(removeMD(dpy, cd->ptr_id))
-	      rfbLog("cleanup: removed XInput2 MD for client %s.\n", cl->host);
-	  }
-	  rfbReleaseClientIterator(iter);
-	}
+	if(use_multipointer)
+	    removeAllMDs(dpy);
 
 	if (clear_mods == 1) {
 		clear_modifiers(0);
@@ -552,6 +544,11 @@ static void interrupted (int sig) {
 			unlink(rm_flagfile);
 			rm_flagfile = NULL;
 		}
+
+		/* remove all created XInput2 devices */
+		if(use_multipointer)
+		    removeAllMDs(dpy);
+
 		exit(4);
 	}
 	exit_flag++;
@@ -591,6 +588,10 @@ static void interrupted (int sig) {
 
 	/* X keyboard cleanups */
 	delete_added_keycodes(0);
+
+	/* remove all created XInput2 devices */
+	if(use_multipointer)
+	    removeAllMDs(dpy);
 
 	if (clear_mods == 1) {
 		clear_modifiers(0);

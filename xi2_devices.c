@@ -153,6 +153,19 @@ int removeMD(Display* dpy, int dev_id)
 }
 
 
+void removeAllMDs(Display *dpy)
+{
+    /* remove all created XInput2 devices */
+    rfbClientIteratorPtr iter = rfbGetClientIterator(screen);
+    rfbClientPtr cl;
+    while((cl = rfbClientIteratorNext(iter))) {
+	ClientData *cd = (ClientData *) cl->clientData;
+	if(removeMD(dpy, cd->ptr_id))
+	    rfbLog("cleanup: removed XInput2 MD for client %s.\n", cl->host);
+    }
+    rfbReleaseClientIterator(iter);
+}
+
 
 
 
