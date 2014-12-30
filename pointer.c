@@ -485,7 +485,7 @@ static void update_x11_pointer_mask(int mask, rfbClientPtr client) {
 	    /* set XIClientPointer */
 	    /* FIXME done all the time while button down, maybe establish
 	       some concept like window ownership? */
-	    if(mask) /* down */ 
+	    if(use_multipointer && mask) /* down */ 
 	      setXIClientPointer(dpy, ((ClientData*)client->clientData)->ptr_id);
 				 
 	  }
@@ -577,7 +577,7 @@ if (debug_scroll > 1) fprintf(stderr, "internal scrollbar: %dx%d\n", w, h);
 	        /* set keyboard focus to window underneath this pointer. 
 		   we do it ourselves since most window managers are buggy wrt XI2 */
 	        /* FIXME can maybe be removed once XISetClientPointer is working */
-	        if(client && client->clientData)
+	        if(use_multipointer && client && client->clientData)
 		  setDeviceFocus(dpy,((ClientData*)client->clientData)->ptr_id);
 
 		/* button down, snapshot the stacking list before flushing */
