@@ -333,6 +333,10 @@ int setDeviceFocus(Display* dpy, int ptr_id)
   XIModifierState modifiers_return;
   XIGroupState group_return;
 
+  XIDeviceInfo* devinfo;
+  int devicecount = 0;
+  int paired = -1;
+
   if(ptr_id < 0)
     return 0;
  
@@ -346,7 +350,13 @@ int setDeviceFocus(Display* dpy, int ptr_id)
 		 &root_x_return, &root_y_return, &win_x_return, &win_y_return,
 		 &buttons_return, &modifiers_return, &group_return);
 
-  XISetFocus(dpy, getPairedMD(dpy, ptr_id), find_client(dpy, root_return, child_return), CurrentTime);
+  /* get paired keyboard */
+  devinfo = XIQueryDevice(dpy, ptr_id, &devicecount);
+  if(devicecount)
+    paired = devinfo->attachment;
+  XIFreeDeviceInfo(devinfo);
+
+  XISetFocus(dpy, paired, find_client(dpy, root_return, child_return), CurrentTime);
   XSync(dpy, False);
 
   if(trapped_xerror) {
