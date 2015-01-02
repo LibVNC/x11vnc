@@ -4650,7 +4650,7 @@ void watch_loop(void) {
 			/* Now, for scanning and drawing soft cursors (i.e. writing to the framebuffer),
 			   make sure we're not sending any updates to clients (i.e. reading the framebuffer).
 			   Otherwise we get flicker! */
-			{
+			if(use_threads){
 			  rfbClientPtr cl;
 			  rfbClientIteratorPtr iter = rfbGetClientIterator(screen);
 			  while( (cl = rfbClientIteratorNext(iter)) ) {
@@ -4694,7 +4694,7 @@ void watch_loop(void) {
 			/* 
 			   Release the send ban again.
 			*/
-			{
+			if(use_threads){
 			  rfbClientPtr cl;
 			  rfbClientIteratorPtr iter = rfbGetClientIterator(screen);
 			  while( (cl = rfbClientIteratorNext(iter)) ) {
