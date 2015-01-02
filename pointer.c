@@ -576,7 +576,6 @@ if (debug_scroll > 1) fprintf(stderr, "internal scrollbar: %dx%d\n", w, h);
 	if (mask && !ptr_buttonmask) {
 	        /* set keyboard focus to window underneath this pointer. 
 		   we do it ourselves since most window managers are buggy wrt XI2 */
-	        /* FIXME can maybe be removed once XISetClientPointer is working */
 	        if(use_multipointer && client && client->clientData)
 		  setDeviceFocus(dpy,((ClientData*)client->clientData)->ptr_id);
 
