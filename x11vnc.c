@@ -5147,6 +5147,7 @@ int main(int argc, char* argv[]) {
 
 	if (! dpy && raw_fb_str) {
 		rfbLog("Continuing without X display in -rawfb mode.\n");
+		use_multipointer = 0; /* XI2 multipointer makes no sense without X */
 		goto raw_fb_pass_go_and_collect_200_dollars;
 	}
 
