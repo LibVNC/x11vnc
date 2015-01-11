@@ -519,7 +519,7 @@ AM_CONDITIONAL(HAVE_RPM, test "$RPMSOURCEDIR" != "NOT-FOUND")
 AM_CONDITIONAL(WITH_X11VNC,  test "$build_x11vnc" = "yes")
 AC_SUBST(RPMSOURCEDIR)
 
-AC_CONFIG_FILES([Makefile misc/Makefile misc/turbovnc/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile misc/Makefile misc/turbovnc/Makefile])
 
 AC_OUTPUT
 
