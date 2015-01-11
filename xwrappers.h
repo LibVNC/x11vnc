@@ -33,6 +33,10 @@ so, delete this exception statement from your version.
 #ifndef _X11VNC_XWRAPPERS_H
 #define _X11VNC_XWRAPPERS_H
 
+#ifdef HAVE_XI2
+#include <X11/extensions/XInput2.h>
+#endif
+
 /* -- xwrappers.h -- */
 
 extern int xshm_present;
@@ -79,15 +83,15 @@ extern void init_track_keycode_state(void);
 
 extern void XTRAP_FakeKeyEvent_wr(Display* dpy, KeyCode key, Bool down,
     unsigned long delay);
-extern void XTestFakeKeyEvent_wr(Display* dpy, KeyCode key, Bool down,
+extern void XTestFakeKeyEvent_wr(Display* dpy, int dev_id, KeyCode key, Bool down,
     unsigned long delay);
 extern void XTRAP_FakeButtonEvent_wr(Display* dpy, unsigned int button, Bool is_press,
     unsigned long delay);
-extern void XTestFakeButtonEvent_wr(Display* dpy, unsigned int button, Bool is_press,
+extern void XTestFakeButtonEvent_wr(Display* dpy, int dev_id, unsigned int button, Bool is_press,
     unsigned long delay);
 extern void XTRAP_FakeMotionEvent_wr(Display* dpy, int screen, int x, int y,
     unsigned long delay);
-extern void XTestFakeMotionEvent_wr(Display* dpy, int screen, int x, int y,
+extern void XTestFakeMotionEvent_wr(Display* dpy, int dev_id, int screen, int x, int y,
     unsigned long delay);
 
 extern Bool XTestCompareCurrentCursorWithWindow_wr(Display* dpy, Window w);
@@ -101,6 +105,7 @@ extern int XTRAP_GrabControl_wr(Display *dpy, Bool impervious);
 extern void disable_grabserver(Display *in_dpy, int change);
 
 extern Bool XRecordQueryVersion_wr(Display *dpy, int *maj, int *min);
+extern Bool XInputQueryVersion_wr(Display *dpy, int *maj, int *min);
 
 extern int xauth_raw(int on);
 extern Display *XOpenDisplay_wr(char *display_name);
@@ -109,6 +114,30 @@ extern int XCloseDisplay_wr(Display *display);
 extern Bool XQueryPointer_wr(Display *display, Window w, Window *root_return,
     Window *child_return, int *root_x_return, int *root_y_return,
     int *win_x_return, int *win_y_return, unsigned int *mask_return);
+
+extern Bool XIQueryPointer_wr( Display *display,
+                               int deviceid,
+                               Window win,
+                               Window *root_return,
+                               Window *child_return,
+                               double *root_x_return,
+                               double *root_y_return,
+                               double *win_x_return,
+                               double *win_y_return,
+                               XIButtonState *buttons_return,
+                               XIModifierState *modifiers_return,
+                               XIGroupState *group_return);
+
+extern Bool XIWarpPointer_wr(Display *display,
+                             int deviceid,
+                             Window src_w,
+                             Window dest_w,
+                             double src_x,
+                             double src_y,
+                             int src_width,
+                             int src_height,
+                             double dest_x,
+                             double dest_y);
 
 extern Status XQueryTree_wr(Display *display, Window w, Window *root_return,
     Window *parent_return, Window **children_return,

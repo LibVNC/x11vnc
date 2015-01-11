@@ -4407,11 +4407,11 @@ char *process_remote_cmd(char *cmd, int stringonly) {
 		} else {
 			X_LOCK;
 			if (down == -1) {
-				XTestFakeKeyEvent_wr(dpy, kc, 1, CurrentTime);
+			        XTestFakeKeyEvent_wr(dpy, -1, kc, 1, CurrentTime);
 				usleep(50*1000);
-				XTestFakeKeyEvent_wr(dpy, kc, 0, CurrentTime);
+				XTestFakeKeyEvent_wr(dpy, -1, kc, 0, CurrentTime);
 			} else {
-				XTestFakeKeyEvent_wr(dpy, kc, down, CurrentTime);
+			        XTestFakeKeyEvent_wr(dpy, -1, kc, down, CurrentTime);
 			}
 			XFlush_wr(dpy);
 			X_UNLOCK;
@@ -4480,7 +4480,7 @@ char *process_remote_cmd(char *cmd, int stringonly) {
 		if (sscanf(p, "%d,%d", &mb, &down) == 2) {
 			X_LOCK;
 			rfbLog("remote_cmd: XTestFakeButtonEvent(mb=%d, down=%d)\n", mb, down);
-			XTestFakeButtonEvent_wr(dpy, mb, down ? True : False, CurrentTime);
+			XTestFakeButtonEvent_wr(dpy, -1, mb, down ? True : False, CurrentTime);
 			XFlush_wr(dpy);
 			X_UNLOCK;
 		}

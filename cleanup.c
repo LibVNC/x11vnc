@@ -51,6 +51,7 @@ so, delete this exception statement from your version.
 #include "xrecord.h"
 #include "xevents.h"
 #include "uinput.h"
+#include "xi2_devices.h"
 
 /*
  * Exiting and error handling routines
@@ -143,6 +144,7 @@ static void clean_icon_mode(void) {
 	}
 }
 
+
 /*
  * Normal exiting
  */
@@ -209,6 +211,10 @@ void clean_up_exit(int ret) {
 
 	/* X keyboard cleanups */
 	delete_added_keycodes(0);
+
+	/* remove all created XInput2 devices */
+	if(use_multipointer)
+	    removeAllMDs(dpy);
 
 	if (clear_mods == 1) {
 		clear_modifiers(0);
@@ -529,15 +535,20 @@ static void interrupted (int sig) {
 	if (exit_flag) {
 		fprintf(stderr, "extra[%d] signal: %d\n", exit_flag, sig);
 		exit_flag++;
-		if (use_threads) {
-			usleep2(250 * 1000);
-		} else if (exit_flag <= 2) {
-			return;
-		}
+		if (use_threads)
+		  usleep2(250 * 1000);
+		if (exit_flag <= 2)
+		  return;
+
 		if (rm_flagfile) {
 			unlink(rm_flagfile);
 			rm_flagfile = NULL;
 		}
+
+		/* remove all created XInput2 devices */
+		if(use_multipointer)
+		    removeAllMDs(dpy);
+
 		exit(4);
 	}
 	exit_flag++;
@@ -577,6 +588,10 @@ static void interrupted (int sig) {
 
 	/* X keyboard cleanups */
 	delete_added_keycodes(0);
+
+	/* remove all created XInput2 devices */
+	if(use_multipointer)
+	    removeAllMDs(dpy);
 
 	if (clear_mods == 1) {
 		clear_modifiers(0);

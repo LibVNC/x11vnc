@@ -54,6 +54,8 @@ so, delete this exception statement from your version.
 #include "userinput.h"
 #include "pointer.h"
 #include "xrandr.h"
+#include "xi2_devices.h"
+
 
 /*
  * routines for handling incoming, outgoing, etc connections
@@ -783,6 +785,18 @@ static void free_client_data(rfbClientPtr client) {
 				free(cd->unixname);
 				cd->unixname = NULL;
 			}
+			if (cd->cursor) {
+			        rfbFreeCursor(cd->cursor);
+			        cd->cursor = NULL;
+			}
+			if (cd->under_cursor_buffer) {
+			        free(cd->under_cursor_buffer);
+			        cd->under_cursor_buffer = NULL;
+			}
+			if (cd->cursor_region) {
+				sraRgnDestroy(cd->cursor_region);
+				cd->cursor_region = NULL;
+			}
 		}
 		free(client->clientData);
 		client->clientData = NULL;
@@ -885,6 +899,11 @@ void client_gone(rfbClientPtr client) {
 			run_user_command(gone_cmd, client, "gone", NULL, 0, NULL);
 		}
 	}
+
+	/* remove clients XInput2 master device */
+        if(use_multipointer) 
+	  if(removeMD(dpy, cd->ptr_id))
+	    rfbLog("removed XInput2 MD for client %s.\n", client->host);
 
 	free_client_data(client);
 
@@ -3964,6 +3983,12 @@ enum rfbNewClientAction new_client(rfbClientPtr client) {
 		return(RFB_CLIENT_REFUSE);
 	}
 
+        if(use_multipointer && xi2_device_creation_in_progress) {
+            rfbLog("denying additional client: %s during MD creation.\n", client->host);
+	    CLIENT_UNLOCK;
+            return(RFB_CLIENT_REFUSE);
+        }
+
 	client->clientData = (void *) calloc(sizeof(ClientData), 1);
 	cd = (ClientData *) client->clientData;
 
@@ -3971,6 +3996,7 @@ enum rfbNewClientAction new_client(rfbClientPtr client) {
 	cd->client_port = -1;
 	cd->username = strdup("");
 	cd->unixname = strdup("");
+	cd->cursor_x_saved = cd->cursor_y_saved = -1;
 
 	cd->input[0] = '-';
 	cd->login_viewonly = -1;
@@ -4014,6 +4040,38 @@ enum rfbNewClientAction new_client(rfbClientPtr client) {
 	}
 
 	cd->uid = clients_served;
+
+        /*
+	  create new XInput2 master device and add it it to client
+	*/
+        if(use_multipointer)
+          {
+	    char tmp[256];
+            snprintf(tmp, 256, "x11vnc %s", client->host);
+
+            xi2_device_creation_in_progress = 1;
+
+	    if((cd->ptr_id = createMD(dpy, tmp)) < 0) {
+	      rfbLog("ERROR creating XInput2 MD for client %s, denying client.\n", client->host);
+	      free_client_data(client);
+	      xi2_device_creation_in_progress = 0;
+	      CLIENT_UNLOCK;
+	      return(RFB_CLIENT_REFUSE);
+	    }
+
+            cd->kbd_id = getPairedMD(dpy, cd->ptr_id);
+
+            rfbLog("Created XInput2 MD %i %i for client %s.\n", cd->ptr_id, cd->kbd_id, client->host);
+
+            xi2_device_creation_in_progress = 0;
+
+            snprintf(tmp, 256, "%i", cd->uid);
+	    cd->cursor = setClientCursor(dpy, cd->ptr_id, 0.4*(cd->ptr_id%3), 0.2*(cd->ptr_id%5), 1*(cd->ptr_id%2), tmp);
+	    if(!cd->cursor)
+              rfbLog("Setting cursor for client %s failed.\n", client->host);
+
+	    cd->cursor_region = sraRgnCreate();
+          }
 
 	client->clientGoneHook = client_gone;
 

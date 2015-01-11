@@ -56,4 +56,20 @@ extern int pick_windowid(unsigned long *num);
 extern Window descend_pointer(int depth, Window start, char *name_info, int len);
 extern void id_cmd(char *cmd);
 
+/**
+ * Find a client window, either subwin itself or one of its children.
+ */
+extern Window find_client(Display * dpy, Window root, Window subwin);
+
+/**
+ * Check if window has given property.
+ */
+extern Bool window_has_property(Display * dpy, Window win, Atom atom);
+
+/**
+ * Check if window is viewable.
+ */
+extern Bool window_is_viewable(Display * dpy, Window win);
+
+
 #endif /* _X11VNC_WIN_UTILS_H */

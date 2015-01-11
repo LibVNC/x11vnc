@@ -39,6 +39,8 @@ so, delete this exception statement from your version.
 #include "connections.h"
 #include "cleanup.h"
 #include "macosx.h"
+#include "xi2_devices.h"
+#include "xwrappers.h"
 
 int xshm_present = 0;
 int xshm_opcode = 0;
@@ -83,15 +85,15 @@ void init_track_keycode_state(void);
 
 void XTRAP_FakeKeyEvent_wr(Display* dpy, KeyCode key, Bool down,
     unsigned long delay);
-void XTestFakeKeyEvent_wr(Display* dpy, KeyCode key, Bool down,
+void XTestFakeKeyEvent_wr(Display* dpy, int dev_id, KeyCode key, Bool down,
     unsigned long delay);
 void XTRAP_FakeButtonEvent_wr(Display* dpy, unsigned int button, Bool is_press,
     unsigned long delay);
-void XTestFakeButtonEvent_wr(Display* dpy, unsigned int button, Bool is_press,
+void XTestFakeButtonEvent_wr(Display* dpy, int dev_id, unsigned int button, Bool is_press,
     unsigned long delay);
 void XTRAP_FakeMotionEvent_wr(Display* dpy, int screen, int x, int y,
     unsigned long delay);
-void XTestFakeMotionEvent_wr(Display* dpy, int screen, int x, int y,
+void XTestFakeMotionEvent_wr(Display* dpy, int dev_id, int screen, int x, int y,
     unsigned long delay);
 
 Bool XTestCompareCurrentCursorWithWindow_wr(Display* dpy, Window w);
@@ -928,7 +930,7 @@ void XTRAP_FakeKeyEvent_wr(Display* dpy, KeyCode key, Bool down,
 #endif	/* NO_X11 */
 }
 
-void XTestFakeKeyEvent_wr(Display* dpy, KeyCode key, Bool down,
+void XTestFakeKeyEvent_wr(Display* dpy, int dev_id, KeyCode key, Bool down,
     unsigned long delay) {
 	static int first = 1;
 	int regrab = 0;
@@ -981,7 +983,27 @@ void XTestFakeKeyEvent_wr(Display* dpy, KeyCode key, Bool down,
 		    key, down, dnowx());	
 	}
 #if HAVE_XTEST
-	XTestFakeKeyEvent(dpy, key, down, delay);
+#ifdef HAVE_XI2
+    if(use_multipointer && dev_id >= 0)
+      {
+        XErrorHandler old_handler;
+	XDevice xdev;
+        xdev.device_id = dev_id;
+
+        /* there can be a race condition where this is called when the XI2 device has not yet been created */
+        old_handler = XSetErrorHandler(trap_xerror);
+        trapped_xerror = 0;
+
+	XTestFakeDeviceKeyEvent(dpy, &xdev, key, down, NULL, 0, delay);        
+
+        XSetErrorHandler(old_handler);
+        if (trapped_xerror) 
+          trapped_xerror = 0;
+      }
+    else
+#endif
+        XTestFakeKeyEvent(dpy, key, down, delay);
+
 	if (regrab) {
 		adjust_grabs(1, 1);
 	}
@@ -1021,7 +1043,7 @@ void XTRAP_FakeButtonEvent_wr(Display* dpy, unsigned int button, Bool is_press,
 #endif	/* NO_X11 */
 }
 
-void XTestFakeButtonEvent_wr(Display* dpy, unsigned int button, Bool is_press,
+void XTestFakeButtonEvent_wr(Display* dpy, int dev_id, unsigned int button, Bool is_press,
     unsigned long delay) {
 	int regrab = 0;
 
@@ -1058,13 +1080,33 @@ void XTestFakeButtonEvent_wr(Display* dpy, unsigned int button, Bool is_press,
 		    button, is_press, dnowx());	
 	}
 #if HAVE_XTEST
-    	XTestFakeButtonEvent(dpy, button, is_press, delay);
+#ifdef HAVE_XI2
+    if(use_multipointer && dev_id >= 0)
+      {
+        XErrorHandler old_handler;
+        XDevice xdev;
+	xdev.device_id = dev_id;
+
+        /* there can be a race condition where this is called when the XI2 device has not yet been created */
+        old_handler = XSetErrorHandler(trap_xerror);
+        trapped_xerror = 0;
+
+        XTestFakeDeviceButtonEvent(dpy, &xdev, button, is_press, NULL, 0, delay);	  
+
+        XSetErrorHandler(old_handler);
+        if (trapped_xerror) 
+          trapped_xerror = 0;
+      }
+    else
+#endif
+        XTestFakeButtonEvent(dpy, button, is_press, delay);
 #endif
 	if (regrab) {
 		adjust_grabs(1, 1);
 	}
 #endif	/* NO_X11 */
 }
+
 
 void XTRAP_FakeMotionEvent_wr(Display* dpy, int screen, int x, int y,
     unsigned long delay) {
@@ -1092,7 +1134,7 @@ void XTRAP_FakeMotionEvent_wr(Display* dpy, int screen, int x, int y,
 #endif	/* NO_X11 */
 }
 
-void XTestFakeMotionEvent_wr(Display* dpy, int screen, int x, int y,
+void XTestFakeMotionEvent_wr(Display* dpy, int dev_id, int screen, int x, int y,
     unsigned long delay) {
 	int regrab = 0;
 
@@ -1125,7 +1167,27 @@ void XTestFakeMotionEvent_wr(Display* dpy, int screen, int x, int y,
 		    x, y, dnowx());	
 	}
 #if HAVE_XTEST
-	XTestFakeMotionEvent(dpy, screen, x, y, delay);
+#ifdef HAVE_XI2
+    if(use_multipointer && dev_id >= 0)
+      {
+        XErrorHandler old_handler;
+        int axes[] = {x, y};
+	XDevice xdev;
+	xdev.device_id = dev_id;
+
+        /* there can be a race condition where this is called when the XI2 device has not yet been created */
+        old_handler = XSetErrorHandler(trap_xerror);
+        trapped_xerror = 0;
+
+        XTestFakeDeviceMotionEvent(dpy, &xdev, 0, 0, axes, 2, delay);
+
+        XSetErrorHandler(old_handler);
+        if (trapped_xerror) 
+          trapped_xerror = 0;
+      }
+    else
+#endif
+          XTestFakeMotionEvent(dpy, screen, x, y, delay);
 #endif
 	if (regrab) {
 		adjust_grabs(1, 1);
@@ -1319,6 +1381,27 @@ Bool XRecordQueryVersion_wr(Display *dpy, int *maj, int *min) {
 #endif
 }
 
+
+Bool XInputQueryVersion_wr(Display *dpy, int *maj, int *min) {
+	RAWFB_RET(False)
+#if NO_X11
+	rfbLog("This x11vnc was built without X11 support (-rawfb only).\n");
+	if (!display_name || !d || !db) {}
+	return NULL;
+#else
+	int ignore;
+	if(! XQueryExtension (dpy, "XInputExtension", &ignore, &ignore, &ignore))
+	  return False;
+#ifdef HAVE_XI2
+	if (XIQueryVersion(dpy, maj, min) != Success)
+	  return False;
+#endif
+
+	return True;
+#endif	/* NO_X11 */
+}
+
+
 int xauth_raw(int on) {
 	char tmp[] = "/tmp/x11vnc-xauth.XXXXXX";
 	int tmp_fd = -1;
@@ -1479,7 +1562,88 @@ Bool XQueryPointer_wr(Display *display, Window w, Window *root_return,
 	return rc;
 #endif	/* NO_X11 */
 }
+
  
+Bool XIQueryPointer_wr( Display *display,
+                        int deviceid,
+                        Window win,
+                        Window *root_return,
+                        Window *child_return,
+                        double *root_x_return,
+                        double *root_y_return,
+                        double *win_x_return,
+                        double *win_y_return,
+                        XIButtonState *buttons_return,
+                        XIModifierState *modifiers_return,
+                        XIGroupState *group_return)
+{
+#if NO_X11
+  return False;
+#else
+  Bool rc;
+  XErrorHandler old_handler;
+
+  if (! display) {
+    return False;
+  }
+
+  /* there can be a race condition where this is called when the XI2 device has not yet been created */
+  old_handler = XSetErrorHandler(trap_xerror);
+  trapped_xerror = 0;
+
+  rc = XIQueryPointer(display, deviceid, win, root_return, child_return,
+                      root_x_return, root_y_return, win_x_return, win_y_return,
+                      buttons_return, modifiers_return, group_return);
+
+  XSetErrorHandler(old_handler);
+  if (trapped_xerror) {
+    trapped_xerror = 0;
+    rc = 0;
+  }
+
+  return rc;
+#endif	/* NO_X11 */
+}
+
+
+Bool XIWarpPointer_wr( Display *display,
+                       int deviceid,
+                       Window src_w,
+                       Window dest_w,
+                       double src_x,
+                       double src_y,
+                       int src_width,
+                       int src_height,
+                       double dest_x,
+                       double dest_y)
+{
+#if NO_X11 || !HAVE_XI2
+  return False;
+#else
+  Bool rc;
+  XErrorHandler old_handler;
+
+  if (! display) {
+    return False;
+  }
+
+  /* there can be a race condition where this is called when the XI2 device has not yet been created */
+  old_handler = XSetErrorHandler(trap_xerror);
+  trapped_xerror = 0;
+
+  rc = XIWarpPointer(display, deviceid, src_w, dest_w, src_x, src_y, src_width, src_height, dest_x, dest_y);
+
+  XSetErrorHandler(old_handler);
+  if (trapped_xerror) {
+    trapped_xerror = 0;
+    rc = 0;
+  }
+
+  return rc;
+#endif	/* NO_X11 */
+}
+
+
 
 Status XQueryTree_wr(Display *display, Window w, Window *root_return,
     Window *parent_return, Window **children_return,
