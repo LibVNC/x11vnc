@@ -244,7 +244,7 @@ int tsdo(int port, int lsock, int *conn) {
 				close(i);
 			}
 		}
-#if LIBVNCSERVER_HAVE_SETSID
+#if HAVE_SETSID
 		if (setsid() == -1) {
 			perror("setsid");
 			close(csock);
@@ -698,7 +698,7 @@ void do_tsd(void) {
 	    logfile ? logfile : "/dev/null" ); 
 	rfbLog("running: %s\n", cmd);
 
-#if LIBVNCSERVER_HAVE_FORK && LIBVNCSERVER_HAVE_SETSID
+#if LIBVNCSERVER_HAVE_FORK && HAVE_SETSID
 	/* fork into the background now */
 	if ((pid = fork()) > 0)  {
 		pid_t pidw;
@@ -3195,7 +3195,7 @@ int main(int argc, char* argv[]) {
 			continue;
 		}
 		if (!strcmp(arg, "-bg") || !strcmp(arg, "-background")) {
-#if LIBVNCSERVER_HAVE_SETSID
+#if HAVE_SETSID
 			bg = 1;
 			opts_bg = bg;
 #else
@@ -5942,7 +5942,7 @@ int main(int argc, char* argv[]) {
 		clean_up_exit(0);
 	}
 
-#if LIBVNCSERVER_HAVE_FORK && LIBVNCSERVER_HAVE_SETSID
+#if LIBVNCSERVER_HAVE_FORK && HAVE_SETSID
 	if (bg) {
 		int p, n;
 		if (getenv("X11VNC_LOOP_MODE_BG")) {

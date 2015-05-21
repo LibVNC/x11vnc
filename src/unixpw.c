@@ -1055,7 +1055,7 @@ int su_verify(char *user, char *pass, char *cmd, char *rbuf, int *rbuf_size, int
 		int ttyfd;
 		ttyfd = -1;	/* compiler warning */
 
-#if LIBVNCSERVER_HAVE_SETSID
+#if HAVE_SETSID
 		if (setsid() == -1) {
 			perror("setsid");
 			exit(1);

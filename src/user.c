@@ -1482,7 +1482,7 @@ static void setup_service(void) {
 
 static void check_waitbg(void) {
 	if (getenv("WAITBG")) {
-#if LIBVNCSERVER_HAVE_FORK && LIBVNCSERVER_HAVE_SETSID
+#if LIBVNCSERVER_HAVE_FORK && HAVE_SETSID
 		int p, n;
 		if ((p = fork()) > 0)  {
 			exit(0);

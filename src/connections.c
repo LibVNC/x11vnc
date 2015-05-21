@@ -734,7 +734,7 @@ int run_user_command(char *cmd, rfbClientPtr client, char *mode, char *input,
 			}
 /* XXX test more */
 			if (!strcmp(mode, "gone")) {
-#if LIBVNCSERVER_HAVE_SETSID
+#if HAVE_SETSID
 				setsid();
 #else
 				setpgrp();

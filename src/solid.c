@@ -1209,7 +1209,7 @@ static void solid_macosx(int restore) {
 	}
 	if (pid == 0) {
 		int fd = mkstemp(tmp);
-#if LIBVNCSERVER_HAVE_SETSID
+#if HAVE_SETSID
 		setsid();
 #else
 		setpgrp();
