@@ -70,6 +70,10 @@ int button_mask = 0;		/* button state and info */
 int button_mask_prev = 0;
 int num_buttons = -1;
 
+#if HAVE_WAYLAND
+struct wl_display *wl_dpy = NULL;
+#endif
+
 long xselectinput_rootwin = 0;
 
 unsigned int display_button_mask = 0;

@@ -90,6 +90,10 @@ so, delete this exception statement from your version.
 
 #endif
 
+#if HAVE_WAYLAND
+#include <wayland-client.h>
+#endif
+
 /****************************************************************************/
 
 
@@ -499,6 +503,10 @@ extern long xselectinput_rootwin;
 
 extern unsigned int display_button_mask;
 extern unsigned int display_mod_mask;
+
+#if HAVE_WAYLAND
+extern struct wl_display *wl_dpy;
+#endif
 
 /* image structures */
 extern XImage *scanline;
