@@ -506,6 +506,11 @@ extern unsigned int display_mod_mask;
 extern struct wl_display *wl_dpy;
 #endif
 
+#if HAVE_GDBUS
+#include <gio/gio.h>
+extern GDBusConnection *dbus_conn;
+#endif
+
 /* image structures */
 extern XImage *scanline;
 extern XImage *fullscreen;

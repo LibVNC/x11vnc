@@ -74,6 +74,10 @@ int num_buttons = -1;
 struct wl_display *wl_dpy = NULL;
 #endif
 
+#if HAVE_GDBUS
+GDBusConnection *dbus_conn = NULL;
+#endif
+
 long xselectinput_rootwin = 0;
 
 unsigned int display_button_mask = 0;
