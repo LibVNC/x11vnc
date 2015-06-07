@@ -90,9 +90,6 @@ so, delete this exception statement from your version.
 
 #endif
 
-#if HAVE_WAYLAND
-#include <wayland-client.h>
-#endif
 
 /****************************************************************************/
 
@@ -505,6 +502,7 @@ extern unsigned int display_button_mask;
 extern unsigned int display_mod_mask;
 
 #if HAVE_WAYLAND
+#include <wayland-client.h>
 extern struct wl_display *wl_dpy;
 #endif
 

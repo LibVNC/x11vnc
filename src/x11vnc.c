@@ -5123,8 +5123,6 @@ int main(int argc, char* argv[]) {
 	last_open_xdisplay = time(NULL);
 
 #ifdef HAVE_WAYLAND
-	Display * dpy = NULL;
-		dpy = XOpenDisplay_wr("");
 	wl_dpy = wl_display_connect(NULL);
 	if (wl_dpy) {
 	    rfbLog("Wayland display server connected.\n");
