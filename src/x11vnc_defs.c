@@ -70,9 +70,7 @@ int button_mask = 0;		/* button state and info */
 int button_mask_prev = 0;
 int num_buttons = -1;
 
-#if HAVE_WAYLAND
-struct wl_display *wl_dpy = NULL;
-#endif
+int is_wayland_session = 0; /* set to 1 if we're running under a wayland session */
 
 #if HAVE_GDBUS
 GDBusConnection *dbus_conn = NULL;

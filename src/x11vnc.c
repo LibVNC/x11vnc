@@ -5121,16 +5121,13 @@ int main(int argc, char* argv[]) {
 		dpy = XOpenDisplay_wr("");
 	}
 	last_open_xdisplay = time(NULL);
-
-#ifdef HAVE_WAYLAND
-	wl_dpy = wl_display_connect(NULL);
-	if (wl_dpy) {
-	    rfbLog("Wayland display server connected.\n");
+	
+	is_wayland_session = getenv("WAYLAND_DISPLAY") ? 1 : 0;
+	if (is_wayland_session) {
+	    rfbLog("Wayland display server detected.\n");
 	}
-#endif
 
 #ifdef HAVE_GDBUS
-	
 	dbus_conn = g_bus_get_sync (G_BUS_TYPE_SESSION,
 				    NULL,
 				    NULL);

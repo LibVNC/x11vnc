@@ -501,10 +501,7 @@ extern long xselectinput_rootwin;
 extern unsigned int display_button_mask;
 extern unsigned int display_mod_mask;
 
-#if HAVE_WAYLAND
-#include <wayland-client.h>
-extern struct wl_display *wl_dpy;
-#endif
+extern int is_wayland_session;  /* set to 1 if we're running under a wayland session */
 
 #if HAVE_GDBUS
 #include <gio/gio.h>
