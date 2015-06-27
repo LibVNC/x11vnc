@@ -5,20 +5,6 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AM_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
 
-# Check for OpenSSL
-AH_TEMPLATE(HAVE_LIBCRYPT, [libcrypt library present])
-AC_ARG_WITH(crypt,
-[  --without-crypt         disable support for libcrypt],,)
-if test "x$with_crypt" != "xno"; then
-	AC_CHECK_FUNCS([crypt], HAVE_LIBC_CRYPT="true")
-	if test -z "$HAVE_LIBC_CRYPT"; then
-		AC_CHECK_LIB(crypt, crypt,
-			CRYPT_LIBS="-lcrypt"
-			[AC_DEFINE(HAVE_LIBCRYPT)], ,)
-	fi
-fi
-AC_SUBST(CRYPT_LIBS)
-
 # some OS's need both -lssl and -lcrypto on link line:
 AH_TEMPLATE(HAVE_LIBCRYPTO, [openssl libcrypto library present])
 AC_ARG_WITH(crypto,
@@ -52,6 +38,19 @@ if test "x$with_crypto" != "xno" -a "x$with_ssl" != "xno"; then
 		fi
 	fi
 fi
+
+AH_TEMPLATE(HAVE_LIBCRYPT, [libcrypt library present])
+AC_ARG_WITH(crypt,
+[  --without-crypt         disable support for libcrypt],,)
+if test "x$with_crypt" != "xno"; then
+	AC_CHECK_FUNCS([crypt], HAVE_LIBC_CRYPT="true")
+	if test -z "$HAVE_LIBC_CRYPT"; then
+		AC_CHECK_LIB(crypt, crypt,
+			CRYPT_LIBS="-lcrypt"
+			[AC_DEFINE(HAVE_LIBCRYPT)], ,)
+	fi
+fi
+AC_SUBST(CRYPT_LIBS)
 
 AH_TEMPLATE(HAVE_X509_PRINT_EX_FP, [open ssl X509_print_ex_fp available])
 if test "x$with_ssl" != "xno"; then
