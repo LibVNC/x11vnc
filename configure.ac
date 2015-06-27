@@ -105,7 +105,6 @@ AH_TEMPLATE(HAVE_LINUX_INPUT_H, [linux/input.h present])
 AH_TEMPLATE(HAVE_LINUX_UINPUT_H, [linux uinput device build environment present])
 AH_TEMPLATE(HAVE_MACOSX_NATIVE_DISPLAY, [build MacOS X native display support])
 AH_TEMPLATE(HAVE_MACOSX_OPENGL_H, [MacOS X OpenGL present])
-AH_TEMPLATE(HAVE_WAYLAND, [Wayland build environment present])
 
 AC_ARG_WITH(xkeyboard,
 [  --without-xkeyboard     disable xkeyboard extension support],,)
@@ -138,8 +137,6 @@ AC_ARG_WITH(macosx-native,
 AC_ARG_WITH(colormultipointer,
 [  --without-colormultipointer  disable color support for multiple pointers]
 [  --with-cairo=DIR        use cairo include/library files in DIR (needed for color cursor support)],,)
-AC_ARG_WITH(wayland,
-[  --without-wayland       disable wayland support],,)
 
 fi
 # end x11vnc only.
@@ -355,15 +352,6 @@ fi
 AC_CHECK_HEADER(OpenGL/OpenGL.h,
 	[AC_DEFINE(HAVE_MACOSX_OPENGL_H) HAVE_MACOSX_OPENGL_H="true"],,)
 
-
-if test "x$with_wayland" != "xno"; then
-	PKG_CHECK_MODULES(WAYLAND, wayland-client,
-			 HAVE_WAYLAND="yes"; AC_DEFINE(HAVE_WAYLAND, 1, [Wayland available]),
-			 HAVE_WAYLAND="no");
-fi	 
-
-
-
 AH_TEMPLATE(HAVE_AVAHI, [Avahi/mDNS client build environment present])
 AC_ARG_WITH(avahi,
 [  --without-avahi         disable support for Avahi/mDNS]
@@ -436,8 +424,6 @@ AM_CONDITIONAL(HAVE_CAIRO, [ test "$with_cairo" = "yes" ])
 
 # only used in x11vnc/Makefile.am but needs to always be defined:
 AM_CONDITIONAL(OSX_OPENGL, test "$HAVE_MACOSX_OPENGL_H" = "true")
-
-AM_CONDITIONAL(HAVE_WAYLAND, [ test "$HAVE_WAYLAND" = "yes" ])
 
 # Checks for libraries.
 PKG_CHECK_MODULES(LIBVNCSERVER, libvncserver >= 0.9.8)
