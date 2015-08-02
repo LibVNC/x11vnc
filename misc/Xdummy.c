@@ -57,6 +57,9 @@ so, delete this exception statement from your version.
 #define __USE_GNU
 #include <dlfcn.h>
 
+#include <time.h>
+#include <sys/stat.h>
+
 static char tmpdir[4096];
 static char str1[4096];
 static char str2[4096];
@@ -366,10 +369,6 @@ int close(int fd) {
 	}
 	return(real_close(fd));
 }
-
-struct stat {
-	int foo;
-};
 
 int stat(const char *path, struct stat *buf) {
 	static int (*real_stat)(const char *, struct stat *) = NULL;
