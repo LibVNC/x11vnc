@@ -23,3 +23,4 @@ libtool
 stamp-h1
 x11vnc
 *.o
+Xdummy
