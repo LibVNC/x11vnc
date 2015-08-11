@@ -44,7 +44,7 @@ static void check_dpms(void);
 #include <X11/extensions/fbpm.h>
 #endif
 
-#if LIBVNCSERVER_HAVE_DPMS
+#if HAVE_DPMS
 #include <X11/extensions/dpms.h>
 #endif
 
@@ -152,7 +152,7 @@ void set_dpms_mode(char *mode) {
 	return;
 #else
 	RAWFB_RET_VOID
-#if LIBVNCSERVER_HAVE_DPMS
+#if HAVE_DPMS
 	if (dpy && DPMSCapable(dpy)) {
 		CARD16 level;
 		CARD16 want;
@@ -206,7 +206,7 @@ void set_dpms_mode(char *mode) {
 
 static void check_dpms(void) {
 	static int init_dpms = 0;
-#if LIBVNCSERVER_HAVE_DPMS
+#if HAVE_DPMS
 	static int dpms_capable = 0;
 	static time_t last_dpms = 0;
 	int db = 0;
