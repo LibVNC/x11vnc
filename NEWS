@@ -1,4 +1,34 @@
 
+x11vnc 0.9.14	2015-11-14
+
+New in the 0.9.14 x11vnc release:
+
+	Added support for the X Composite Extension. For subwindow/appshare
+		modes this allows sharing the respective window/app when it
+		is partially or completely off-screen as XComposite renders
+		the window contents to an off-screen buffer. Before, updating
+		of the window contents would stop once it went even partially
+		off-screen.
+
+	Added XInput 2 multi-pointer support which allows multiple clients
+		to view and control a single shared screen, all having their
+		own mouse pointers and keyboard foci. For in-depth info, read
+		http://edoc.hu-berlin.de/master/beier-christian-2011-07-19/PDF/beier.pdf,
+		especially section 5.1.
+
+	Added some support for running under Wayland via the deskshot utility
+		found in the misc/ subdirectory.
+
+
+  miscellaneous new features and changes:
+
+	Separated x11vnc sources from LibVNCServer. The project is now
+		hosted at GitHub under https://github.com/LibVNC/x11vnc/.
+
+
+-----------------------------------------------------------------------------
+
+
 x11vnc 0.9.13	2010-12-20
 
 New in the 0.9.13 x11vnc release:
