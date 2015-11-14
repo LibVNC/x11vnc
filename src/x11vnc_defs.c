@@ -72,10 +72,6 @@ int num_buttons = -1;
 
 int is_wayland_session = 0; /* set to 1 if we're running under a wayland session */
 
-#if HAVE_GDBUS
-GDBusConnection *dbus_conn = NULL;
-#endif
-
 long xselectinput_rootwin = 0;
 
 unsigned int display_button_mask = 0;

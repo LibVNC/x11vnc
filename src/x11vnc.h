@@ -503,11 +503,6 @@ extern unsigned int display_mod_mask;
 
 extern int is_wayland_session;  /* set to 1 if we're running under a wayland session */
 
-#if HAVE_GDBUS
-#include <gio/gio.h>
-extern GDBusConnection *dbus_conn;
-#endif
-
 /* image structures */
 extern XImage *scanline;
 extern XImage *fullscreen;

@@ -5126,18 +5126,7 @@ int main(int argc, char* argv[]) {
 	if (is_wayland_session) {
 	    rfbLog("Wayland display server detected.\n");
 	}
-
-#ifdef HAVE_GDBUS
-	dbus_conn = g_bus_get_sync (G_BUS_TYPE_SESSION,
-				    NULL,
-				    NULL);
 	
-	if (dbus_conn) {
-	    rfbLog("Session DBus connected.\n");
-	}
-#endif
-	
-
 	if (terminal_services_daemon != NULL) {
 		terminal_services(terminal_services_daemon);
 		exit(0);
