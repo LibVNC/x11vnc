@@ -380,13 +380,6 @@ if test "x$with_avahi" = "xyes"; then
 	AC_SUBST(AVAHI_LIBS)
 fi
 
-
-AH_TEMPLATE(HAVE_GDBUS, [GDBus bindings present])
-PKG_CHECK_MODULES(GDBUS, [gio-2.0 >= 2.26],
-		 HAVE_GDBUS="yes"; AC_DEFINE(HAVE_GDBUS, 1, [GDBus bindings available]),
-		 HAVE_GDBUS="no");
-
-
 if test "$HAVE_XI2" = "yes"; then
 AH_TEMPLATE(HAVE_CAIRO, [cairo graphics library present])
 if test "x$with_cairo" != "xno"; then
