@@ -5125,6 +5125,10 @@ int main(int argc, char* argv[]) {
 	is_wayland_session = getenv("WAYLAND_DISPLAY") ? 1 : 0;
 	if (is_wayland_session) {
 	    rfbLog("Wayland display server detected.\n");
+	    if(!raw_fb_str) {
+		rfbLog("Wayland sessions are as of now only supported via -rawfb and the bundled deskshot utility. Exiting.\n");
+		exit(1);
+	    }
 	}
 	
 	if (terminal_services_daemon != NULL) {
