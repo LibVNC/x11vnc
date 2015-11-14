@@ -2460,6 +2460,10 @@ typedef unsigned int in_addr_t;
    tarball and point x11vnc to it via the -httpdir option. E.g.:
     x11vnc -httpdir /path/to/x11vnc-0.9.9/classes/ssl ...
 
+   Alternatively, you can also go for a more up-to-date approach and use
+   the very decent noVNC viewer (https://kanaka.github.io/noVNC/) that is
+   purely HTML5 and does not need any plugins at all.
+
 
    Q-6: Where can I get a VNC Viewer binary (or source code) for the
    Operating System I will be viewing from?
