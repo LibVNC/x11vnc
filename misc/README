@@ -48,3 +48,7 @@ Misc. scripts:
                 server.  Also can do port-redirection to internal machines.
 
    inet6to4     ipv6 to ipv4 relay (i.e. until libvncserver supports ipv6)
+
+   deskshot	A screenshot utility for configurations that lack other screen
+		capture techniques built into x11vnc. This is primarily intended
+		for Wayland desktop sessions.

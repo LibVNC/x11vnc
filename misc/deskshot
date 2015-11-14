@@ -1,0 +1,63 @@
+#!/bin/sh
+#
+# A screenshot utility for configurations that lack other screen capture
+# techniques built into x11vnc. This is primarily intended for Wayland
+# desktop sessions.
+#
+# Requires dbus and netpbm packages.
+#
+# Copyright (C) 2015 Christian Beier <dontmind@sdf.org>
+#
+#  This is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; version 2 of the License.
+#
+#  This software is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this software; if not, write to the Free Software
+#  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307,
+#  USA  or see <http://www.gnu.org/licenses/>.
+#
+#
+
+DELAY="$1"
+DEST="$2"
+
+([ -z "$DELAY" ] || [ -z "$DEST" ] )&& { echo "usage: $0 <screenshot interval in s> <destination file>"; exit 1; }
+
+DESKTOP=$XDG_CURRENT_DESKTOP
+
+echo "detected desktop: $DESKTOP"
+
+IS_INFO_SHOWN=""
+
+while true
+do 
+    case "$DESKTOP" in
+	"GNOME")
+	    dbus-send --session --type=method_call --dest='org.gnome.Shell.Screenshot' '/org/gnome/Shell/Screenshot' \
+		      org.gnome.Shell.Screenshot.Screenshot  boolean:true boolean:false string:"$DEST"
+	    # convert to pnm readable by x11vnc
+	    pngtopnm "$DEST" > "$DEST".pnm
+	    
+	    ;;
+	*)
+	    echo "not implemented yet for $DESKTOP, please add and file a PR at https://github.com/LibVNC/x11vnc"
+	    ;;
+    esac
+
+    [ -z "$IS_INFO_SHOWN" ] && {
+	echo "run x11vnc with: -rawfb file:$DEST.pnm@$(head -2 $DEST.pnm | tail -1 | sed 's/ /x/')x24"
+	IS_INFO_SHOWN=y
+    }
+    
+    sleep $DELAY
+done
+
+
+
+
