@@ -5,6 +5,8 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AM_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
 
+AC_PROG_SED
+
 # some OS's need both -lssl and -lcrypto on link line:
 AH_TEMPLATE(HAVE_LIBCRYPTO, [openssl libcrypto library present])
 AC_ARG_WITH(crypto,
