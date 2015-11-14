@@ -1,8 +1,8 @@
 .\" This file was automatically generated from x11vnc -help output.
-.TH X11VNC "1" "December 2010" "x11vnc " "User Commands"
+.TH X11VNC "1" "November 2015" "x11vnc " "User Commands"
 .SH NAME
 x11vnc - allow VNC connections to real X11 displays
-         version: 0.9.13, lastmod: 2010-12-27
+         version: 0.9.14, lastmod: 2015-11-14
 .SH SYNOPSIS
 .B x11vnc
 [OPTION]...
@@ -4543,6 +4543,11 @@ before proceeding.
 .IP
 Similar to \fB-allinput\fR but use the handleEventsEagerly
 mechanism built into LibVNCServer.
+.PP
+\fB-multiptr\fR
+.IP
+Enable support for per-client input devices. Each client
+will get its own cursor and keyboard focus.
 .PP
 \fB-speeds\fR \fIrd,bw,lat\fR
 .IP
