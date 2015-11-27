@@ -56,7 +56,7 @@ extern char *crypt(const char*, const char *);
 #include "default8x16.h"
 
 #if LIBVNCSERVER_HAVE_FORK
-#if LIBVNCSERVER_HAVE_SYS_WAIT_H && LIBVNCSERVER_HAVE_WAITPID
+#if LIBVNCSERVER_HAVE_SYS_WAIT_H && HAVE_WAITPID
 #define UNIXPW_SU
 #endif
 #endif

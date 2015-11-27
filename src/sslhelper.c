@@ -2964,7 +2964,7 @@ void ssl_helper_pid(pid_t pid, int sock) {
 					}
 				}
 
-#if LIBVNCSERVER_HAVE_SYS_WAIT_H && LIBVNCSERVER_HAVE_WAITPID 
+#if LIBVNCSERVER_HAVE_SYS_WAIT_H && HAVE_WAITPID
 				wret = waitpid(helpers[i], &status, WNOHANG); 
 
 if (db) fprintf(stderr, "waitpid(%d)\n", helpers[i]);
@@ -3000,7 +3000,7 @@ if (db) fprintf(stderr, "ssl_helper_pid(%d, %d)\n", pid, sock);
 	for (i=0; i < HPSIZE; i++) {
 		if (helpers[i] == pid) {
 			if (sock == -1) {
-#if LIBVNCSERVER_HAVE_SYS_WAIT_H && LIBVNCSERVER_HAVE_WAITPID 
+#if LIBVNCSERVER_HAVE_SYS_WAIT_H && HAVE_WAITPID
 				pid_t wret;
 				wret = waitpid(helpers[i], &status, WNOHANG); 
 
