@@ -2119,7 +2119,7 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 
 	if (sscanf(str, "shm:%d", &shmid) == 1) {
 		/* shm:N */
-#if HAVE_XSHM || LIBVNCSERVER_HAVE_SHMAT
+#if HAVE_XSHM || HAVE_SHMAT
 		raw_fb_addr = (char *) shmat(shmid, 0, SHM_RDONLY);
 		if (! raw_fb_addr) {
 			rfbLogEnable(1);

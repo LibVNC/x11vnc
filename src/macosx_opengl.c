@@ -38,7 +38,7 @@ so, delete this exception statement from your version.
 #include <ApplicationServices/ApplicationServices.h>
 
 #include <rfb/rfb.h>
-#if LIBVNCSERVER_HAVE_MACOSX_OPENGL_H
+#if HAVE_MACOSX_OPENGL_H
 #include <OpenGL/OpenGL.h>
 #include <OpenGL/gl.h>
 #endif
