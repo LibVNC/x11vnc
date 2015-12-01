@@ -887,7 +887,7 @@ static void upup_downdown_warning(KeyCode key, Bool down) {
 	return;
 #else
 	if ((down ? 1:0) == keycode_state[(int) key]) {
-		char *str = XKeysymToString(XKeycodeToKeysym(dpy, key, 0));
+		char *str = XKeysymToString(XKeycodeToKeysym_wr(dpy, key, 0));
 		rfbLog("XTestFakeKeyEvent: keycode=0x%x \"%s\" is *already* "
 		    "%s\n", key, str ? str : "null", down ? "down":"up");
 	}
@@ -943,7 +943,7 @@ void XTestFakeKeyEvent_wr(Display* dpy, int dev_id, KeyCode key, Bool down,
 	return;
 #else
 	if (debug_keyboard) {
-		char *str = XKeysymToString(XKeycodeToKeysym(dpy, key, 0));
+		char *str = XKeysymToString(XKeycodeToKeysym_wr(dpy, key, 0));
 		rfbLog("XTestFakeKeyEvent(dpy, keycode=0x%x \"%s\", %s)\n",
 		    key, str ? str : "null", down ? "down":"up");
 	}
@@ -1701,6 +1701,18 @@ int XSelectInput_wr(Display *display, Window w, long event_mask) {
 		rc = 0;
 	}
 	return rc;
+#endif
+}
+
+KeySym XKeycodeToKeysym_wr(Display *display, KeyCode keycode, int index) {
+#if NO_X11
+	return 0;
+#else
+#if !HAVE_XKEYBOARD || SKIP_XKB
+	return XKeycodeToKeysym(display, keycode, index);
+#else
+	return XkbKeycodeToKeysym(display, keycode, 0, index);
+#endif
 #endif
 }
 

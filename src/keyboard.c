@@ -329,7 +329,7 @@ void clear_locks(void) {
 			if (! did && state & (0x1 << i)) {
 				if (map->modifiermap[k]) {
 					KeyCode key = map->modifiermap[k];
-					KeySym ks = XKeycodeToKeysym(dpy, key, 0);
+					KeySym ks = XKeycodeToKeysym_wr(dpy, key, 0);
 					char *nm = XKeysymToString(ks);
 					rfbLog("toggling: %03d / %03d -- %s\n", key, ks, nm ? nm : "BadKey");
 					did = 1;
@@ -602,7 +602,7 @@ static void delete_keycode(KeyCode kc, int bequiet) {
 	XChangeKeyboardMapping(dpy, kc, syms_per_keycode, newks, 1);
 
 	if (! bequiet && ! quiet) {
-		ksym = XKeycodeToKeysym(dpy, kc, 0);
+		ksym = XKeycodeToKeysym_wr(dpy, kc, 0);
 		str = XKeysymToString(ksym);
 		rfbLog("deleted keycode from X display: %03d 0x%x \"%s\"\n",
 		    kc, ksym, str ? str : "null");
@@ -1689,7 +1689,7 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 
 			if (debug_keyboard > 1) {
 				char *s1, *s2;
-				s1 = XKeysymToString(XKeycodeToKeysym(dpy,
+				s1 = XKeysymToString(XKeycodeToKeysym_wr(dpy,
 				    kc, 0));
 				if (! s1) s1 = "null";
 				s2 = XKeysymToString(keysym);
@@ -1949,7 +1949,7 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 					}
 					/* break ties based on lowest XKeycodeToKeysym index */
 					for (j=0; j<8; j++) {
-						KeySym ks = XKeycodeToKeysym(dpy, kc_f[l], j);
+						KeySym ks = XKeycodeToKeysym_wr(dpy, kc_f[l], j);
 						if (ks != NoSymbol && ks == keysym) {
 							jmatch = j;
 							break;
@@ -2010,7 +2010,7 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 			fprintf(stderr, "%03d ", kc_f[l]);
 		}
 		for (l = 0; l < found; l++) {
-			str = XKeysymToString(XKeycodeToKeysym(dpy,kc_f[l],0));
+			str = XKeysymToString(XKeycodeToKeysym_wr(dpy,kc_f[l],0));
 			fprintf(stderr, " \"%s\"", str ? str : "null");
 		}
 		fprintf(stderr, ", picked this one: %03d  (last down: %03d)\n",
@@ -2567,7 +2567,7 @@ void initialize_modtweak(void) {
 			if (debug_keyboard) {
 				char *sym;
 #if 0
-				sym =XKeysymToString(XKeycodeToKeysym(dpy,i,j));
+				sym =XKeysymToString(XKeycodeToKeysym_wr(dpy,i,j));
 #else
 				keysym = keymap[(i-minkey)*syms_per_keycode+j];
 				sym = XKeysymToString(keysym);

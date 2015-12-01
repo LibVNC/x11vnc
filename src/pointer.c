@@ -441,7 +441,7 @@ void do_button_mask_change(int mask, int button, rfbClientPtr client) {
 				continue; 
 			}
 			if (debug_pointer && dpy) {
-				char *str = XKeysymToString(XKeycodeToKeysym(
+				char *str = XKeysymToString(XKeycodeToKeysym_wr(
                                     dpy, key, 0));
 				rfbLog("pointer(): sending button %d "
 				    "down as keycode 0x%x (event %d)\n",

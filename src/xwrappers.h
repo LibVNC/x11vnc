@@ -145,6 +145,6 @@ extern Status XQueryTree_wr(Display *display, Window w, Window *root_return,
 
 extern int XFree_wr(void *data);
 extern int XSelectInput_wr(Display *display, Window w, long event_mask);
-
+extern KeySym XKeycodeToKeysym_wr(Display *display, KeyCode keycode, int index);
 
 #endif /* _X11VNC_XWRAPPERS_H */
