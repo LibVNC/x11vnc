@@ -1135,7 +1135,7 @@ void check_autorepeat(void) {
 						char *str = "unset";
 #if !NO_X11
 						if (use_threads) {X_LOCK;}
-						str = XKeysymToString(XKeycodeToKeysym(dpy, i, 0));
+						str = XKeysymToString(XKeycodeToKeysym_wr(dpy, i, 0));
 						if (use_threads) {X_UNLOCK;}
 #endif
 						str = str ? str : "nosymbol";

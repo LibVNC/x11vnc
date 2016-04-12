@@ -255,10 +255,10 @@ so, delete this exception statement from your version.
 #endif
 
 #if (SMALL_FOOTPRINT > 2)
-#undef LIBVNCSERVER_HAVE_UTMPX_H
+#undef HAVE_UTMPX_H
 #undef LIBVNCSERVER_HAVE_PWD_H
 #undef REMOTE_CONTROL
-#define LIBVNCSERVER_HAVE_UTMPX_H 0
+#define HAVE_UTMPX_H 0
 #define LIBVNCSERVER_HAVE_PWD_H 0
 #define REMOTE_CONTROL 0
 #endif
@@ -308,7 +308,7 @@ so, delete this exception statement from your version.
 #include <sys/shm.h>
 #include <X11/extensions/XShm.h>
 #endif
-#if LIBVNCSERVER_HAVE_SHMAT
+#if HAVE_SHMAT
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #endif
@@ -392,7 +392,7 @@ extern int h_errno;
 #if LIBVNCSERVER_HAVE_SYS_WAIT_H
 #include <sys/wait.h>
 #endif
-#if LIBVNCSERVER_HAVE_UTMPX_H
+#if HAVE_UTMPX_H
 #include <utmpx.h>
 #endif
 

@@ -41,7 +41,7 @@ so, delete this exception statement from your version.
 #include "keyboard.h"
 #include "allowed_input_t.h"
 
-#if LIBVNCSERVER_HAVE_LINUX_VIDEODEV_H
+#if HAVE_LINUX_VIDEODEV_H
 #if LIBVNCSERVER_HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>
 #define CONFIG_VIDEO_V4L1_COMPAT

@@ -140,7 +140,7 @@ void check_switched_user(void) {
 /* utilities for switching users */
 static char *get_login_list(int with_display) {
 	char *out;
-#if LIBVNCSERVER_HAVE_UTMPX_H
+#if HAVE_UTMPX_H
 	int i, cnt, max = 200, ut_namesize = 32;
 	int dpymax = 1000, sawdpy[1000];
 	struct utmpx *utx;
@@ -761,7 +761,7 @@ static int switch_user_env(uid_t uid, gid_t gid, char *name, char *home, int fb_
 	int reset_fb = 0;
 	int grp_ok = 0;
 
-#if !LIBVNCSERVER_HAVE_SETUID
+#if !HAVE_SETUID
 	return 0;
 #else
 	/*
@@ -773,7 +773,7 @@ static int switch_user_env(uid_t uid, gid_t gid, char *name, char *home, int fb_
 		clean_shm(0);
 		free_tiles();
 	}
-#if LIBVNCSERVER_HAVE_INITGROUPS
+#if HAVE_INITGROUPS
 #if LIBVNCSERVER_HAVE_PWD_H
 	if (getpwuid(uid) != NULL && getenv("X11VNC_SINGLE_GROUP") == NULL) {
 		struct passwd *p = getpwuid(uid);

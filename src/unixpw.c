@@ -62,14 +62,14 @@ extern char *crypt(const char*, const char *);
 #endif
 
 #ifdef IGNORE_GETSPNAM
-#undef LIBVNCSERVER_HAVE_GETSPNAM
-#define LIBVNCSERVER_HAVE_GETSPNAM 0
+#undef HAVE_GETSPNAM
+#define HAVE_GETSPNAM 0
 #endif
 
-#if LIBVNCSERVER_HAVE_PWD_H && LIBVNCSERVER_HAVE_GETPWNAM
+#if LIBVNCSERVER_HAVE_PWD_H && HAVE_GETPWNAM
 #if LIBVNCSERVER_HAVE_CRYPT || LIBVNCSERVER_HAVE_LIBCRYPT || HAVE_LIBCRYPT
 #define UNIXPW_CRYPT
-#if LIBVNCSERVER_HAVE_GETSPNAM
+#if HAVE_GETSPNAM
 #include <shadow.h>
 #endif
 #endif
@@ -78,10 +78,10 @@ extern char *crypt(const char*, const char *);
 #if LIBVNCSERVER_HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>
 #endif
-#if LIBVNCSERVER_HAVE_TERMIOS_H
+#if HAVE_TERMIOS_H
 #include <termios.h>
 #endif
-#if LIBVNCSERVER_HAVE_SYS_STROPTS_H
+#if HAVE_SYS_STROPTS_H
 #include <sys/stropts.h>
 #endif
 
@@ -520,7 +520,7 @@ char *get_pty_ptmx(int *fd_p) {
 
 	*fd_p = -1;
 
-#if LIBVNCSERVER_HAVE_GRANTPT
+#if HAVE_GRANTPT
 
 	for (i=0; i < ndevs; i++) {
 #ifdef O_NOCTTY
@@ -628,7 +628,7 @@ char *get_pty(int *fd_p) {
 #ifdef IS_BSD
 	return get_pty_loop(fd_p);
 #else
-#if LIBVNCSERVER_HAVE_GRANTPT
+#if HAVE_GRANTPT
 	used_get_pty_ptmx = 1;
 	return get_pty_ptmx(fd_p);
 #else
@@ -644,16 +644,16 @@ void try_to_be_nobody(void) {
 	pw = getpwnam("nobody");
 
 	if (pw) {
-#if LIBVNCSERVER_HAVE_SETUID
+#if HAVE_SETUID
 		setuid(pw->pw_uid);
 #endif
-#if LIBVNCSERVER_HAVE_SETEUID
+#if HAVE_SETEUID
 		seteuid(pw->pw_uid);
 #endif
-#if LIBVNCSERVER_HAVE_SETGID
+#if HAVE_SETGID
 		setgid(pw->pw_gid);
 #endif
-#if LIBVNCSERVER_HAVE_SETEGID
+#if HAVE_SETEGID
 		setegid(pw->pw_gid);
 #endif
 	}
@@ -788,7 +788,7 @@ int crypt_verify(char *user, char *pass) {
 
 	if (strlen(realpw) < 12) {
 		/* e.g. "x", try getspnam(), sometimes root for inetd, etc */
-#if LIBVNCSERVER_HAVE_GETSPNAM
+#if HAVE_GETSPNAM
 		struct spwd *sp = getspnam(user);
 		if (sp != NULL && sp->sp_pwdp != NULL) {
 			if (db) fprintf(stderr, "using getspnam()\n");
@@ -1086,7 +1086,7 @@ int su_verify(char *user, char *pass, char *cmd, char *rbuf, int *rbuf_size, int
 
 /* streams options fixups, handle cases as they are found: */
 #if defined(__hpux)
-#if LIBVNCSERVER_HAVE_SYS_STROPTS_H
+#if HAVE_SYS_STROPTS_H
 #if LIBVNCSERVER_HAVE_SYS_IOCTL_H && defined(I_PUSH)
 		if (used_get_pty_ptmx) {
 			ioctl(sfd, I_PUSH, "ptem");
@@ -1127,7 +1127,7 @@ int su_verify(char *user, char *pass, char *cmd, char *rbuf, int *rbuf_size, int
 		chdir("/");
 
 		try_to_be_nobody();
-#if LIBVNCSERVER_HAVE_GETUID
+#if HAVE_GETUID
 		if (getuid() == 0 || geteuid() == 0) {
 			exit(1);
 		}

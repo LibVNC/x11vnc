@@ -33,7 +33,7 @@ so, delete this exception statement from your version.
 /* -- macosx.c -- */
 
 #include "config.h"
-#if (defined(__MACH__) && defined(__APPLE__) && defined(LIBVNCSERVER_HAVE_MACOSX_NATIVE_DISPLAY))
+#if (defined(__MACH__) && defined(__APPLE__) && defined(HAVE_MACOSX_NATIVE_DISPLAY))
 
 #define DOMAC 1
 
@@ -748,5 +748,5 @@ int macosx_check_clipped(int win, int *list, int n) {
 }
 
 
-#endif 	/* LIBVNCSERVER_HAVE_MACOSX_NATIVE_DISPLAY */
+#endif 	/* HAVE_MACOSX_NATIVE_DISPLAY */
 
