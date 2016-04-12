@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/LibVNC/x11vnc.svg?branch=master)](https://travis-ci.org/LibVNC/x11vnc)
 
 Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
 All rights reserved.
