@@ -1,4 +1,8 @@
 language: c
 
+# install all vnc-related dependencies
+before_install:
+  - sudo apt-get build-dep x11vnc
+
 # before build script, run autoreconf
 before_script: autoreconf -fiv
