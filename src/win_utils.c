@@ -248,8 +248,8 @@ void snapshot_stack_list(int free_only, double allowed_age) {
 	}
 
 	last_snap = now;
-	if (num > stack_list_len + blackouts) {
-		int n = 2*num;
+	if (num + blackouts > stack_list_len) {
+		int n = 2 * (num + blackouts);
 		free(stack_list);
 		stack_list = (winattr_t *) malloc(n*sizeof(winattr_t));
 		stack_list_len = n;
