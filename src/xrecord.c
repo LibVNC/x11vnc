@@ -961,7 +961,7 @@ if (db > 1) fprintf(stderr, "record_CW-%d\n", k++);
 	data = (char *)req;
 	data += sz_xConfigureWindowReq;
 
-	for (i=0; i<req->length; i++) {
+	for (i = 0; i < req->length - sz_xConfigureWindowReq / 4 && i < 4; i++) {
 		unsigned int v;
 		/*
 		 * We use unsigned int for the values.  There were
