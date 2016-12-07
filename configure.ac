@@ -60,12 +60,11 @@ AC_SUBST(CRYPT_LIBS)
 AH_TEMPLATE(HAVE_X509_PRINT_EX_FP, [open ssl X509_print_ex_fp available])
 if test "x$with_ssl" != "xno"; then
 	if test "x$HAVE_LIBCRYPTO" = "xtrue"; then
-		AC_CHECK_LIB(ssl, SSL_library_init,
+		PKG_CHECK_MODULES(OPENSSL, [openssl >= 1.0.0],
 			SSL_LIBS="-lssl -lcrypto"
-			[AC_DEFINE(HAVE_LIBSSL) HAVE_LIBSSL="true"], ,
-			-lcrypto)
+			[AC_DEFINE(HAVE_LIBSSL) HAVE_LIBSSL="true"], ,)
 	else
-		AC_CHECK_LIB(ssl, SSL_library_init,
+		PKG_CHECK_MODULES(OPENSSL, [openssl >= 1.0.0],
 			SSL_LIBS="-lssl"
 			[AC_DEFINE(HAVE_LIBSSL) HAVE_LIBSSL="true"], ,)
 	fi
