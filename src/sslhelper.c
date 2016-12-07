@@ -801,8 +801,13 @@ static int pem_passwd_callback(char *buf, int size, int rwflag,
 
 /* based on mod_ssl */
 static int crl_callback(X509_STORE_CTX *callback_ctx) {
-	X509_STORE_CTX store_ctx;
+	const ASN1_INTEGER *revoked_serial;
+	X509_STORE_CTX *store_ctx;
+#if OPENSSL_VERSION_NUMBER > 0x10100000L
+	X509_OBJECT *obj;
+#else
 	X509_OBJECT obj;
+#endif
 	X509_NAME *subject;
 	X509_NAME *issuer;
 	X509 *xs;
@@ -822,11 +827,19 @@ static int crl_callback(X509_STORE_CTX *callback_ctx) {
 	
 	/* Try to retrieve a CRL corresponding to the _subject_ of
 	* the current certificate in order to verify it's integrity. */
+	store_ctx = X509_STORE_CTX_new();
+	X509_STORE_CTX_init(store_ctx, revocation_store, NULL, NULL);
+#if OPENSSL_VERSION_NUMBER > 0x10100000L
+	obj = X509_OBJECT_new();
+	rc=X509_STORE_get_by_subject(store_ctx, X509_LU_CRL, subject, obj);
+	crl = X509_OBJECT_get0_X509_CRL(obj);
+#else
 	memset((char *)&obj, 0, sizeof(obj));
-	X509_STORE_CTX_init(&store_ctx, revocation_store, NULL, NULL);
-	rc=X509_STORE_get_by_subject(&store_ctx, X509_LU_CRL, subject, &obj);
-	X509_STORE_CTX_cleanup(&store_ctx);
+	rc=X509_STORE_get_by_subject(store_ctx, X509_LU_CRL, subject, &obj);
 	crl=obj.data.crl;
+#endif
+	X509_STORE_CTX_cleanup(store_ctx);
+	X509_STORE_CTX_free(store_ctx);
 
 	if(rc>0 && crl) {
 		/* Log information about CRL
@@ -852,7 +865,11 @@ static int crl_callback(X509_STORE_CTX *callback_ctx) {
 			rfbLog("Invalid signature on CRL\n");
 			X509_STORE_CTX_set_error(callback_ctx,
 				X509_V_ERR_CRL_SIGNATURE_FAILURE);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+			X509_OBJECT_free(obj);
+#else
 			X509_OBJECT_free_contents(&obj);
+#endif
 			if(pubkey)
 				EVP_PKEY_free(pubkey);
 			return 0; /* Reject connection */
@@ -866,45 +883,78 @@ static int crl_callback(X509_STORE_CTX *callback_ctx) {
 			rfbLog("Found CRL has invalid nextUpdate field\n");
 			X509_STORE_CTX_set_error(callback_ctx,
 				X509_V_ERR_ERROR_IN_CRL_NEXT_UPDATE_FIELD);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+			X509_OBJECT_free(obj);
+#else
 			X509_OBJECT_free_contents(&obj);
+#endif
 			return 0; /* Reject connection */
 		}
 		if(X509_cmp_current_time(t)<0) {
 			rfbLog("Found CRL is expired - "
 				"revoking all certificates until you get updated CRL\n");
 			X509_STORE_CTX_set_error(callback_ctx, X509_V_ERR_CRL_HAS_EXPIRED);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+			X509_OBJECT_free(obj);
+#else
 			X509_OBJECT_free_contents(&obj);
+#endif
 			return 0; /* Reject connection */
 		}
-		X509_OBJECT_free_contents(&obj);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+			X509_OBJECT_free(obj);
+#else
+			X509_OBJECT_free_contents(&obj);
+#endif
 	}
 
 	/* Try to retrieve a CRL corresponding to the _issuer_ of
 	 * the current certificate in order to check for revocation. */
+	store_ctx = X509_STORE_CTX_new();
+	X509_STORE_CTX_init(store_ctx, revocation_store, NULL, NULL);
+#if OPENSSL_VERSION_NUMBER > 0x10100000L
+	obj = X509_OBJECT_new();
+	rc=X509_STORE_get_by_subject(store_ctx, X509_LU_CRL, issuer, obj);
+	crl = X509_OBJECT_get0_X509_CRL(obj);
+#else
 	memset((char *)&obj, 0, sizeof(obj));
-	X509_STORE_CTX_init(&store_ctx, revocation_store, NULL, NULL);
-	rc=X509_STORE_get_by_subject(&store_ctx, X509_LU_CRL, issuer, &obj);
-	X509_STORE_CTX_cleanup(&store_ctx);
+	rc=X509_STORE_get_by_subject(store_ctx, X509_LU_CRL, issuer, &obj);
 	crl=obj.data.crl;
+#endif
+	X509_STORE_CTX_cleanup(store_ctx);
+	X509_STORE_CTX_free(store_ctx);
 
 	if(rc>0 && crl) {
 		/* Check if the current certificate is revoked by this CRL */
 		n=sk_X509_REVOKED_num(X509_CRL_get_REVOKED(crl));
 		for(i=0; i<n; i++) {
 			revoked=sk_X509_REVOKED_value(X509_CRL_get_REVOKED(crl), i);
-			if(ASN1_INTEGER_cmp(revoked->serialNumber,
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+			revoked_serial = X509_REVOKED_get0_serialNumber(revoked);
+#else
+			revoked_serial = revoked->serialNumber;
+#endif
+			if(ASN1_INTEGER_cmp(revoked_serial,
 					X509_get_serialNumber(xs)) == 0) {
-				serial=ASN1_INTEGER_get(revoked->serialNumber);
+				serial=ASN1_INTEGER_get(revoked_serial);
 				cp=X509_NAME_oneline(issuer, NULL, 0);
 				rfbLog("Certificate with serial %ld (0x%lX) "
 					"revoked per CRL from issuer %s\n", serial, serial, cp);
 				OPENSSL_free(cp);
 				X509_STORE_CTX_set_error(callback_ctx, X509_V_ERR_CERT_REVOKED);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+				X509_OBJECT_free(obj);
+#else
 				X509_OBJECT_free_contents(&obj);
+#endif
 				return 0; /* Reject connection */
 			}
 		}
-		X509_OBJECT_free_contents(&obj);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+			X509_OBJECT_free(obj);
+#else
+			X509_OBJECT_free_contents(&obj);
+#endif
 	}
 
 	return 1; /* Accept connection */
@@ -953,6 +1003,8 @@ static int switch_to_anon_dh(void);
 
 void openssl_init(int isclient) {
 	int db = 0, tmp_pem = 0, do_dh;
+	const SSL_METHOD *method;
+	char *method_name;
 	FILE *in;
 	double ds;
 	long mode;
@@ -994,13 +1046,17 @@ void openssl_init(int isclient) {
 		ssl_client_mode = 0;
 	}
 
-	if (ssl_client_mode) {
-		if (db) fprintf(stderr, "SSLv23_client_method()\n");
-		ctx = SSL_CTX_new( SSLv23_client_method() );
-	} else {
-		if (db) fprintf(stderr, "SSLv23_server_method()\n");
-		ctx = SSL_CTX_new( SSLv23_server_method() );
-	}
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	method = ssl_client_mode ? TLS_client_method() : TLS_server_method();
+	if (db)
+		method_name = ssl_client_mode ? "TLS_client_method()" : "TLS_server_method()";
+#else
+	method = ssl_client_mode ? SSLv23_client_method() : SSLv23_server_method();
+	if (db)
+		method_name = ssl_client_mode ? "SSLv23_client_method()" : "SSLv23_server_method()";
+#endif
+	if (db) fprintf(stderr, "%s\n", method_name);
+	ctx = SSL_CTX_new(method);
 
 	if (ctx == NULL) {
 		rfbLog("openssl_init: SSL_CTX_new failed.\n");	
@@ -1522,16 +1578,18 @@ static int add_anon_dh(void) {
 }
 
 static int switch_to_anon_dh(void) {
+	const SSL_METHOD *method;
 	long mode;
 	
 	rfbLog("Using Anonymous Diffie-Hellman mode.\n");
 	rfbLog("WARNING: Anonymous Diffie-Hellman uses encryption but is\n");
 	rfbLog("WARNING: susceptible to a Man-In-The-Middle attack.\n");
-	if (ssl_client_mode) {
-		ctx = SSL_CTX_new( SSLv23_client_method() );
-	} else {
-		ctx = SSL_CTX_new( SSLv23_server_method() );
-	}
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	method = ssl_client_mode ? TLS_client_method() : TLS_server_method();
+#else
+	method = ssl_client_mode ? SSLv23_client_method() : SSLv23_server_method();
+#endif
+	ctx = SSL_CTX_new(method);
 	if (ctx == NULL) {
 		return 0;
 	}
@@ -1898,6 +1956,7 @@ static void pr_ssl_info(int verb) {
 	SSL_CIPHER *c;
 	SSL_SESSION *s;
 	char *proto = "unknown";
+	int ssl_version;
 
 	if (verb) {}
 
@@ -1907,13 +1966,21 @@ static void pr_ssl_info(int verb) {
 	c = SSL_get_current_cipher(ssl);
 	s = SSL_get_session(ssl);
 
+	if (s) {
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+		ssl_version = SSL_SESSION_get_protocol_version(s);
+#else
+		ssl_version = s->ssl_version;
+#endif
+	}
+
 	if (s == NULL) {
 		proto = "nosession";
-	} else if (s->ssl_version == SSL2_VERSION) {
+	} else if (ssl_version == SSL2_VERSION) {
 		proto = "SSLv2";
-	} else if (s->ssl_version == SSL3_VERSION) {
+	} else if (ssl_version == SSL3_VERSION) {
 		proto = "SSLv3";
-	} else if (s->ssl_version == TLS1_VERSION) {
+	} else if (ssl_version == TLS1_VERSION) {
 		proto = "TLSv1";
 	}
 	if (c != NULL) {

@@ -872,6 +872,14 @@ make
    place. As of x11vnc 0.9.4 there is also the --with-ssl=DIR configure
    option.
 
+   Note that from OpenSSL 1.1.0 on SSLv2 support has been dropped and
+   SSLv3 deactivated at build time per default. This means that unless
+   explicitly enabled, OpenSSL builds only support TLS (any version).
+   Since there is a reason for dropping SSLv3 (heard of POODLE?), most
+   distributions do not enable it for their OpenSSL binary. In summary
+   this means compiling x11vnc against OpenSSL 1.1.0 or newer is no
+   problem, but using encryption will require a viewer with TLS support.
+
    On Solaris using static archives libssl.a and libcrypto.a instead of
    .so shared libraries (e.g. from www.sunfreeware.com), we found we
    needed to also set LDFLAGS as follows to get the configure to work:
@@ -4219,6 +4227,14 @@ connect = 5900
    VeNCrypt, on the other hand, switches to SSL/TLS early in the VNC
    protocol handshake. x11vnc 0.9.6 supports both simultaneously when
    -ssl is active.
+
+   Note: With the advent of OpenSSL 1.1.0, SSLv2 is dropped and SSLv3
+   deactivated per default. A couple broken ciphers have also gone, most
+   importantly though is that clients trying to connect to x11vnc will
+   now have to support TLS if encryption is to be used. You can of
+   course always cook up your own build and run time OpenSSL 1.1.x if
+   SSLv3 is absolutely required, but it isn't wise from a security point
+   of view.
 
 
    SSL VNC Viewers:. Viewer-side will need to use SSL as well. See the
