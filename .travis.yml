@@ -1,8 +1,19 @@
 language: c
 
+os:
+  - linux
+  - osx
+
+compiler:
+  - gcc
+  - clang
+
+
 # install all vnc-related dependencies
 before_install:
-  - sudo apt-get build-dep x11vnc
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get build-dep x11vnc; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CFLAGS="-I/usr/local/opt/openssl/include $CFLAGS" LDFLAGS="-L/usr/local/opt/openssl/lib $LDFLAGS"; fi'
+
 
 # before build script, run autoreconf
 before_script: autoreconf -fiv
