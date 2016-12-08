@@ -327,7 +327,7 @@ if (0) fprintf(stderr, "\ndone:                               %.4f\n", dnowx());
 	last_mask = mask;
 
 	/* record the x, y position for the rfb screen as well. */
-	cursor_position(x, y);
+	cursor_position(x, y, client);
 
 	/* change the cursor shape if necessary */
 	rc = set_cursor(x, y, get_which_cursor());
