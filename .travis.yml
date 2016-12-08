@@ -12,7 +12,7 @@ compiler:
 # install all vnc-related dependencies
 before_install:
   - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get build-dep x11vnc; fi'
-  - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget https://github.com/LibVNC/libvncserver/archive/LibVNCServer-0.9.10.tar.gz; tar xzf LibVNCServer-0.9.10.tar.gz; cd libvncserver-LibVNCServer-0.9.10; autoreconf -fi; ./configure; make; sudo make install; cd ..; export CFLAGS="-I/usr/local/opt/openssl/include $CFLAGS" LDFLAGS="-L/usr/local/opt/openssl/lib $LDFLAGS"; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CFLAGS="-I/usr/local/opt/openssl/include $CFLAGS" LDFLAGS="-L/usr/local/opt/openssl/lib $LDFLAGS"; wget https://github.com/LibVNC/libvncserver/archive/LibVNCServer-0.9.10.tar.gz; tar xzf LibVNCServer-0.9.10.tar.gz; cd libvncserver-LibVNCServer-0.9.10; autoreconf -fi; ./configure; make; sudo make install; cd ..; fi'
 
 
 # before build script, run autoreconf
