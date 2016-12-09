@@ -115,6 +115,7 @@ extern Bool XQueryPointer_wr(Display *display, Window w, Window *root_return,
     Window *child_return, int *root_x_return, int *root_y_return,
     int *win_x_return, int *win_y_return, unsigned int *mask_return);
 
+#ifdef HAVE_XI2
 extern Bool XIQueryPointer_wr( Display *display,
                                int deviceid,
                                Window win,
@@ -138,6 +139,7 @@ extern Bool XIWarpPointer_wr(Display *display,
                              int src_height,
                              double dest_x,
                              double dest_y);
+#endif
 
 extern Status XQueryTree_wr(Display *display, Window w, Window *root_return,
     Window *parent_return, Window **children_return,

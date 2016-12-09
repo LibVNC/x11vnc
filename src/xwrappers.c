@@ -1563,7 +1563,7 @@ Bool XQueryPointer_wr(Display *display, Window w, Window *root_return,
 #endif	/* NO_X11 */
 }
 
- 
+#if HAVE_XI2
 Bool XIQueryPointer_wr( Display *display,
                         int deviceid,
                         Window win,
@@ -1577,9 +1577,6 @@ Bool XIQueryPointer_wr( Display *display,
                         XIModifierState *modifiers_return,
                         XIGroupState *group_return)
 {
-#if NO_X11
-  return False;
-#else
   Bool rc;
   XErrorHandler old_handler;
 
@@ -1602,7 +1599,6 @@ Bool XIQueryPointer_wr( Display *display,
   }
 
   return rc;
-#endif	/* NO_X11 */
 }
 
 
@@ -1617,9 +1613,6 @@ Bool XIWarpPointer_wr( Display *display,
                        double dest_x,
                        double dest_y)
 {
-#if NO_X11 || !HAVE_XI2
-  return False;
-#else
   Bool rc;
   XErrorHandler old_handler;
 
@@ -1640,9 +1633,8 @@ Bool XIWarpPointer_wr( Display *display,
   }
 
   return rc;
-#endif	/* NO_X11 */
 }
-
+#endif /* HAVE_XI2 */
 
 
 Status XQueryTree_wr(Display *display, Window w, Window *root_return,
