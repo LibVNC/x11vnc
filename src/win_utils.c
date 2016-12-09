@@ -762,6 +762,9 @@ void id_cmd(char *cmd) {
  */
 Bool window_has_property(Display * dpy, Window win, Atom atom)
 {
+#if NO_X11
+    return False;
+#else
     Atom type_ret;
     int format_ret;
     unsigned char *prop_ret;
@@ -776,6 +779,7 @@ Bool window_has_property(Display * dpy, Window win, Atom atom)
         XFree(prop_ret);
 
     return (type_ret != None) ? True : False;
+#endif
 }
 
 /*
@@ -783,6 +787,9 @@ Bool window_has_property(Display * dpy, Window win, Atom atom)
  */
 Bool window_is_viewable(Display * dpy, Window win)
 {
+#if NO_X11
+    return False;
+#else
     Bool ok;
     XWindowAttributes xwa;
 
@@ -791,6 +798,7 @@ Bool window_is_viewable(Display * dpy, Window win)
     ok = (xwa.class == InputOutput) && (xwa.map_state == IsViewable);
 
     return ok;
+#endif
 }
 
 
@@ -802,6 +810,9 @@ Bool window_is_viewable(Display * dpy, Window win)
  */
 static Window find_client_in_children(Display * dpy, Window win)
 {
+#if NO_X11
+    return None;
+#else
     Window root, parent;
     Window *children;
     unsigned int n_children;
@@ -840,6 +851,7 @@ static Window find_client_in_children(Display * dpy, Window win)
     XFree(children);
 
     return win;
+#endif
 }
 
 /*
@@ -847,6 +859,9 @@ static Window find_client_in_children(Display * dpy, Window win)
 */
 Window find_client(Display * dpy, Window root, Window subwin)
 {
+#if NO_X11
+    return None;
+#else
     Window win;
 
     if (atom_wm_state == None) {
@@ -866,4 +881,5 @@ Window find_client(Display * dpy, Window root, Window subwin)
 
     /* Did not find a client */
     return subwin;
+#endif
 }

@@ -1386,7 +1386,7 @@ Bool XInputQueryVersion_wr(Display *dpy, int *maj, int *min) {
 	RAWFB_RET(False)
 #if NO_X11
 	rfbLog("This x11vnc was built without X11 support (-rawfb only).\n");
-	if (!display_name || !d || !db) {}
+	if (!dpy || !maj || !min) {}
 	return NULL;
 #else
 	int ignore;
