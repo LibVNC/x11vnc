@@ -1271,22 +1271,6 @@ typedef struct {
 } XModifierKeymap;
 
 
-typedef struct {
-    int           mask_len;
-    unsigned char *mask;
-} XIButtonState;
-
-typedef struct
-{
-    int    base;
-    int    latched;
-    int    locked;
-    int    effective;
-} XIModifierState;
-
-typedef XIModifierState XIGroupState;
-
-
 /*
  * Display datatype maintaining display specific data.
  * The contents of this structure are implementation dependent.
