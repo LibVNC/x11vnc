@@ -7,6 +7,8 @@ AC_CONFIG_MACRO_DIR([m4])
 
 AC_PROG_CC
 AC_PROG_SED
+PKG_PROG_PKG_CONFIG
+
 
 # some OS's need both -lssl and -lcrypto on link line:
 AH_TEMPLATE(HAVE_LIBCRYPTO, [openssl libcrypto library present])
