@@ -360,9 +360,11 @@ void update_x11_pointer_position(int x, int y, rfbClientPtr client) {
 		 * off_x and off_y not needed with XWarpPointer since
 		 * window is used:
 		 */
+#ifdef HAVE_XI2
                 if(use_multipointer)
                   XIWarpPointer_wr(dpy, ptr_id, None, window, 0, 0, 0, 0, x + coff_x, y + coff_y);
                 else
+#endif
                   XWarpPointer(dpy, None, window, 0, 0, 0, 0, x + coff_x, y + coff_y);
 	} else {
 	         XTestFakeMotionEvent_wr(dpy, ptr_id, scr, x + off_x + coff_x, y + off_y + coff_y, CurrentTime);
