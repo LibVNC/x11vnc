@@ -454,7 +454,7 @@ extern void enc_do(char *ciph, char *keyfile, char *lport, char *rhp) {
 		p++;
 		if (strstr(p, "md5+") == p) {
 			Digest = EVP_md5();        p += strlen("md5+");
-#ifndef OPENSSL_NO_SHA0
+#if OPENSSL_VERSION_NUMBER < 0x10100000L && !defined OPENSSL_NO_SHA0
 		} else if (strstr(p, "sha+") == p) {
 			Digest = EVP_sha();        p += strlen("sha+");
 #endif
@@ -698,7 +698,11 @@ static void enc_xfer(int sock_fr, int sock_to, int encrypt) {
 	 */
 	unsigned char E_keystr[EVP_MAX_KEY_LENGTH];
 	unsigned char D_keystr[EVP_MAX_KEY_LENGTH];
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	EVP_CIPHER_CTX *E_ctx, *D_ctx;
+#else
 	EVP_CIPHER_CTX E_ctx, D_ctx;
+#endif
 	EVP_CIPHER_CTX *ctx = NULL;
 
 	unsigned char buf[BSIZE], out[BSIZE];
@@ -741,11 +745,16 @@ static void enc_xfer(int sock_fr, int sock_to, int encrypt) {
 	encsym = encrypt ? "+" : "-";
 
 	/* use the encryption/decryption context variables below */
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	E_ctx = EVP_CIPHER_CTX_new();
+	D_ctx = EVP_CIPHER_CTX_new();
+	ctx = encrypt ? E_ctx : D_ctx;
+#else
+	ctx = encrypt ? &E_ctx : &D_ctx;
+#endif
 	if (encrypt) {
-		ctx = &E_ctx;
 		keystr = E_keystr;
 	} else {
-		ctx = &D_ctx;
 		keystr = D_keystr;
 	}
 
@@ -879,9 +888,9 @@ static void enc_xfer(int sock_fr, int sock_to, int encrypt) {
 			in_salt = salt;
 		}
 
-		if (ivec_size < Cipher->iv_len && !securevnc) {
+		if (ivec_size < EVP_CIPHER_iv_length(Cipher) && !securevnc) {
 			fprintf(stderr, "%s: %s - WARNING: short IV %d < %d\n",
-			    prog, encstr, ivec_size, Cipher->iv_len);
+			    prog, encstr, ivec_size, EVP_CIPHER_iv_length(Cipher));
 		}
 
 		/* make the hashed value and place in keystr */
@@ -1035,6 +1044,11 @@ static void enc_xfer(int sock_fr, int sock_to, int encrypt) {
 	fprintf(stderr,   "%s: %s - close sock_fr\n", prog, encstr);
 	close(sock_fr);
 
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	EVP_CIPHER_CTX_free(E_ctx);
+	EVP_CIPHER_CTX_free(D_ctx);
+#endif
+
 	/* kill our partner after 2 secs. */
 	sleep(2);
 	if (child)  {
@@ -1103,14 +1117,24 @@ static int securevnc_server_rsa_save_dialog(char *file, char *md5str, unsigned c
 }
 
 static char *rsa_md5_sum(unsigned char* rsabuf) {
-	EVP_MD_CTX md;
+	EVP_MD_CTX *md;
 	char digest[EVP_MAX_MD_SIZE], tmp[16];
 	char md5str[EVP_MAX_MD_SIZE * 8];
 	unsigned int i, size = 0;
 
-	EVP_DigestInit(&md, EVP_md5());
-	EVP_DigestUpdate(&md, rsabuf, SECUREVNC_RSA_PUBKEY_SIZE);
-	EVP_DigestFinal(&md, (unsigned char *)digest, &size);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	md = EVP_MD_CTX_new();
+#else
+	md = EVP_MD_CTX_create();
+#endif
+	EVP_DigestInit(md, EVP_md5());
+	EVP_DigestUpdate(md, rsabuf, SECUREVNC_RSA_PUBKEY_SIZE);
+	EVP_DigestFinal(md, (unsigned char *)digest, &size);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	EVP_MD_CTX_free(md);
+#else
+	EVP_MD_CTX_destroy(md);
+#endif
 
 	memset(md5str, 0, sizeof(md5str));
 	for (i=0; i < size; i++) {
@@ -1227,7 +1251,7 @@ static void sslexit(char *msg) {
 
 static void securevnc_setup(int conn1, int conn2) {
 	RSA *rsa = NULL;
-	EVP_CIPHER_CTX init_ctx;
+	EVP_CIPHER_CTX *init_ctx;
 	unsigned char keystr[EVP_MAX_KEY_LENGTH];
 	unsigned char *rsabuf, *rsasav;
 	unsigned char *encrypted_keybuf;
@@ -1366,8 +1390,15 @@ static void securevnc_setup(int conn1, int conn2) {
 	/*
 	 * Back to the work involving the tmp obscuring key:
 	 */
-	EVP_CIPHER_CTX_init(&init_ctx);
-	rc = EVP_CipherInit_ex(&init_ctx, EVP_rc4(), NULL, initkey, NULL, 1);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	init_ctx = EVP_CIPHER_CTX_new();
+#else
+
+	EVP_CIPHER_CTX init_ctx_obj;
+	init_ctx = &init_ctx_obj;
+#endif
+	EVP_CIPHER_CTX_init(init_ctx);
+	rc = EVP_CipherInit_ex(init_ctx, EVP_rc4(), NULL, initkey, NULL, 1);
 	if (rc == 0) {
 		sslexit("securevnc_setup: EVP_CipherInit_ex(init_ctx) failed");
 	}
@@ -1376,6 +1407,9 @@ static void securevnc_setup(int conn1, int conn2) {
 	n = read(server, (char *) buf, BSIZE);
 	fprintf(stderr, "securevnc_setup: data read: %d\n", n);
 	if (n < 0) {
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	EVP_CIPHER_CTX_free(init_ctx);
+#endif
 		exit(1);
 	}
 	fprintf(stderr, "securevnc_setup: initial data[%d]: ", n);
@@ -1383,13 +1417,19 @@ static void securevnc_setup(int conn1, int conn2) {
 	/* decode with the tmp key */
 	if (n > 0) {
 		memset(to_viewer, 0, sizeof(to_viewer));
-		if (EVP_CipherUpdate(&init_ctx, to_viewer, &len, buf, n) == 0) {
+		if (EVP_CipherUpdate(init_ctx, to_viewer, &len, buf, n) == 0) {
 			sslexit("securevnc_setup: EVP_CipherUpdate(init_ctx) failed");
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+			EVP_CIPHER_CTX_free(init_ctx);
+#endif
 			exit(1);
 		}
 		to_viewer_len = len;
 	}
-	EVP_CIPHER_CTX_cleanup(&init_ctx);
+	EVP_CIPHER_CTX_cleanup(init_ctx);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	EVP_CIPHER_CTX_free(init_ctx);
+#endif
 	free(initkey);
 
 	/* print what we would send to the viewer (sent below): */
@@ -1450,7 +1490,7 @@ static void securevnc_setup(int conn1, int conn2) {
 
 	if (client_auth_req && client_auth) {
 		RSA *client_rsa = load_client_auth(client_auth);
-		EVP_MD_CTX dctx;
+		EVP_MD_CTX *dctx;
 		unsigned char digest[EVP_MAX_MD_SIZE], *signature;
 		unsigned int ndig = 0, nsig = 0;
 
@@ -1464,8 +1504,13 @@ static void securevnc_setup(int conn1, int conn2) {
 			exit(1);
 		}
 
-		EVP_DigestInit(&dctx, EVP_sha1());
-		EVP_DigestUpdate(&dctx, keystr, SECUREVNC_KEY_SIZE);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+		dctx = EVP_MD_CTX_new();
+#else
+		dctx = EVP_MD_CTX_create();
+#endif
+		EVP_DigestInit(dctx, EVP_sha1());
+		EVP_DigestUpdate(dctx, keystr, SECUREVNC_KEY_SIZE);
 		/*
 		 * Without something like the following MITM is still possible.
 		 * This is because the MITM knows keystr and can use it with
@@ -1476,7 +1521,7 @@ static void securevnc_setup(int conn1, int conn2) {
 		 * he doesn't have Viewer_ClientAuth.pkey.
 		 */
 		if (0) {
-			EVP_DigestUpdate(&dctx, rsasav, SECUREVNC_RSA_PUBKEY_SIZE);
+			EVP_DigestUpdate(dctx, rsasav, SECUREVNC_RSA_PUBKEY_SIZE);
 			if (!keystore_verified) {
 				fprintf(stderr, "securevnc_setup:\n");
 				fprintf(stderr, "securevnc_setup: Warning: even *WITH* Client Authentication in SecureVNC,\n");
@@ -1499,7 +1544,12 @@ static void securevnc_setup(int conn1, int conn2) {
 				fprintf(stderr, "securevnc_setup:\n");
 			}
 		}
-		EVP_DigestFinal(&dctx, (unsigned char *)digest, &ndig);
+		EVP_DigestFinal(dctx, (unsigned char *)digest, &ndig);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+		EVP_MD_CTX_free(dctx);
+#else
+		EVP_MD_CTX_destroy(dctx);
+#endif
 
 		signature = (unsigned char *) calloc(RSA_size(client_rsa), 1);
 		RSA_sign(NID_sha1, digest, ndig, signature, &nsig, client_rsa);
