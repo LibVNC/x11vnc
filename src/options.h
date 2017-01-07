@@ -117,6 +117,7 @@ extern int started_as_root;
 extern int host_lookup;
 extern char *unix_sock;
 extern int unix_sock_fd;
+extern int got_localhost;
 extern int ipv6_listen;
 extern int got_ipv6_listen;
 extern int ipv6_listen_fd;

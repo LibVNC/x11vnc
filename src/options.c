@@ -136,6 +136,7 @@ int started_as_root = 0;
 int host_lookup = 1;
 char *unix_sock = NULL;
 int unix_sock_fd = -1;
+int got_localhost = 0;
 #if X11VNC_LISTEN6
 int ipv6_listen = 1;		/* -6 / -no6 */
 int got_ipv6_listen = 1;
