@@ -4326,6 +4326,7 @@ int main(int argc, char* argv[]) {
 			}
 			s = (char *) malloc(strlen(h) + 32);
 			sprintf(s, "%s:%d", h, p);
+			free(h);
 			n = 1;
 			q = logfile;
 			while (1) {

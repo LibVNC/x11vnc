@@ -1472,11 +1472,13 @@ static void setup_service(void) {
 		fflush(stdout);
 	} else if (!use_openssl && avahi) {
 		char *name = rfb_desktop_name;
+		char *host = this_host();
 		if (!name) {
 			name = use_dpy;
 		}
 		avahi_initialise();
-		avahi_advertise(name, this_host(), screen->port);
+		avahi_advertise(name, host, screen->port);
+		free(host);
 	}
 }
 

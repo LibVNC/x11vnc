@@ -725,12 +725,11 @@ char *choose_title(char *display) {
 			u = "someone";
 		}
 		strcpy(title, u);
-		if (th == NULL && UT.nodename) {
-			th = UT.nodename;
-		}
-		if (th) {
+		if (th || UT.nodename) {
 			strcat(title, "@");
-			strncat(title, th, MAXN - strlen(title));
+			strncat(title, th ? th : UT.nodename,
+				MAXN - strlen(title));
+			free(th);
 		}
 		return title;
 	}
@@ -746,6 +745,7 @@ char *choose_title(char *display) {
 		char *th = this_host();
 		if (th != NULL) {
 			strncpy(title, th, MAXN - strlen(title));
+			free(th);
 		}
 	}
 	strncat(title, display, MAXN - strlen(title));
