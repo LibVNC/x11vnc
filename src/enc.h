@@ -2092,7 +2092,7 @@ static void doloop (int argc, char *argv[]) {
 			}
 		}
 
-		putenv("ULTRAVNC_DSM_HELPER_LOOP_SET=1");
+		setenv("ULTRAVNC_DSM_HELPER_LOOP_SET", "1", 1);
 		if (ms == 1) {
 			ms = 500;
 		}
