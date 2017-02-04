@@ -3790,6 +3790,7 @@ void announce(int lport, int ssl, char *iface) {
 	}
 
 	if (iface != NULL && *iface != '\0' && strcmp(iface, "any")) {
+		free(host);
 		host = iface;
 	}
 	if (host != NULL) {
@@ -3829,12 +3830,16 @@ void announce(int lport, int ssl, char *iface) {
 			rfbLog("possible alias:    %s::%d\n",
 			    host, lport);
 		}
+
+		if (host != iface)
+			free(host);
 	}
 }
 
 static void announce_http(int lport, int ssl, char *iface, char *extra) {
-	
+	/* Result of this_host is allocated memory and must be freed. */
 	char *host = this_host();
+	char *phost = host;
 	char *jvu;
 	int http = 0;
 
@@ -3852,16 +3857,17 @@ static void announce_http(int lport, int ssl, char *iface, char *extra) {
 	}
 
 	if (iface != NULL && *iface != '\0' && strcmp(iface, "any")) {
-		host = iface;
+		phost = iface;
 	}
 	if (http && getenv("X11VNC_HTTP_LISTEN_LOCALHOST")) {
-		host = "localhost";
+		phost = "localhost";
 	}
-	if (host != NULL) {
+	if (phost != NULL) {
 		if (! inetd) {
-			fprintf(stderr, "%s://%s:%d/%s\n", jvu, host, lport, extra);
+			fprintf(stderr, "%s://%s:%d/%s\n", jvu, phost, lport, extra);
 		}
 	}
+	free(host);
 }
 
 void do_announce_http(void) {
@@ -3938,8 +3944,9 @@ void do_mention_java_urls(void) {
 void set_vnc_desktop_name(void) {
 	sprintf(vnc_desktop_name, "unknown");
 	if (inetd) {
-		sprintf(vnc_desktop_name, "%s/inetd-no-further-clients",
-		    this_host());
+		char *host = this_host();
+		sprintf(vnc_desktop_name, "%s/inetd-no-further-clients", host);
+		free(host);
 	}
 	if (remote_direct) {
 		return;
