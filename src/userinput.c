@@ -242,7 +242,6 @@ static void parse_scroll_copyrect_str(char *scr) {
 			scrollcopyrect_left  = l;
 			scrollcopyrect_right = r;
 		}
-		free(str);
 	}
 
 	/* key scrolling timing heuristics. */
@@ -253,7 +252,6 @@ static void parse_scroll_copyrect_str(char *scr) {
 			scr_key_persist = t2;
 			scr_key_bdpush_time = t3;
 		}
-		free(str);
 	}
 
 	/* mouse scrolling timing heuristics. */
@@ -267,8 +265,10 @@ static void parse_scroll_copyrect_str(char *scr) {
 			scr_mouse_pointer_delay = t4;
 			scr_mouse_maxtime = t5;
 		}
-		free(str);
 	}
+
+	for (i = 0; i < 16; i++)
+		free(part[i]);
 }
 
 void parse_scroll_copyrect(void) {
@@ -406,7 +406,6 @@ static void parse_wireframe_str(char *wf) {
 		} else if (sscanf(str, "%lx", &n) == 1) {
 			wireframe_shade = n;	
 		}
-		free(str);
 	}
 
 	/* linewidth: # of pixels wide for the wireframe lines */
@@ -421,7 +420,6 @@ static void parse_wireframe_str(char *wf) {
 				wireframe_lw = LW_MAX; 
 			}
 		}
-		free(str);
 	}
 
 	/* percentage cutoff for opaque move/resize (like WM's) */
@@ -433,7 +431,6 @@ static void parse_wireframe_str(char *wf) {
 		} else {
 			wireframe_frac = ((double) atoi(str))/100.0;
 		}
-		free(str);
 	}
 
 	/*
@@ -448,7 +445,6 @@ static void parse_wireframe_str(char *wf) {
 			wireframe_left  = l;
 			wireframe_right = r;
 		}
-		free(str);
 	}
 
 	/*
@@ -482,8 +478,10 @@ static void parse_wireframe_str(char *wf) {
 			wireframe_t3 = t3;
 			wireframe_t4 = t4;
 		}
-		free(str);
 	}
+
+	for (i = 0; i < 16; i++)
+		free(part[i]);
 }
 
 /*
