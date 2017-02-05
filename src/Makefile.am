@@ -1,8 +1,15 @@
-
-LDADD = @LIBVNCSERVER_LIBS@ @LIBVNCCLIENT_LIBS@ @WSOCKLIB@
+LDADD = \
+	@LIBVNCSERVER_LIBS@ \
+	@LIBVNCCLIENT_LIBS@ \
+	@WSOCKLIB@
 
 if OSX
-FRAMEWORKS = -framework ApplicationServices -framework Carbon -framework IOKit -framework Cocoa
+FRAMEWORKS = \
+	-framework ApplicationServices \
+	-framework Carbon \
+	-framework IOKit \
+	-framework Cocoa
+
 if OSX_OPENGL
 FRAMEWORKS += -framework OpenGL
 if HAVE_X11
@@ -10,19 +17,132 @@ GL = /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dyli
 FRAMEWORKS += -dylib_file $(GL):$(GL)
 endif
 endif
+
 x11vnc_LDFLAGS = $(FRAMEWORKS)
 x11vnc_CFLAGS = -ObjC
-endif
+endif # OSX
 
 if CYGIPC
-LD_CYGIPC=-lcygipc
+LD_CYGIPC = -lcygipc
 endif
 
-bin_PROGRAMS=x11vnc
-x11vnc_SOURCES = 8to24.c appshare.c avahi.c cleanup.c connections.c cursor.c gui.c help.c inet.c keyboard.c linuxfb.c macosx.c macosxCG.c macosxCGP.c macosxCGS.c macosx_opengl.c options.c pm.c pointer.c rates.c remote.c scan.c screen.c selection.c solid.c sslcmds.c sslhelper.c uinput.c unixpw.c user.c userinput.c util.c v4l.c win_utils.c x11vnc.c x11vnc_defs.c xdamage.c xevents.c xinerama.c xkb_bell.c xrandr.c xrecord.c xwrappers.c xi2_devices.c 8to24.h allowed_input_t.h avahi.h blackout_t.h cleanup.h connections.h cursor.h enc.h enums.h gui.h help.h inet.h keyboard.h linuxfb.h macosx.h macosxCG.h macosxCGP.h macosxCGS.h macosx_opengl.h nox11.h nox11_funcs.h options.h params.h pm.h pointer.h rates.h remote.h scan.h screen.h scrollevent_t.h selection.h solid.h sslcmds.h sslhelper.h ssltools.h tkx11vnc.h uinput.h unixpw.h user.h userinput.h util.h v4l.h win_utils.h winattr_t.h x11vnc.h xdamage.h xevents.h xinerama.h xkb_bell.h xrandr.h xrecord.h xwrappers.h default8x16.h xi2_devices.h
+bin_PROGRAMS = x11vnc
+x11vnc_SOURCES = \
+	8to24.c \
+	8to24.h \
+	allowed_input_t.h \
+	appshare.c \
+	avahi.c \
+	avahi.h \
+	blackout_t.h \
+	cleanup.c \
+	cleanup.h \
+	connections.c \
+	connections.h \
+	cursor.c \
+	cursor.h \
+	default8x16.h \
+	enc.h \
+	gui.c \
+	gui.h \
+	help.c \
+	help.h \
+	inet.c \
+	inet.h \
+	keyboard.c \
+	keyboard.h \
+	linuxfb.c \
+	linuxfb.h \
+	macosx.c \
+	macosxCG.c \
+	macosxCG.h \
+	macosxCGP.c \
+	macosxCGP.h \
+	macosxCGS.c \
+	macosxCGS.h \
+	macosx.h \
+	macosx_opengl.c \
+	macosx_opengl.h \
+	nox11_funcs.h \
+	nox11.h \
+	options.c \
+	options.h \
+	params.h \
+	pm.c \
+	pm.h \
+	pointer.c \
+	pointer.h \
+	rates.c \
+	rates.h \
+	remote.c \
+	remote.h \
+	scan.c \
+	scan.h \
+	screen.c \
+	screen.h \
+	scrollevent_t.h \
+	selection.c \
+	selection.h \
+	solid.c \
+	solid.h \
+	sslcmds.c \
+	sslcmds.h \
+	sslhelper.c \
+	sslhelper.h \
+	ssltools.h \
+	tkx11vnc.h \
+	uinput.c \
+	uinput.h \
+	unixpw.c \
+	unixpw.h \
+	user.c \
+	user.h \
+	userinput.c \
+	userinput.h \
+	util.c \
+	util.h \
+	v4l.c \
+	v4l.h \
+	winattr_t.h \
+	win_utils.c \
+	win_utils.h \
+	x11vnc.c \
+	x11vnc_defs.c \
+	x11vnc.h \
+	xdamage.c \
+	xdamage.h \
+	xevents.c \
+	xevents.h \
+	xi2_devices.c \
+	xi2_devices.h \
+	xinerama.c \
+	xinerama.h \
+	xkb_bell.c \
+	xkb_bell.h \
+	xrandr.c \
+	xrandr.h \
+	xrecord.c \
+	xrecord.h \
+	xwrappers.c \
+	xwrappers.h
 
-INCLUDES_LIBVNCSERVER = @LIBVNCSERVER_CFLAGS@ @LIBVNCCLIENT_CFLAGS@
+INCLUDES_LIBVNCSERVER = \
+	@LIBVNCSERVER_CFLAGS@ \
+	@LIBVNCCLIENT_CFLAGS@
 
-AM_CPPFLAGS = $(INCLUDES_LIBVNCSERVER) @X_CFLAGS@ @AVAHI_CFLAGS@ @XI2_CFLAGS@ @CAIRO_CFLAGS@
+AM_CPPFLAGS = \
+	$(INCLUDES_LIBVNCSERVER) \
+	@X_CFLAGS@ \
+	@AVAHI_CFLAGS@ \
+	@XI2_CFLAGS@ \
+	@CAIRO_CFLAGS@
 
-x11vnc_LDADD=$(LDADD) @SSL_LIBS@ @CRYPT_LIBS@ @X_LIBS@ @AVAHI_LIBS@ @XI2_LIBS@ @CAIRO_LIBS@ $(LD_CYGIPC) 
+x11vnc_LDADD = \
+	$(LDADD) \
+	@SSL_LIBS@ \
+	@CRYPT_LIBS@ \
+	@X_LIBS@ \
+	@AVAHI_LIBS@ \
+	@XI2_LIBS@ \
+	@CAIRO_LIBS@ \
+	$(LD_CYGIPC)
