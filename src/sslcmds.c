@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -74,13 +74,13 @@ void check_stunnel(void) {
 	if (stunnel_pid > 0) {
 		int status;
 #ifdef SSLCMDS
-		waitpid(stunnel_pid, &status, WNOHANG); 
+		waitpid(stunnel_pid, &status, WNOHANG);
 #endif
 		if (kill(stunnel_pid, 0) != 0) {
 #ifdef SSLCMDS
-			waitpid(stunnel_pid, &status, WNOHANG); 
+			waitpid(stunnel_pid, &status, WNOHANG);
 #endif
-			rfbLog("stunnel subprocess %d died.\n", stunnel_pid); 
+			rfbLog("stunnel subprocess %d died.\n", stunnel_pid);
 			stunnel_pid = 0;
 			clean_up_exit(1);
 		}
@@ -179,14 +179,14 @@ int start_stunnel(int stunnel_port, int x11vnc_port, int hport, int x11vnc_hport
 		stunnel_pem = get_saved_pem(stunnel_pem, 1);
 		if (! stunnel_pem) {
 			rfbLog("start_stunnel: could not create or open"
-			    " saved PEM.\n");	
+			    " saved PEM.\n");
 			clean_up_exit(1);
 		}
 	} else if (!stunnel_pem) {
 		stunnel_pem = create_tmp_pem(NULL, 0);
 		if (! stunnel_pem) {
 			rfbLog("start_stunnel: could not create temporary,"
-			    " self-signed PEM.\n");	
+			    " self-signed PEM.\n");
 			clean_up_exit(1);
 		}
 		tmp_pem = 1;
@@ -268,7 +268,7 @@ int start_stunnel(int stunnel_port, int x11vnc_port, int hport, int x11vnc_hport
 				rfbLog("stunnel: stunnel3 does not support CRL. %s\n", ssl_crl);
 				clean_up_exit(1);
 			}
-			
+
 			if (stunnel_pem && ssl_verify) {
 				/* XXX double check -v 2 */
 				execlp(st, st, "-f", "-d", sp, "-r", xp, "-P",
@@ -337,7 +337,7 @@ int start_stunnel(int stunnel_port, int x11vnc_port, int hport, int x11vnc_hport
 			fprintf(stderr, "\n");
 			rewind(in);
 		}
-		
+
 		sprintf(fd, "%d", fileno(in));
 		execlp(stunnel_path, stunnel_path, "-fd", fd, (char *) NULL);
 		exit(1);
@@ -346,7 +346,7 @@ int start_stunnel(int stunnel_port, int x11vnc_port, int hport, int x11vnc_hport
 	free(exe);
 	usleep(750 * 1000);
 
-	waitpid(stunnel_pid, &status, WNOHANG); 
+	waitpid(stunnel_pid, &status, WNOHANG);
 
 	if (ssl_verify && strstr(ssl_verify, "/sslverify-tmp-load-")) {
 		/* temporary file */
@@ -360,7 +360,7 @@ int start_stunnel(int stunnel_port, int x11vnc_port, int hport, int x11vnc_hport
 	}
 
 	if (kill(stunnel_pid, 0) != 0) {
-		waitpid(stunnel_pid, &status, WNOHANG); 
+		waitpid(stunnel_pid, &status, WNOHANG);
 		stunnel_pid = 0;
 		return 0;
 	}
@@ -385,7 +385,7 @@ void stop_stunnel(void) {
 	usleep (150 * 1000);
 	kill(stunnel_pid, SIGKILL);
 	usleep (50 * 1000);
-	waitpid(stunnel_pid, &status, WNOHANG); 
+	waitpid(stunnel_pid, &status, WNOHANG);
 #endif
 	stunnel_pid = 0;
 }
@@ -413,7 +413,7 @@ void setup_stunnel(int rport, int *argc, char **argv) {
 
 	xport = find_free_port(5950, 5999);
 	if (! xport) {
-		goto stunnel_fail; 
+		goto stunnel_fail;
 	}
 
 	if (https_port_num > 0) {
@@ -439,11 +439,11 @@ void setup_stunnel(int rport, int *argc, char **argv) {
 	if (hport) {
 		xhport = find_free_port(5850, 5899);
 		if (! xhport) {
-			goto stunnel_fail; 
+			goto stunnel_fail;
 		}
 		stunnel_http_port = hport;
 	}
-	
+
 
 	if (start_stunnel(rport, xport, hport, xhport)) {
 		int tweaked = 0;
@@ -454,7 +454,7 @@ void setup_stunnel(int rport, int *argc, char **argv) {
 				if (argv[i] && !strcmp(argv[i], "-rfbport")) {
 					if (i < *argc - 1) {
 						/* replace orig value */
-						argv[i+i] = strdup(tmp); 
+						argv[i+i] = strdup(tmp);
 						tweaked = 1;
 						break;
 					}
@@ -526,7 +526,7 @@ char *get_Cert_dir(char *cdir_in, char **tmp_in) {
 			} else {
 				ret = mkdir(tmp, 0755);
 			}
-				
+
 			if (ret != 0) {
 				rfbLog("could not create directory %s\n", tmp);
 				rfbLogPerror("mkdir");
@@ -771,35 +771,35 @@ void sslEncKey(char *path, int mode) {
 		for (i = 1; i <= 15; i++)  {
 			tca[0] = '\0';
 			if (       i == 1) {
-			    sprintf(tca, "%s/%s", cdir, path); 
+			    sprintf(tca, "%s/%s", cdir, path);
 			} else if (i == 2 && mode > 0) {
-			    sprintf(tca, "%s/%s.crt", cdir, path); 
+			    sprintf(tca, "%s/%s.crt", cdir, path);
 			} else if (i == 3) {
-			    sprintf(tca, "%s/%s.pem", cdir, path); 
+			    sprintf(tca, "%s/%s.pem", cdir, path);
 			} else if (i == 4 && mode > 1) {
-			    sprintf(tca, "%s/%s.req", cdir, path); 
+			    sprintf(tca, "%s/%s.req", cdir, path);
 			} else if (i == 5 && mode > 1) {
-			    sprintf(tca, "%s/%s.key", cdir, path); 
+			    sprintf(tca, "%s/%s.key", cdir, path);
 			} else if (i == 6) {
-			    sprintf(tca, "%s/clients/%s", cdir, path); 
+			    sprintf(tca, "%s/clients/%s", cdir, path);
 			} else if (i == 7 && mode > 0) {
-			    sprintf(tca, "%s/clients/%s.crt", cdir, path); 
+			    sprintf(tca, "%s/clients/%s.crt", cdir, path);
 			} else if (i == 8) {
-			    sprintf(tca, "%s/clients/%s.pem", cdir, path); 
+			    sprintf(tca, "%s/clients/%s.pem", cdir, path);
 			} else if (i == 9 && mode > 1) {
-			    sprintf(tca, "%s/clients/%s.req", cdir, path); 
+			    sprintf(tca, "%s/clients/%s.req", cdir, path);
 			} else if (i == 10 && mode > 1) {
-			    sprintf(tca, "%s/clients/%s.key", cdir, path); 
+			    sprintf(tca, "%s/clients/%s.key", cdir, path);
 			} else if (i == 11) {
-			    sprintf(tca, "%s/server-%s", cdir, path); 
+			    sprintf(tca, "%s/server-%s", cdir, path);
 			} else if (i == 12 && mode > 0) {
-			    sprintf(tca, "%s/server-%s.crt", cdir, path); 
+			    sprintf(tca, "%s/server-%s.crt", cdir, path);
 			} else if (i == 13) {
-			    sprintf(tca, "%s/server-%s.pem", cdir, path); 
+			    sprintf(tca, "%s/server-%s.pem", cdir, path);
 			} else if (i == 14 && mode > 1) {
-			    sprintf(tca, "%s/server-%s.req", cdir, path); 
+			    sprintf(tca, "%s/server-%s.req", cdir, path);
 			} else if (i == 15 && mode > 1) {
-			    sprintf(tca, "%s/server-%s.key", cdir, path); 
+			    sprintf(tca, "%s/server-%s.key", cdir, path);
 			}
 			if (tca[0] == '\0') {
 				continue;

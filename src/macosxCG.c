@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -82,7 +82,7 @@ static void macosxCG_callback(CGRectCount n, const CGRect *rects, void *dum) {
 }
 
 #if 0
-> 
+>
 > if gcc -DHAVE_CONFIG_H -I. -I. -I..   -I/opt/local/include   -I/opt/local/include -ObjC -g -O2 -Wall -MT x11vnc-macosxCG.o -MD -MP -MF ".deps/x11vnc-macosxCG.Tpo" -c -o x11vnc-macosxCG.o `test -f 'macosxCG.c' || echo './'`macosxCG.c; \
 > 	then mv -f ".deps/x11vnc-macosxCG.Tpo" ".deps/x11vnc-macosxCG.Po"; else rm -f ".deps/x11vnc-macosxCG.Tpo"; exit 1; fi
 > macosxCG.c:149: warning: CGSetLocalEventsSuppressionInterval is deprecated (declared at /System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreGraphics.framework/Headers/CGRemoteOperation.h:373)
@@ -262,7 +262,7 @@ void macosxCG_event_loop(void) {
 	if (nbpp_save < 0) {
 		nbpp_save = nbpp;
 	}
-		
+
 	if (nbpp > 0 && nbpp != nbpp_save) {
 		nbpp_save = nbpp;
 		if (macosx_resize) {
@@ -400,7 +400,7 @@ extern CGError CGSGetGlobalCursorData(CGSConnectionRef, unsigned char*,
     int*, int*, CGRect*, CGPoint*, int*, int*, int*);
 extern CGError CGSGetCurrentCursorLocation(CGSConnectionRef, CGPoint*);
 extern int CGSCurrentCursorSeed(void);
-extern int CGSHardwareCursorActive(); 
+extern int CGSHardwareCursorActive();
 
 static unsigned int last_local_button_mask = 0;
 static unsigned int last_local_mod_mask = 0;
@@ -557,7 +557,7 @@ static void CGPostScrollWheelEvent_wr(CGWheelCount wheel_count, int wheel_distan
 			post_mode = 0;
 		}
 	}
-	
+
 	if (post_mode) {
 		if (mcnt++ < 10 || debug_pointer) fprintf(stderr, "CGPostScrollWheelEvent()\n");
 		CGPostScrollWheelEvent(wheel_count, wheel_distance);
@@ -587,7 +587,7 @@ static void CGPostMouseEvent_wr(CGPoint loc, int update, int count, int d1, int 
 			post_mode = 0;
 		}
 	}
-	
+
 	if (post_mode) {
 		if (mcnt++ < 10 || debug_pointer) fprintf(stderr, "CGPostMouseEvent()\n");
 		CGPostMouseEvent(loc, update, count, d1, d2, d3);
@@ -674,7 +674,7 @@ void macosxCG_pointer_inject(int mask, int x, int y) {
 	CGPoint loc;
 	int wheel_distance = macosx_mouse_wheel_speed;
 	static int cnt = 0;
-	static int first = 1, prev1 = 0, prev2 = 0, prev3 = 0; 
+	static int first = 1, prev1 = 0, prev2 = 0, prev3 = 0;
 	int curr1, curr2, curr3;
 
 	if (swap23) {
@@ -931,7 +931,7 @@ void CGPostKeyboardEvent_wr(CGCharCode keyChar, CGKeyCode keyCode, int down) {
 			post_mode = 0;
 		}
 	}
-	
+
 	if (post_mode) {
 		if (mcnt++ < 10 || debug_keyboard) fprintf(stderr, "CGPostKeyboardEvent(keyChar=%d, keyCode=%d, down=%d)\n", keyChar, keyCode, down);
 		CGPostKeyboardEvent(keyChar, keyCode, down);

@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -107,7 +107,7 @@ int nap_ok = 0;
 static int nap_diff_count = 0;
 
 static int scan_count = 0;	/* indicates which scan pattern we are on  */
-static int scan_in_progress = 0;	
+static int scan_in_progress = 0;
 
 
 typedef struct tile_change_region {
@@ -480,7 +480,7 @@ void initialize_polling_images(void) {
 	/*
 	 * for copy_tiles we need a lot of shared memory areas, one for
 	 * each possible run length of changed tiles.  32 for 1024x768
-	 * and 40 for 1280x1024, etc. 
+	 * and 40 for 1280x1024, etc.
 	 */
 
 	tile_shm_count = 0;
@@ -665,22 +665,22 @@ Here is an example for -scale 3/4, the solid lines are the source pixels
 pixels (destination pixels):
 
             0         1 4/3     2     8/3 3         4=12/3
-            |---------|--.------|------.--|---------|.                
-            |         |  .      |      .  |         |.                
-            |    A    |  . B    |      .  |         |.                
-            |         |  .      |      .  |         |.                
-            |         |  .      |      .  |         |.                
-          1 |---------|--.------|------.--|---------|.                
-         4/3|.........|.........|.........|.........|.                
-            |         |  .      |      .  |         |.                
-            |    C    |  . D    |      .  |         |.                
-            |         |  .      |      .  |         |.                
-          2 |---------|--.------|------.--|---------|.                
-            |         |  .      |      .  |         |.                
-            |         |  .      |      .  |         |.                
-         8/3|.........|.........|.........|.........|.                
-            |         |  .      |      .  |         |.                
-          3 |---------|--.------|------.--|---------|.                
+            |---------|--.------|------.--|---------|.
+            |         |  .      |      .  |         |.
+            |    A    |  . B    |      .  |         |.
+            |         |  .      |      .  |         |.
+            |         |  .      |      .  |         |.
+          1 |---------|--.------|------.--|---------|.
+         4/3|.........|.........|.........|.........|.
+            |         |  .      |      .  |         |.
+            |    C    |  . D    |      .  |         |.
+            |         |  .      |      .  |         |.
+          2 |---------|--.------|------.--|---------|.
+            |         |  .      |      .  |         |.
+            |         |  .      |      .  |         |.
+         8/3|.........|.........|.........|.........|.
+            |         |  .      |      .  |         |.
+          3 |---------|--.------|------.--|---------|.
 
 So we see the first scaled pixel (0 < x < 4/3 and 0 < y < 4/3) mostly
 overlaps with unscaled source pixel "A".  The integration (averaging)
@@ -703,7 +703,7 @@ weights for this scaled pixel are:
  *
  *   - For each of the affected scaled (dest) pixels, determine all of the
  *     unscaled (source) pixels it overlaps with.
- *  
+ *
  *   - Average those unscaled source values together, weighted by the area
  *     overlap with the destination pixel.  Average R, G, B separately.
  *
@@ -722,7 +722,7 @@ weights for this scaled pixel are:
  * will be completely within a single unscaled source pixel.
  *
  * What we do here is a simple 4 point interpolation scheme:
- * 
+ *
  * Let P00 be the source pixel closest to the destination pixel but with
  * x and y values less than or equal to those of the destination pixel.
  * (for simplicity, think of the upper left corner of a pixel defining the
@@ -731,43 +731,43 @@ weights for this scaled pixel are:
  * pixel.  Let P10 be the source pixel one to the right of P00.  Let P01
  * be one down from P00.  And let P11 be one down and one to the right
  * of P00.  They form a 2x2 square we will interpolate inside of.
- * 
+ *
  * Let V00, V10, V01, and V11 be the color values of those 4 source
  * pixels.  Let dx be the displacement along x the destination pixel is
  * from P00.  Note: 0 <= dx < 1 by definition of P00.  Similarly let
  * dy be the displacement along y.  The weighted average for the
  * interpolation is:
- * 
+ *
  * 	V_ave = V00 * (1 - dx) * (1 - dy)
  * 	      + V10 *      dx  * (1 - dy)
  * 	      + V01 * (1 - dx) *      dy
  * 	      + V11 *      dx  *      dy
- * 
+ *
  * Note that the weights (1-dx)*(1-dy) + dx*(1-dy) + (1-dx)*dy + dx*dy
  * automatically add up to 1.  It is also nice that all the weights are
  * positive (unsigned char stays unsigned char).  The above formula can
  * be motivated by doing two 1D interpolations along x:
- * 
+ *
  * 	VA = V00 * (1 - dx) + V10 * dx
  * 	VB = V01 * (1 - dx) + V11 * dx
- * 
+ *
  * and then interpolating VA and VB along y:
- * 
+ *
  * 	V_ave = VA * (1 - dy) + VB * dy
- * 
- *                      VA 
+ *
+ *                      VA
  *           v   |<-dx->|
  *           -- V00 ------ V10
- *           dy  |          |  
+ *           dy  |          |
  *           --  |      o...|...    "o" denotes the position of the desired
  *           ^   |      .   |  .    destination pixel relative to the P00
  *               |      .   |  .    source pixel.
  *              V10 ----.- V11 .
  *                      ........
- *                      |  
- *                      VB 
+ *                      |
+ *                      VB
  *
- * 
+ *
  * Of course R, G, B averages are done separately as in the shrinking
  * case.  This gives reasonable results, and the implementation for
  * shrinking can simply be used with different choices for weights for
@@ -993,7 +993,7 @@ void scale_rect(double factor_x, double factor_y, int blend, int interpolate, in
 
 		/* destination char* pointer: */
 		dest = dst_fb + j*dst_bytes_per_line + i1*Bpp;
-		
+
 		for (i=i1; i<i2; i++) {
 
 			x1 =  i * dx;	/* left edge */
@@ -1033,7 +1033,7 @@ void scale_rect(double factor_x, double factor_y, int blend, int interpolate, in
 				dest += Bpp;
 				continue;
 			}
-			
+
 			if (shrink && ! interpolate) {
 				I2 = (int) CEIL(x2) - 1;
 				if (I2 >= Nx) I2 = Nx - 1;
@@ -1055,7 +1055,7 @@ void scale_rect(double factor_x, double factor_y, int blend, int interpolate, in
 
 			/*
 			 * Loop over source pixels covered by this dest pixel.
-			 * 
+			 *
 			 * These "extra" loops over "J" and "I" make
 			 * the cache/cacheline performance unclear.
 			 * For example, will the data brought in from
@@ -1131,21 +1131,21 @@ void scale_rect(double factor_x, double factor_y, int blend, int interpolate, in
 
 					/* integration scheme: */
 				} else if (I < x1) {
-					/* 
+					/*
 					 * source left edge (I) to the
 					 * left of dest left edge (x1):
 					 * fractional weight
 					 */
 					wx = I+1 - x1;
 				} else if (I+1 > x2) {
-					/* 
+					/*
 					 * source right edge (I+1) to the
 					 * right of dest right edge (x2):
 					 * fractional weight
 					 */
 					wx = x2 - I;
 				} else {
-					/* 
+					/*
 					 * source edges (I and I+1) completely
 					 * inside dest edges (x1 and x2):
 					 * full weight
@@ -1156,7 +1156,7 @@ void scale_rect(double factor_x, double factor_y, int blend, int interpolate, in
 				w = wx * wy;
 				wtot += w;
 
-				/* 
+				/*
 				 * We average the unsigned char value
 				 * instead of char value: otherwise
 				 * the minimum (char 0) is right next
@@ -1230,36 +1230,36 @@ void scale_rect(double factor_x, double factor_y, int blend, int interpolate, in
 
 /*
  Framebuffers data flow:
-                                                                             
+
  General case:
-                --------       --------       --------        --------    
-    -----      |8to24_fb|     |main_fb |     |snap_fb |      | X      |    
-   |rfbfb| <== |        | <== |        | <== |        | <==  | Server |    
-    -----       --------       --------       --------        --------    
-   (to vnc)    (optional)    (usu = rfbfb)   (optional)      (read only)   
+                --------       --------       --------        --------
+    -----      |8to24_fb|     |main_fb |     |snap_fb |      | X      |
+   |rfbfb| <== |        | <== |        | <== |        | <==  | Server |
+    -----       --------       --------       --------        --------
+   (to vnc)    (optional)    (usu = rfbfb)   (optional)      (read only)
 
  8to24_fb mode will create side fbs: poll24_fb and poll8_fb for
  bookkeepping the different regions (merged into 8to24_fb).
 
  Normal case:
-    --------        --------    
-   |main_fb |      | X      |    
-   |= rfb_fb| <==  | Server |    
-    --------        --------    
-                                                                             
+    --------        --------
+   |main_fb |      | X      |
+   |= rfb_fb| <==  | Server |
+    --------        --------
+
  Scaling case:
-                --------        --------    
-    -----      |main_fb |      | X      |    
-   |rfbfb| <== |        | <==  | Server |    
-    -----       --------        --------    
+                --------        --------
+    -----      |main_fb |      | X      |
+   |rfbfb| <== |        | <==  | Server |
+    -----       --------        --------
 
  Webcam/video case:
-    --------        --------        --------    
-   |main_fb |      |snap_fb |      | Video  |    
-   |        | <==  |        | <==  | device |    
-    --------        --------        --------    
+    --------        --------        --------
+   |main_fb |      |snap_fb |      | Video  |
+   |        | <==  |        | <==  | device |
+    --------        --------        --------
 
-If we ever do a -rr rotation/reflection tran, it probably should 
+If we ever do a -rr rotation/reflection tran, it probably should
 be done after any scaling (need a rr_fb for intermediate results)
 
 -rr option:		transformation:
@@ -1685,10 +1685,10 @@ void mark_rect_as_modified(int x1, int y1, int x2, int y2, int force) {
  * Notifies libvncserver of a changed hint rectangle.
  */
 static void mark_hint(hint_t hint) {
-	int x = hint.x;	
-	int y = hint.y;	
-	int w = hint.w;	
-	int h = hint.h;	
+	int x = hint.x;
+	int y = hint.y;
+	int w = hint.w;
+	int h = hint.h;
 
 	mark_rect_as_modified(x, y, x + w, y + h, 0);
 }
@@ -1790,7 +1790,7 @@ static int copy_tiles(int tx, int ty, int nt) {
 
 		for (b=0; b < tile_blackout[n].count; b++) {
 			char *b_dst = tile_row[nt]->data;
-			
+
 			x1 = tile_blackout[n].bo[b].x1 - x;
 			y1 = tile_blackout[n].bo[b].y1 - y;
 			x2 = tile_blackout[n].bo[b].x2 - x;
@@ -1836,7 +1836,7 @@ static int copy_tiles(int tx, int ty, int nt) {
 			} else {
 				len = w1;
 			}
-			
+
 			if (memcmp(s_dst + off, s_src + off, len)) {
 				first_line[t] = line;
 			}
@@ -1912,7 +1912,7 @@ static int copy_tiles(int tx, int ty, int nt) {
 			}
 		}
 	}
-	
+
 	/*
 	 * determine the farthest down last changed line
 	 * will be used below to limit our memcpy() to the framebuffer.
@@ -1941,7 +1941,7 @@ static int copy_tiles(int tx, int ty, int nt) {
 
 	dx1 = (width1 - tile_fuzz) * pixelsize;
 	dx2 = (width2 - tile_fuzz) * pixelsize;
-	dw = tile_fuzz * pixelsize; 
+	dw = tile_fuzz * pixelsize;
 
 	/* foreach line: */
 	for (line = 0; line < size_y; line++) {
@@ -2149,7 +2149,7 @@ static int copy_all_tile_runs(void) {
 					if (! tile_has_diff[m]) {
 						tile_has_diff[m] = 2;
 					}
-					
+
 					/* note that this starts a new run */
 					in_run = 1;
 					run = 1;
@@ -2482,7 +2482,7 @@ static unsigned char console_cmap[16*3]={
 /* 14 */	0xFF, 0xFF, 0x00,
 /* 15 */	0xFF, 0xFF, 0xFF
 };
-  
+
 static void snap_vcsa_rawfb(void) {
 	int n;
 	char *dst;
@@ -2528,7 +2528,7 @@ static void snap_vcsa_rawfb(void) {
 			g = gx * g / 255;
 			b = bx * b / 255;
 			color_tab[i] = (r << rs) | (g << gs) | (b << bs);
-			if (db) fprintf(stderr, "cmap[%02d] 0x%08x  %04d %04d %04d\n", i, color_tab[i], r, g, b); 
+			if (db) fprintf(stderr, "cmap[%02d] 0x%08x  %04d %04d %04d\n", i, color_tab[i], r, g, b);
 			if (i != 0 && getenv("RAWFB_VCSA_BW")) {
 				color_tab[i] = rm | gm | bm;
 			}
@@ -2656,12 +2656,12 @@ static void snap_vcsa_rawfb(void) {
 				memset(dst, back, Cw);
 			} else if (Bpp == 2) {
 				for (w = 0; w < Cw; w++) {
-					usp = (unsigned short *) (dst + w*Bpp); 
+					usp = (unsigned short *) (dst + w*Bpp);
 					*usp = (unsigned short) back;
 				}
 			} else if (Bpp == 4) {
 				for (w = 0; w < Cw; w++) {
-					uip = (unsigned int *) (dst + w*Bpp); 
+					uip = (unsigned int *) (dst + w*Bpp);
 					*uip = (unsigned int) back;
 				}
 			}
@@ -2669,7 +2669,7 @@ static void snap_vcsa_rawfb(void) {
 		}
 		rfbDrawChar(fake_screen, &default8x16Font, x, y + Ch, chr, fore);
 	}
-	memcpy(vcsabuf0, vcsabuf, 2 * rows * cols); 
+	memcpy(vcsabuf0, vcsabuf, 2 * rows * cols);
 	prev_xpos = xpos;
 	prev_ypos = ypos;
 }
@@ -2699,7 +2699,7 @@ static void snap_all_rawfb(void) {
 		}
 		dst = unclipped_dst;
 	}
-		
+
 	if (! raw_fb_seek) {
 		memcpy(dst, raw_fb_addr + raw_fb_offset, sz);
 
@@ -2757,7 +2757,7 @@ int copy_snap(void) {
 			}
 		}
 		if (snap_fb == NULL || snap == NULL) {
-			rfbLog("copy_snap: rawfb mode and null snap fb\n"); 
+			rfbLog("copy_snap: rawfb mode and null snap fb\n");
 			clean_up_exit(1);
 		}
 		if (rawfb_reset) {
@@ -2778,7 +2778,7 @@ if (db && snapcnt++ < 5) rfbLog("rawfb copy_snap took: %.5f secs\n", dnow() - st
 
 		return 0;
 	}
-	
+
 	if (! fs_factor) {
 		return 0;
 	}
@@ -2820,7 +2820,7 @@ if (db && snapcnt++ < 5) rfbLog("rawfb copy_snap took: %.5f secs\n", dnow() - st
 }
 
 
-/* 
+/*
  * debugging: print out a picture of the tiles.
  */
 static void print_tiles(void) {
@@ -3042,7 +3042,7 @@ static void ping_clients(int tile_cnt) {
  */
 static int blackout_line_skip(int n, int x, int y, int rescan,
     int *tile_count) {
-	
+
 	if (tile_blackout[n].cover == 2) {
 		tile_has_diff[n] = 0;
 		return 1;	/* skip it */
@@ -3056,7 +3056,7 @@ static int blackout_line_skip(int n, int x, int y, int rescan,
 		}
 
 		for (b=0; b < tile_blackout[n].count; b++) {
-			
+
 			/* n.b. these coords are in full display space: */
 			x1 = tile_blackout[n].bo[b].x1;
 			x2 = tile_blackout[n].bo[b].x2;
@@ -3088,7 +3088,7 @@ static int blackout_line_cmpskip(int n, int x, int y, char *dst, char *src,
     int w, int pixelsize) {
 
 	int i, x1, y1, x2, y2, b, hit = 0;
-	int beg = -1, end = -1; 
+	int beg = -1, end = -1;
 
 	if (tile_blackout[n].cover == 0) {
 		return 0;	/* 0 means do not skip it. */
@@ -3117,7 +3117,7 @@ static int blackout_line_cmpskip(int n, int x, int y, char *dst, char *src,
 
 	/* loop over blackout rectangles: */
 	for (b=0; b < tile_blackout[n].count; b++) {
-		
+
 		/* y in full display space: */
 		y1 = tile_blackout[n].bo[b].y1;
 		y2 = tile_blackout[n].bo[b].y2;
@@ -3157,7 +3157,7 @@ void set_offset(void) {
 static int xd_samples = 0, xd_misses = 0, xd_do_check = 0;
 
 /*
- * Loop over 1-pixel tall horizontal scanlines looking for changes.  
+ * Loop over 1-pixel tall horizontal scanlines looking for changes.
  * Record the changes in tile_has_diff[].  Scanlines in the loop are
  * equally spaced along y by NSCAN pixels, but have a slightly random
  * starting offset ystart ( < NSCAN ) from scanlines[].
@@ -3318,14 +3318,14 @@ if (ncdb) fprintf(stderr, "\n*** SCAN_DISPLAY CHECK_NCACHE/%d *** %d rescan=%d\n
 				/* found a difference, record it: */
 				if (! blackouts) {
 					tile_has_diff[n] = 1;
-					tile_count++;		
+					tile_count++;
 				} else {
 					if (blackout_line_cmpskip(n, x, y,
 					    dst, src, w, pixelsize)) {
 						tile_has_diff[n] = 0;
 					} else {
 						tile_has_diff[n] = 1;
-						tile_count++;		
+						tile_count++;
 					}
 				}
 			}
@@ -3361,7 +3361,7 @@ int scan_for_updates(int count_only) {
 	double dtmp = 0.0;
 
 	if (unixpw_in_progress) return 0;
- 
+
 	if (slow_fb > 0.0) {
 		double now = dnow();
 		if (now < last_poll + slow_fb) {
@@ -3412,7 +3412,7 @@ int scan_for_updates(int count_only) {
 #ifdef MACOSX
 			if (macosx_console) {
 				collect_non_X_xdamage(-1, -1, -1, -1, 0);
-			} else 
+			} else
 #endif
 			{
 				if (rawfb_vnc_reflect) {
@@ -3447,7 +3447,7 @@ int scan_for_updates(int count_only) {
 #ifdef MACOSX
 		if (macosx_console) {
 			;
-		} else 
+		} else
 #endif
 		{
 			if (rawfb_vnc_reflect) {
@@ -3523,7 +3523,7 @@ int scan_for_updates(int count_only) {
 		/* this check is done to skip the extra scan_display() call */
 		if (! fs_factor || tile_count <= fs_frac * ntiles) {
 			int cp, tile_count_old = tile_count;
-			
+
 			/* choose a different y shift for the 2nd scan: */
 			cp = (NSCAN - scan_count) % NSCAN;
 
@@ -3577,7 +3577,7 @@ int scan_for_updates(int count_only) {
 		 */
 		old_copy_tile = 1;
 	} else {
-		/* 
+		/*
 		 * New way, does runs of horizontal tiles at once.
 		 * Note that below, for simplicity, the extra tile finding
 		 * (e.g. copy_tiles_backward_pass) is done the old way.

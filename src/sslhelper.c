@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -197,7 +197,7 @@ char *find_openssl_bin(void) {
 	int found_openssl = 0;
 	char extra[] = ":/usr/bin:/bin:/usr/sbin:/usr/local/bin"
 	    ":/usr/local/sbin:/usr/sfw/bin";
-	
+
 	gp = getenv("PATH");
 	if (! gp) {
 		fprintf(stderr, "could not find openssl(1) program in PATH. (null)\n");
@@ -244,7 +244,7 @@ char *create_tmp_pem(char *pathin, int prompt) {
 	int cnf_fd, pem_fd, status, show_cert = 1;
 	char *days;
 	char *C, *L, *OU, *O, *CN, *EM;
-	char tmpl[] = 
+	char tmpl[] =
 "[ req ]\n"
 "prompt = no\n"
 "default_bits = 2048\n"
@@ -284,32 +284,32 @@ char *create_tmp_pem(char *pathin, int prompt) {
 
 	/* ssl */
 	if (no_external_cmds || !cmd_ok("ssl")) {
-		rfbLog("create_tmp_pem: cannot run external commands.\n");	
+		rfbLog("create_tmp_pem: cannot run external commands.\n");
 		return NULL;
 	}
 
-	rfbLog("\n");	
+	rfbLog("\n");
 	if (pathin) {
-		rfbLog("Creating a self-signed PEM certificate...\n");	
+		rfbLog("Creating a self-signed PEM certificate...\n");
 	} else {
-		rfbLog("Creating a temporary, self-signed PEM certificate...\n");	
+		rfbLog("Creating a temporary, self-signed PEM certificate...\n");
 	}
 
-	rfbLog("\n");	
-	rfbLog("This will NOT prevent Man-In-The-Middle attacks UNLESS you\n");	
-	rfbLog("get the certificate information to the VNC viewers SSL\n");	
+	rfbLog("\n");
+	rfbLog("This will NOT prevent Man-In-The-Middle attacks UNLESS you\n");
+	rfbLog("get the certificate information to the VNC viewers SSL\n");
 	rfbLog("tunnel configuration or you take the extra steps to sign it\n");
 	rfbLog("with a CA key. However, it will prevent passive network\n");
-	rfbLog("sniffing.\n");	
-	rfbLog("\n");	
-	rfbLog("The cert inside -----BEGIN CERTIFICATE-----\n");	
-	rfbLog("                           ....\n");	
-	rfbLog("                -----END CERTIFICATE-----\n");	
-	rfbLog("printed below may be used on the VNC viewer-side to\n");	
+	rfbLog("sniffing.\n");
+	rfbLog("\n");
+	rfbLog("The cert inside -----BEGIN CERTIFICATE-----\n");
+	rfbLog("                           ....\n");
+	rfbLog("                -----END CERTIFICATE-----\n");
+	rfbLog("printed below may be used on the VNC viewer-side to\n");
 	rfbLog("authenticate this server for this session.  See the -ssl\n");
 	rfbLog("help output and the FAQ for how to create a permanent\n");
-	rfbLog("server certificate.\n");	
-	rfbLog("\n");	
+	rfbLog("server certificate.\n");
+	rfbLog("\n");
 
 	exe = find_openssl_bin();
 	if (! exe) {
@@ -370,7 +370,7 @@ char *create_tmp_pem(char *pathin, int prompt) {
 		    "-keyout", pem, (char *)0);
 		exit(1);
 	}
-	pidw = waitpid(pid, &status, 0); 
+	pidw = waitpid(pid, &status, 0);
 	if (pidw != pid) {
 		return NULL;
 	}
@@ -394,7 +394,7 @@ char *create_tmp_pem(char *pathin, int prompt) {
 		execlp(exe, exe, "dhparam", "-out", cnf, "512", (char *)0);
 		exit(1);
 	}
-	pidw = waitpid(pid, &status, 0); 
+	pidw = waitpid(pid, &status, 0);
 	if (pidw != pid) {
 		return NULL;
 	}
@@ -543,7 +543,7 @@ static int appendfile(FILE *out, char *infile) {
 	fclose(in);
 	return 1;
 }
-	
+
 char *get_ssl_verify_file(char *str_in) {
 	char *p, *str, *cdir, *tmp;
 	char *tfile, *tfile2;
@@ -634,7 +634,7 @@ char *get_ssl_verify_file(char *str_in) {
 				count++;
 			}
 			closedir(dir);
-			
+
 		} else {
 			if (strlen(p) > 512) {
 				unlink(tfile);
@@ -711,7 +711,7 @@ static int ssl_init(int s_in, int s_out, int skip_vnc_tls, double last_https) {
 static void ssl_xfer(int csock, int s_in, int s_out, int is_https) {
 	if (enc_str != NULL && !strcmp(enc_str, "none")) {
 		usleep(250*1000);
-		rfbLog("doing '-enc none' raw transfer (no encryption)\n"); 
+		rfbLog("doing '-enc none' raw transfer (no encryption)\n");
 		raw_xfer(csock, s_in, s_out);
 	} else {
 		badnews("ssl_xfer");
@@ -757,7 +757,7 @@ int openssl_present(void) {return 1;}
 
 static void sslerrexit(void) {
 	unsigned long err = ERR_get_error();
-	
+
 	if (err) {
 		char str[256];
 		ERR_error_string(err, str);
@@ -790,7 +790,7 @@ static int pem_passwd_callback(char *buf, int size, int rwflag,
 		*q = '\0';
 	}
 	line[1024 - 1] = '\0';
-	strncpy(buf, line, size);                                  
+	strncpy(buf, line, size);
 	buf[size - 1] = '\0';
 
 	if (0) rwflag = 0;	/* compiler warning. */
@@ -819,12 +819,12 @@ static int crl_callback(X509_STORE_CTX *callback_ctx) {
 	int i, n, rc;
 	char *cp, *cp2;
 	ASN1_TIME *t;
-	
+
 	/* Determine certificate ingredients in advance */
 	xs      = X509_STORE_CTX_get_current_cert(callback_ctx);
 	subject = X509_get_subject_name(xs);
 	issuer  = X509_get_issuer_name(xs);
-	
+
 	/* Try to retrieve a CRL corresponding to the _subject_ of
 	* the current certificate in order to verify it's integrity. */
 	store_ctx = X509_STORE_CTX_new();
@@ -1059,14 +1059,14 @@ void openssl_init(int isclient) {
 	ctx = SSL_CTX_new(method);
 
 	if (ctx == NULL) {
-		rfbLog("openssl_init: SSL_CTX_new failed.\n");	
+		rfbLog("openssl_init: SSL_CTX_new failed.\n");
 		sslerrexit();
 	}
 
 	ds = dnow();
 	rsa_512 = RSA_generate_key(512, RSA_F4, NULL, NULL);
 	if (rsa_512 == NULL) {
-		rfbLog("openssl_init: RSA_generate_key(512) failed.\n");	
+		rfbLog("openssl_init: RSA_generate_key(512) failed.\n");
 		sslerrexit();
 	}
 
@@ -1075,7 +1075,7 @@ void openssl_init(int isclient) {
 	ds = dnow();
 	rsa_1024 = RSA_generate_key(1024, RSA_F4, NULL, NULL);
 	if (rsa_1024 == NULL) {
-		rfbLog("openssl_init: RSA_generate_key(1024) failed.\n");	
+		rfbLog("openssl_init: RSA_generate_key(1024) failed.\n");
 		sslerrexit();
 	}
 
@@ -1084,7 +1084,7 @@ void openssl_init(int isclient) {
 	if (db) fprintf(stderr, "SSL_CTX_set_tmp_rsa()\n");
 
 	if (! SSL_CTX_set_tmp_rsa(ctx, rsa_1024)) {
-		rfbLog("openssl_init: SSL_CTX_set_tmp_rsa(1024) failed.\n");	
+		rfbLog("openssl_init: SSL_CTX_set_tmp_rsa(1024) failed.\n");
 		sslerrexit();
 	}
 
@@ -1107,7 +1107,7 @@ void openssl_init(int isclient) {
 		openssl_pem = create_tmp_pem(NULL, 0);
 		if (! openssl_pem) {
 			rfbLog("openssl_init: could not create temporary,"
-			    " self-signed PEM.\n");	
+			    " self-signed PEM.\n");
 			clean_up_exit(1);
 		}
 		tmp_pem = 1;
@@ -1115,25 +1115,25 @@ void openssl_init(int isclient) {
 	} else if (!strcmp(openssl_pem, "ANON")) {
 		if (ssl_verify) {
 			rfbLog("openssl_init: Anonymous Diffie-Hellman cannot"
-			    " be used in -sslverify mode.\n");	
+			    " be used in -sslverify mode.\n");
 			clean_up_exit(1);
 		}
 		if (ssl_crl) {
 			rfbLog("openssl_init: Anonymous Diffie-Hellman cannot"
-			    " be used in -sslCRL mode.\n");	
+			    " be used in -sslCRL mode.\n");
 			clean_up_exit(1);
 		}
 		/* n.b. new ctx */
 		if (!switch_to_anon_dh()) {
 			rfbLog("openssl_init: Anonymous Diffie-Hellman setup"
-			    " failed.\n");	
+			    " failed.\n");
 			clean_up_exit(1);
 		}
 	} else if (strstr(openssl_pem, "SAVE") == openssl_pem) {
 		openssl_pem = get_saved_pem(openssl_pem, 1);
 		if (! openssl_pem) {
 			rfbLog("openssl_init: could not create or open"
-			    " saved PEM: %s\n", openssl_pem);	
+			    " saved PEM: %s\n", openssl_pem);
 			clean_up_exit(1);
 		}
 		tmp_pem = 0;
@@ -1155,12 +1155,12 @@ void openssl_init(int isclient) {
 		}
 		bio = BIO_new_fp(in, BIO_CLOSE|BIO_FP_TEXT);
 		if (! bio) {
-			rfbLog("openssl_init: BIO_new_fp() failed.\n");	
+			rfbLog("openssl_init: BIO_new_fp() failed.\n");
 			sslerrexit();
 		}
 		dh = PEM_read_bio_DHparams(bio, NULL, NULL, NULL);
 		if (dh == NULL) {
-			rfbLog("openssl_init: PEM_read_bio_DHparams() failed.\n");	
+			rfbLog("openssl_init: PEM_read_bio_DHparams() failed.\n");
 			BIO_free(bio);
 			sslerrexit();
 		}
@@ -1173,16 +1173,16 @@ void openssl_init(int isclient) {
 
 	if (strcmp(openssl_pem, "ANON")) {
 		if (! SSL_CTX_use_certificate_chain_file(ctx, openssl_pem)) {
-			rfbLog("openssl_init: SSL_CTX_use_certificate_chain_file() failed.\n");	
+			rfbLog("openssl_init: SSL_CTX_use_certificate_chain_file() failed.\n");
 			sslerrexit();
 		}
 		if (! SSL_CTX_use_RSAPrivateKey_file(ctx, openssl_pem,
 		    SSL_FILETYPE_PEM)) {
-			rfbLog("openssl_init: SSL_CTX_set_tmp_rsa(1024) failed.\n");	
+			rfbLog("openssl_init: SSL_CTX_set_tmp_rsa(1024) failed.\n");
 			sslerrexit();
 		}
 		if (! SSL_CTX_check_private_key(ctx)) {
-			rfbLog("openssl_init: SSL_CTX_set_tmp_rsa(1024) failed.\n");	
+			rfbLog("openssl_init: SSL_CTX_set_tmp_rsa(1024) failed.\n");
 			sslerrexit();
 		}
 	}
@@ -1211,7 +1211,7 @@ void openssl_init(int isclient) {
 
 		if (stat(ssl_crl, &sbuf) != 0) {
 			rfbLog("openssl_init: -sslCRL does not exist %s.\n",
-			    ssl_crl ? ssl_crl : "null");	
+			    ssl_crl ? ssl_crl : "null");
 			rfbLogPerror("stat");
 			clean_up_exit(1);
 		}
@@ -1254,20 +1254,20 @@ void openssl_init(int isclient) {
 
 		if (!file || stat(file, &sbuf) != 0) {
 			rfbLog("openssl_init: -sslverify does not exist %s.\n",
-			    file ? file : "null");	
+			    file ? file : "null");
 			rfbLogPerror("stat");
 			clean_up_exit(1);
 		}
 		if (! S_ISDIR(sbuf.st_mode)) {
 			if (! SSL_CTX_load_verify_locations(ctx, file, NULL)) {
 				rfbLog("openssl_init: SSL_CTX_load_verify_"
-				    "locations() failed.\n");	
+				    "locations() failed.\n");
 				sslerrexit();
 			}
 		} else {
 			if (! SSL_CTX_load_verify_locations(ctx, NULL, file)) {
 				rfbLog("openssl_init: SSL_CTX_load_verify_"
-				    "locations() failed.\n");	
+				    "locations() failed.\n");
 				sslerrexit();
 			}
 		}
@@ -1457,7 +1457,7 @@ static int add_anon_dh(void) {
 	 * Evidently it is ok for them to be publicly known.
 	 * openssl dhparam -out dh.out 1024
 	 */
-	char *fixed_dh_params = 
+	char *fixed_dh_params =
 "-----BEGIN DH PARAMETERS-----\n"
 "MIGHAoGBAL28w69ZnLYBvp8R2OeqtAIms+oatY19iBL4WhGI/7H1OMmkJjIe+OHs\n"
 "PXoJfe5ucrnvno7Xm+HJZYa1jnPGQuWoa/VJKXdVjYdJVNzazJKM2daKKcQA4GDc\n"
@@ -1486,7 +1486,7 @@ static int add_anon_dh(void) {
 			struct stat sbuf;
 
 			if (no_external_cmds || !cmd_ok("ssl")) {
-				rfbLog("add_anon_dh: cannot run external commands.\n");	
+				rfbLog("add_anon_dh: cannot run external commands.\n");
 				return 0;
 			}
 
@@ -1508,7 +1508,7 @@ static int add_anon_dh(void) {
 				execlp(exe, exe, "dhparam", "-out", cnf, "1024", (char *)0);
 				exit(1);
 			}
-			pidw = waitpid(pid, &status, 0); 
+			pidw = waitpid(pid, &status, 0);
 			if (pidw != pid) {
 				return 0;
 			}
@@ -1557,13 +1557,13 @@ static int add_anon_dh(void) {
 	}
 	bio = BIO_new_fp(in, BIO_CLOSE|BIO_FP_TEXT);
 	if (! bio) {
-		rfbLog("openssl_init: BIO_new_fp() failed.\n");	
+		rfbLog("openssl_init: BIO_new_fp() failed.\n");
 		unlink(cnf);
 		return 0;
 	}
 	dh = PEM_read_bio_DHparams(bio, NULL, NULL, NULL);
 	if (dh == NULL) {
-		rfbLog("openssl_init: PEM_read_bio_DHparams() failed.\n");	
+		rfbLog("openssl_init: PEM_read_bio_DHparams() failed.\n");
 		unlink(cnf);
 		BIO_free(bio);
 		return 0;
@@ -1580,7 +1580,7 @@ static int add_anon_dh(void) {
 static int switch_to_anon_dh(void) {
 	const SSL_METHOD *method;
 	long mode;
-	
+
 	rfbLog("Using Anonymous Diffie-Hellman mode.\n");
 	rfbLog("WARNING: Anonymous Diffie-Hellman uses encryption but is\n");
 	rfbLog("WARNING: susceptible to a Man-In-The-Middle attack.\n");
@@ -1622,7 +1622,7 @@ static int anontls_dialog(int s_in, int s_out) {
 	anontls_selected = 1;
 
 	if (!switch_to_anon_dh()) {
-		rfbLog("anontls: Anonymous Diffie-Hellman failed.\n");	
+		rfbLog("anontls: Anonymous Diffie-Hellman failed.\n");
 		return 0;
 	}
 
@@ -1778,7 +1778,7 @@ static int vencrypt_dialog(int s_in, int s_out) {
 	    vencrypt_selected == rfbVencryptTlsPlain) {
 		/* these modes are Anonymous Diffie-Hellman */
 		if (!switch_to_anon_dh()) {
-			rfbLog("vencrypt: Anonymous Diffie-Hellman failed.\n");	
+			rfbLog("vencrypt: Anonymous Diffie-Hellman failed.\n");
 			return 0;
 		}
 	}
@@ -1795,7 +1795,7 @@ static int check_vnc_tls_mode(int s_in, int s_out, double last_https) {
 	char *proto = "RFB 003.008\n";
 	char *stype = "unknown";
 	char buf[256];
-	
+
 	vencrypt_selected = 0;
 	anontls_selected = 0;
 
@@ -1836,8 +1836,8 @@ static int check_vnc_tls_mode(int s_in, int s_out, double last_https) {
 		fd_set rfds;
 		FD_ZERO(&rfds);
 		FD_SET(s_in, &rfds);
-		tv.tv_sec = 0; 
-		tv.tv_usec = 0; 
+		tv.tv_sec = 0;
+		tv.tv_usec = 0;
 		select(s_in+1, &rfds, NULL, NULL, &tv);
 		if (FD_ISSET(s_in, &rfds)) {
 			input = 1;
@@ -2113,7 +2113,7 @@ static int ssl_init(int s_in, int s_out, int skip_vnc_tls, double last_https) {
 			    getpid(), ssl_client_mode ? "SSL_connect" : "SSL_accept", name, peerport);
 			pr_ssl_info(1);
 			return 0;
-			
+
 		} else if (err == SSL_ERROR_WANT_WRITE) {
 
 			if (db) fprintf(stderr, "got SSL_ERROR_WANT_WRITE\n");
@@ -2192,8 +2192,8 @@ static int ssl_init(int s_in, int s_out, int skip_vnc_tls, double last_https) {
 		if (certret != NULL) {
 			cr = fopen(certret, "w");
 		}
-		
-		x = SSL_get_peer_certificate(ssl);	
+
+		x = SSL_get_peer_certificate(ssl);
 		if (x == NULL) {
 			rfbLog("SSL: ssl_helper[%d]: accepted client %s x509 peer cert is null\n", getpid(), name);
 			if (cr != NULL) {
@@ -2255,7 +2255,7 @@ static void ssl_xfer(int csock, int s_in, int s_out, int is_https) {
 	if (enc_str != NULL) {
 		if (!strcmp(enc_str, "none")) {
 			usleep(250*1000);
-			rfbLog("doing '-enc none' raw transfer (no encryption)\n"); 
+			rfbLog("doing '-enc none' raw transfer (no encryption)\n");
 			raw_xfer(csock, s_in, s_out);
 		} else {
 			symmetric_encryption_xfer(csock, s_in, s_out);
@@ -2275,7 +2275,7 @@ static void ssl_xfer(int csock, int s_in, int s_out, int is_https) {
 	} else {
 		tv_use = tv_vnc_early;
 	}
-	
+
 
 	/*
 	 * csock: clear text socket with libvncserver.    "C"
@@ -2284,14 +2284,14 @@ static void ssl_xfer(int csock, int s_in, int s_out, int is_https) {
 	 * to cover inetd mode, we have s_in and s_out, but in non-inetd
 	 * mode they both ssock.
 	 *
-	 * cbuf[] is data from csock that we have read but not passed on to ssl 
-	 * sbuf[] is data from ssl that we have read but not passed on to csock 
+	 * cbuf[] is data from csock that we have read but not passed on to ssl
+	 * sbuf[] is data from ssl that we have read but not passed on to csock
 	 */
 	for (i=0; i<ABSIZE; i++) {
 		cbuf[i] = '\0';
 		sbuf[i] = '\0';
 	}
-		
+
 	if (s_out > s_in) {
 		ssock = s_out;
 	} else {
@@ -2299,9 +2299,9 @@ static void ssl_xfer(int csock, int s_in, int s_out, int is_https) {
 	}
 
 	if (csock > ssock) {
-		fdmax = csock; 
+		fdmax = csock;
 	} else {
-		fdmax = ssock; 
+		fdmax = ssock;
 	}
 
 	c_rd = 1;	/* clear text (libvncserver) socket open for reading */
@@ -2324,8 +2324,8 @@ static void ssl_xfer(int csock, int s_in, int s_out, int is_https) {
 		int c_to_s, s_to_c, closing;
 
 		if ( s_wr && (c_rd || cptr > 0) ) {
-			/* 
-			 * S is writable and 
+			/*
+			 * S is writable and
 			 * C is readable or some cbuf data remaining
 			 */
 			c_to_s = 1;
@@ -2334,8 +2334,8 @@ static void ssl_xfer(int csock, int s_in, int s_out, int is_https) {
 		}
 
 		if ( c_wr && (s_rd || sptr > 0) ) {
-			/* 
-			 * C is writable and 
+			/*
+			 * C is writable and
 			 * S is readable or some sbuf data remaining
 			 */
 			s_to_c = 1;
@@ -2370,7 +2370,7 @@ static void ssl_xfer(int csock, int s_in, int s_out, int is_https) {
 				FD_SET(s_in, &rd);
 			}
 		}
-		
+
 		FD_ZERO(&wr);
 
 		if (c_wr && sptr > 0) {
@@ -2426,13 +2426,13 @@ static void ssl_xfer(int csock, int s_in, int s_out, int is_https) {
 
 		if (db > 1) fprintf(stderr, "nfd: %d\n", nfd);
 
-if (0) fprintf(stderr, "nfd[%d]: %d  w/r csock: %d %d s_in: %d %d\n", getpid(), nfd, FD_ISSET(csock, &wr), FD_ISSET(csock, &rd), FD_ISSET(s_out, &wr), FD_ISSET(s_in, &rd)); 
+if (0) fprintf(stderr, "nfd[%d]: %d  w/r csock: %d %d s_in: %d %d\n", getpid(), nfd, FD_ISSET(csock, &wr), FD_ISSET(csock, &rd), FD_ISSET(s_out, &wr), FD_ISSET(s_in, &rd));
 
 		if (nfd < 0) {
 			rfbLog("SSL: ssl_xfer[%d]: select error: %d\n", getpid(), nfd);
 			perror("select");
 			/* connection finished */
-			goto done;	
+			goto done;
 		}
 
 		if (nfd == 0) {
@@ -2458,7 +2458,7 @@ if (0) fprintf(stderr, "nfd[%d]: %d  w/r csock: %d %d s_in: %d %d\n", getpid(), 
 		if (c_wr && FD_ISSET(csock, &wr)) {
 
 			/* try to write some of our sbuf to C: */
-			n = write(csock, sbuf, sptr); 
+			n = write(csock, sbuf, sptr);
 
 			if (n < 0) {
 				if (errno != EINTR) {
@@ -2635,7 +2635,7 @@ static void init_prng(void) {
 
 	bytes = RAND_load_file(file, -1);
 	if (db) fprintf(stderr, "bytes read: %d\n", bytes);
-	
+
 	ubytes = RAND_load_file("/dev/urandom", 64);
 	bytes += ubytes;
 	if (db) fprintf(stderr, "bytes read: %d / %d\n", bytes, ubytes);
@@ -2656,7 +2656,7 @@ static void init_prng(void) {
 		rfbLog("calling RAND_poll()\n");
 		RAND_poll();
 	}
-	
+
 	RAND_bytes((unsigned char *)&sr, 4);
 	srand(sr);
 
@@ -2948,7 +2948,7 @@ void https_port(int restart) {
 		rfbLog("https_port: could not open port %d\n", port);
 		if (ipv6_listen) {
 			fd6 = listen6(port);
-		} 
+		}
 		if (fd6 < 0) {
 			if (!restart) {
 				clean_up_exit(1);
@@ -3032,7 +3032,7 @@ void ssl_helper_pid(pid_t pid, int sock) {
 				}
 
 #if LIBVNCSERVER_HAVE_SYS_WAIT_H && HAVE_WAITPID
-				wret = waitpid(helpers[i], &status, WNOHANG); 
+				wret = waitpid(helpers[i], &status, WNOHANG);
 
 if (db) fprintf(stderr, "waitpid(%d)\n", helpers[i]);
 if (db) fprintf(stderr, "  waitret1=%d\n", wret);
@@ -3041,7 +3041,7 @@ if (db) fprintf(stderr, "  waitret1=%d\n", wret);
 					int k;
 					for (k=0; k < 10; k++) {
 						usleep(100 * 1000);
-						wret = waitpid(helpers[i], &status, WNOHANG); 
+						wret = waitpid(helpers[i], &status, WNOHANG);
 if (db) fprintf(stderr, "  waitret2=%d\n", wret);
 						if (wret == helpers[i]) {
 							break;
@@ -3069,7 +3069,7 @@ if (db) fprintf(stderr, "ssl_helper_pid(%d, %d)\n", pid, sock);
 			if (sock == -1) {
 #if LIBVNCSERVER_HAVE_SYS_WAIT_H && HAVE_WAITPID
 				pid_t wret;
-				wret = waitpid(helpers[i], &status, WNOHANG); 
+				wret = waitpid(helpers[i], &status, WNOHANG);
 
 if (db) fprintf(stderr, "waitpid(%d) 2\n", helpers[i]);
 if (db) fprintf(stderr, "  waitret1=%d\n", wret);
@@ -3100,7 +3100,7 @@ if (db) fprintf(stderr, "  waitret1=%d\n", wret);
 		if (kill(helpers[i], 0) != 0) {
 			helpers[i] = 0;
 			sockets[i] = -1;
-			
+
 			if (empty == -1) {
 				empty = i;
 			}
@@ -3284,7 +3284,7 @@ static int check_ssl_access(char *addr) {
 			;
 		} else if (time(NULL) < time_allow_once + 30) {
 			/* give them 30 secs to check and save the fetched cert. */
-			allow_once = save_allow_once; 
+			allow_once = save_allow_once;
 			rfbLog("SSL: Permitting 30 sec grace period for allowonce.\n");
 			rfbLog("SSL: Set X11VNC_NO_SSL_ALLOW_TWICE=1 to disable.\n");
 		}
@@ -3296,7 +3296,7 @@ static int check_ssl_access(char *addr) {
 }
 
 void accept_openssl(int mode, int presock) {
-	int sock = -1, listen = -1, cport, csock, vsock;	
+	int sock = -1, listen = -1, cport, csock, vsock;
 	int peerport = 0;
 	int status, n, i, db = 0;
 	struct sockaddr_in addr;
@@ -3317,7 +3317,7 @@ void accept_openssl(int mode, int presock) {
 	static int first = 1;
 	unsigned char *rb;
 
-#if !LIBVNCSERVER_HAVE_LIBSSL && !HAVE_LIBSSL  
+#if !LIBVNCSERVER_HAVE_LIBSSL && !HAVE_LIBSSL
 	if (enc_str == NULL || strcmp(enc_str, "none")) {
 		badnews("0 accept_openssl");
 	}
@@ -3359,7 +3359,7 @@ void accept_openssl(int mode, int presock) {
 #if X11VNC_IPV6
 		struct sockaddr_in6 a6;
 		socklen_t a6len = sizeof(a6);
-		int fd = (mode == OPENSSL_VNC6 ? openssl_sock6 : https_sock6); 
+		int fd = (mode == OPENSSL_VNC6 ? openssl_sock6 : https_sock6);
 
 		sock = accept(fd, (struct sockaddr *)&a6, &a6len);
 		if (sock < 0)  {
@@ -3467,7 +3467,7 @@ void accept_openssl(int mode, int presock) {
 	 * here, since we use INADDR_LOOPBACK).
 	 */
 	rb = (unsigned char *) calloc(6, 1);
-#if LIBVNCSERVER_HAVE_LIBSSL || HAVE_LIBSSL 
+#if LIBVNCSERVER_HAVE_LIBSSL || HAVE_LIBSSL
 	RAND_bytes(rb, 6);
 #endif
 	sprintf(cookie, "RB=%d%d%d%d%d%d/%f%f/%p",
@@ -3658,7 +3658,7 @@ void accept_openssl(int mode, int presock) {
 
 		if (have_httpd) {
 			int n = 0, is_http = 0;
-			int hport = screen->httpPort; 
+			int hport = screen->httpPort;
 			char *iface = NULL;
 			char *buf, *tbuf;
 
@@ -3683,8 +3683,8 @@ void accept_openssl(int mode, int presock) {
 			    mode)) {
 				goto write_cookie;
 			}
-	
-			/* 
+
+			/*
 			 * read first 2 bytes to try to guess.  sadly,
 			 * the user is often pondering a "non-verified
 			 * cert" dialog for a long time before the GET
@@ -3728,17 +3728,17 @@ void accept_openssl(int mode, int presock) {
 				if (strstr(buf, "/reverse.proxy")) {
 					char *buf2;
 					int n, ptr;
-#if !LIBVNCSERVER_HAVE_LIBSSL && !HAVE_LIBSSL 
+#if !LIBVNCSERVER_HAVE_LIBSSL && !HAVE_LIBSSL
 					write(s_out, reply, strlen(reply));
 #else
 					SSL_write(ssl, reply, strlen(reply));
 #endif
-				
+
 					buf2  = (char *) calloc((8192+1), 1);
 					n = 0;
 					ptr = 0;
 					while (ptr < 8192) {
-#if !LIBVNCSERVER_HAVE_LIBSSL && !HAVE_LIBSSL 
+#if !LIBVNCSERVER_HAVE_LIBSSL && !HAVE_LIBSSL
 						n = read(s_in, buf2 + ptr, 1);
 #else
 						n = SSL_read(ssl, buf2 + ptr, 1);
@@ -3766,7 +3766,7 @@ void accept_openssl(int mode, int presock) {
 				rfbLog("Handling Check HTTPS request via https GET. [%d]\n", getpid());
 				rfbLog("-- %s\n", buf);
 
-#if !LIBVNCSERVER_HAVE_LIBSSL && !HAVE_LIBSSL 
+#if !LIBVNCSERVER_HAVE_LIBSSL && !HAVE_LIBSSL
 				write(s_out, reply, strlen(reply));
 #else
 				SSL_write(ssl, reply, strlen(reply));
@@ -3836,7 +3836,7 @@ void accept_openssl(int mode, int presock) {
 				str = strdup(buf);
 				q = strstr(str, "HTTP/");
 				if (q != NULL) {
-					*q = '\0';	
+					*q = '\0';
 					strcat(tbuf, str);
 				}
 				free(str);
@@ -3951,7 +3951,7 @@ void accept_openssl(int mode, int presock) {
 		rfbLogPerror("accept");
 
 		kill(pid, SIGTERM);
-		waitpid(pid, &status, WNOHANG); 
+		waitpid(pid, &status, WNOHANG);
 		if (mode == OPENSSL_INETD || ssl_no_fail) {
 			clean_up_exit(1);
 		}
@@ -4119,7 +4119,7 @@ void accept_openssl(int mode, int presock) {
 					rfbPE(10000);
 					usleep(10000);
 					if (screen->httpSock >= 0) saw_httpsock = 1;
-					waitpid(pid, &status, WNOHANG); 
+					waitpid(pid, &status, WNOHANG);
 					if (kill(pid, 0) != 0) {
 						rfbLog("SSL: helper[%d] pid finished\n", pid);
 						break;
@@ -4169,7 +4169,7 @@ void accept_openssl(int mode, int presock) {
 					rfbPE(10000);
 					usleep(10000);
 					if (screen->httpSock >= 0) saw_httpsock = 1;
-					waitpid(pid, &status, WNOHANG); 
+					waitpid(pid, &status, WNOHANG);
 					if (kill(pid, 0) != 0) {
 						rfbLog("SSL: helper[%d] pid finished\n", pid);
 						break;
@@ -4196,7 +4196,7 @@ void accept_openssl(int mode, int presock) {
 			return;
 		}
 		kill(pid, SIGTERM);
-		waitpid(pid, &status, WNOHANG); 
+		waitpid(pid, &status, WNOHANG);
 		if (mode == OPENSSL_INETD || ssl_no_fail) {
 			clean_up_exit(1);
 		}
@@ -4248,7 +4248,7 @@ void accept_openssl(int mode, int presock) {
 		if (vencrypt_sel != 0) {
 			client->protocolMajorVersion = 3;
 			client->protocolMinorVersion = 8;
-#if LIBVNCSERVER_HAVE_LIBSSL || HAVE_LIBSSL 
+#if LIBVNCSERVER_HAVE_LIBSSL || HAVE_LIBSSL
 			if (!finish_vencrypt_auth(client, vencrypt_sel)) {
 				rfbCloseClient(client);
 				client = NULL;
@@ -4271,7 +4271,7 @@ void accept_openssl(int mode, int presock) {
 		close(vsock);
 
 		kill(pid, SIGTERM);
-		waitpid(pid, &status, WNOHANG); 
+		waitpid(pid, &status, WNOHANG);
 		if (mode == OPENSSL_INETD || ssl_no_fail) {
 			clean_up_exit(1);
 		}
@@ -4327,7 +4327,7 @@ if (db) rfbLog("raw_xfer bad write:  %d -> %d | %d/%d  errno=%d\n", csock, s_out
 		}
 		usleep(250*1000);
 		kill(pid, SIGTERM);
-		waitpid(pid, &status, WNOHANG); 
+		waitpid(pid, &status, WNOHANG);
 		if (db) rfbLog("raw_xfer done:  %d -> %d\n", csock, s_out);
 
 	} else {
@@ -4359,7 +4359,7 @@ if (db) rfbLog("raw_xfer bad write:  %d -> %d | %d/%d  errno=%d\n", csock, s_out
 		}
 		usleep(250*1000);
 		kill(par, SIGTERM);
-		waitpid(par, &status, WNOHANG); 
+		waitpid(par, &status, WNOHANG);
 		if (db) rfbLog("raw_xfer done:  %d <- %d\n", csock, s_in);
 	}
 	close(csock);
@@ -4372,7 +4372,7 @@ if (db) rfbLog("raw_xfer bad write:  %d -> %d | %d/%d  errno=%d\n", csock, s_out
 
 #define ENC_MODULE
 
-#if LIBVNCSERVER_HAVE_LIBSSL || HAVE_LIBSSL 
+#if LIBVNCSERVER_HAVE_LIBSSL || HAVE_LIBSSL
 #ifndef ENC_HAVE_OPENSSL
 #define ENC_HAVE_OPENSSL 1
 #endif
@@ -4380,7 +4380,7 @@ if (db) rfbLog("raw_xfer bad write:  %d -> %d | %d/%d  errno=%d\n", csock, s_out
 #define ENC_HAVE_OPENSSL 0
 #endif
 
-#define ENC_DISABLE_SHOW_CERT 
+#define ENC_DISABLE_SHOW_CERT
 
 #include "enc.h"
 

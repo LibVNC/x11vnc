@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -47,7 +47,7 @@ typedef struct winattr {
 	int backing_store;
 	int map_state;
 	int rx, ry;
-	double time; 
+	double time;
 	double bs_time;
 	double su_time;
 	double vis_obs_time;

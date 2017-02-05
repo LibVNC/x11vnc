@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -499,7 +499,7 @@ void unixpw_screen(int init) {
 	unixpw_mark();
 }
 
-	
+
 #ifdef MAXPATHLEN
 static char slave_str[MAXPATHLEN];
 #else
@@ -511,7 +511,7 @@ static int used_get_pty_ptmx = 0;
 char *get_pty_ptmx(int *fd_p) {
 	char *slave;
 	int fd = -1, i, ndevs = 4, tmp;
-	char *devs[] = { 
+	char *devs[] = {
 		"/dev/ptmx",
 		"/dev/ptm/clone",
 		"/dev/ptc",
@@ -566,7 +566,7 @@ char *get_pty_ptmx(int *fd_p) {
 #endif
 
 	if (strlen(slave) > sizeof(slave_str)/2) {
-		rfbLog("get_pty_ptmx: slave string length too long.\n");	
+		rfbLog("get_pty_ptmx: slave string length too long.\n");
 		close(fd);
 		return NULL;
 	}
@@ -680,7 +680,7 @@ static void kill_child (pid_t pid, int fd) {
 		close(fd);
 	}
 	kill(pid, SIGTERM);
-	waitpid(pid, &status, WNOHANG); 
+	waitpid(pid, &status, WNOHANG);
 }
 
 static int scheck(char *str, int n, char *name) {
@@ -701,12 +701,12 @@ static int scheck(char *str, int n, char *name) {
 			}
 		}
 		if (str[i] < ' ' || str[i] >= 0x7f) {
-			rfbLog("scheck: invalid character in %s.\n", name);	
+			rfbLog("scheck: invalid character in %s.\n", name);
 			return 0;
 		}
 	}
 	if (j == 0) {
-		rfbLog("scheck: unterminated string in %s.\n", name);	
+		rfbLog("scheck: unterminated string in %s.\n", name);
 		return 0;
 	}
 	return 1;
@@ -984,7 +984,7 @@ int su_verify(char *user, char *pass, char *cmd, char *rbuf, int *rbuf_size, int
 
 	/* unixpw */
 	if (no_external_cmds || !cmd_ok("unixpw")) {
-		rfbLog("su_verify: cannot run external commands.\n");	
+		rfbLog("su_verify: cannot run external commands.\n");
 		clean_up_exit(1);
 	}
 
@@ -1071,7 +1071,7 @@ int su_verify(char *user, char *pass, char *cmd, char *rbuf, int *rbuf_size, int
 			(void) ioctl(ttyfd, TIOCNOTTY, (char *) 0);
 			close(ttyfd);
 		}
-#endif	
+#endif
 
 #endif	/* SETSID */
 
@@ -1210,7 +1210,7 @@ int su_verify(char *user, char *pass, char *cmd, char *rbuf, int *rbuf_size, int
 		ioctl(fd, TIOCTRAP, &control);
 	}
 #endif
-	
+
 	/*
 	 * In addition to checking exit code below, we watch for the
 	 * appearance of the string "Password:".  BSD does not seem to
@@ -1230,7 +1230,7 @@ int su_verify(char *user, char *pass, char *cmd, char *rbuf, int *rbuf_size, int
 	j = 0;
 	for (i=0; i < (int) strlen("Password:"); i++) {
 		char pstr[] = "password:";
-		int n, problem;	
+		int n, problem;
 
 		cbuf[0] = '\0';
 		cbuf[1] = '\0';
@@ -1263,7 +1263,7 @@ int su_verify(char *user, char *pass, char *cmd, char *rbuf, int *rbuf_size, int
 				continue;
 			}
 			if (j >= (int) sizeof(instr)-1) {
-				rfbLog("su_verify: problem finding Password:\n");	
+				rfbLog("su_verify: problem finding Password:\n");
 				fflush(stderr);
 				return 0;
 			}
@@ -1286,7 +1286,7 @@ int su_verify(char *user, char *pass, char *cmd, char *rbuf, int *rbuf_size, int
 					if (db) fprintf(stderr, "AIX luser compare: strstr OK.\n");
 					if (!strcmp(luser, instr)) {
 						if (db) fprintf(stderr, "AIX luser compare: strings equal.\n");
-						i = -1;	
+						i = -1;
 						j = 0;
 						memset(instr, 0, sizeof(instr));
 						free(luser);
@@ -1336,11 +1336,11 @@ int su_verify(char *user, char *pass, char *cmd, char *rbuf, int *rbuf_size, int
 	if (slow_pw) {
 		unsigned int k;
 		for (k = 0; k < strlen(pass); k++) {
-			write(fd, pass+k, 1); 
+			write(fd, pass+k, 1);
 			usleep(100 * 1000);
 		}
 	} else {
-		write(fd, pass, strlen(pass)); 
+		write(fd, pass, strlen(pass));
 	}
 
 	alarm_fired = 0;
@@ -1359,8 +1359,8 @@ int su_verify(char *user, char *pass, char *cmd, char *rbuf, int *rbuf_size, int
 	}
 	if (db) fprintf(stderr, "\ndraining:\n");
 	for (i = 0; i< drain_size; i++) {
-		int n;	
-		
+		int n;
+
 		cbuf[0] = '\0';
 		cbuf[1] = '\0';
 
@@ -1387,7 +1387,7 @@ int su_verify(char *user, char *pass, char *cmd, char *rbuf, int *rbuf_size, int
 		char *s = rbuf;
 		char *p = strdup(pass);
 		int n, o = 0;
-		
+
 		n = strlen(p);
 		if (p[n-1] == '\n') {
 			p[n-1] = '\0';
@@ -1432,8 +1432,8 @@ int su_verify(char *user, char *pass, char *cmd, char *rbuf, int *rbuf_size, int
 	}
 
 	slave_fd = -1;
-	
-	pidw = waitpid(pid, &status, 0); 
+
+	pidw = waitpid(pid, &status, 0);
 	close(fd);
 
 	if (pid != pidw) {
@@ -1551,7 +1551,7 @@ void check_unixpw_userprefs(void) {
 				if (buf[0] == '#') buf[0] = '\0';
 
 				t = (char *) malloc(strlen(keep_unixpw_opts) + 1 + strlen(buf) + 1);
-				sprintf(t, "%s,%s", keep_unixpw_opts, buf); 
+				sprintf(t, "%s,%s", keep_unixpw_opts, buf);
 				free(keep_unixpw_opts);
 				keep_unixpw_opts = t;
 			} else {
@@ -1590,7 +1590,7 @@ if (db) fprintf(stderr, "unixpw_verify: '%s' '%s'\n", user, db > 1 ? pass : "***
 		if (cd) {
 			char *str = (char *)malloc(strlen("UNIX:") +
 			    strlen(user) + 1);
-			sprintf(str, "UNIX:%s", user);	
+			sprintf(str, "UNIX:%s", user);
 			if (cd->username) {
 				free(cd->username);
 			}
@@ -1834,7 +1834,7 @@ void unixpw_keystroke(rfbBool down, rfbKeySym keysym, int init) {
 	}
 
 	if (in_login && keysym == XK_Escape && u_cnt == 0) {
-		echo = 0;	
+		echo = 0;
 		rfbLog("unixpw_keystroke: echo off.\n");
 		return;
 	}
@@ -1857,7 +1857,7 @@ void unixpw_keystroke(rfbBool down, rfbKeySym keysym, int init) {
 
 					x2 = nfix(x2, dpy_x);
 					y2 = nfix(y2, dpy_y);
-					
+
 					zero_fb(x2 - w2, y2 - h2, x2, y2);
 					mark_rect_as_modified(x2 - w2,
 					    y2 - h2, x2, y2, 0);
@@ -2070,7 +2070,7 @@ static void apply_opts (char *user) {
 	if (! cd) {
 		rfbLog("apply_opts: no ClientData\n");
 	}
-	
+
 	if (user && cd) {
 		if (cd->unixname) {
 			free(cd->unixname);
@@ -2166,7 +2166,7 @@ void unixpw_accept(char *user) {
 			rfbLog("unixpw_accept: unixpw= but not root\n");
 			started_as_root = 2;
 		} else {
-			char *u = (char *)malloc(strlen(user)+1); 
+			char *u = (char *)malloc(strlen(user)+1);
 
 			u[0] = '\0';
 			if (!strcmp(users_list, "unixpw=")) {
@@ -2183,7 +2183,7 @@ void unixpw_accept(char *user) {
 				}
 				free(str);
 			}
-			
+
 			if (u[0] == '\0') {
 				rfbLog("unixpw_accept skipping switch to user: %s\n", user);
 			} else if (switch_user(u, 0)) {

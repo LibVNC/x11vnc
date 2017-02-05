@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -198,7 +198,7 @@ int dotted_ip(char *host, int partial) {
 		return 0;
 	}
 	if (!partial && dots != 3) {
-		return 0;	
+		return 0;
 	}
 	return 1;
 }
@@ -207,7 +207,7 @@ static int get_port(int sock, int remote) {
 	struct sockaddr_in saddr;
 	unsigned int saddr_len;
 	int saddr_port;
-	
+
 	saddr_len = sizeof(saddr);
 	memset(&saddr, 0, sizeof(saddr));
 	saddr_port = -1;
@@ -236,7 +236,7 @@ static char *get_host(int sock, int remote) {
 	unsigned int saddr_len;
 	int saddr_port;
 	char *saddr_ip_str = NULL;
-	
+
 	saddr_len = sizeof(saddr);
 	memset(&saddr, 0, sizeof(saddr));
 	saddr_port = -1;
@@ -344,7 +344,7 @@ char *ident_username(rfbClientPtr client) {
 			FD_SET(sock, &rfds);
 			tv.tv_sec  = 3;
 			tv.tv_usec = 0;
-			ret = select(sock+1, &rfds, NULL, NULL, &tv); 
+			ret = select(sock+1, &rfds, NULL, NULL, &tv);
 
 			if (ret > 0) {
 				int i;
@@ -451,7 +451,7 @@ int find_free_port6(int start, int end) {
 int have_ssh_env(void) {
 	char *str, *p = getenv("SSH_CONNECTION");
 	char *rhost, *rport, *lhost, *lport;
-	
+
 	if (! p) {
 		char *q = getenv("SSH_CLIENT");
 		if (! q) {
@@ -468,7 +468,7 @@ int have_ssh_env(void) {
 	}
 
 	str = strdup(p);
-	
+
 	p = strtok(str, " ");
 	rhost = p;
 
@@ -481,7 +481,7 @@ int have_ssh_env(void) {
 	if (! p) goto fail;
 
 	lhost = p;
-	
+
 	p = strtok(NULL, " ");
 	if (! p) goto fail;
 
@@ -503,7 +503,7 @@ if (0) fprintf(stderr, "%d/%d - '%s' '%s'\n", atoi(rport), atoi(lport), rhost, l
 	free(str);
 
 	return 1;
-	
+
 	fail:
 
 	free(str);
@@ -558,14 +558,14 @@ int listen6(int port) {
 	}
 
 	if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (char *)&one, sizeof(one)) < 0) {
-		rfbLogPerror("listen6: setsockopt SO_REUSEADDR"); 
+		rfbLogPerror("listen6: setsockopt SO_REUSEADDR");
 		close(fd);
 		return -1;
 	}
 
 #if defined(SOL_IPV6) && defined(IPV6_V6ONLY)
 	if (setsockopt(fd, SOL_IPV6, IPV6_V6ONLY, (char *)&one, sizeof(one)) < 0) {
-		rfbLogPerror("listen6: setsockopt IPV6_V6ONLY"); 
+		rfbLogPerror("listen6: setsockopt IPV6_V6ONLY");
 		close(fd);
 		return -1;
 	}
@@ -609,10 +609,10 @@ int listen6(int port) {
 					char *s = ipv6_getipaddr(ap->ai_addr, ap->ai_addrlen);
 					if (!s) s = strdup("unknown");
 
-					rfbLog("listen6: checking: %s family: %d\n", s, ap->ai_family); 
+					rfbLog("listen6: checking: %s family: %d\n", s, ap->ai_family);
 					if (ap->ai_family == AF_INET6) {
 						memcpy((char *)&sin, ap->ai_addr, sizeof(sin));
-						rfbLog("listen6: using:    %s scope_id: %d\n", s, sin.sin6_scope_id); 
+						rfbLog("listen6: using:    %s scope_id: %d\n", s, sin.sin6_scope_id);
 						err = 0;
 						free(s);
 						break;
@@ -638,7 +638,7 @@ int listen6(int port) {
 	}
 
 	if (bind(fd, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
-		rfbLogPerror("listen6: bind"); 
+		rfbLogPerror("listen6: bind");
 		close(fd);
 		return -1;
 	}

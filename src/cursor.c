@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -100,7 +100,7 @@ static void set_cursor_was_changed(rfbScreenInfoPtr s);
 
 
 /*
- * Here begins a bit of a mess to experiment with multiple cursors 
+ * Here begins a bit of a mess to experiment with multiple cursors
  * drawn on the remote background ...
  */
 static void curs_copy(cursor_info_t *dest, cursor_info_t *src) {
@@ -239,7 +239,7 @@ static char* curs_arrow2_mask =
 "                  ";
 static cursor_info_t cur_arrow2 = {NULL, NULL, 18, 18, 0, 0, 0, NULL};
 
-static char* curs_arrow3_data = 
+static char* curs_arrow3_data =
 "                "
 " xx             "
 " xxxx           "
@@ -257,7 +257,7 @@ static char* curs_arrow3_data =
 "              x "
 "                ";
 
-static char* curs_arrow3_mask = 
+static char* curs_arrow3_mask =
 "xxx             "
 "xxxxx           "
 "xxxxxxx         "
@@ -277,7 +277,7 @@ static char* curs_arrow3_mask =
 
 static cursor_info_t cur_arrow3 = {NULL, NULL, 16, 16, 0, 0, 1, NULL};
 
-static char* curs_arrow4_data = 
+static char* curs_arrow4_data =
 "                "
 " xx             "
 " xxxx           "
@@ -295,7 +295,7 @@ static char* curs_arrow4_data =
 "              x "
 "                ";
 
-static char* curs_arrow4_mask = 
+static char* curs_arrow4_mask =
 "xxx             "
 "xxxxx           "
 "xxxxxxx         "
@@ -315,7 +315,7 @@ static char* curs_arrow4_mask =
 
 static cursor_info_t cur_arrow4 = {NULL, NULL, 16, 16, 0, 0, 0, NULL};
 
-static char* curs_arrow5_data = 
+static char* curs_arrow5_data =
 "x              "
 " xx            "
 " xxxx          "
@@ -332,7 +332,7 @@ static char* curs_arrow5_data =
 "             x "
 "              x";
 
-static char* curs_arrow5_mask = 
+static char* curs_arrow5_mask =
 "xx             "
 "xxxx           "
 " xxxxx         "
@@ -351,7 +351,7 @@ static char* curs_arrow5_mask =
 
 static cursor_info_t cur_arrow5 = {NULL, NULL, 15, 15, 0, 0, 1, NULL};
 
-static char* curs_arrow6_data = 
+static char* curs_arrow6_data =
 "x              "
 " xx            "
 " xxxx          "
@@ -368,7 +368,7 @@ static char* curs_arrow6_data =
 "             x "
 "              x";
 
-static char* curs_arrow6_mask = 
+static char* curs_arrow6_mask =
 "xx             "
 "xxxx           "
 " xxxxx         "
@@ -389,8 +389,8 @@ static cursor_info_t cur_arrow6 = {NULL, NULL, 15, 15, 0, 0, 0, NULL};
 
 int alt_arrow_max = 6;
 /*
- * It turns out we can at least detect mouse is on the root window so 
- * show it (under -cursor X) with this familiar cursor... 
+ * It turns out we can at least detect mouse is on the root window so
+ * show it (under -cursor X) with this familiar cursor...
  */
 static char* curs_root_data =
 "                  "
@@ -433,7 +433,7 @@ static char* curs_root_mask =
 "                  ";
 static cursor_info_t cur_root = {NULL, NULL, 18, 18, 8, 8, 1, NULL};
 
-static char* curs_fleur_data = 
+static char* curs_fleur_data =
 "                "
 "       xx       "
 "      xxxx      "
@@ -451,7 +451,7 @@ static char* curs_fleur_data =
 "       xx       "
 "                ";
 
-static char* curs_fleur_mask = 
+static char* curs_fleur_mask =
 "      xxxx      "
 "      xxxxx     "
 "     xxxxxx     "
@@ -471,7 +471,7 @@ static char* curs_fleur_mask =
 
 static cursor_info_t cur_fleur = {NULL, NULL, 16, 16, 8, 8, 1, NULL};
 
-static char* curs_plus_data = 
+static char* curs_plus_data =
 "            "
 "     xx     "
 "     xx     "
@@ -485,7 +485,7 @@ static char* curs_plus_data =
 "     xx     "
 "            ";
 
-static char* curs_plus_mask = 
+static char* curs_plus_mask =
 "    xxxx    "
 "    xxxx    "
 "    xxxx    "
@@ -500,7 +500,7 @@ static char* curs_plus_mask =
 "    xxxx    ";
 static cursor_info_t cur_plus = {NULL, NULL, 12, 12, 5, 6, 1, NULL};
 
-static char* curs_xterm_data = 
+static char* curs_xterm_data =
 "                "
 "     xxx xxx    "
 "       xxx      "
@@ -518,7 +518,7 @@ static char* curs_xterm_data =
 "     xxx xxx    "
 "                ";
 
-static char* curs_xterm_mask = 
+static char* curs_xterm_mask =
 "    xxxx xxxx   "
 "    xxxxxxxxx   "
 "    xxxxxxxxx   "
@@ -647,8 +647,8 @@ static void setup_cursors(void) {
 
 		/* create new struct: */
 		ci = (cursor_info_t *) malloc(sizeof(cursor_info_t));
-		ci->data = NULL; 
-		ci->mask = NULL; 
+		ci->data = NULL;
+		ci->mask = NULL;
 		ci->wx = 0;
 		ci->wy = 0;
 		ci->sx = 0;
@@ -729,11 +729,11 @@ static void setup_cursors(void) {
 	}
 	if (scale && sscanf(scale, "%dx%d", &i, &j) == 2) {
 		if (wdpy_x > 0) {
-			w_in = wdpy_x; 
-			h_in = wdpy_y; 
+			w_in = wdpy_x;
+			h_in = wdpy_y;
 		} else {
-			w_in = dpy_x; 
-			h_in = dpy_y; 
+			w_in = dpy_x;
+			h_in = dpy_y;
 		}
 	}
 
@@ -879,7 +879,7 @@ void setup_cursors_and_push(void) {
 }
 
 /*
- * Descends window tree at pointer until the window cursor matches the current 
+ * Descends window tree at pointer until the window cursor matches the current
  * cursor.  So far only used to detect if mouse is on root background or not.
  * (returns 0 in that case, 1 otherwise).
  *
@@ -945,7 +945,7 @@ static void tree_descend_cursor(int *depth, Window *w, win_str_info_t *winfo) {
 			if (! c) {
 				continue;
 			}
-			
+
 			if (! got_wm_name && XFetchName(dpy, c, &name)) {
 				if (name) {
 					if (*name != '\0') {
@@ -1085,7 +1085,7 @@ rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h,
 				pixels32 = NULL;
 			}
 		}
-			
+
 		pixels = (uint32_t *) pixels_new;
 
 		xhot = scale_round(xhot, scale_cursor_fac_x);
@@ -1585,7 +1585,7 @@ int get_which_cursor(void) {
 			winfo.res_class = (char *) malloc(1024);
 		}
 		first = 0;
-		
+
 		X_LOCK;
 		tree_descend_cursor(&depth, &win, &winfo);
 		X_UNLOCK;
@@ -1599,7 +1599,7 @@ int get_which_cursor(void) {
 			/* apply crude heuristics to choose a cursor... */
 			if (win && dpy) {
 				int ratio = 10, x, y;
-				unsigned int w, h, bw, d;  
+				unsigned int w, h, bw, d;
 				Window r;
 
 #if !NO_X11
@@ -1708,13 +1708,13 @@ void restore_cursor_shape_updates(rfbScreenInfoPtr s) {
 		if (cd->had_cursor_shape_updates) {
 			rfbLog("restoring enableCursorShapeUpdates for client"
 			    " 0x%x\n", cl);
-			cl->enableCursorShapeUpdates = TRUE;	
+			cl->enableCursorShapeUpdates = TRUE;
 			changed = 1;
 		}
 		if (cd->had_cursor_pos_updates) {
 			rfbLog("restoring enableCursorPosUpdates for client"
 			    " 0x%x\n", cl);
-			cl->enableCursorPosUpdates = TRUE;	
+			cl->enableCursorPosUpdates = TRUE;
 			changed = 1;
 		}
 		if (changed) {
@@ -1759,7 +1759,7 @@ void disable_cursor_shape_updates(rfbScreenInfoPtr s) {
 				rfbLog("%s disable HCPU\n", cl->host);
 			}
 		}
-		
+
 		cl->enableCursorShapeUpdates = FALSE;
 		cl->enableCursorPosUpdates = FALSE;
 		cl->cursorWasChanged = FALSE;
@@ -1911,7 +1911,7 @@ void cursor_position(int x, int y, rfbClientPtr client) {
 	 /* if client is non-NULL, handle client cursor */
 	 ClientData *cd = (ClientData *) client->clientData;
 	 if(cd && use_multipointer) {
-	   /* make sure we do this while no rfbSendFramebufferUpdate() to this client is running! 
+	   /* make sure we do this while no rfbSendFramebufferUpdate() to this client is running!
 	      DO NOT REMOVE THE cl->sendMutex LOCKS IN watch_loop() !!!
 	    */
 	   {
@@ -1920,16 +1920,16 @@ void cursor_position(int x, int y, rfbClientPtr client) {
 	     if (client->enableCursorShapeUpdates) {
 	       cd->had_cursor_shape_updates = 1;
 	       client->enableCursorShapeUpdates = FALSE;
-	       if (debug_pointer) 
+	       if (debug_pointer)
 		 rfbLog("%s disable HCSU\n", client->host);
-	    
+
 	     }
 
 	     /* disable these cause they send the screen's master pointer pos, not the client pointer's */
 	     if (client->enableCursorPosUpdates) {
 	       cd->had_cursor_pos_updates = 1;
 	       client->enableCursorPosUpdates = FALSE;
-	       if (debug_pointer) 
+	       if (debug_pointer)
 		 rfbLog("%s disable HCPU\n", client->host);
 	     }
 
@@ -1938,9 +1938,9 @@ void cursor_position(int x, int y, rfbClientPtr client) {
 
 
 	   /* restore saved under-cursor-buffer */
-	   if(cd->cursor_x_saved >= 0 && cd->cursor_y_saved >= 0) 
+	   if(cd->cursor_x_saved >= 0 && cd->cursor_y_saved >= 0)
 	     restore_under_cursor_buffer(client);
-  
+
 	   /* save maybe new fb region */
 	   cd->cursor_x = x;
 	   cd->cursor_y = y;
@@ -1965,7 +1965,7 @@ static void set_rfb_cursor(int which) {
 	if (! screen) {
 		return;
 	}
-	
+
 	if (!cursors[which] || !cursors[which]->rfb) {
 		rfbLog("non-existent cursor: which=%d\n", which);
 		return;
@@ -1989,7 +1989,7 @@ int set_cursor(int x, int y, int which) {
 	if (x || y) {} /* unused vars warning: */
 
 	if (which < 0) {
-		which = last;	
+		which = last;
 	}
 	if (last < 0 || which != last) {
 		set_rfb_cursor(which);
@@ -2002,7 +2002,7 @@ int set_cursor(int x, int y, int which) {
 
 /*
  * routine called periodically to update cursor aspects, this catches
- * warps and cursor shape changes. 
+ * warps and cursor shape changes.
  */
 int check_x11_pointer(void) {
 	Window root_w, child_w;
@@ -2136,12 +2136,12 @@ if (0) fprintf(stderr, "check_x11_pointer %d %d\n", root_x, root_y);
 
 
 /*
-  the following routines save what's under a cursor, draw a cursor into 
-  the framebuffer and  restore the saved framebuffer region. most of 
+  the following routines save what's under a cursor, draw a cursor into
+  the framebuffer and  restore the saved framebuffer region. most of
   the code stolen from libvncserver.
-  this is mostly used in multi-pointer mode: because RFB only has the 
-  notion of a single cursor, we draw the extra client cursor directly 
-  into the framebuffer to provide some visual feedback to the user. 
+  this is mostly used in multi-pointer mode: because RFB only has the
+  notion of a single cursor, we draw the extra client cursor directly
+  into the framebuffer to provide some visual feedback to the user.
 */
 void save_under_cursor_buffer(rfbClientPtr cl)
 {
@@ -2149,7 +2149,7 @@ void save_under_cursor_buffer(rfbClientPtr cl)
   rfbCursorPtr c;
   int j,x1,x2,y1,y2,bpp=screen->serverFormat.bitsPerPixel/8,
     rowstride=screen->paddedWidthInBytes,
-    bufsize;  
+    bufsize;
   rfbBool wasChanged=FALSE;
 
   if(!cd)
@@ -2170,13 +2170,13 @@ void save_under_cursor_buffer(rfbClientPtr cl)
     UNLOCK(cl->updateMutex);
   }
 
-  /* sanity checks */ 
+  /* sanity checks */
   x1 = cd->cursor_x - c->xhot;
   x2 = x1 + c->width;
   if(x1<0) { x1=0; }
   if(x2 >= screen->width) x2= screen->width-1;
   x2 -= x1; /* width */
-  if(x2<=0) 
+  if(x2<=0)
     return; /* nothing to do */
 
   y1 = cd->cursor_y - c->yhot;
@@ -2184,7 +2184,7 @@ void save_under_cursor_buffer(rfbClientPtr cl)
   if(y1<0) { y1=0; }
   if(y2>=screen->height) y2=screen->height-1;
   y2 -= y1; /* height */
-  if(y2<=0) 
+  if(y2<=0)
     return; /* nothing to do */
 
   LOCK(cl->updateMutex);
@@ -2206,8 +2206,8 @@ void draw_cursor(rfbClientPtr cl)
   ClientData *cd = (ClientData *) cl->clientData;
   rfbCursorPtr c;
   int i,j,x1,x2,y1,y2,i1,j1,bpp=screen->serverFormat.bitsPerPixel/8,
-    rowstride=screen->paddedWidthInBytes, w;  
- 
+    rowstride=screen->paddedWidthInBytes, w;
+
   if(!cd)
     return;
 
@@ -2217,16 +2217,16 @@ void draw_cursor(rfbClientPtr cl)
     return;
 
   w = (c->width+7)/8;
- 
-  /* sanity checks */ 
-  i1=j1=0; 
+
+  /* sanity checks */
+  i1=j1=0;
 
   x1 = cd->cursor_x - c->xhot;
   x2 = x1 + c->width;
   if(x1<0) { i1=-x1; x1=0; }
   if(x2 >= screen->width) x2= screen->width-1;
   x2 -= x1; /* width */
-  if(x2<=0) 
+  if(x2<=0)
     return; /* nothing to do */
 
   y1 = cd->cursor_y - c->yhot;
@@ -2234,7 +2234,7 @@ void draw_cursor(rfbClientPtr cl)
   if(y1<0) { j1=-y1; y1=0; }
   if(y2>=screen->height) y2=screen->height-1;
   y2 -= y1; /* height */
-  if(y2<=0) 
+  if(y2<=0)
     return; /* nothing to do */
 
   LOCK(cl->screen->cursorMutex);
@@ -2359,7 +2359,7 @@ void restore_under_cursor_buffer(rfbClientPtr cl)
 
   c = cd->cursor;
 
-  if(!c) 
+  if(!c)
     return;
 
   /* sanity checks */

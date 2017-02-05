@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -67,7 +67,7 @@ static int try_avahi_helper(char *name, char *host, uint16_t port) {
 		return 0;
 	}
 
-	path = strdup(path); 
+	path = strdup(path);
 	cmd = (char *) malloc(strlen(path) + 100);
 	sprintf(portstr, "%d", (int) port);
 
@@ -112,9 +112,9 @@ static int try_avahi_helper(char *name, char *host, uint16_t port) {
 		int status;
 
 		usleep(500 * 1000);
-		waitpid(avahi_pid, &status, WNOHANG); 
+		waitpid(avahi_pid, &status, WNOHANG);
 		if (kill(avahi_pid, 0) != 0) {
-			waitpid(avahi_pid, &status, WNOHANG); 
+			waitpid(avahi_pid, &status, WNOHANG);
 			avahi_pid = 0;
 			free(cmd);
 			return 0;

@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -107,10 +107,10 @@ void clean_shm(int quick) {
 		shm_clean(&snaprect_shm, snaprect);
 	}
 
-	/* 
+	/*
 	 * Here we have to clean up quite a few shm areas for all
 	 * the possible tile row runs (40 for 1280), not as robust
-	 * as one might like... sometimes need to run ipcrm(1). 
+	 * as one might like... sometimes need to run ipcrm(1).
 	 */
 	for(i=1; i<=ntiles_x; i++) {
 		if (i > tile_shm_count) {
@@ -348,7 +348,7 @@ static int XIOerr(Display *d) {
 		int sleepmax = 10, i;
 		Display *save_dpy = dpy;
 		char *dstr = strdup(DisplayString(save_dpy));
-		reopen++;	
+		reopen++;
 		if (getenv("X11VNC_REOPEN_SLEEP_MAX")) {
 			sleepmax = atoi(getenv("X11VNC_REOPEN_SLEEP_MAX"));
 		}
@@ -387,7 +387,7 @@ static int XIOerr(Display *d) {
 			/* sadly, we can never return... */
 			if (db) rfbLog("*** XIO error: watch_loop\n");
 			watch_loop();
-			clean_up_exit(1);	
+			clean_up_exit(1);
 		}
 	}
 #endif
@@ -449,7 +449,7 @@ void initialize_crash_handler(void) {
 	    " gdb -x /tmp/gdb.%d -batch -n %s %d;"
 	    " rm -f /tmp/gdb.%d", pid, pid, program_name, pid, pid);
 	snprintf(crash_stack_command2, 500, "pstack %d", program_pid);
-	
+
 	snprintf(crash_debug_command, 500, "gdb %s %d", program_name, pid);
 }
 
@@ -521,7 +521,7 @@ static void crash_shell(void) {
 			fprintf(stderr, "\n\nresult:\n%s\n", p);
 			free(p);
 		}
-		
+
 crash_prompt:
 		fprintf(stderr, "crash> ");
 	}
@@ -773,7 +773,7 @@ int known_sigpipe_mode(char *s) {
 	if (strstr(s, "exit:") == s) {
 		return 1;
 	}
-	if (strcmp(s, "skip") && strcmp(s, "ignore") && 
+	if (strcmp(s, "skip") && strcmp(s, "ignore") &&
 	    strcmp(s, "exit")) {
 		return 0;
 	} else {

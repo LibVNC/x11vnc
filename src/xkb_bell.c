@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -118,7 +118,7 @@ void initialize_watch_bell(void) {
 }
 
 /*
- * We call this periodically to process any bell events that have 
+ * We call this periodically to process any bell events that have
  * taken place.
  */
 void check_bell_event(void) {

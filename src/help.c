@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -48,7 +48,7 @@ void nopassword_warning_msg(int gotloc);
 
 void print_help(int mode) {
 #if !SKIP_HELP
-	char help[] = 
+	char help[] =
 "\n"
 "x11vnc: allow VNC connections to real X11 displays. %s\n"
 "\n"
@@ -5815,7 +5815,7 @@ void print_help(int mode) {
 #endif
 
 	if (mode == 1) {
-		char *p;	
+		char *p;
 		int l = 0;
 		fprintf(stderr, "x11vnc: allow VNC connections to real "
 		    "X11 displays. %s\n\nx11vnc options:\n", lastmod);
@@ -5914,7 +5914,7 @@ void xopen_display_fail_message(char *disp) {
 	fprintf(stderr, " - Usually the display is simply \":0\" (in fact"
 	    " x11vnc uses this if you forget\n");
 	fprintf(stderr, "   to specify it), but in some multi-user"
-	    " situations it could be \":1\", \":2\",\n"); 
+	    " situations it could be \":1\", \":2\",\n");
 	fprintf(stderr, "   or even \":137\".  Ask your administrator"
 	    " or a guru if you are having\n");
 	fprintf(stderr, "   difficulty determining what your X DISPLAY is.\n");
@@ -6081,7 +6081,7 @@ void nopassword_warning_msg(int gotloc) {
 }
 
 void print_license(void) {
-	char license[] = 
+	char license[] =
 #if !SKIP_HELP
 "		    GNU GENERAL PUBLIC LICENSE\n"
 "		       Version 2, June 1991\n"

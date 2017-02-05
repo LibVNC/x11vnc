@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -250,7 +250,7 @@ static char *get_login_list(int with_display) {
 static char **user_list(char *user_str) {
 	int n, i;
 	char *p, **list;
-	
+
 	p = user_str;
 	n = 1;
 	while (*p++) {
@@ -297,7 +297,7 @@ static void user2uid(char *user, uid_t *uid, gid_t *gid, char **name, char **hom
 				n++;
 				i++;
 			}
-			did = (int *) malloc((n+1) * sizeof(int)); 
+			did = (int *) malloc((n+1) * sizeof(int));
 			i = 0;
 			for (i=0; i<n; i++) {
 				did[i] = 0;
@@ -418,7 +418,7 @@ static int lurk(char **users) {
 			q = strstr(tmp, chk);
 			if (q) {
 				char *p = q + strlen(chk);
-				
+
 				if (q == tmp || *(q-1) == ',') {
 					/* bounded on left. */
 					if (*p == ',' || *p == '\0') {
@@ -428,7 +428,7 @@ static int lurk(char **users) {
 					}
 				}
 			}
-			
+
 			if (*tmp) {
 				strcat(tmp, ",");
 			}
@@ -438,7 +438,7 @@ static int lurk(char **users) {
 		}
 		free(logins);
 		logins = tmp;
-		
+
 	} else {
 		logins = get_login_list(1);
 	}
@@ -459,9 +459,9 @@ static int lurk(char **users) {
 		int ok = 1, dn;
 
 		p = list[lind++];
-		
+
 		t = strdup(p);	/* bob:0 */
-		q = strchr(t, ':'); 
+		q = strchr(t, ':');
 		if (! q) {
 			free(t);
 			break;
@@ -495,7 +495,7 @@ static int lurk(char **users) {
 		if (! ok) {
 			continue;
 		}
-		
+
 		for (dn = dmin; dn <= dmax; dn++) {
 			if (dn >= 0) {
 				sprintf(dpystr, ":%d", dn);
@@ -601,7 +601,7 @@ static int guess_user_and_switch(char *str, int fb_mode) {
 		p = list[lind++];
 
 		t = strdup(p);
-		q = strchr(t, ':'); 
+		q = strchr(t, ':');
 		if (! q) {
 			free(t);
 			break;
@@ -655,7 +655,7 @@ static int try_user_and_display(uid_t uid, gid_t gid, char *dpystr) {
 	char *home, *name;
 	int st;
 	struct passwd *pw;
-	
+
 	pw = getpwuid(uid);
 	if (pw) {
 		name = pw->pw_name;
@@ -664,7 +664,7 @@ static int try_user_and_display(uid_t uid, gid_t gid, char *dpystr) {
 		return 0;
 	}
 
-	/* 
+	/*
 	 * We fork here and try to open the display again as the
 	 * new user.  Unreadable XAUTHORITY could be a problem...
 	 * This is not really needed since we have DISPLAY open but:
@@ -687,7 +687,7 @@ static int try_user_and_display(uid_t uid, gid_t gid, char *dpystr) {
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGTERM, SIG_DFL);
 
-		rc = switch_user_env(uid, gid, name, home, 0); 
+		rc = switch_user_env(uid, gid, name, home, 0);
 		if (! rc) {
 			exit(1);
 		}
@@ -816,7 +816,7 @@ static int switch_user_env(uid_t uid, gid_t gid, char *name, char *home, int fb_
 	if (xauth && access(xauth, R_OK) != 0) {
 		*(xauth-2) = '_';	/* yow */
 	}
-	
+
 	set_env("USER", name);
 	set_env("LOGNAME", name);
 	set_env("HOME", home);
@@ -929,7 +929,7 @@ int read_passwds(char *passfile) {
 	for (i=0; i<max+1; i++) {
 		passwd_list[i] = NULL;
 	}
-	
+
 	if (in == NULL) {
 		in = fopen(filename, "r");
 	}
@@ -949,7 +949,7 @@ int read_passwds(char *passfile) {
 	while (fgets(line, 1024, in) != NULL) {
 		char *p;
 		int blank = 1;
-		int len = strlen(line); 
+		int len = strlen(line);
 
 		if (db_passwd) {
 			fprintf(stderr, "read_passwds: raw line: %s\n", line);
@@ -1141,7 +1141,7 @@ rfbBool custom_passwd_check(rfbClientPtr cl, const char *response, int len) {
 	sprintf(num, "%d\n", len);
 
 	input = (char *) malloc(2 * len + 16 + 1);
-	
+
 	input[0] = '\0';
 	strcat(input, num);
 	n = strlen(num);
@@ -1226,7 +1226,7 @@ static void handle_one_http_request(void) {
 			pid_t pidw;
 			while (1) {
 				rfbHttpCheckFds(screen);
-				pidw = waitpid(pid, &status, WNOHANG); 
+				pidw = waitpid(pid, &status, WNOHANG);
 				if (pidw == pid && WIFEXITED(status)) {
 					break;
 				} else if (pidw < 0) {
@@ -1823,7 +1823,7 @@ static void do_vnc_redirect(int created_disp, char *vnc_redirect_host, int vnc_r
 	int vdpy = -1, sock = -1;
 	int s_in, s_out, i;
 	if (vnc_redirect == 2) {
-		char num[32];	
+		char num[32];
 		sprintf(num, ":%d", vnc_redirect_port);
 		q = num;
 	}
@@ -1881,7 +1881,7 @@ extern char create_display[];
 
 char *setup_cmd(char *str, int *vnc_redirect, char **vnc_redirect_host, int *vnc_redirect_port, int db) {
 	char *cmd = NULL;
-	
+
 	if (no_external_cmds || !cmd_ok("WAIT")) {
 		rfbLog("wait_for_client external cmds not allowed:"
 		    " %s\n", use_dpy);
@@ -2384,10 +2384,10 @@ static void do_try_switch(char *usslpeer, char *users_list_save) {
 			rfbLog("sslpeer failed to switch to user: %s\n", usslpeer);
 		}
 		free(u);
-		
+
 	} else if (users_list_save && keep_unixpw_user) {
 		char *user = keep_unixpw_user;
-		char *u = (char *)malloc(strlen(user)+1); 
+		char *u = (char *)malloc(strlen(user)+1);
 
 		users_list = users_list_save;
 
@@ -2406,7 +2406,7 @@ static void do_try_switch(char *usslpeer, char *users_list_save) {
 			}
 			free(str);
 		}
-		
+
 		if (u[0] == '\0') {
 			rfbLog("unixpw_accept skipping switch to user: %s (drc)\n", user);
 		} else if (switch_user(u, 0)) {
@@ -2671,7 +2671,7 @@ if (db) fprintf(stderr, "line1: '%s'\n", line1);
 					continue;
 				}
 			}
-			
+
 			line2[i] = q[k+j];
 			i++;
 		}
@@ -2694,7 +2694,7 @@ if (db) fprintf(stderr, "\n");
 			}
 			p = popen(c, "r");
 			free(c);
-			
+
 		} else if (unixpw_nis && keep_unixpw_user) {
 			char *c;
 			if (getuid() == 0) {
@@ -2706,7 +2706,7 @@ if (db) fprintf(stderr, "\n");
 			}
 			p = popen(c, "r");
 			free(c);
-			
+
 		} else {
 			p = popen(cmd, "r");
 		}
@@ -2810,7 +2810,7 @@ if (db) fprintf(stderr, "%d -- %s\n", i, proc);
 				for (k=0; k < 100; k++) {
 					buf[k] = '\0';
 				}
-	
+
 				if (readlink(proc, buf, 100) != -1) {
 					buf[100-1] = '\0';
 if (db) fprintf(stderr, "%d -- %s -- %s\n", i, proc, buf);
@@ -3009,7 +3009,7 @@ int wait_for_client(int *argc, char** argv, int http) {
 	if (strstr(str, "cmd=") == str) {
 		cmd = setup_cmd(str, &vnc_redirect, &vnc_redirect_host, &vnc_redirect_port, db);
 	}
-	
+
 	fb_image = &ximage_struct;
 	setup_fake_fb(fb_image, w, h, b);
 
@@ -3042,7 +3042,7 @@ int wait_for_client(int *argc, char** argv, int http) {
 		multiple_cursors_mode = strdup("default");
 	}
 	initialize_cursors_mode();
-	
+
 	initialize_screen(argc, argv, fb_image);
 
 	if (! inetd && ! use_openssl) {
@@ -3075,7 +3075,7 @@ int wait_for_client(int *argc, char** argv, int http) {
 	}
 
 	if (cmd && !strcmp(cmd, "HTTPONCE")) {
-		handle_one_http_request();	
+		handle_one_http_request();
 		clean_up_exit(0);
 	}
 

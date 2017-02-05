@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -280,7 +280,7 @@ static int wm_running(void) {
 		return 1;
 	}
 #endif	/* NO_X11 */
-	
+
 }
 
 int guess_dm_gone(int t1, int t2) {
@@ -721,7 +721,7 @@ static int process_watch(char *str, int parent, int db) {
 
 			if (kill((pid_t) pid, 0) != 0) {
 				if (1 || errno == ESRCH) {
-					process_alive = 0;	
+					process_alive = 0;
 				}
 			}
 
@@ -815,7 +815,7 @@ static void grab_buster_watch(int parent, char *dstr) {
 	while(1) {
 		int slp = sleep;
 		if (grab_npids > 1) {
-			slp = slp / 8;	
+			slp = slp / 8;
 		}
 		usleep(slp);
 		usleep((int) (0.60 * rfac() * slp));
@@ -842,7 +842,7 @@ void spawn_grab_buster(void) {
 
 	RAWFB_RET_VOID
 
-	XCloseDisplay_wr(dpy); 
+	XCloseDisplay_wr(dpy);
 	dpy = NULL;
 
 	if ((pid = fork()) > 0) {
@@ -916,19 +916,19 @@ void sync_tod_with_servertime(void) {
 	}
 
 	snprintf(diff, 128, "%d/%08d/%lu/%.6f", (int) getpid(), seq++,
-	    xserver_ticks, servertime_diff); 
+	    xserver_ticks, servertime_diff);
 	XChangeProperty(dpy, rootwin, ticker_atom, XA_STRING, 8,
 	    PropModeReplace, (unsigned char *) diff, strlen(diff));
 	XSync(dpy, False);
 
 	for (i=0; i < 10; i++) {
 		int k, got = 0;
-		
+
 		for (k=0; k < 5; k++) {
 			while (XCheckTypedEvent(dpy, PropertyNotify, &xev)) {
 				if (xev.xproperty.atom == ticker_atom) {
 					double stime;
-					
+
 					xserver_ticks = xev.xproperty.time;
 					stime = (double) xev.xproperty.time;
 					stime = stime/1000.0;
@@ -1046,7 +1046,7 @@ void check_local_grab(void) {
 						rfbLog("check_local_grab: set viewonly\n");
 					}
 				}
-				
+
 				local_is_idle = 0;
 			} else {
 				if (!local_is_idle && save_viewonly >= 0) {
@@ -1315,7 +1315,7 @@ void check_xevents(int reset) {
 			}
 		}
 		/*
-		 * we can get ClientMessage from our XSendEvent() call in 
+		 * we can get ClientMessage from our XSendEvent() call in
 		 * selection_request().
 		 */
 		while (XCheckTypedEvent(dpy, ClientMessage, &xev)) {
@@ -1408,13 +1408,13 @@ void check_xevents(int reset) {
 				sent_some_sel = 1;
 			}
 			set_cutbuffer = 0;
-		} 
+		}
 		if (got_vnc_connect) {
 			/*
 			 * Go retrieve VNC_CONNECT string.
 			 */
 			read_vnc_connect_prop(0);
-		} 
+		}
 		if (got_x11vnc_remote) {
 			/*
 			 * Go retrieve X11VNC_REMOTE string.
@@ -1472,7 +1472,7 @@ void check_xevents(int reset) {
 		/*
 		 * Every second or so, request PRIMARY or CLIPBOARD,
 		 * unless we already own it or there is no owner or we
-		 * have no clients. 
+		 * have no clients.
 		 * TODO: even at this low rate we should look into
 		 * and performance problems in odds cases (large text,
 		 * modem, etc.)
@@ -1647,7 +1647,7 @@ void check_xevents(int reset) {
 			qlen = XEventsQueued(dpy, QueuedAlready);
 			if (qlen >= bugout) {
 				rfbLog("event leak: %d queued, "
-				    " calling XSync(dpy, True)\n", qlen);  
+				    " calling XSync(dpy, True)\n", qlen);
 				rfbLog("  for diagnostics run: 'x11vnc -R"
 				    " debug_xevents:1'\n");
 				XSync(dpy, True);
@@ -1915,7 +1915,7 @@ void set_single_window(rfbClientPtr cl, int x, int y) {
 
 	if (ok) {
 		check_black_fb();
-		do_new_fb(1);	
+		do_new_fb(1);
 	}
 #endif
 
@@ -2034,7 +2034,7 @@ static void try_local_chat_window(void) {
 
 		signal(SIGALRM, wsock_timeout);
 		wsock_timeout_sock = lsock;
-		
+
 		alarm(10);
 		sock = accept(lsock, (struct sockaddr *)&addr, &addrlen);
 		alarm(0);

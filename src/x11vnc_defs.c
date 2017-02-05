@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -163,7 +163,7 @@ unsigned char *tile_has_xdamage_diff = NULL, *tile_row_has_xdamage_diff = NULL;
 /* times of recent events */
 time_t last_event = 0, last_input = 0, last_client = 0, last_open_xdisplay = 0;
 time_t last_local_input = 0;
-time_t last_keyboard_input = 0, last_pointer_input = 0; 
+time_t last_keyboard_input = 0, last_pointer_input = 0;
 time_t last_fb_bytes_sent = 0;
 double last_keyboard_time = 0.0;
 double last_pointer_time = 0.0;
@@ -218,10 +218,10 @@ rfbKeySym last_rfb_keysym = 0;
 double last_rfb_keytime = 0.0;
 double last_rfb_key_injected = 0.0;
 double last_rfb_ptr_injected = 0.0;
-int fb_copy_in_progress = 0;	
-int drag_in_progress = 0;	
-int shut_down = 0;	
-int do_copy_screen = 0;	
+int fb_copy_in_progress = 0;
+int drag_in_progress = 0;
+int shut_down = 0;
+int do_copy_screen = 0;
 time_t damage_time = 0;
 int damage_delay = 0;
 

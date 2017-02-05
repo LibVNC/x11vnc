@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -138,7 +138,7 @@ int macosxCGP_restore_sleep(void) {
 }
 
 int macosxCGP_init_dimming(void) {
-	if (IOMasterPort(bootstrap_port, &master_dev_port) != 
+	if (IOMasterPort(bootstrap_port, &master_dev_port) !=
 	    kIOReturnSuccess) {
 		return 0;
 	}

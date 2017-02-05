@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -126,14 +126,14 @@ int XSelectInput_wr(Display *display, Window w, long event_mask);
 void copy_raw_fb(XImage *dest, int x, int y, unsigned int w, unsigned int h);
 static void upup_downdown_warning(KeyCode key, Bool down);
 
-/* 
+/*
  * used in rfbGetScreen and rfbNewFramebuffer: and estimate to the number
  * of bits per color, of course for some visuals, e.g. 565, the number
  * is not the same for each color.  This is just a sane default.
  */
 int guess_bits_per_color(int bits_per_pixel) {
 	int bits_per_color;
-	
+
 	/* first guess, spread them "evenly" over R, G, and B */
 	bits_per_color = bits_per_pixel/3;
 	if (bits_per_color < 1) {
@@ -203,7 +203,7 @@ Status XShmGetImage_wr(Display *disp, Drawable d, XImage *image, int x, int y,
 	    return s;
 	}
 #endif
-	  return XShmGetImage(disp, d, image, x, y, mask); 
+	  return XShmGetImage(disp, d, image, x, y, mask);
 #else
 	if (!disp || !d || !image || !x || !y || !mask) {}
 	return (Status) 0;
@@ -216,7 +216,7 @@ XImage *XShmCreateImage_wr(Display* disp, Visual* vis, unsigned int depth,
 
 #if HAVE_XSHM
 	return XShmCreateImage(disp, vis, depth, format, data, shminfo,
-	    width, height); 
+	    width, height);
 #else
 	if (!disp || !vis || !depth || !format || !data || !shminfo || !width || !height) {}
 	return (XImage *) 0;
@@ -398,7 +398,7 @@ XImage *XCreateImage_wr(Display *disp, Visual *visual, unsigned int depth,
 		xi->width = width;
 		xi->height = height;
 		xi->bitmap_pad = bitmap_pad;
-		xi->bytes_per_line = bytes_per_line ? bytes_per_line : 
+		xi->bytes_per_line = bytes_per_line ? bytes_per_line :
 		    xi->width * xi->bits_per_pixel / 8;
 		xi->bitmap_unit = -1;	/* hint to not call XDestroyImage */
 		return xi;
@@ -489,7 +489,7 @@ static void copy_raw_fb_low_bpp(XImage *dest, int x, int y, unsigned int w,
 		int br;
 		for (br = 0; br < 8; br++) {
 			unsigned int pbit, k, m = 0;
-			
+
 			for (k=0; k < (unsigned int) raw_fb_native_bpp; k++) {
 				pbit = 1 << (br+k);
 				m |= pbit;
@@ -559,7 +559,7 @@ if (0) fprintf(stderr, "x=%d y=%d w=%d h=%d bpl=%d d_bpl=%d-%dx%dx%d/%d %p\n",
 				val = (ib << bs_f) | (ig << gs_f) | (ir << rs_f);
 			} else {
 				unsigned char rval, gval, bval;
-				
+
 				rval = (val & rm_n) >> rs_n;
 				gval = (val & gm_n) >> gs_n;
 				bval = (val & bm_n) >> bs_n;
@@ -947,7 +947,7 @@ void XTestFakeKeyEvent_wr(Display* dpy, int dev_id, KeyCode key, Bool down,
 		rfbLog("XTestFakeKeyEvent(dpy, keycode=0x%x \"%s\", %s)\n",
 		    key, str ? str : "null", down ? "down":"up");
 	}
-	if (first) { 
+	if (first) {
 		init_track_keycode_state();
 		first = 0;
 	}
@@ -980,7 +980,7 @@ void XTestFakeKeyEvent_wr(Display* dpy, int dev_id, KeyCode key, Bool down,
 	}
 	if (debug_keyboard) {
 		rfbLog("calling XTestFakeKeyEvent(%d, %d)  %.4f\n",
-		    key, down, dnowx());	
+		    key, down, dnowx());
 	}
 #if HAVE_XTEST
 #ifdef HAVE_XI2
@@ -994,10 +994,10 @@ void XTestFakeKeyEvent_wr(Display* dpy, int dev_id, KeyCode key, Bool down,
         old_handler = XSetErrorHandler(trap_xerror);
         trapped_xerror = 0;
 
-	XTestFakeDeviceKeyEvent(dpy, &xdev, key, down, NULL, 0, delay);        
+	XTestFakeDeviceKeyEvent(dpy, &xdev, key, down, NULL, 0, delay);
 
         XSetErrorHandler(old_handler);
-        if (trapped_xerror) 
+        if (trapped_xerror)
           trapped_xerror = 0;
       }
     else
@@ -1077,7 +1077,7 @@ void XTestFakeButtonEvent_wr(Display* dpy, int dev_id, unsigned int button, Bool
 	}
 	if (debug_pointer) {
 		rfbLog("calling XTestFakeButtonEvent(%d, %d)  %.4f\n",
-		    button, is_press, dnowx());	
+		    button, is_press, dnowx());
 	}
 #if HAVE_XTEST
 #ifdef HAVE_XI2
@@ -1091,10 +1091,10 @@ void XTestFakeButtonEvent_wr(Display* dpy, int dev_id, unsigned int button, Bool
         old_handler = XSetErrorHandler(trap_xerror);
         trapped_xerror = 0;
 
-        XTestFakeDeviceButtonEvent(dpy, &xdev, button, is_press, NULL, 0, delay);	  
+        XTestFakeDeviceButtonEvent(dpy, &xdev, button, is_press, NULL, 0, delay);
 
         XSetErrorHandler(old_handler);
-        if (trapped_xerror) 
+        if (trapped_xerror)
           trapped_xerror = 0;
       }
     else
@@ -1164,7 +1164,7 @@ void XTestFakeMotionEvent_wr(Display* dpy, int dev_id, int screen, int x, int y,
 
 	if (debug_pointer) {
 		rfbLog("calling XTestFakeMotionEvent(%d, %d)  %.4f\n",
-		    x, y, dnowx());	
+		    x, y, dnowx());
 	}
 #if HAVE_XTEST
 #ifdef HAVE_XI2
@@ -1182,7 +1182,7 @@ void XTestFakeMotionEvent_wr(Display* dpy, int dev_id, int screen, int x, int y,
         XTestFakeDeviceMotionEvent(dpy, &xdev, 0, 0, axes, 2, delay);
 
         XSetErrorHandler(old_handler);
-        if (trapped_xerror) 
+        if (trapped_xerror)
           trapped_xerror = 0;
       }
     else
@@ -1326,7 +1326,7 @@ void disable_grabserver(Display *in_dpy, int change) {
 				XTRAP_GrabControl_wr(in_dpy, False);
 			}
 			if (! didmsg && ! raw_fb_str) {
-				rfbLog("GrabServer control via XTEST.\n"); 
+				rfbLog("GrabServer control via XTEST.\n");
 				didmsg = 1;
 			}
 			ok = 1;
@@ -1346,7 +1346,7 @@ void disable_grabserver(Display *in_dpy, int change) {
 				XTestGrabControl_wr(in_dpy, False);
 			}
 			if (! didmsg && ! raw_fb_str) {
-				rfbLog("GrabServer control via DEC-XTRAP.\n"); 
+				rfbLog("GrabServer control via DEC-XTRAP.\n");
 				didmsg = 1;
 			}
 			ok = 1;
@@ -1421,7 +1421,7 @@ int xauth_raw(int on) {
 		if (xauth_raw_data) {
 			tmp_fd = mkstemp(tmp);
 			if (tmp_fd < 0) {
-				rfbLog("could not create tmp xauth file: %s\n", tmp);	
+				rfbLog("could not create tmp xauth file: %s\n", tmp);
 				return 0;
 			}
 			if (db) fprintf(stderr, "XAUTHORITY tmp: %s\n", tmp);
@@ -1658,7 +1658,7 @@ Status XQueryTree_wr(Display *display, Window w, Window *root_return,
 	return XQueryTree(display, w, root_return, parent_return,
 	    children_return, nchildren_return);
 #endif	/* NO_X11 */
-    	
+
 }
 
 int XFree_wr(void *data) {

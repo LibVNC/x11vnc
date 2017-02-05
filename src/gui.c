@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -299,7 +299,7 @@ if (0) fprintf(stderr, "run_gui: %s -- %d %d\n", gui_xdisplay, connect_to_x11vnc
 			} else {
 				old_xauth = strdup("");
 			}
-			dpy = XOpenDisplay_wr(x11vnc_xdisplay); 
+			dpy = XOpenDisplay_wr(x11vnc_xdisplay);
 			if (! dpy && auth_file) {
 				set_env("XAUTHORITY", auth_file);
 				dpy = XOpenDisplay_wr(x11vnc_xdisplay);
@@ -307,7 +307,7 @@ if (0) fprintf(stderr, "run_gui: %s -- %d %d\n", gui_xdisplay, connect_to_x11vnc
 			if (! dpy && ! x11vnc_xdisplay) {
 				/* worstest case */
 				x11vnc_xdisplay = strdup(":0");
-				dpy = XOpenDisplay_wr(x11vnc_xdisplay); 
+				dpy = XOpenDisplay_wr(x11vnc_xdisplay);
 			}
 			if (! dpy) {
 				rfbLog("gui: could not open x11vnc "
@@ -326,7 +326,7 @@ if (0) fprintf(stderr, "run_gui: %s -- %d %d\n", gui_xdisplay, connect_to_x11vnc
 #ifdef MACOSX
 		macjump:
 #endif
-		
+
 		signal(SIGUSR1, sigusr1);
 		got_sigusr1 = 0;
 		totms = 0;
@@ -549,9 +549,9 @@ if (0) fprintf(stderr, "run_gui: %s -- %d %d\n", gui_xdisplay, connect_to_x11vnc
 		close(n);
 		if (icon_mode_embed_id) {
 			execlp(wish, wish, "-", "-use", icon_mode_embed_id,
-			    (char *) NULL); 
+			    (char *) NULL);
 		} else {
-			execlp(wish, wish, "-", (char *) NULL); 
+			execlp(wish, wish, "-", (char *) NULL);
 		}
 		fprintf(stderr, "could not exec wish: %s -\n", wish);
 		perror("execlp");
@@ -579,7 +579,7 @@ void do_gui(char *opts, int sleep) {
 	if (use_dpy) {
 		/* worst case */
 		gui_xdisplay = strdup(use_dpy);
-		
+
 	}
 	if (getenv("DISPLAY") != NULL) {
 		/* better */
@@ -642,7 +642,7 @@ void do_gui(char *opts, int sleep) {
 		} else {
 			fprintf(stderr, "unrecognized gui opt: %s\n", p);
 		}
-		
+
 		p = strtok(NULL, ",");
 	}
 	free(s);
@@ -872,7 +872,7 @@ void do_gui(char *opts, int sleep) {
 		pid_t parent = getpid();
 
 		if (icon_mode) {
-			char tf[] = "/tmp/x11vnc.tray.XXXXXX"; 
+			char tf[] = "/tmp/x11vnc.tray.XXXXXX";
 			int fd;
 
 			fd = mkstemp(tf);

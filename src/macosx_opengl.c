@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -138,7 +138,7 @@ void macosx_opengl_fini(void) {
 }
 
 void macosx_copy_opengl(char *dest, int x, int y, unsigned int w, unsigned int h) {
-	int yflip = macosx_opengl_height - y - h; 
+	int yflip = macosx_opengl_height - y - h;
 
 	CGLSetCurrentContext(glContextObj);
 

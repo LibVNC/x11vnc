@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -117,7 +117,7 @@ static void initialize_blackouts(char *list) {
 			/*
 			 * note that the black out is x1 <= x but x < x2
 			 * for the region. i.e. the x2, y2 are outside
-			 * by 1 pixel. 
+			 * by 1 pixel.
 			 */
 			blackr[blackouts].x1 = x;
 			blackr[blackouts].y1 = y;
@@ -149,7 +149,7 @@ static void blackout_tiles(void) {
 		debug_bo = 1;
 	}
 
-	/* 
+	/*
 	 * to simplify things drop down to single copy mode, etc...
 	 */
 	single_copytile = 1;
@@ -401,7 +401,7 @@ static void initialize_xinerama (void) {
 	sc = xineramas;
 	for (i=0; i<n; i++) {
 		int x, y, w, h;
-		
+
 		x = sc->x_org;
 		y = sc->y_org;
 		w = sc->width;
@@ -541,7 +541,7 @@ void zero_fb(int x1, int y1, int x2, int y2) {
 		}
 	}
 #endif
-	
+
 	if (x1 < 0 || x2 <= x1 || x2 > dpy_x) {
 		return;
 	}

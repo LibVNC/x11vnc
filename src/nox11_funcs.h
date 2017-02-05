@@ -44,7 +44,7 @@ foreach $ks (@xk) {
 	print "	if (!strcmp(s, \"$s\")) return $ks;\n";
 }
 print <<"END";
-	return NoSymbol;	
+	return NoSymbol;
 }
 
 END
@@ -63,7 +63,7 @@ foreach $ks (@xk) {
 	print "	if (k == $ks) return \"$s\";\n";
 }
 print <<"END";
-	return NULL;	
+	return NULL;
 }
 
 KeySym XKeycodeToKeysym(Display *display, KeyCode keycode, int index) {
@@ -1442,7 +1442,7 @@ KeySym XStringToKeysym(char *s) {
 #endif /* XK_KOREAN */
 	if (!strcmp(s, "EuroSign")) return XK_EuroSign;
 #endif
-	return NoSymbol;	
+	return NoSymbol;
 }
 
 
@@ -2803,7 +2803,7 @@ char *XKeysymToString(KeySym k) {
 #endif /* XK_KOREAN */
 	if (k == XK_EuroSign) return "EuroSign";
 #endif
-	return NULL;	
+	return NULL;
 }
 
 KeySym XKeycodeToKeysym(Display *display, KeyCode keycode, int index) {

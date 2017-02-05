@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -40,7 +40,7 @@ so, delete this exception statement from your version.
 #endif
 
 /*
- * ultravnc_dsm_helper.c unix/openssl UltraVNC encryption encoder/decoder. 
+ * ultravnc_dsm_helper.c unix/openssl UltraVNC encryption encoder/decoder.
  *                       (also a generic symmetric encryption tunnel)
  *                       (also a generic TCP relay and supports IPv6)
  *
@@ -101,7 +101,7 @@ so, delete this exception statement from your version.
  * -----------------------------------------------------------------------
  */
 
-static char *usage = 
+static char *usage =
     "\n"
     "ultravnc_dsm_helper: a symmetric encryption tunnel. version 0.2\n"
     "\n"
@@ -323,7 +323,7 @@ static void enc_connections(int, char*, int);
 
 /* In case we are a module and there is no OpenSSL buildtime support */
 
-extern void enc_do(char *ciph, char *keyfile, char *lport, char *rhp) { 
+extern void enc_do(char *ciph, char *keyfile, char *lport, char *rhp) {
 	fprintf(stderr, "%s: not compiled with OpenSSL\n", prog);
 	exit(1);
 }
@@ -344,7 +344,7 @@ extern void enc_do(char *ciph, char *keyfile, char *lport, char *rhp) {
 
 /* This works out key type & etc., reads key, calls enc_connections */
 
-extern void enc_do(char *ciph, char *keyfile, char *lport, char *rhp) { 
+extern void enc_do(char *ciph, char *keyfile, char *lport, char *rhp) {
 
 	struct stat sb;
 	char *q, *p, *connect_host;
@@ -616,7 +616,7 @@ static void enc_raw_xfer(int sock_fr, int sock_to) {
 	unsigned char buf[BSIZE];
 	unsigned char *psrc = NULL;
 	int len, m, n = 0;
-	
+
 	/* zero the buffers */
 	memset(buf, 0, BSIZE);
 
@@ -714,7 +714,7 @@ static void enc_xfer(int sock_fr, int sock_to, int encrypt) {
 	int i, cnt, len, m, n = 0, vb = 0, first = 1;
 	int whoops = 1; /* for the msrc4 problem */
 	char *encstr, *encsym;
-	
+
 	/* zero the buffers */
 	memset(buf,  0, BSIZE);
 	memset(out,  0, BSIZE);
@@ -826,7 +826,7 @@ static void enc_xfer(int sock_fr, int sock_to, int encrypt) {
 			/* the rest is some encrypted data: */
 			n = n - salt_size - ivec_size;
 			psrc = buf + salt_size + ivec_size;
-		
+
 			if (n > 0) {
 				/*
 				 * copy it down to the start of buf for
@@ -867,7 +867,7 @@ static void enc_xfer(int sock_fr, int sock_to, int encrypt) {
 			exit(1);
 
 			EVP_BytesToKey(Cipher, Digest, NULL, (unsigned char *) keydata,
-			    keydata_len, 1, keystr, ivec); 
+			    keydata_len, 1, keystr, ivec);
 			EVP_CIPHER_CTX_init(ctx);
 			EVP_CipherInit_ex(ctx, Cipher, NULL, keystr, ivec,
 			    encrypt);
@@ -904,7 +904,7 @@ static void enc_xfer(int sock_fr, int sock_to, int encrypt) {
 			/* special mode: no salt or md5, use keydata directly */
 
 			int sz = keydata_len < EVP_MAX_KEY_LENGTH ?
-			    keydata_len : EVP_MAX_KEY_LENGTH; 
+			    keydata_len : EVP_MAX_KEY_LENGTH;
 
 			fprintf(stderr, "%s: %s - WARNING: no-md5 specified: ignoring salt & hash\n", prog, encstr);
 			memcpy(keystr, keydata, sz);
@@ -916,7 +916,7 @@ static void enc_xfer(int sock_fr, int sock_to, int encrypt) {
 			    keydata_len, 1, keystr, NULL);
 
 		} else {
-			/* 
+			/*
 			 * Ultra DSM compatibility mode.  Note that this
 			 * clobbers the ivec we set up above!  Under
 			 * noultra we overwrite ivec only if ivec_size=0.
@@ -1074,7 +1074,7 @@ static int securevnc_server_rsa_save_dialog(char *file, char *md5str, unsigned c
 
 	p = popen(cmd, "w");
 	if (p == NULL) {
-		fprintf(stderr, "checkserver_rsa: could not run: %s\n", cmd); 
+		fprintf(stderr, "checkserver_rsa: could not run: %s\n", cmd);
 		return 0;
 	}
 
@@ -1195,7 +1195,7 @@ static int securevnc_check_server_rsa(char *file, unsigned char *rsabuf) {
 
 		fprintf(stderr, "checkserver_rsa: rsa keystore file does not exist: '%s'\n", file);
 		fprintf(stderr, "checkserver_rsa: asking user if we should store rsa key in it.\n\n");
-		fprintf(stderr, "checkserver_rsa: RSA key has MD5 sum: %s\n\n", md5str); 
+		fprintf(stderr, "checkserver_rsa: RSA key has MD5 sum: %s\n\n", md5str);
 
 		return securevnc_server_rsa_save_dialog(file, md5str, rsabuf);
 	}
@@ -1255,7 +1255,7 @@ static void securevnc_setup(int conn1, int conn2) {
 	unsigned char keystr[EVP_MAX_KEY_LENGTH];
 	unsigned char *rsabuf, *rsasav;
 	unsigned char *encrypted_keybuf;
-	unsigned char *initkey;	
+	unsigned char *initkey;
 	unsigned int server_flags = 0;
 	unsigned char one = 1, zero = 0, sig = 16;
 	unsigned char b1, b2, b3, b4;
@@ -1289,9 +1289,9 @@ static void securevnc_setup(int conn1, int conn2) {
 	fprintf(stderr, "securevnc_setup: rsa data read len: %d\n", len);
 	memcpy(rsasav, rsabuf, SECUREVNC_RSA_PUBKEY_SIZE);
 
-	fprintf(stderr, "securevnc_setup: RSA key has MD5 sum: %s\n", rsa_md5_sum(rsabuf)); 
-	fprintf(stderr, "securevnc_setup:\n"); 
-	fprintf(stderr, "securevnc_setup: One way to print out the SecureVNC Server key MD5 sum is:\n\n"); 
+	fprintf(stderr, "securevnc_setup: RSA key has MD5 sum: %s\n", rsa_md5_sum(rsabuf));
+	fprintf(stderr, "securevnc_setup:\n");
+	fprintf(stderr, "securevnc_setup: One way to print out the SecureVNC Server key MD5 sum is:\n\n");
 	fprintf(stderr, "openssl rsa -inform DER -outform DER -pubout -in ./Server_SecureVNC.pkey | dd bs=1 skip=24 | md5sum\n\n");
 	if (securevnc_file == NULL) {
 		fprintf(stderr, "securevnc_setup:\n");
@@ -1345,7 +1345,7 @@ static void securevnc_setup(int conn1, int conn2) {
 	read(server, (char *) &b2, 1);
 	read(server, (char *) &b3, 1);
 	read(server, (char *) &b4, 1);
-	
+
 	server_flags = 0;
 	server_flags |= ((unsigned int) b4) << 24;
 	server_flags |= ((unsigned int) b3) << 16;
@@ -1413,7 +1413,7 @@ static void securevnc_setup(int conn1, int conn2) {
 		exit(1);
 	}
 	fprintf(stderr, "securevnc_setup: initial data[%d]: ", n);
-	
+
 	/* decode with the tmp key */
 	if (n > 0) {
 		memset(to_viewer, 0, sizeof(to_viewer));
@@ -1448,7 +1448,7 @@ static void securevnc_setup(int conn1, int conn2) {
 		rc = RAND_pseudo_bytes((unsigned char *)keydata, SECUREVNC_RAND_KEY_SOURCE);
 		fprintf(stderr, "securevnc_setup: RAND_pseudo_bytes() rc=%d\n", rc);
 		if (getenv("RANDSTR")) {
-			char *s = getenv("RANDSTR"); 
+			char *s = getenv("RANDSTR");
 			fprintf(stderr, "securevnc_setup: seeding with RANDSTR len=%d\n", strlen(s));
 			RAND_add(s, strlen(s), strlen(s));
 		}
@@ -1498,7 +1498,7 @@ static void securevnc_setup(int conn1, int conn2) {
 			/* for testing only, use the wrong RSA key: */
 			client_rsa = RSA_generate_key(2048, 0x10001, NULL, NULL);
 		}
-		
+
 		if (client_rsa == NULL) {
 			fprintf(stderr, "securevnc_setup: problem reading rsa key from '%s'\n", client_auth);
 			exit(1);
@@ -1699,7 +1699,7 @@ static void show_cert(int sock) {
 		EVP_PKEY_free(pktmp);
 	}
 	BIO_printf(bio,"---\nDONE\n---\n");
-	
+
 	fflush(stdout);
 
 #endif
@@ -1753,7 +1753,7 @@ static void enc_connections(int listen_port, char *connect_host, int connect_por
 		client.sin_port = htons(listen_port);
 	}
 
-	listen_fd = socket(AF_INET, SOCK_STREAM, 0); 
+	listen_fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (listen_fd < 0) {
 		perror("socket");
 		goto try6;
@@ -1994,7 +1994,7 @@ static void enc_connections(int listen_port, char *connect_host, int connect_por
 				if (fd == -1) {
 					perror("socket6");
 				} else {
-					int dmsg = 0; 
+					int dmsg = 0;
 					int res = connect(fd, ap->ai_addr, ap->ai_addrlen);
 #if defined(SOL_IPV6) && defined(IPV6_V6ONLY)
 					if (res != 0) {
@@ -2009,7 +2009,7 @@ static void enc_connections(int listen_port, char *connect_host, int connect_por
 					}
 #endif
 					if (res == 0) {
-						conn2 = fd; 
+						conn2 = fd;
 						break;
 					} else {
 						if (!dmsg) perror("connect6");
@@ -2044,9 +2044,9 @@ static void enc_connections(int listen_port, char *connect_host, int connect_por
 
 	/* fork into two processes; one for each direction: */
 	parent = getpid();
-	
+
 	child = fork();
-	
+
 	if (child == (pid_t) -1) {
 		/* couldn't fork... */
 		perror("fork");
@@ -2159,7 +2159,7 @@ extern int main (int argc, char *argv[]) {
 #
 # This program requires md5sum(1) installed on your machine.
 #
-# It translates a VNC password to a ultravnc dsm plugin 
+# It translates a VNC password to a ultravnc dsm plugin
 # compatible key file.
 #
 # Supply VNC password on cmdline, capture in key file:
@@ -2207,7 +2207,7 @@ foreach $d (split(//, $md5)) {
 @key = (reverse @key) if $rfmt;
 
 foreach $h (@key) {
-	$c = pack('c', hex("0x$h"));	
+	$c = pack('c', hex("0x$h"));
 	print $c;
 }
 

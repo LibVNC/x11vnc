@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -101,7 +101,7 @@ void get_keystate(int *keystate) {
 	char keys[32];
 
 	RAWFB_RET_VOID
-	
+
 	/* n.b. caller decides to X_LOCK or not. */
 	XQueryKeymap(dpy, keys);
 	for (i=0; i<32; i++) {
@@ -176,7 +176,7 @@ void clear_modifiers(int init) {
 	if (init) {
 		return;
 	}
-	
+
 	get_keystate(keystate);
 	for (i=0; i < kcount; i++) {
 		keysym  = keysyms[i];
@@ -209,7 +209,7 @@ static KeySym simple_mods[] = {
 #define NSIMPLE_MODS 13
 
 int track_mod_state(rfbKeySym keysym, rfbBool down, rfbBool set) {
-	KeySym sym = (KeySym) keysym;	
+	KeySym sym = (KeySym) keysym;
 	static rfbBool isdown[NSIMPLE_MODS];
 	static int first = 1;
 	int i, cnt = 0;
@@ -220,7 +220,7 @@ int track_mod_state(rfbKeySym keysym, rfbBool down, rfbBool set) {
 	 * pressed on the physical display.
 	 *
 	 * This is unrelated to our mod_tweak and xkb stuff.
-	 * Just a simple thing for wireframe/scroll heuristics, 
+	 * Just a simple thing for wireframe/scroll heuristics,
 	 * sloppy keys etc.
 	 */
 
@@ -272,7 +272,7 @@ void clear_keys(void) {
 	int k, keystate[256];
 
 	RAWFB_RET_VOID
-	
+
 	/* n.b. caller decides to X_LOCK or not. */
 	get_keystate(keystate);
 	for (k=0; k<256; k++) {
@@ -284,7 +284,7 @@ void clear_keys(void) {
 	}
 	XFlush_wr(dpy);
 }
-		
+
 
 void clear_locks(void) {
 #if NO_X11
@@ -309,7 +309,7 @@ void clear_locks(void) {
 		if (! state) {
 			state = kbstate.compat_state;
 		}
-	} else 
+	} else
 #endif
 	{
 		state = mask_state();
@@ -445,11 +445,11 @@ void autorepeat(int restore, int bequiet) {
  * We periodically delete any keysyms we have added, this is to
  * lessen our effect on the X server state if we are terminated abruptly
  * and cannot clear them and also to clear out any strange little used
- * ones that would just fill up the keymapping. 
+ * ones that would just fill up the keymapping.
  */
 void check_add_keysyms(void) {
 	static time_t last_check = 0;
-	int clear_freq = 300, quiet = 1, count; 
+	int clear_freq = 300, quiet = 1, count;
 	time_t now = time(NULL);
 
 	if (unixpw_in_progress) return;
@@ -672,7 +672,7 @@ static void add_remap(char *line) {
 	if (ksym2 == NoSymbol) {
 		if (sscanf(str2, "Button%u", &i) == 1) {
 			ksym2 = (KeySym) i;
-			isbtn = 1; 
+			isbtn = 1;
 		}
 	}
 	if (ksym1 == NoSymbol || ksym2 == NoSymbol) {
@@ -820,7 +820,7 @@ void initialize_remap(char *infile) {
 		return;
 	}
 
-	in = fopen(infile, "r"); 
+	in = fopen(infile, "r");
 	if (in == NULL) {
 		/* assume cmd line key1-key2,key3-key4 */
 		if (strstr(infile, "DEAD") == infile) {
@@ -851,7 +851,7 @@ void initialize_remap(char *infile) {
 			p++;
 		}
 		fprintf(in, "\n");
-		fflush(in);	
+		fflush(in);
 		rewind(in);
 	}
 
@@ -870,7 +870,7 @@ void initialize_remap(char *infile) {
 		}
 		if ((q = strchr(line, '-')) != NULL) {
 			/* allow Keysym1-Keysym2 notation */
-			*q = ' ';	
+			*q = ' ';
 		}
 		add_remap(p);
 	}
@@ -908,7 +908,7 @@ static int kc_vec[0x100];
 static int kc1_shift, kc1_control, kc1_caplock, kc1_alt;
 static int kc1_meta, kc1_numlock, kc1_super, kc1_hyper;
 static int kc1_mode_switch, kc1_iso_level3_shift, kc1_multi_key;
-	
+
 int sloppy_key_check(int key, rfbBool down, rfbKeySym keysym, int *new_kc) {
 	if (!sloppy_keys) {
 		return 0;
@@ -919,7 +919,7 @@ int sloppy_key_check(int key, rfbBool down, rfbKeySym keysym, int *new_kc) {
 	if (!key || !down || !keysym || !new_kc) {}
 	return 0;
 #else
-	
+
 	if (!down && !keycode_state[key] && !IsModifierKey(keysym)) {
 		int i, cnt = 0, downkey = -1;
 		int nmods_down = track_mod_state(NoSymbol, FALSE, FALSE);
@@ -937,7 +937,7 @@ int sloppy_key_check(int key, rfbBool down, rfbKeySym keysym, int *new_kc) {
 				if (k != NoSymbol && keycode_state[(int) k]) {
 					mods_down[(int) k] = 1;
 				}
-				
+
 				i++;
 			}
 		}
@@ -1094,7 +1094,7 @@ void switch_to_xkb_if_better(void) {
 				char *str = XKeysymToString(must);
 				KeyCode kc = XKeysymToKeycode(dpy, must);
 				fprintf(stderr, "- did not find 0x%lx '%s'\t"
-				    "Ks2Kc: %d\n", must, str ? str:"null", kc); 
+				    "Ks2Kc: %d\n", must, str ? str:"null", kc);
 				if (kc != None) {
 					int j2;
 					for(j2=0; j2<syms_per_keycode; j2++) {
@@ -1243,18 +1243,18 @@ mode_switch[]   indicates which keycodes have Mode_switch (AltGr)
                 bound to them.
 shift_keys[]    indicates which keycodes have Shift bound to them.
 skipkeycode[]   indicates which keycodes are to be skipped
-                for any lookups from -skip_keycodes option. 
+                for any lookups from -skip_keycodes option.
 
 Groups and Levels, here is an example:
-                                                                  
-      ^          --------                                      
-      |      L2 | A   AE |                                      
-    shift       |        |                                      
-    level    L1 | a   ae |                                      
-                 --------                                      
-                  G1  G2                                        
-                                                                
-                  group ->                                      
+
+      ^          --------
+      |      L2 | A   AE |
+    shift       |        |
+    level    L1 | a   ae |
+                 --------
+                  G1  G2
+
+                  group ->
 
 Traditionally this it all a key could do.  L1 vs. L2 selected via Shift
 and G1 vs. G2 selected via Mode_switch.  Up to 4 Keysyms could be bound
@@ -1279,7 +1279,7 @@ xkbstate[]        For a (keycode,group,level) holds the corresponding
 xkbignore[]       For a (keycode,group,level) which modifiers can be
                   ignored (the 0 bits can be ignored).
 xkbmodifiers[]    For the KeySym bound to this (keycode,group,level) store
-                  the modifier mask.   
+                  the modifier mask.
  *
  */
 
@@ -1490,7 +1490,7 @@ xkbmodifiers[]    For the KeySym bound to this (keycode,group,level) store
 			    && grp == 1) {
 				/*
 				 * Hack on Solaris 9 for Mode_switch
-				 * for Group2 characters.  We force the 
+				 * for Group2 characters.  We force the
 				 * Mode_switch modifier bit on.
 				 * XXX Need to figure out better what is
 				 * happening here.  Is compat on somehow??
@@ -1598,7 +1598,7 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 	RAWFB_RET_VOID;
 
         ClientData *cd = (ClientData *) client->clientData;
-        
+
 
 	X_LOCK;
 
@@ -1626,7 +1626,7 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 			for (i=0; i<0x100; i++) {
 				score_hint[i] = (short *) malloc(0x100 * sizeof(short));
 			}
-			
+
 			for (i=0; i<0x100; i++) {
 				for (j=0; j<0x100; j++) {
 					score_hint[i][j] = -1;
@@ -1758,8 +1758,8 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 		if (new_kc != 0) {
 			found = 1;
 			kc_f[0] = new_kc;
-			grp_f[0] = 0; 
-			lvl_f[0] = 0; 
+			grp_f[0] = 0;
+			lvl_f[0] = 0;
 			state_f[0] = 0;
 		}
 	}
@@ -1774,7 +1774,7 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 		return;
 	}
 
-	/* 
+	/*
 	 * we try to optimize here if found > 1
 	 * e.g. minimize lvl or grp, or other things to give
 	 * "safest" scenario to simulate the keystrokes.
@@ -1855,7 +1855,7 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 			Grp_f = grp_f[best];
 			Lvl_f = lvl_f[best];
 			state = state_f[best];
-			
+
 		} else {
 			/* up */
 			int i, Kc_loc = -1;
@@ -2054,7 +2054,7 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 
 		/*
 		 * needmods[] whether or not that modifier bit needs
-		 *            something done to it. 
+		 *            something done to it.
 		 *            < 0 means no,
 		 *            0   means needs to go up.
 		 *            1   means needs to go down.
@@ -2160,7 +2160,7 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 			/*
 			 * Again, an inefficient loop, this time just
 			 * looking for modifiers...
-			 * 
+			 *
 			 * note the use of kc_vec to prefer XK_ISO_Level3_Shift
 			 * over XK_Mode_switch.
 			 */
@@ -2247,7 +2247,7 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 					    "%d %s\n", kc, kc, nm, nm ?
 					    "down" : "up");
 				}
-					
+
 			    }
 			  }
 			}
@@ -2398,7 +2398,7 @@ if (sym >> 8 == 0) { \
 char *short_kmbcf(char *str) {
 	int i, saw_k = 0, saw_m = 0, saw_b = 0, saw_c = 0, saw_f = 0, n = 10;
 	char *p, tmp[10];
-	
+
 	for (i=0; i<n; i++) {
 		tmp[i] = '\0';
 	}
@@ -2812,7 +2812,7 @@ void get_allowed_input(rfbClientPtr client, allowed_input_t *input) {
 	if (! cd) {
 		return;
 	}
-	
+
 	if (cd->input[0] != '-') {
 		str = cd->input;
 	} else if (client->viewOnly) {
@@ -2887,7 +2887,7 @@ static void pipe_keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 		int mask, button = (int) keysym;
 		int x = cursor_x, y = cursor_y;
 		char *b, bstr[32];
-				
+
 		if (!down) {
 			return;
 		}
@@ -2918,7 +2918,7 @@ static void pipe_keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 				pointer_event(mask, x, y, client);
 			}
 			b++;
-		}	
+		}
 		return;
 	}
 
@@ -3022,7 +3022,7 @@ double typing_rate(double time_window, int *repeating) {
 
 int skip_cr_when_scaling(char *mode) {
 	int got = 0;
-	
+
 	if (!scaling) {
 		return 0;
 	}
@@ -3097,7 +3097,7 @@ void keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 		rfbLog("keyboard: skipping 0x0 keysym\n");
 		return;
 	}
-	
+
 	if (unixpw_in_progress) {
 		if (unixpw_denied) {
 			rfbLog("keyboard: ignoring keystroke 0x%x in "
@@ -3145,7 +3145,7 @@ void keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 				rfbLog("changed XK_KP_Decimal to XK_period: %d 0x%x\n",
 				    down, keysym);
 			}
-			keysym = XK_period; 
+			keysym = XK_period;
 		}
 	}
 
@@ -3220,7 +3220,7 @@ void keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 		}
 	}
 
-#ifdef MAX_KEYREPEAT 
+#ifdef MAX_KEYREPEAT
 	if (max_keyrepeat_always < 0.0) {
 		if (getenv("MAX_KEYREPEAT")) {
 			max_keyrepeat_always = atof(getenv("MAX_KEYREPEAT"));
@@ -3240,7 +3240,7 @@ void keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 			skipped_last_down = 0;
 			if (db) rfbLog("--- scroll keyrate skipping 0x%lx %s "
 			    "%.4f  %.4f\n", keysym, down ? "down":"up  ",
-			    tnow - x11vnc_start, tnow - max_keyrepeat_last_time); 
+			    tnow - x11vnc_start, tnow - max_keyrepeat_last_time);
 			INPUT_UNLOCK;
 			return;
 		}
@@ -3261,7 +3261,7 @@ void keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 		if (skip) {
 			if (db) rfbLog("--- scroll keyrate skipping 0x%lx %s "
 			    "%.4f  %.4f\n", keysym, down ? "down":"up  ",
-			    tnow - x11vnc_start, tnow - max_keyrepeat_last_time); 
+			    tnow - x11vnc_start, tnow - max_keyrepeat_last_time);
 			max_keyrepeat_last_keysym = keysym;
 			skipped_last_down = 1;
 			INPUT_UNLOCK;
@@ -3269,7 +3269,7 @@ void keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 		} else {
 			if (db) rfbLog("--- scroll keyrate KEEPING  0x%lx %s "
 			    "%.4f  %.4f\n", keysym, down ? "down":"up  ",
-			    tnow - x11vnc_start, tnow - max_keyrepeat_last_time); 
+			    tnow - x11vnc_start, tnow - max_keyrepeat_last_time);
 		}
 	}
 	max_keyrepeat_last_keysym = keysym;
@@ -3284,7 +3284,7 @@ void keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 				last_keyboard_client = client;
 				last_event = last_input = now;
 				last_keyboard_input = now;
-		
+
 				last_keysym = keysym;
 
 				last_rfb_down = down;
@@ -3325,7 +3325,7 @@ void keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 
 	got_user_input++;
 	got_keyboard_input++;
-	
+
 	RAWFB_RET_VOID;
 
 
@@ -3356,7 +3356,7 @@ void keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 	if (isbutton) {
 		int mask, button = (int) keysym;
 		char *b, bstr[32];
-		
+
 		if (! down) {
 			INPUT_UNLOCK;
 			return;	/* nothing to send */
@@ -3373,7 +3373,7 @@ void keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 		 * remap the button click to keystroke sequences!
 		 * Usually just will simulate the button click.
 		 */
-	
+
 		/* loop over possible multiclicks: Button123 */
 		sprintf(bstr, "%d", button);
 		b = bstr;
@@ -3424,7 +3424,7 @@ void keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 
 
 	if ( k != NoSymbol ) {
-               
+
  XTestFakeKeyEvent_wr(dpy, cd->kbd_id, k, (Bool) down, CurrentTime);
 		XFlush_wr(dpy);
 	}

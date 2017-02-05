@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -82,7 +82,7 @@ extern struct timeval _mysleep;
 #define usleep2(x) \
 	_mysleep.tv_sec  = (x) / 1000000; \
 	_mysleep.tv_usec = (x) % 1000000; \
-	select(0, NULL, NULL, NULL, &_mysleep); 
+	select(0, NULL, NULL, NULL, &_mysleep);
 #if !defined(X11VNC_USLEEP)
 #undef usleep
 #define usleep usleep2

@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -210,7 +210,7 @@ char *console_guess(char *str, int *fd) {
 						bm = 0xc0;
 					}
 				}
-				
+
 				/* @66666x66666x32:0xffffffff:... */
 				atparms = (char *) malloc(200);
 				sprintf(atparms, "%dx%dx%d:%lx/%lx/%lx",
@@ -233,9 +233,9 @@ char *console_guess(char *str, int *fd) {
 	if (atparms) {
 		int gw, gh, gb;
 		if (sscanf(atparms, "%dx%dx%d", &gw, &gh, &gb) == 3)  {
-			fb_x = gw;	
-			fb_y = gh;	
-			fb_b = gb;	
+			fb_x = gw;
+			fb_y = gh;
+			fb_b = gb;
 		}
 	}
 
@@ -276,7 +276,7 @@ void console_key_command(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 	if (debug_keyboard) fprintf(stderr, "console_key_command: %d %s\n", (int) keysym, down ? "down" : "up");
 
 	if (pipeinput_cons_fd < 0) {
-		return;		
+		return;
 	}
 	if (view_only) {
 		return;

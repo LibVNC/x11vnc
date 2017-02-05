@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -134,7 +134,7 @@ int valid_window(Window win, XWindowAttributes *attr_ret, int bequiet) {
 	}
 	XSetErrorHandler(old_handler);
 	trapped_xerror = 0;
-	
+
 	return ok;
 #endif	/* NO_X11 */
 }
@@ -167,7 +167,7 @@ Bool xtranslate(Window src, Window dst, int src_x, int src_y, int *dst_x,
 	}
 	XSetErrorHandler(old_handler);
 	trapped_xerror = 0;
-	
+
 	return ok;
 #endif	/* NO_X11 */
 }
@@ -191,7 +191,7 @@ int get_window_size(Window win, int *w, int *h) {
  */
 void snapshot_stack_list(int free_only, double allowed_age) {
 	static double last_snap = 0.0, last_free = 0.0;
-	double now; 
+	double now;
 	int num, rc, i, j;
 	unsigned int ui;
 	Window r, w;
@@ -296,12 +296,12 @@ int get_boff(void) {
 	if (macosx_console) {
 		return 0x1000000;
 	} else {
-		return 0;		
+		return 0;
 	}
 }
 
 int get_bwin(void) {
-	return 10;		
+	return 10;
 }
 
 void update_stack_list(void) {
@@ -321,7 +321,7 @@ void update_stack_list(void) {
 
 	boff = get_boff();
 	bwin = get_bwin();
-	
+
 	X_LOCK;
 	for (k=0; k < stack_list_num; k++) {
 		Window win = stack_list[k].win;
@@ -388,7 +388,7 @@ unsigned int mask_state(void) {
 	RAWFB_RET(0)
 	return 0;
 #else
-	Window r, c;	
+	Window r, c;
 	int rx, ry, wx, wy;
 	unsigned int mask;
 
@@ -447,9 +447,9 @@ int pick_windowid(unsigned long *num) {
 			FD_SET(fileno(p), &set);
 
 			nfds = select(fileno(p)+1, &set, NULL, NULL, &tv);
-			
+
 			if (nfds == 0 || nfds < 0) {
-				/* 
+				/*
 				 * select timedout or error.
 				 * note this rfbPE takes about 30ms too:
 				 */
@@ -458,11 +458,11 @@ int pick_windowid(unsigned long *num) {
 				continue;
 			}
 		}
-		
+
 		if (fgets(line, 512, p) == NULL) {
 			break;
 		}
-		q = strstr(line, " id: 0x"); 
+		q = strstr(line, " id: 0x");
 		if (q) {
 			q += 5;
 			if (sscanf(q, "0x%lx ", &tmp) == 1) {
@@ -528,7 +528,7 @@ Window descend_pointer(int depth, Window start, char *name_info, int len) {
 			prev_start = start;
 		}
 	} else {
-		c = rootwin;	
+		c = rootwin;
 	}
 
 	for (i=0; i<depth; i++) {
@@ -554,10 +554,10 @@ Window descend_pointer(int depth, Window start, char *name_info, int len) {
 			if (XGetClassHint(dpy, clast, classhint)) {
 				int l = 0;
 				if (classhint->res_class) {
-					l += strlen(classhint->res_class); 
+					l += strlen(classhint->res_class);
 				}
 				if (classhint->res_name) {
-					l += strlen(classhint->res_name); 
+					l += strlen(classhint->res_name);
 				}
 				if (written + l+4 < len) {
 					strcat(store, "##");
@@ -608,7 +608,7 @@ void id_cmd(char *cmd) {
 	XErrorHandler old_handler = NULL;
 	Window twin;
 
-	if (!cmd || !strcmp(cmd, "")) { 
+	if (!cmd || !strcmp(cmd, "")) {
 		return;
 	}
 	if (strstr(cmd, "win=") == cmd) {

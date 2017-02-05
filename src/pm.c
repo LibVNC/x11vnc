@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -127,9 +127,9 @@ static void check_fbpm(void) {
 			}
 
 			rfbLog("switching FBPM state from %s to FBPMModeOn\n", from);
-			
+
 			FBPMForceLevel(dpy, FBPMModeOn);
-		
+
 			XSetErrorHandler(old_handler);
 			trapped_xerror = 0;
 		}
@@ -192,9 +192,9 @@ void set_dpms_mode(char *mode) {
 				}
 
 				rfbLog("switching DPMS state from %s to %s\n", from, mode);
-				
+
 				DPMSForceLevel(dpy, want);
-			
+
 				XSetErrorHandler(old_handler);
 				trapped_xerror = 0;
 			}
@@ -275,9 +275,9 @@ static void check_dpms(void) {
 			}
 
 			rfbLog("switching DPMS state from %s to DPMSModeOn\n", from);
-			
+
 			DPMSForceLevel(dpy, DPMSModeOn);
-		
+
 			XSetErrorHandler(old_handler);
 			trapped_xerror = 0;
 		}
