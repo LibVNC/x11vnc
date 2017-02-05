@@ -4946,16 +4946,20 @@ int main(int argc, char* argv[]) {
 	/* initialize added_keysyms[] array to zeros */
 	add_keysym(NoSymbol);
 
-	/* tie together cases of -localhost vs. -listen localhost */
-	if (! listen_str) {
-		if (allow_list && !strcmp(allow_list, "127.0.0.1")) {
-			listen_str = strdup("localhost");
-			argv_vnc[argc_vnc++] = strdup("-listen");
-			argv_vnc[argc_vnc++] = strdup(listen_str);
-		}
-	} else if (!strcmp(listen_str, "localhost") ||
-	    !strcmp(listen_str, "127.0.0.1")) {
-		allow_list = strdup("127.0.0.1");
+	/*
+	   be explicit about -localhost: as per the manpage,
+	   - we listen on IPv4 and IPv& localhost only
+	   - allow_list of 127.0.0.1 implies ::1 as well
+	 */
+	if(got_localhost) {
+	    listen_str = strdup("localhost");
+	    argv_vnc[argc_vnc++] = strdup("-listen");
+	    argv_vnc[argc_vnc++] = strdup(listen_str);
+#ifdef LIBVNCSERVER_IPv6
+	    argv_vnc[argc_vnc++] = strdup("-listenv6");
+	    argv_vnc[argc_vnc++] = strdup(listen_str);
+#endif
+	    allow_list = strdup("127.0.0.1");
 	}
 
 	initialize_crash_handler();
