@@ -789,6 +789,13 @@ static void ptr_abs(int x, int y, int p) {
 		ev.code = ABS_PRESSURE;
 		ev.value = p;
 		write(d, &ev, sizeof(ev));
+
+		if (!btn_touch) {
+			ev.type = EV_KEY;
+			ev.code = BTN_TOUCH;
+			ev.value = p ? 1 : 0;
+			write(d, &ev, sizeof(ev));
+		}
 	}
 
 	ev.type = EV_SYN;
