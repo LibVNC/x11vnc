@@ -4461,27 +4461,27 @@ Hopefully this deficiency can be removed, but until then for Clipboard exchange 
 
 Here also is a `osascript` trick that seems to work (it opens the Terminal app and instructs it to start **x11vnc**):
 
-<pre> 
-#!/bin/sh
-#
-# start_x11vnc: start x11vnc in a Terminal window
-# (this will allow Clipboard/Pasteboard exchange to work)
 
-tmp=/tmp/start_x11vnc.$
+	#!/bin/sh
+	#
+	# start_x11vnc: start x11vnc in a Terminal window
+	# (this will allow Clipboard/Pasteboard exchange to work)
 
-cat > $tmp <<END
+	tmp=/tmp/start_x11vnc.$
 
-tell application "Terminal"
-        activate
-        do script with command "$HOME/x11vnc -rfbauth .vnc/passwd -ssl SAVE"
-end tell
+	cat > $tmp <<END
 
-END
+	tell application "Terminal"
+		activate
+		do script with command "$HOME/x11vnc -rfbauth .vnc/passwd -ssl SAVE"
+	end tell
 
-osascript $tmp
-rm -f $tmp
+	END
 
-</pre>
+	osascript $tmp
+	rm -f $tmp
+
+
 
 where you should customize the **x11vnc** command line to your needs and the full path to the binary. Save it in a file e.g. "`start_x11vnc`" and then after you SSH in just type "`./start_x11vnc`" (or have ssh run the command for you.) Then once you are connected via VNC, iconify the Terminal windows (you can't delete them since that will kill **x11vnc**.)
 
