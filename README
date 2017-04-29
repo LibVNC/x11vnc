@@ -4091,8 +4091,8 @@ This non-X mode for **x11vnc** is somewhat experimental because it is so removed
 
 The format for the `-rawfb` string is:
 
-<pre>    -rawfb <type>:<object>@<W>x<H>x<bpp>[-<BPL>][:<R>/<G>/<B>][+<offset>]
-</pre>
+     -rawfb <type>:<object>@<W>x<H>x<bpp>[-<BPL>][:<R>/<G>/<B>][+<offset>]
+
 
 There are also some useful aliases (e.g. "`console`".) Some examples:
 
