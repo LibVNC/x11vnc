@@ -1,5 +1,5 @@
 /*
-  XInput2 device handling routines for x11vnc.  
+  XInput2 device handling routines for x11vnc.
 
   Copyright (C) 2009-2010 Christian Beier <dontmind@freeshell.org>
   All rights reserved.
@@ -15,7 +15,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with x11vnc; if not, write to the Free Software
   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA
@@ -23,17 +23,17 @@
 */
 
 #include <string.h>
-#include <X11/Xproto.h> 
-#include <X11/keysym.h> 
+#include <X11/Xproto.h>
+#include <X11/keysym.h>
 
-#include "x11vnc.h" 
+#include "x11vnc.h"
 #include "cursor.h"
 #include "cleanup.h"
 #include "win_utils.h"
-#include "xi2_devices.h" 
+#include "xi2_devices.h"
 
 #ifdef HAVE_LIBXCURSOR
-#include <X11/Xcursor/Xcursor.h> 
+#include <X11/Xcursor/Xcursor.h>
 #ifdef HAVE_CAIRO
 #include <cairo.h>
 #endif
@@ -71,7 +71,7 @@ int createMD(Display* dpy, char* name)
 
   trapped_xerror = 0;
   old_handler = XSetErrorHandler(trap_xerror);
-	
+
   XIChangeHierarchy(dpy, (XIAnyHierarchyChangeInfo*)&c, 1);
   XSync(dpy, False);
 
@@ -88,13 +88,13 @@ int createMD(Display* dpy, char* name)
   /* find newly created dev by name
      FIXME: better wait for XIHierarchy event here? */
   devinfo = XIQueryDevice(dpy, XIAllMasterDevices, &num_devices);
-  for(i = num_devices-1; i >= 0; --i) 
+  for(i = num_devices-1; i >= 0; --i)
     if(strcmp(devinfo[i].name, handle) == 0)
       {
 	dev_id = devinfo[i].deviceid;
 	break;
       }
- 
+
   XIFreeDeviceInfo(devinfo);
 
   X_UNLOCK;
@@ -106,7 +106,7 @@ int createMD(Display* dpy, char* name)
 
 
 /*
-  remove device 
+  remove device
   return 1 on success, 0 on failure
 */
 int removeMD(Display* dpy, int dev_id)
@@ -136,7 +136,7 @@ int removeMD(Display* dpy, int dev_id)
     /* we need to unset client pointer */
     XISetClientPointer(dpy, None, dev_id);
     XSync(dpy, False);
-  
+
     /* actually remove device pair */
     r.type = XIRemoveMaster;
     r.deviceid = dev_id;
@@ -235,7 +235,7 @@ rfbCursorPtr setClientCursor(Display *dpy, int dev_id, float r, float g, float b
     snprintf(text, textsz, "%s", label);
   else
     snprintf(text, textsz, "%i", (int) dev_id);
- 
+
   /* simple cursor w/o label */
   barecursor_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 24, 24);
   cr = cairo_create(barecursor_surface);
@@ -249,7 +249,7 @@ rfbCursorPtr setClientCursor(Display *dpy, int dev_id, float r, float g, float b
   cairo_set_line_width (cr, 0.8);
   cairo_stroke (cr);
 
-    
+
   /* get estimated text extents */
   dummy_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 500, 10);/* ah well, but should fit */
   cr = cairo_create(dummy_surface);
@@ -258,8 +258,8 @@ rfbCursorPtr setClientCursor(Display *dpy, int dev_id, float r, float g, float b
   cairo_text_extents(cr, text, &est);
 
   /* an from these calculate our final size */
-  total_width = (int)(idXOffset + est.width + est.x_bearing);	
-  total_height = (int)(idYOffset + est.height + est.y_bearing);	
+  total_width = (int)(idXOffset + est.width + est.x_bearing);
+  total_height = (int)(idYOffset + est.height + est.y_bearing);
 
   /* draw evrything */
   main_surface = cairo_image_surface_create( CAIRO_FORMAT_ARGB32, total_width, total_height );
@@ -271,12 +271,12 @@ rfbCursorPtr setClientCursor(Display *dpy, int dev_id, float r, float g, float b
   cairo_set_source_rgba (cr, r, g, b, 0.8);
   cairo_move_to(cr, idXOffset, idYOffset);
   cairo_show_text(cr,text);
-    
+
   X_LOCK;
   /* copy cairo surface to cursor image */
   cursor_image = XcursorImageCreate(total_width, total_height);
   /* this is important! otherwise we get badmatch, badcursor xerrrors galore... */
-  cursor_image->xhot = cursor_image->yhot = 0; 
+  cursor_image->xhot = cursor_image->yhot = 0;
   memcpy(cursor_image->pixels, cairo_image_surface_get_data (main_surface), sizeof(CARD32) * total_width * total_height);
   X_UNLOCK;
 
@@ -287,7 +287,7 @@ rfbCursorPtr setClientCursor(Display *dpy, int dev_id, float r, float g, float b
 			  cursor_image->xhot,
 			  cursor_image->yhot,
 			  bpp/8);
-  
+
   X_LOCK;
 
   /* and display  */
@@ -322,7 +322,7 @@ int setDeviceFocus(Display* dpy, int ptr_id)
 #else
 
   XErrorHandler old_handler;
-  
+
   Window root_return;
   Window child_return;
   double root_x_return;
@@ -339,12 +339,12 @@ int setDeviceFocus(Display* dpy, int ptr_id)
 
   if(ptr_id < 0)
     return 0;
- 
+
   X_LOCK;
 
   trapped_xerror = 0;
   old_handler = XSetErrorHandler(trap_xerror);
- 
+
   /* get window the pointer is in */
   XIQueryPointer(dpy, ptr_id, rootwin, &root_return, &child_return,
 		 &root_x_return, &root_y_return, &win_x_return, &win_y_return,
@@ -388,7 +388,7 @@ int setXIClientPointer(Display* dpy, int dev_id)
 #else
 
   XErrorHandler old_handler;
-  
+
   Window root_return;
   Window child_return;
   double root_x_return;
@@ -401,12 +401,12 @@ int setXIClientPointer(Display* dpy, int dev_id)
 
   if(dev_id < 0)
     return 0;
- 
+
   X_LOCK;
 
   trapped_xerror = 0;
   old_handler = XSetErrorHandler(trap_xerror);
- 
+
   /* get window the pointer is in */
   XIQueryPointer(dpy, dev_id, rootwin, &root_return, &child_return,
 		 &root_x_return, &root_y_return, &win_x_return, &win_y_return,

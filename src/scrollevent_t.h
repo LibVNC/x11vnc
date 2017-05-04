@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -40,8 +40,8 @@ typedef struct scroll_event {
 	int dx, dy;
 	int x, y, w, h;
 	double t;
-	int win_x, win_y, win_w, win_h;	
-	int new_x, new_y, new_w, new_h;	
+	int win_x, win_y, win_w, win_h;
+	int new_x, new_y, new_w, new_h;
 } scroll_event_t;
 
 #endif /* _X11VNC_SCROLLEVENT_T_H */

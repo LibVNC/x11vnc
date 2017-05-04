@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -88,7 +88,7 @@ static CGSConnectionID cid = NULL;
 
 extern void macosx_log(char *);
 
-int macwinmax = 0; 
+int macwinmax = 0;
 typedef struct windat {
 	int win;
 	int x, y;
@@ -102,11 +102,11 @@ typedef struct windat {
 extern int ncache;
 
 #define MAXWINDAT 4096
-windat_t macwins[MAXWINDAT]; 
-static CGSWindowID _wins_all[MAXWINDAT]; 
-static CGSWindowID _wins_mapped[MAXWINDAT]; 
-static CGSWindowCount _wins_all_cnt, _wins_mapped_cnt; 
-static int _wins_int[MAXWINDAT]; 
+windat_t macwins[MAXWINDAT];
+static CGSWindowID _wins_all[MAXWINDAT];
+static CGSWindowID _wins_mapped[MAXWINDAT];
+static CGSWindowCount _wins_all_cnt, _wins_mapped_cnt;
+static int _wins_int[MAXWINDAT];
 
 #define WINHISTNUM 32768
 #define WINHISTMAX 4
@@ -179,7 +179,7 @@ int macosxCGS_follow_animation_win(int win, int idx, int grow) {
 	int x, y, w, h;
 	int xp = -1, yp = -1, wp = -1, hp = -1;
 	CGSRect rect;
-	CGSError err; 
+	CGSError err;
 
 	int reps = 0;
 
@@ -191,7 +191,7 @@ int macosxCGS_follow_animation_win(int win, int idx, int grow) {
 	}
 
 	if (idx < 0) {
-		idx = macosxCGS_find_index(win); 
+		idx = macosxCGS_find_index(win);
 	}
 	if (idx < 0) {
 		return 0;
@@ -213,7 +213,7 @@ int macosxCGS_follow_animation_win(int win, int idx, int grow) {
 			macwins[idx].width  = w;
 			macwins[idx].height = h;
 		}
-	
+
 		if (0) fprintf(stderr, " chase: %03dx%03d+%03d+%03d  %d\n", w, h, x, y, win);
 		if (x == xp && y == yp && w == wp && h == hp)  {
 			reps++;
@@ -265,7 +265,7 @@ void macosxCGS_get_all_windows(void) {
 	double dt = 0.0, now = dnow();
 	int i, db = 0, whist_prv = 0, maxwin = 0, whist_skip = 0;
 	CGSWindowCount cap = (CGSWindowCount) MAXWINDAT;
-	CGSError err; 
+	CGSError err;
 
 	CGS_levelmax = 0;
 	CGS_levels[CGS_levelmax++] = (int) kCGDraggingWindowLevel;	/* 500 ? */
@@ -289,7 +289,7 @@ void macosxCGS_get_all_windows(void) {
 
 	last = now;
 
-	macwinmax = 0; 
+	macwinmax = 0;
 
 	totcnt++;
 
@@ -313,7 +313,7 @@ if (db) fprintf(stderr, "cnt: %d err: %d\n", (int) _wins_all_cnt, err);
 	if (err != 0) {
 		return;
 	}
-	
+
 	for (i=0; i < (int) _wins_all_cnt; i++) {
 		CGSRect rect;
 		CGSWindowLevel level;
@@ -376,7 +376,7 @@ if (db) fprintf(stderr, "cnt: %d err: %d\n", (int) _wins_mapped_cnt, err);
 	if (err != 0) {
 		return;
 	}
-	
+
 	for (i=0; i < (int) _wins_mapped_cnt; i++) {
 		int j, idx = -1;
 		int win = (int) _wins_mapped[i];
@@ -384,13 +384,13 @@ if (db) fprintf(stderr, "cnt: %d err: %d\n", (int) _wins_mapped_cnt, err);
 		if (0 <= win && win < WINHISTNUM) {
 			j = qlook[win];
 			if (j >= 0 && macwins[j].win == win) {
-				idx = j; 
+				idx = j;
 			}
 		}
 		if (idx < 0) {
 			for (j=0; j < macwinmax; j++) {
 				if (macwins[j].win == win) {
-					idx = j; 
+					idx = j;
 					break;
 				}
 			}
@@ -435,20 +435,20 @@ if (db) fprintf(stderr, "cnt: %d err: %d\n", (int) _wins_mapped_cnt, err);
 				;
 			} else if ( !(prev & is_mapped) && (curr & is_mapped)) {
 				/* MapNotify */
-				if (0) fprintf(stderr, "MapNotify:   %d/%d  %d               %.4f tot=%d\n", prev, curr, win, dnowx(), totcnt); 
+				if (0) fprintf(stderr, "MapNotify:   %d/%d  %d               %.4f tot=%d\n", prev, curr, win, dnowx(), totcnt);
 				macosx_add_mapnotify(win, macwins[i].level, 1);
 				if (0) macosxCGS_follow_animation_win(win, i, 1);
 
 			} else if ( !(curr & is_mapped) && (prev & is_mapped)) {
 				/* UnmapNotify */
-				if (0) fprintf(stderr, "UnmapNotify: %d/%d  %d               %.4f A tot=%d\n", prev, curr, win, dnowx(), totcnt); 
+				if (0) fprintf(stderr, "UnmapNotify: %d/%d  %d               %.4f A tot=%d\n", prev, curr, win, dnowx(), totcnt);
 				macosx_add_mapnotify(win, macwins[i].level, 0);
 			} else if ( !(prev & is_exist) && (curr & is_exist)) {
 				/* CreateNotify */
-				if (0) fprintf(stderr, "CreateNotify:%d/%d  %d               %.4f whist: %d/%d 0x%x tot=%d\n", prev, curr, win, dnowx(), whist_prv, whist_idx, win, totcnt); 
+				if (0) fprintf(stderr, "CreateNotify:%d/%d  %d               %.4f whist: %d/%d 0x%x tot=%d\n", prev, curr, win, dnowx(), whist_prv, whist_idx, win, totcnt);
 				macosx_add_create(win, macwins[i].level);
 				if (curr & is_mapped) {
-					if (0) fprintf(stderr, "MapNotify:   %d/%d  %d               %.4f tot=%d\n", prev, curr, win, dnowx(), totcnt); 
+					if (0) fprintf(stderr, "MapNotify:   %d/%d  %d               %.4f tot=%d\n", prev, curr, win, dnowx(), totcnt);
 					macosx_add_mapnotify(win, macwins[i].level, 1);
 				}
 			}
@@ -462,24 +462,24 @@ if (db) fprintf(stderr, "cnt: %d err: %d\n", (int) _wins_mapped_cnt, err);
 				if (1) {
 					;
 				} else if (curr & is_clipped) {
-					if (0) fprintf(stderr, "VisibNotify: %d/%d  %d               OBS tot=%d\n", prev, curr, win, totcnt); 
+					if (0) fprintf(stderr, "VisibNotify: %d/%d  %d               OBS tot=%d\n", prev, curr, win, totcnt);
 					nv_win[nv] = win;
 					nv_lvl[nv] = macwins[i].level;
 					nv_vis[nv++] = 1;
 				} else {
-					if (0) fprintf(stderr, "VisibNotify: %d/%d  %d               UNOBS tot=%d\n", prev, curr, win, totcnt); 
+					if (0) fprintf(stderr, "VisibNotify: %d/%d  %d               UNOBS tot=%d\n", prev, curr, win, totcnt);
 					nv_win[nv] = win;
 					nv_lvl[nv] = macwins[i].level;
 					nv_vis[nv++] = 0;
 				}
 			} else {
 				if        ( !(prev & is_clipped) &&  (curr & is_clipped) ) {
-					if (0) fprintf(stderr, "VisibNotify: %d/%d  %d               OBS tot=%d\n", prev, curr, win, totcnt); 
+					if (0) fprintf(stderr, "VisibNotify: %d/%d  %d               OBS tot=%d\n", prev, curr, win, totcnt);
 					nv_win[nv] = win;
 					nv_lvl[nv] = macwins[i].level;
 					nv_vis[nv++] = 1;
 				} else if (  (prev & is_clipped) && !(curr & is_clipped) ) {
-					if (0) fprintf(stderr, "VisibNotify: %d/%d  %d               UNOBS tot=%d\n", prev, curr, win, totcnt); 
+					if (0) fprintf(stderr, "VisibNotify: %d/%d  %d               UNOBS tot=%d\n", prev, curr, win, totcnt);
 					nv_win[nv] = win;
 					nv_lvl[nv] = macwins[i].level;
 					nv_vis[nv++] = 0;
@@ -497,17 +497,17 @@ if (db) fprintf(stderr, "cnt: %d err: %d\n", (int) _wins_mapped_cnt, err);
 			}
 
 			if (q >= 0) {
-				lvl = macwins[q].level;	
+				lvl = macwins[q].level;
 			}
 			curr = whist[whist_idx][win];
 			prev = whist[whist_prv][win];
 			if (!(curr & is_exist) && (prev & is_exist)) {
 				if (prev & is_mapped) {
-					if (0) fprintf(stderr, "UnmapNotify: %d/%d  %d               %.4f B tot=%d\n", prev, curr, win, dnowx(), totcnt); 
+					if (0) fprintf(stderr, "UnmapNotify: %d/%d  %d               %.4f B tot=%d\n", prev, curr, win, dnowx(), totcnt);
 					macosx_add_mapnotify(win, lvl, 0);
 				}
 				/* DestroyNotify */
-				if (0) fprintf(stderr, "DestroNotify:%d/%d  %d               %.4f tot=%d\n", prev, curr, win, dnowx(), totcnt); 
+				if (0) fprintf(stderr, "DestroNotify:%d/%d  %d               %.4f tot=%d\n", prev, curr, win, dnowx(), totcnt);
 				macosx_add_destroy(win, lvl);
 			}
 		}
@@ -536,7 +536,7 @@ void macosxGCS_initpb(void) {
 		macosx_log("macosxGCS_initpb: Clipboard exchange will NOT work.\n");
 		macosx_log("macosxGCS_initpb: Start x11vnc *inside* Aqua for Clipboard.\n");
 		pbcnt = 0;
-		pbstr = [[NSString alloc] initWithString:@"\e<PASTEBOARD INACCESSIBLE>\e"]; 
+		pbstr = [[NSString alloc] initWithString:@"\e<PASTEBOARD INACCESSIBLE>\e"];
 	}
 	[pool release];
 }

@@ -13,7 +13,7 @@ The following information is taken from these URLs:
 
 they contain the most up to date info.
 
-	
+
 =======================================================================
 http://www.karlrunge.com/x11vnc/index.html:
 
@@ -22,7 +22,7 @@ http://www.karlrunge.com/x11vnc/index.html:
 
 x11vnc: a VNC server for real X displays
                 (to FAQ)    (to Downloads)    (to Building)    (to Beta Test)
-  (to Donations) [PayPal] 
+  (to Donations) [PayPal]
 
    x11vnc allows one to view remotely and interact with real X displays
    (i.e. a display corresponding to a physical monitor, keyboard, and
@@ -1656,7 +1656,7 @@ LAY
    demanding is increasing dramatically.)
    Also, some people ask if they can make a donation, see this link for
    that.
-	
+
 =======================================================================
 http://www.karlrunge.com/x11vnc/faq.html:
 
@@ -1671,381 +1671,381 @@ http://www.karlrunge.com/x11vnc/faq.html:
 
    Q-1: I can't get x11vnc to start up. It says "XOpenDisplay failed
    (null)" or "Xlib: connection to ":0.0" refused by server Xlib: No
-   protocol specified" and then exits. What do I need to do? 
+   protocol specified" and then exits. What do I need to do?
 
-   Q-2: I can't get x11vnc and/or libvncserver to compile. 
+   Q-2: I can't get x11vnc and/or libvncserver to compile.
 
    Q-3: I just built x11vnc successfully, but when I use it my keystrokes
    and mouse button clicks are ignored  (I am able to move the mouse
-   though.) 
+   though.)
 
    Q-4: Help, I need to run x11vnc on Solaris 2.5.1 (or other old
-   Unix/Linux) and it doesn't compile! 
+   Unix/Linux) and it doesn't compile!
 
    Q-5: Where can I get a precompiled x11vnc binary for my Operating
-   System? 
+   System?
 
    Q-6: Where can I get a VNC Viewer binary (or source code) for the
-   Operating System I will be viewing from? 
+   Operating System I will be viewing from?
 
    Q-7: How can I see all of x11vnc's command line options and
-   documentation on how to use them? 
+   documentation on how to use them?
 
    Q-8: I don't like typing arcane command line options every time I
-   start x11vnc. What can I do? Is there a config file? Or a GUI? 
+   start x11vnc. What can I do? Is there a config file? Or a GUI?
 
    Q-9: How can I get the GUI to run in the System Tray, or at least be a
-   smaller, simpler icon? 
+   smaller, simpler icon?
 
    Q-10: How can I get x11vnc to listen on a different port besides the
-   default VNC port (5900)? 
+   default VNC port (5900)?
 
    Q-11: My Firewall/Router doesn't allow VNC Viewers to connect to
-   x11vnc. 
+   x11vnc.
 
    Q-12: Is it possible for a VNC Viewer and a VNC Server to connect to
    each other even though both are behind Firewalls that block all
-   incoming connections? 
+   incoming connections?
 
    Q-13: Can I make x11vnc more quiet and also go into the background
-   after starting up? 
+   after starting up?
 
    Q-14: Sometimes when a VNC viewer dies abruptly, x11vnc also dies with
    the error message like: "Broken pipe". I'm using the -forever mode and
-   I want x11vnc to keep running. 
+   I want x11vnc to keep running.
 
-   Q-15: The Windows TightVNC 1.3.9 Viewer cannot connect to x11vnc. 
+   Q-15: The Windows TightVNC 1.3.9 Viewer cannot connect to x11vnc.
 
-   Q-16: KDE's krdc VNC viewer cannot connect to x11vnc. 
+   Q-16: KDE's krdc VNC viewer cannot connect to x11vnc.
 
    Q-17: When I start x11vnc on an Alpha Tru64 workstation the X server
-   crashes! 
+   crashes!
 
    Q-18: When running x11vnc on an IBM AIX workstation after a few
-   minutes the VNC connection freezes. 
+   minutes the VNC connection freezes.
 
    Q-19: Are there any build-time customizations possible, e.g. change
-   defaults, create a smaller binary, etc? 
+   defaults, create a smaller binary, etc?
 
    [Win2VNC Related]
 
    Q-20: I have two separate machine displays in front of me, one Windows
    the other X11: can I use x11vnc in combination with Win2VNC in
    dual-screen mode to pass the keystrokes and mouse motions to the X11
-   display? 
+   display?
 
    Q-21: I am running Win2VNC on my Windows machine and "x11vnc -nofb" on
    Unix to pass keyboard and mouse to the Unix monitor. Whenever I start
    Win2VNC it quickly disconnects and x11vnc says:
-   rfbProcessClientNormalMessage: read: Connection reset by peer 
+   rfbProcessClientNormalMessage: read: Connection reset by peer
 
    Q-22: Can I run "x11vnc -nofb" on a Mac OS X machine to redirect mouse
    and keyboard input to it from Windows and X11 machines via Win2VNC and
-   x2vnc, respectively? 
+   x2vnc, respectively?
 
    [Color Issues]
 
    Q-23: The X display I run x11vnc on is only 8 bits per pixel (bpp)
    PseudoColor (i.e. only 256 distinct colors.) The x11vnc colors may
    start out OK, but after a while they are incorrect in certain windows.
-   
+
    Q-24: Color problems: Why are the colors for some windows incorrect in
    x11vnc? BTW, my X display has nice overlay/multi-depth visuals of
    different color depths: e.g. there are both depth 8 and 24 visuals
-   available at the same time. 
+   available at the same time.
 
    Q-25: I am on a high color system (depth >= 24) but I seem to have
-   colormap problems. They either flash or everything is very dark. 
+   colormap problems. They either flash or everything is very dark.
 
    Q-26: How do I figure out the window id to supply to the -id windowid
-   option? 
+   option?
 
    Q-27: Why don't menus or other transient windows come up when I am
-   using the -id windowid option to view a single application window? 
+   using the -id windowid option to view a single application window?
 
    Q-28: My X display is depth 24 at 24bpp (instead of the normal depth
    24 at 32bpp.) I'm having lots of color and visual problems with x11vnc
-   and/or vncviewer. What's up? 
+   and/or vncviewer. What's up?
 
    [Xterminals]
 
    Q-29: Can I use x11vnc to view and interact with an Xterminal (e.g.
    NCD) that is not running UNIX and so x11vnc cannot be run on it
-   directly? 
+   directly?
 
    Q-30: How do I get my X permissions (MIT-MAGIC-COOKIE file) correct
-   for a Unix/Linux machine acting as an Xterminal? 
+   for a Unix/Linux machine acting as an Xterminal?
 
    [Sun Rays]
 
-   Q-31: I'm having trouble using x11vnc with my Sun Ray session. 
+   Q-31: I'm having trouble using x11vnc with my Sun Ray session.
 
    [Remote Control]
 
-   Q-32: How do I stop x11vnc once it is running in the background? 
+   Q-32: How do I stop x11vnc once it is running in the background?
 
    Q-33: Can I change settings in x11vnc without having to restart it?
-   Can I remote control it? 
+   Can I remote control it?
 
    [Security and Permissions]
 
-   Q-34: How do I create a VNC password for use with x11vnc? 
+   Q-34: How do I create a VNC password for use with x11vnc?
 
    Q-35: Can I make it so -storepasswd doesn't show my password on the
-   screen? 
+   screen?
 
    Q-36: Can I have two passwords for VNC viewers, one for full access
-   and the other for view-only access to the display? 
+   and the other for view-only access to the display?
 
    Q-37: Can I have as many full-access and view-only passwords as I
-   like? 
+   like?
 
    Q-38: Does x11vnc support Unix usernames and passwords? Can I further
-   limit the set of Unix usernames who can connect to the VNC desktop? 
+   limit the set of Unix usernames who can connect to the VNC desktop?
 
    Q-39: Can I supply an external program to provide my own custom login
    method (e.g. Dynamic/One-time passwords or non-Unix (LDAP) usernames
-   and passwords)? 
+   and passwords)?
 
    Q-40: Why does x11vnc exit as soon as the VNC viewer disconnects? And
    why doesn't it allow more than one VNC viewer to connect at the same
-   time? 
+   time?
 
    Q-41: Can I limit which machines incoming VNC clients can connect
-   from? 
+   from?
 
    Q-42: How do I build x11vnc/libvncserver with libwrap (tcp_wrappers)
-   support? 
+   support?
 
    Q-43: Can I have x11vnc only listen on one network interface (e.g.
    internal LAN) rather than having it listen on all network interfaces
-   and relying on -allow to filter unwanted connections out? 
+   and relying on -allow to filter unwanted connections out?
 
    Q-44: Now that -localhost implies listening only on the loopback
    interface, how I can occasionally allow in a non-localhost via the -R
-   allowonce remote control command? 
+   allowonce remote control command?
 
    Q-45: Can I fine tune what types of user input are allowed? E.g. have
    some users just be able to move the mouse, but not click or type
-   anything? 
+   anything?
 
    Q-46: Can I prompt the user at the local X display whether the
    incoming VNC client should be accepted or not? Can I decide to make
    some clients view-only? How about running an arbitrary program to make
-   the decisions? 
+   the decisions?
 
    Q-47: I start x11vnc as root because it is launched via inetd(8) or a
    display manager like gdm(1). Can I have x11vnc later switch to a
-   different user? 
+   different user?
 
    Q-48: I use a screen-lock when I leave my workstation (e.g.
    xscreensaver or xlock.) When I remotely access my workstation desktop
    via x11vnc I can unlock the desktop fine, but I am worried people will
    see my activities on the physical monitor. What can I do to prevent
-   this, or at least make it more difficult? 
+   this, or at least make it more difficult?
 
    Q-49: Can I have x11vnc automatically lock the screen when I
-   disconnect the VNC viewer? 
+   disconnect the VNC viewer?
 
    [Encrypted Connections]
 
    Q-50: How can I tunnel my connection to x11vnc via an encrypted SSH
-   channel between two Unix machines? 
+   channel between two Unix machines?
 
    Q-51: How can I tunnel my connection to x11vnc via an encrypted SSH
-   channel from Windows using an SSH client like Putty? 
+   channel from Windows using an SSH client like Putty?
 
    Q-52: How can I tunnel my connection to x11vnc via an encrypted SSL
-   channel using an external tool like stunnel? 
+   channel using an external tool like stunnel?
 
-   Q-53: Does x11vnc have built-in SSL tunneling? 
+   Q-53: Does x11vnc have built-in SSL tunneling?
 
-   Q-54: How do I use VNC Viewers with built-in SSL tunneling? 
+   Q-54: How do I use VNC Viewers with built-in SSL tunneling?
 
    Q-55: How do I use the Java applet VNC Viewer with built-in SSL
-   tunneling when going through a Web Proxy? 
+   tunneling when going through a Web Proxy?
 
    Q-56: Can Apache web server act as a gateway for users to connect via
    SSL from the Internet with a Web browser to x11vnc running on their
-   workstations behind a firewall? 
+   workstations behind a firewall?
 
    Q-57: Can I create and use my own SSL Certificate Authority (CA) with
-   x11vnc? 
+   x11vnc?
 
    [Display Managers and Services]
 
-   Q-58: How can I run x11vnc as a "service" that is always available? 
+   Q-58: How can I run x11vnc as a "service" that is always available?
 
    Q-59: How can I use x11vnc to connect to an X login screen like xdm,
    GNOME gdm, KDE kdm, or CDE dtlogin? (i.e. nobody is logged into an X
-   session yet.) 
+   session yet.)
 
-   Q-60: Can I run x11vnc out of inetd(8)? How about xinetd(8)? 
+   Q-60: Can I run x11vnc out of inetd(8)? How about xinetd(8)?
 
    Q-61: Can I have x11vnc advertise its VNC service and port via mDNS /
    Zeroconf (e.g. Avahi) so VNC viewers on the local network can detect
-   it automatically? 
+   it automatically?
 
    Q-62: Can I have x11vnc allow a user to log in with her UNIX username
    and password and then have it find her X session display on that
    machine and then attach to it? How about starting an X session if one
-   cannot be found? 
+   cannot be found?
 
-   Q-63: Can I have x11vnc restart itself after it terminates? 
+   Q-63: Can I have x11vnc restart itself after it terminates?
 
    Q-64: How do I make x11vnc work with the Java VNC viewer applet in a
-   web browser? 
+   web browser?
 
    Q-65: Are reverse connections (i.e. the VNC server connecting to the
-   VNC viewer) using "vncviewer -listen" and vncconnect(1) supported? 
+   VNC viewer) using "vncviewer -listen" and vncconnect(1) supported?
 
    Q-66: Can reverse connections be made to go through a Web or SOCKS
-   proxy or SSH? 
+   proxy or SSH?
 
    Q-67: Can x11vnc provide a multi-user desktop web login service as an
-   Apache CGI or PHP script? 
+   Apache CGI or PHP script?
 
    Q-68: Can I use x11vnc as a replacement for Xvnc? (i.e. not for a real
-   display, but for a virtual one I keep around.) 
+   display, but for a virtual one I keep around.)
 
    Q-69: How can I use x11vnc on "headless" machines? Why might I want
-   to? 
+   to?
 
    [Resource Usage and Performance]
 
    Q-70: I have lots of memory, but why does x11vnc fail with    shmget:
    No space left on device    or    Minor opcode of failed request: 1
-   (X_ShmAttach)? 
+   (X_ShmAttach)?
 
-   Q-71: How can I make x11vnc use less system resources? 
+   Q-71: How can I make x11vnc use less system resources?
 
-   Q-72: How can I make x11vnc use MORE system resources? 
+   Q-72: How can I make x11vnc use MORE system resources?
 
    Q-73: I use x11vnc over a slow link with high latency (e.g. dialup
-   modem or broadband), is there anything I can do to speed things up? 
+   modem or broadband), is there anything I can do to speed things up?
 
    Q-74: Does x11vnc support the X DAMAGE Xserver extension to find
-   modified regions of the screen quickly and efficiently? 
+   modified regions of the screen quickly and efficiently?
 
    Q-75: My OpenGL application shows no screen updates unless I supply
-   the -noxdamage option to x11vnc. 
+   the -noxdamage option to x11vnc.
 
    Q-76: When I drag windows around with the mouse or scroll up and down
    things really bog down (unless I do the drag in a single, quick
-   motion.) Is there anything to do to improve things? 
+   motion.) Is there anything to do to improve things?
 
    Q-77: Why not do something like wireframe animations to avoid the
-   windows "lurching" when being moved or resized? 
+   windows "lurching" when being moved or resized?
 
    Q-78: Can x11vnc try to apply heuristics to detect when a window is
-   scrolling its contents and use the CopyRect encoding for a speedup? 
+   scrolling its contents and use the CopyRect encoding for a speedup?
 
    Q-79: Can x11vnc do client-side caching of pixel data? I.e. so when
    that pixel data is needed again it does not have to be retransmitted
-   over the network. 
+   over the network.
 
-   Q-80: Does x11vnc support TurboVNC? 
+   Q-80: Does x11vnc support TurboVNC?
 
    [Mouse Cursor Shapes]
 
    Q-81: Why isn't the mouse cursor shape (the little icon shape where
-   the mouse pointer is) correct as I move from window to window? 
+   the mouse pointer is) correct as I move from window to window?
 
    Q-82: When using XFIXES cursorshape mode, some of the cursors look
    really bad with extra black borders around the cursor and other cruft.
-   How can I improve their appearance? 
+   How can I improve their appearance?
 
    Q-83: In XFIXES mode, are there any hacks to handle cursor
-   transparency ("alpha channel") exactly? 
+   transparency ("alpha channel") exactly?
 
    [Mouse Pointer]
 
    Q-84: Why does the mouse arrow just stay in one corner in my
-   vncviewer, whereas my cursor (that does move) is just a dot? 
+   vncviewer, whereas my cursor (that does move) is just a dot?
 
    Q-85: Can I take advantage of the TightVNC extension to the VNC
    protocol where Cursor Positions Updates are sent back to all connected
    clients (i.e. passive viewers can see the mouse cursor being moved
-   around by another viewer)? 
+   around by another viewer)?
 
    Q-86: Is it possible to swap the mouse buttons (e.g. left-handed
    operation), or arbitrarily remap them? How about mapping button clicks
-   to keystrokes, e.g. to partially emulate Mouse wheel scrolling? 
+   to keystrokes, e.g. to partially emulate Mouse wheel scrolling?
 
    [Keyboard Issues]
 
    Q-87: How can I get my AltGr and Shift modifiers to work between
-   keyboards for different languages? 
+   keyboards for different languages?
 
    Q-88: When I try to type a "<" (i.e. less than) instead I get ">"
-   (i.e. greater than)! Strangely, typing ">" works OK!! 
+   (i.e. greater than)! Strangely, typing ">" works OK!!
 
    Q-89: Extra Character Inserted, E.g.: When I try to type a "<" (i.e.
-   less than) instead I get "<," (i.e. an extra comma.) 
+   less than) instead I get "<," (i.e. an extra comma.)
 
    Q-90: I'm using an "international" keyboard (e.g. German "de", or
    Danish "dk") and the -modtweak mode works well if the VNC viewer is
    run on a Unix/Linux machine with a similar keyboard.   But if I run
    the VNC viewer on Unix/Linux with a different keyboard (e.g. "us") or
    Windows with any keyboard, I can't type some keys like:   "@", "$",
-   "<", ">", etc. How can I fix this? 
+   "<", ">", etc. How can I fix this?
 
    Q-91: When typing I sometimes get double, triple, or more of my
-   keystrokes repeated. I'm sure I only typed them once, what can I do? 
+   keystrokes repeated. I'm sure I only typed them once, what can I do?
 
    Q-92: The x11vnc -norepeat mode is in effect, but I still get repeated
-   keystrokes!! 
+   keystrokes!!
 
    Q-93: After using x11vnc for a while, I find that I cannot type some
    (or any) characters or my mouse clicks and drags no longer have any
-   effect, or they lead to strange effects. What happened? 
+   effect, or they lead to strange effects. What happened?
 
    Q-94: The machine where I run x11vnc has an AltGr key, but the local
    machine where I run the VNC viewer does not. Is there a way I can map
-   a local unused key to send an AltGr? How about a Compose key as well? 
+   a local unused key to send an AltGr? How about a Compose key as well?
 
    Q-95: I have a Sun machine I run x11vnc on. Its Sun keyboard has just
    one Alt key labelled "Alt" and two Meta keys labelled with little
    diamonds. The machine where I run the VNC viewer only has Alt keys.
-   How can I send a Meta keypress? (e.g. emacs needs this) 
+   How can I send a Meta keypress? (e.g. emacs needs this)
 
    Q-96: Running x11vnc on HP-UX I cannot type "#" I just get a "3"
-   instead. 
+   instead.
 
    Q-97: Can I map a keystroke to a mouse button click on the remote
-   machine? 
+   machine?
 
    Q-98: How can I get Caps_Lock to work between my VNC viewer and
-   x11vnc? 
+   x11vnc?
 
    [Screen Related Issues and Features]
 
    Q-99: The remote display is larger (in number of pixels) than the
    local display I am running the vncviewer on. I don't like the
-   vncviewer scrollbars, what I can do? 
+   vncviewer scrollbars, what I can do?
 
    Q-100: Does x11vnc support server-side framebuffer scaling? (E.g. to
-   make the desktop smaller.) 
+   make the desktop smaller.)
 
    Q-101: Does x11vnc work with Xinerama? (i.e. multiple monitors joined
-   together to form one big, single screen.) 
+   together to form one big, single screen.)
 
    Q-102: Can I use x11vnc on a multi-headed display that is not Xinerama
-   (i.e. separate screens :0.0, :0.1, ... for each monitor)? 
+   (i.e. separate screens :0.0, :0.1, ... for each monitor)?
 
    Q-103: Can x11vnc show only a portion of the display? (E.g. for a
-   special purpose application or a very large screen.) 
+   special purpose application or a very large screen.)
 
    Q-104: Does x11vnc support the XRANDR (X Resize, Rotate and
    Reflection) extension? Whenever I rotate or resize the screen x11vnc
-   just seems to crash. 
+   just seems to crash.
 
    Q-105: Independent of any XRANDR, can I have x11vnc rotate and/or
    reflect the screen that the VNC viewers see? (e.g. for a handheld
-   whose screen is rotated 90 degrees.) 
+   whose screen is rotated 90 degrees.)
 
    Q-106: Why is the view in my VNC viewer completely black? Or why is
-   everything flashing around randomly? 
+   everything flashing around randomly?
 
    Q-107: I use Linux Virtual Terminals (VT's) to implement 'Fast User
    Switching' between users' sessions (e.g. Betty is on Ctrl-Alt-F7,
@@ -2053,91 +2053,91 @@ http://www.karlrunge.com/x11vnc/faq.html:
    keystrokes to switch between their sessions.)   How come the view in a
    VNC viewer connecting to x11vnc is either completely black or
    otherwise all messed up unless the X session x11vnc is attached to is
-   in the active VT? 
+   in the active VT?
 
    Q-108: I am using x11vnc where my local machine has "popup/hidden
    taskbars" and the remote display where x11vnc runs also has
    "popup/hidden taskbars" and they interfere and fight with each other.
-   What can I do? 
+   What can I do?
 
    Q-109: Help! x11vnc and my KDE screensaver keep switching each other
-   on and off every few seconds. 
+   on and off every few seconds.
 
    Q-110: I am running the compiz 3D window manager (or beryl, MythTv,
    Google Earth, or some other OpenGL app) and I do not get screen
-   updates in x11vnc. 
+   updates in x11vnc.
 
-   Q-111: Can I use x11vnc to view my VMWare session remotely? 
+   Q-111: Can I use x11vnc to view my VMWare session remotely?
 
    [Exporting non-X11 devices via VNC]
 
    Q-112: Can non-X devices (e.g. a raw framebuffer) be viewed (and even
-   controlled) via VNC with x11vnc? 
+   controlled) via VNC with x11vnc?
 
    Q-113: Can I export the Linux Console (Virtual Terminals) via VNC
-   using x11vnc? 
+   using x11vnc?
 
    Q-114: Can I export via VNC a Webcam or TV tuner framebuffer using
-   x11vnc? 
+   x11vnc?
 
    Q-115: Can I connect via VNC to a Qt-embedded/Qt-enhanced/Qtopia
    application running on my handheld, cell phone, or PC using the Linux
-   console framebuffer (i.e. not X11)? 
+   console framebuffer (i.e. not X11)?
 
    Q-116: How do I inject touch screen input into an
    Qt-embedded/Qt-enhanced/Qtopia cell phone such as openmoko/qtmoko Neo
-   Freerunner? 
+   Freerunner?
 
    Q-117: Now that non-X11 devices can be exported via VNC using x11vnc,
    can I build it with no dependencies on X11 header files and libraries?
-   
+
    Q-118: How do I cross compile x11vnc for a different architecture than
-   my Linux i386 or amd64 PC? 
+   my Linux i386 or amd64 PC?
 
    Q-119: Does x11vnc support Mac OS X Aqua/Quartz displays natively
-   (i.e. no X11 involved)? 
+   (i.e. no X11 involved)?
 
    Q-120: Can x11vnc be used as a VNC reflector/repeater to improve
    performance for the case of a large number of simultaneous VNC viewers
-   (e.g. classroom broadcasting or a large demo)? 
+   (e.g. classroom broadcasting or a large demo)?
 
    Q-121: Can x11vnc be used during a Linux, Solaris, etc. system
-   Installation so the Installation can be done remotely? 
+   Installation so the Installation can be done remotely?
 
    [Misc: Clipboard, File Transfer/Sharing, Printing, Sound, Beeps,
    Thanks, etc.]
 
    Q-122: Does the Clipboard/Selection get transferred between the
-   vncviewer and the X display? 
+   vncviewer and the X display?
 
    Q-123: Can I use x11vnc to record a Shock Wave Flash (or other format)
-   video of my desktop, e.g. to record a tutorial or demo? 
+   video of my desktop, e.g. to record a tutorial or demo?
 
-   Q-124: Can I transfer files back and forth with x11vnc? 
+   Q-124: Can I transfer files back and forth with x11vnc?
 
-   Q-125: Which UltraVNC extensions are supported? 
+   Q-125: Which UltraVNC extensions are supported?
 
    Q-126: Can x11vnc emulate UltraVNC's Single Click helpdesk mode for
    Unix? I.e. something very simple for a naive user to initiate a
    reverse vnc connection from their Unix desktop to a helpdesk
-   operator's VNC Viewer. 
+   operator's VNC Viewer.
 
    Q-127: Can I (temporarily) mount my local (viewer-side) Windows/Samba
-   File share on the machine where x11vnc is running? 
+   File share on the machine where x11vnc is running?
 
    Q-128: Can I redirect CUPS print jobs from the remote desktop where
-   x11vnc is running to a printer on my local (viewer-side) machine? 
+   x11vnc is running to a printer on my local (viewer-side) machine?
 
    Q-129: How can I hear the sound (audio) from the remote applications
-   on the desktop I am viewing via x11vnc? 
+   on the desktop I am viewing via x11vnc?
 
    Q-130: Why don't I hear the "Beeps" in my X session (e.g. when typing
-   tput bel in an xterm)? 
+   tput bel in an xterm)?
 
-   Q-131: Does x11vnc work with IPv6? 
+   Q-131: Does x11vnc work with IPv6?
 
    Q-132: Thanks for your program or for your help! Can I make a
-   donation? 
+   donation?
      _________________________________________________________________
 
 
@@ -6954,7 +6954,7 @@ EndSection
        physical display the keysym dead_tilde is pressed and released
        (this usually involves holding AltGr down while another key is
        pressed) and then space is pressed. (this can also be used get
-       characters with the "~" symbol on top, e.g. "ã" by typing "a"
+       characters with the "~" symbol on top, e.g. "Ã£" by typing "a"
        instead of space.)
        What to do? In general the VNC protocol has not really solved this
        problem: what should be done if the VNC viewer sends a keysym not
@@ -9240,7 +9240,7 @@ or:
    you for your support! Click on the PayPal button below for more info.
 
    [x-click-but04.gif]-Submit
-	
+
 =======================================================================
 http://www.karlrunge.com/x11vnc/chainingssh.html:
 
@@ -9281,7 +9281,7 @@ exec /usr/bin/ssh -t -L 5900:localhost:5900 $gateway \
    If the gateway machine's sshd is configured with GatewayPorts=no (the
    default) then the double chaining of "ssh -R ..." will be required for
    reverse connections to work.
-	
+
 =======================================================================
 http://www.karlrunge.com/x11vnc/miscbuild.html:
 
@@ -9389,7 +9389,7 @@ env CPPFLAGS="-DTLS=''" ./configure
 
    and then build it.
      _________________________________________________________________
-	
+
 =======================================================================
 http://www.karlrunge.com/x11vnc/sunray.html:
 
@@ -9725,7 +9725,7 @@ utaction -c $HOME/.srconnectrc -d $HOME/.srdisconnectrc &
      $DISPLAY specification as you describe (although it probably makes
      most sense to do this at login time, as opposed to every connect or
      disconnect event).
-	
+
 =======================================================================
 http://www.karlrunge.com/x11vnc/ssl.html:
 
@@ -10450,7 +10450,7 @@ m
    stunnel and openssl on Windows with VNC. Also
    http://www.stunnel.org/faq/certs.html is a very good source of
    information on SSL certificate creation and management.
-	
+
 =======================================================================
 http://www.karlrunge.com/x11vnc/ssl-portal.html:
 
@@ -11262,7 +11262,7 @@ Certs=yes [R,NE]
    you later get an unexpected dialog, you know something is wrong.
    Nearly always it is just a changed or expired certificate, but better
    safe than sorry...
-	
+
 =======================================================================
 http://www.karlrunge.com/x11vnc/enhanced_tightvnc_viewer.html:
 
@@ -12368,7 +12368,7 @@ nd source AND full archives in the zip dir. (19.2MB)
      _________________________________________________________________
 
    README: Here is the toplevel README from the bundle.
-	
+
 =======================================================================
 http://www.karlrunge.com/x11vnc/x11vnc_opts.html:
 
@@ -12383,102 +12383,102 @@ x11vnc: a VNC server for real X displays
 x11vnc: allow VNC connections to real X11 displays. 0.9.13 lastmod: 2010-12-27
 
 x11vnc options:
-  -display disp            -auth file               -N                     
-  -autoport n              -rfbport str             -6                     
-  -no6                     -noipv6                  -noipv4                
-  -reopen                  -reflect host:N          -id windowid           
-  -sid windowid            -appshare                -clip WxH+X+Y          
-  -flashcmap               -shiftcmap n             -notruecolor           
-  -advertise_truecolor     -visual n                -overlay               
-  -overlay_nocursor        -8to24 [opts]            -24to32                
-  -scale fraction          -geometry WxH            -scale_cursor frac     
-  -viewonly                -shared                  -once                  
-  -forever                 -loop                    -timeout n             
-  -sleepin n               -inetd                   -tightfilexfer         
-  -ultrafilexfer           -http                    -http_ssl              
-  -avahi                   -mdns                    -zeroconf              
-  -connect string          -connect_or_exit str     -proxy string          
-  -vncconnect              -novncconnect            -allow host1[,host2..] 
-  -localhost               -unixsock str            -listen6 str           
-  -nolookup                -input string            -grabkbd               
-  -grabptr                 -ungrabboth              -grabalways            
-  -viewpasswd string       -passwdfile filename     -showrfbauth filename  
-  -unixpw [list]           -unixpw_nis [list]       -unixpw_cmd cmd        
-  -find                    -finddpy                 -listdpy               
-  -findauth [disp]         -create                  -xdummy                
-  -xvnc                    -xvnc_redirect           -xdummy_xvfb           
-  -create_xsrv str         -svc                     -svc_xdummy            
-  -svc_xvnc                -svc_xdummy_xvfb         -xdmsvc                
-  -sshxdmsvc               -unixpw_system_greeter   -redirect port         
-  -display WAIT:...        -vencrypt mode           -anontls mode          
-  -sslonly                 -dhparams file           -nossl                 
-  -ssl [pem]               -ssltimeout n            -sslnofail             
-  -ssldir dir              -sslverify path          -sslCRL path           
-  -sslGenCA [dir]          -sslGenCert type name    -sslEncKey pem         
-  -sslCertInfo pem         -sslDelCert pem          -sslScripts            
-  -stunnel [pem]           -stunnel3  [pem]         -enc cipher:keyfile    
-  -https [port]            -httpsredir [port]       -http_oneport          
-  -ssh user@host:disp      -usepw                   -storepasswd pass file 
-  -nopw                    -accept string           -afteraccept string    
-  -gone string             -users list              -noshm                 
-  -flipbyteorder           -onetile                 -solid [color]         
-  -blackout string         -xinerama                -noxinerama            
-  -xtrap                   -xrandr [mode]           -rotate string         
-  -padgeom WxH             -o logfile               -flag file             
-  -rmflag file             -rc filename             -norc                  
-  -env VAR=VALUE           -prog /path/to/x11vnc    -h, -help              
-  -?, -opts                -V, -version             -license               
-  -dbg                     -q, -quiet               -v, -verbose           
-  -bg                      -modtweak                -nomodtweak            
-  -xkb                     -noxkb                   -capslock              
-  -skip_lockkeys           -noskip_lockkeys         -skip_keycodes string  
-  -sloppy_keys             -skip_dups               -noskip_dups           
-  -add_keysyms             -noadd_keysyms           -clear_mods            
-  -clear_keys              -clear_all               -remap string          
-  -norepeat                -repeat                  -nofb                  
-  -nobell                  -nosel                   -noprimary             
-  -nosetprimary            -noclipboard             -nosetclipboard        
-  -seldir string           -cursor [mode]           -nocursor              
-  -cursor_drag             -arrow n                 -noxfixes              
-  -alphacut n              -alphafrac fraction      -alpharemove           
-  -noalphablend            -nocursorshape           -cursorpos             
-  -nocursorpos             -xwarppointer            -noxwarppointer        
-  -always_inject           -buttonmap string        -nodragging            
-  -ncache n                -ncache_cr               -ncache_no_moveraise   
-  -ncache_no_dtchange      -ncache_no_rootpixmap    -ncache_keep_anims     
-  -ncache_old_wm           -ncache_pad n            -debug_ncache          
-  -wireframe [str]         -nowireframe             -nowireframelocal      
-  -wirecopyrect mode       -nowirecopyrect          -debug_wireframe       
-  -scrollcopyrect mode     -noscrollcopyrect        -scr_area n            
-  -scr_skip list           -scr_inc list            -scr_keys list         
-  -scr_term list           -scr_keyrepeat lo-hi     -scr_parms string      
-  -fixscreen string        -debug_scroll            -noxrecord             
-  -grab_buster             -nograb_buster           -debug_grabs           
-  -debug_sel               -pointer_mode n          -input_skip n          
-  -allinput                -input_eagerly           -speeds rd,bw,lat      
-  -wmdt string             -debug_pointer           -debug_keyboard        
-  -defer time              -wait time               -extra_fbur n          
-  -wait_ui factor          -setdefer n              -nowait_bog            
-  -slow_fb time            -xrefresh time           -nap                   
-  -nonap                   -sb time                 -readtimeout n         
-  -ping n                  -nofbpm                  -fbpm                  
-  -nodpms                  -dpms                    -forcedpms             
-  -clientdpms              -noserverdpms            -noultraext            
-  -chatwindow              -noxdamage               -xd_area A             
-  -xd_mem f                -sigpipe string          -threads               
-  -nothreads               -fs f                    -gaps n                
-  -grow n                  -fuzz n                  -debug_tiles           
-  -snapfb                  -rawfb string            -freqtab file          
-  -pipeinput cmd           -macnodim                -macnosleep            
-  -macnosaver              -macnowait               -macwheel n            
-  -macnoswap               -macnoresize             -maciconanim n         
-  -macmenu                 -macuskbd                -macnoopengl           
-  -macnorawfb              -gui [gui-opts]          -remote command        
-  -query variable          -QD variable             -sync                  
-  -query_retries str       -remote_prefix str       -noremote              
-  -yesremote               -unsafe                  -safer                 
-  -privremote              -nocmds                  -allowedcmds list      
-  -deny_all              
+  -display disp            -auth file               -N
+  -autoport n              -rfbport str             -6
+  -no6                     -noipv6                  -noipv4
+  -reopen                  -reflect host:N          -id windowid
+  -sid windowid            -appshare                -clip WxH+X+Y
+  -flashcmap               -shiftcmap n             -notruecolor
+  -advertise_truecolor     -visual n                -overlay
+  -overlay_nocursor        -8to24 [opts]            -24to32
+  -scale fraction          -geometry WxH            -scale_cursor frac
+  -viewonly                -shared                  -once
+  -forever                 -loop                    -timeout n
+  -sleepin n               -inetd                   -tightfilexfer
+  -ultrafilexfer           -http                    -http_ssl
+  -avahi                   -mdns                    -zeroconf
+  -connect string          -connect_or_exit str     -proxy string
+  -vncconnect              -novncconnect            -allow host1[,host2..]
+  -localhost               -unixsock str            -listen6 str
+  -nolookup                -input string            -grabkbd
+  -grabptr                 -ungrabboth              -grabalways
+  -viewpasswd string       -passwdfile filename     -showrfbauth filename
+  -unixpw [list]           -unixpw_nis [list]       -unixpw_cmd cmd
+  -find                    -finddpy                 -listdpy
+  -findauth [disp]         -create                  -xdummy
+  -xvnc                    -xvnc_redirect           -xdummy_xvfb
+  -create_xsrv str         -svc                     -svc_xdummy
+  -svc_xvnc                -svc_xdummy_xvfb         -xdmsvc
+  -sshxdmsvc               -unixpw_system_greeter   -redirect port
+  -display WAIT:...        -vencrypt mode           -anontls mode
+  -sslonly                 -dhparams file           -nossl
+  -ssl [pem]               -ssltimeout n            -sslnofail
+  -ssldir dir              -sslverify path          -sslCRL path
+  -sslGenCA [dir]          -sslGenCert type name    -sslEncKey pem
+  -sslCertInfo pem         -sslDelCert pem          -sslScripts
+  -stunnel [pem]           -stunnel3  [pem]         -enc cipher:keyfile
+  -https [port]            -httpsredir [port]       -http_oneport
+  -ssh user@host:disp      -usepw                   -storepasswd pass file
+  -nopw                    -accept string           -afteraccept string
+  -gone string             -users list              -noshm
+  -flipbyteorder           -onetile                 -solid [color]
+  -blackout string         -xinerama                -noxinerama
+  -xtrap                   -xrandr [mode]           -rotate string
+  -padgeom WxH             -o logfile               -flag file
+  -rmflag file             -rc filename             -norc
+  -env VAR=VALUE           -prog /path/to/x11vnc    -h, -help
+  -?, -opts                -V, -version             -license
+  -dbg                     -q, -quiet               -v, -verbose
+  -bg                      -modtweak                -nomodtweak
+  -xkb                     -noxkb                   -capslock
+  -skip_lockkeys           -noskip_lockkeys         -skip_keycodes string
+  -sloppy_keys             -skip_dups               -noskip_dups
+  -add_keysyms             -noadd_keysyms           -clear_mods
+  -clear_keys              -clear_all               -remap string
+  -norepeat                -repeat                  -nofb
+  -nobell                  -nosel                   -noprimary
+  -nosetprimary            -noclipboard             -nosetclipboard
+  -seldir string           -cursor [mode]           -nocursor
+  -cursor_drag             -arrow n                 -noxfixes
+  -alphacut n              -alphafrac fraction      -alpharemove
+  -noalphablend            -nocursorshape           -cursorpos
+  -nocursorpos             -xwarppointer            -noxwarppointer
+  -always_inject           -buttonmap string        -nodragging
+  -ncache n                -ncache_cr               -ncache_no_moveraise
+  -ncache_no_dtchange      -ncache_no_rootpixmap    -ncache_keep_anims
+  -ncache_old_wm           -ncache_pad n            -debug_ncache
+  -wireframe [str]         -nowireframe             -nowireframelocal
+  -wirecopyrect mode       -nowirecopyrect          -debug_wireframe
+  -scrollcopyrect mode     -noscrollcopyrect        -scr_area n
+  -scr_skip list           -scr_inc list            -scr_keys list
+  -scr_term list           -scr_keyrepeat lo-hi     -scr_parms string
+  -fixscreen string        -debug_scroll            -noxrecord
+  -grab_buster             -nograb_buster           -debug_grabs
+  -debug_sel               -pointer_mode n          -input_skip n
+  -allinput                -input_eagerly           -speeds rd,bw,lat
+  -wmdt string             -debug_pointer           -debug_keyboard
+  -defer time              -wait time               -extra_fbur n
+  -wait_ui factor          -setdefer n              -nowait_bog
+  -slow_fb time            -xrefresh time           -nap
+  -nonap                   -sb time                 -readtimeout n
+  -ping n                  -nofbpm                  -fbpm
+  -nodpms                  -dpms                    -forcedpms
+  -clientdpms              -noserverdpms            -noultraext
+  -chatwindow              -noxdamage               -xd_area A
+  -xd_mem f                -sigpipe string          -threads
+  -nothreads               -fs f                    -gaps n
+  -grow n                  -fuzz n                  -debug_tiles
+  -snapfb                  -rawfb string            -freqtab file
+  -pipeinput cmd           -macnodim                -macnosleep
+  -macnosaver              -macnowait               -macwheel n
+  -macnoswap               -macnoresize             -maciconanim n
+  -macmenu                 -macuskbd                -macnoopengl
+  -macnorawfb              -gui [gui-opts]          -remote command
+  -query variable          -QD variable             -sync
+  -query_retries str       -remote_prefix str       -noremote
+  -yesremote               -unsafe                  -safer
+  -privremote              -nocmds                  -allowedcmds list
+  -deny_all
 
 LibVNCServer options:
 -rfbport port          TCP port for RFB protocol
@@ -12487,7 +12487,7 @@ LibVNCServer options:
                        (use 'storepasswd' to create a password file)
 -rfbversion 3.x        Set the version of the RFB we choose to advertise
 -permitfiletransfer    permit file transfer support
--passwd plain-password use authentication 
+-passwd plain-password use authentication
                        (use plain-password as password, USE AT YOUR RISK)
 -deferupdate time      time in ms to defer updates (default 40)
 -deferptrupdate time   time in ms to defer pointer updates (default none)

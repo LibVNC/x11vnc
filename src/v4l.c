@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -100,7 +100,7 @@ static void init_ntsc_cable(void);
 
 #define C_VIDEO_CAPTURE 1
 #define C_PICTURE       2
-#define C_WINDOW        3 
+#define C_WINDOW        3
 
 #ifdef V4L_OK
 static struct video_capability  v4l1_capability;
@@ -133,7 +133,7 @@ static int last_channel = 0;
 
 static int v4l1_val(int pct) {
 	/* pct is % */
-	int val, max = V4L1_MAX; 
+	int val, max = V4L1_MAX;
 	if (pct < 0) {
 		return 0;
 	} else if (pct > 100) {
@@ -256,7 +256,7 @@ static int v4l1_setfmt(int fd, char *fmt) {
 
 	fnew = v4l1_lu_palette_str(fmt, &bnew, &rnew);
 	if (fnew) {
-		v4l1_picture.depth = bnew; 
+		v4l1_picture.depth = bnew;
 		v4l1_picture.palette = fnew;
 	}
 	fprintf(stderr, "calling V4L_1: VIDIOCSPICT\n");
@@ -434,8 +434,8 @@ static void apply_settings(char *dev, char *settings, int *fd) {
 static double dval = 0.05;
 
 static int v4l1_dpct(int old, int d) {
-	int newval, max = V4L1_MAX; 
-	
+	int newval, max = V4L1_MAX;
+
 	/* -1 and 1 are special cases for "small increments" */
 	if (d == -1) {
 		newval = old - (int) (dval * max);
@@ -460,7 +460,7 @@ static void v4l_requery(void) {
 	v4l1_cap = v4l1_query(raw_fb_fd, 1);
 	v4l2_cap = v4l2_query(raw_fb_fd, 1);
 }
-	
+
 static void v4l_br(int b) {
 #ifdef V4L_OK
 	int old = v4l1_picture.brightness;
@@ -523,11 +523,11 @@ static void v4l_sz(int b) {
 	}
 
 	if (b == 1) {
-		w = w_old + (int) (0.15 * w_old); 
-		h = h_old + (int) (0.15 * h_old); 
+		w = w_old + (int) (0.15 * w_old);
+		h = h_old + (int) (0.15 * h_old);
 	} else if (b == -1) {
-		w = w_old - (int) (0.15 * w_old); 
-		h = h_old - (int) (0.15 * h_old); 
+		w = w_old - (int) (0.15 * w_old);
+		h = h_old - (int) (0.15 * h_old);
 	} else {
 		return;
 	}
@@ -622,7 +622,7 @@ void v4l_key_command(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 	allowed_input_t input;
 
 	if (raw_fb_fd < 0) {
-		return;		
+		return;
 	}
 	if (! down) {
 		return;
@@ -945,7 +945,7 @@ static int v4l1_query(int fd, int v) {
 
 		if (v) fprintf(stderr, "     tuner[%d]:   %s\tflags: 0x%x mode: %s\n",
 		    v4l1_tuner.tuner, v4l1_tuner.name, v4l1_tuner.flags, mode);
-		
+
 	}
 
 	if (ioctl(fd, VIDIOCGPICT, &v4l1_picture) == -1) {
@@ -961,7 +961,7 @@ static int v4l1_query(int fd, int v) {
 	if (v) fprintf(stderr, "     depth:       %d\n", v4l1_picture.depth);
 	if (v) fprintf(stderr, "     palette:     %d  %s\n", v4l1_picture.palette,
 	    v4l1_lu_palette(v4l1_picture.palette));
-	
+
 	if (ioctl(fd, VIDIOCGWIN, &v4l1_window) == -1) {
 		perror("ioctl VIDIOCGWIN");
 		if (v) fprintf(stderr, "\n");
@@ -1035,7 +1035,7 @@ static int v4l2_query(int fd, int v) {
 			memset(&v4l2_fmtdesc, 0, sizeof(v4l2_fmtdesc));
 			v4l2_fmtdesc.index = i;
 			v4l2_fmtdesc.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-			
+
 			if (ioctl(fd, VIDIOC_ENUM_FMT, &v4l2_fmtdesc) == -1) {
 				break;
 			}
@@ -1086,7 +1086,7 @@ static int open_dev(char *dev) {
 static char *guess_via_v4l(char *dev, int *fd) {
 #ifdef V4L_OK
 	int dfd;
-	
+
 	if (*fd < 0) {
 		dfd = open_dev(dev);
 		*fd = dfd;
@@ -1114,7 +1114,7 @@ static char *guess_via_v4l(char *dev, int *fd) {
 				v4l2_lu_palette_str(str, &g_d, &g_rev);
 			}
 		}
-		
+
 		if (g_w > 0 && g_h > 0 && g_d > 0) {
 			char *atparms = (char *) malloc(200);
 			char *pal = v4l2_lu_palette(v4l2_format.fmt.pix.pixelformat);
@@ -1188,7 +1188,7 @@ static char *guess_via_v4l_info(char *dev, int *fd) {
 		return NULL;
 	}
 
-	len =  strlen("v4l-info")+1+1+strlen(dev)+1+1+1+1+strlen(tmp)+1; 
+	len =  strlen("v4l-info")+1+1+strlen(dev)+1+1+1+1+strlen(tmp)+1;
 	cmd = (char *) malloc(len);
 	rfbLog("guess_via_v4l_info running: v4l-info '%s'\n", dev);
 	sprintf(cmd, "v4l-info '%s' > %s", dev, tmp);
@@ -1206,7 +1206,7 @@ static char *guess_via_v4l_info(char *dev, int *fd) {
 		unlink(tmp);
 		return NULL;
 	}
-	
+
 	curr = 0;
 	while (fgets(line, 1024, out) != NULL) {
 		char *lb = lblanks(line);
@@ -1314,10 +1314,10 @@ static void parse_str(char *str, char **dev, char **settings, char **atparms) {
 			p = strchr(q, ',');
 			if (p) {
 				*p = '\0';
-				*dev = strdup(q); 
+				*dev = strdup(q);
 				*p = ',';
 			} else {
-				*dev = strdup(q); 
+				*dev = strdup(q);
 			}
 			rfbLog("set video device to: '%s'\n", *dev);
 		}
@@ -1330,7 +1330,7 @@ static void parse_str(char *str, char **dev, char **settings, char **atparms) {
 			sprintf(s, "%s", str);
 		} else {
 			sprintf(s, "/dev/%s", str);
-		} 
+		}
 		rfbLog("Checking existence of '%s'\n", s);
                 if (stat(s, &sbuf) != 0) {
 			rfbLogPerror("stat");
@@ -1471,7 +1471,7 @@ static void init_freqtab(char *file) {
 		char line2[1024];
 		size += strlen(line);
 		lb = lblanks(line);
-		if (strstr(lb, "#include") == lb && 
+		if (strstr(lb, "#include") == lb &&
 		    sscanf(lb, "#include %s", inc) == 1) {
 			char *q, *s = inc;
 			if (s[0] == '"') {
@@ -1515,7 +1515,7 @@ static void init_freqtab(char *file) {
 			strcat(text, lb);
 		} else if (strstr(lb, "freq")) {
 			strcat(text, lb);
-		} else if (strstr(lb, "#include") == lb && 
+		} else if (strstr(lb, "#include") == lb &&
 		    sscanf(lb, "#include %s", inc) == 1) {
 			char *lb2;
 			char *q, *s = inc;
@@ -1560,7 +1560,7 @@ static void init_freqtab(char *file) {
 	while (p) {
 		if (p[0] == '[') {
 			int ok = 1;
-			q = p+1;	
+			q = p+1;
 			while (*q) {
 				if (*q == ']') {
 					break;
@@ -1582,7 +1582,7 @@ static void init_freqtab(char *file) {
 					if (0) fprintf(stderr, "maxn:  %d %d\n", maxn, n);
 				}
 			}
-			
+
 		}
 		p = strtok(NULL, "\n");
 	}
@@ -1597,7 +1597,7 @@ static void init_freqtab(char *file) {
 		if (p[0] == '[') {
 			int ok = 1;
 			strncpy(line, p, 100);
-			q = p+1;	
+			q = p+1;
 			while (*q) {
 				if (*q == ']') {
 					break;

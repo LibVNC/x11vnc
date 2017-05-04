@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -36,7 +36,7 @@ so, delete this exception statement from your version.
 /* quoted scripts, edit source not this file. */
 
 
-char genCA[] = 
+char genCA[] =
 "#!/bin/sh\n"
 "\n"
 "DIR=$BASE_DIR\n"
@@ -301,7 +301,7 @@ char genCA[] =
 "cat \"$DIR/CA/cacert.pem\"\n"
 ;
 
-char genCert[] = 
+char genCert[] =
 "#!/bin/sh\n"
 "\n"
 "direrror() {\n"
@@ -745,7 +745,7 @@ char genCert[] =
 "sign_key\n"
 ;
 
-char find_display[] = 
+char find_display[] =
 "#!/bin/sh\n"
 "#\n"
 "# Script for use in -display WAIT:cmd=FINDDISPLAY -unixpw mode.\n"
@@ -1450,7 +1450,7 @@ char find_display[] =
 "exit 0\n"
 ;
 
-char create_display[] = 
+char create_display[] =
 "#!/bin/sh\n"
 "\n"
 "#CREATE_DISPLAY_OUTPUT=/tmp/cdo.txt\n"
@@ -2442,7 +2442,7 @@ char create_display[] =
 "exit 1\n"
 ;
 
-char macosx_solid_background[] = 
+char macosx_solid_background[] =
 "#!/bin/sh\n"
 "\n"
 "#set -xv\n"

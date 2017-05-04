@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -140,7 +140,7 @@ static void record_desired_xdamage_rect(int x, int y, int w, int h) {
 		 */
 		return;
 	}
-	
+
 	if (use_direct_fb_copy) {
 		X_UNLOCK;
 		direct_fb_copy(x, y, x + w, y + h, 1);
@@ -202,7 +202,7 @@ void add_region_xdamage(sraRegionPtr new_region) {
 		prev_tick = nreg - 1;
 	}
 
-	reg = xdamage_regions[prev_tick];  
+	reg = xdamage_regions[prev_tick];
 	if (reg != NULL && new_region != NULL) {
 if (debug_xdamage > 1) fprintf(stderr, "add_region_xdamage: prev_tick: %d reg %p  new_region %p\n", prev_tick, (void *)reg, (void *)new_region);
 		sraRgnOr(reg, new_region);
@@ -253,7 +253,7 @@ void clear_xdamage_mark_region(sraRegionPtr markregion, int flush) {
 	}
 #else
 	if (0) flush++;        /* compiler warnings */
-	if (0) markregion = NULL;   
+	if (0) markregion = NULL;
 #endif
 }
 
@@ -283,7 +283,7 @@ if (call && debug_xdamage > 1) fprintf(stderr, "collect_non_X_xdamage: %d %d %d 
 	if (call == 0) {
 		xdamage_ticker = (xdamage_ticker+1) % nreg;
 		xdamage_direct_count = 0;
-		reg = xdamage_regions[xdamage_ticker];  
+		reg = xdamage_regions[xdamage_ticker];
 		if (reg != NULL) {
 			sraRgnMakeEmpty(reg);
 		}
@@ -291,7 +291,7 @@ if (call && debug_xdamage > 1) fprintf(stderr, "collect_non_X_xdamage: %d %d %d 
 		if (xdamage_ticker < 0) {
 			xdamage_ticker = 0;
 		}
-		reg = xdamage_regions[xdamage_ticker];  
+		reg = xdamage_regions[xdamage_ticker];
 	}
 	if (reg == NULL) {
 		return 0;
@@ -327,7 +327,7 @@ if (call && debug_xdamage > 1) fprintf(stderr, "collect_non_X_xdamage: %d %d %d 
 		x  = nfix(x,  dpy_x);	/* place both in fb area */
 		x2 = nfix(x2, dpy_x+1);
 		w = x2 - x;		/* recompute w */
-		
+
 		y2 = y + h;
 		y  = nfix(y,  dpy_y);
 		y2 = nfix(y2, dpy_y+1);
@@ -345,7 +345,7 @@ if (call && debug_xdamage > 1) fprintf(stderr, "collect_non_X_xdamage: %d %d %d 
 
 	record_desired_xdamage_rect(x, y, w, h);
 
-	tmpregion = sraRgnCreateRect(x, y, x + w, y + h); 
+	tmpregion = sraRgnCreateRect(x, y, x + w, y + h);
 	sraRgnOr(reg, tmpregion);
 	sraRgnDestroy(tmpregion);
 	rect_count++;
@@ -360,7 +360,7 @@ if (call && debug_xdamage > 1) fprintf(stderr, "collect_non_X_xdamage: %d %d %d 
 	    || debug_xdamage > 1) {
 		fprintf(stderr, "collect_non_X_xdamage(%d): %.4f t: %.4f ev/dup/accept"
 		    "/direct %d/%d/%d/%d\n", call, dt, tm - x11vnc_start, ecount,
-		    dcount, ccount, xdamage_direct_count); 
+		    dcount, ccount, xdamage_direct_count);
 	}
 	now = time(NULL);
 	if (! last_rpt) {
@@ -377,7 +377,7 @@ if (call && debug_xdamage > 1) fprintf(stderr, "collect_non_X_xdamage: %d %d %d 
 			    "%04d/%04d =%.3f  rects: %d  desired: %d\n",
 			    XD_skip, XD_tot, rat, rect_count, XD_des);
 		}
-			
+
 		XD_skip = 0;
 		XD_tot  = 0;
 		XD_des  = 0;
@@ -428,7 +428,7 @@ int collect_xdamage(int scancnt, int call) {
 	if (call == 0) {
 		xdamage_ticker = (xdamage_ticker+1) % nreg;
 		xdamage_direct_count = 0;
-		reg = xdamage_regions[xdamage_ticker];  
+		reg = xdamage_regions[xdamage_ticker];
 		if (reg != NULL) {
 			sraRgnMakeEmpty(reg);
 		}
@@ -436,7 +436,7 @@ int collect_xdamage(int scancnt, int call) {
 		if (xdamage_ticker < 0) {
 			xdamage_ticker = 0;
 		}
-		reg = xdamage_regions[xdamage_ticker];  
+		reg = xdamage_regions[xdamage_ticker];
 	}
 	if (reg == NULL) {
 		return 0;
@@ -539,7 +539,7 @@ if (0)	XEventsQueued(dpy, QueuedAfterFlush);
 			x  = nfix(x,  dpy_x);	/* place both in fb area */
 			x2 = nfix(x2, dpy_x+1);
 			w = x2 - x;		/* recompute w */
-			
+
 			y2 = y + h;
 			y  = nfix(y,  dpy_y);
 			y2 = nfix(y2, dpy_y+1);
@@ -557,7 +557,7 @@ if (0)	XEventsQueued(dpy, QueuedAfterFlush);
 
 		record_desired_xdamage_rect(x, y, w, h);
 
-		tmpregion = sraRgnCreateRect(x, y, x + w, y + h); 
+		tmpregion = sraRgnCreateRect(x, y, x + w, y + h);
 		sraRgnOr(reg, tmpregion);
 		sraRgnDestroy(tmpregion);
 		rect_count++;
@@ -603,7 +603,7 @@ if (0)	XEventsQueued(dpy, QueuedAfterFlush);
 	    || debug_xdamage > 1) {
 		fprintf(stderr, "collect_xdamage(%d): %.4f t: %.4f ev/dup/accept"
 		    "/direct %d/%d/%d/%d\n", call, dt, tm - x11vnc_start, ecount,
-		    dcount, ccount, xdamage_direct_count); 
+		    dcount, ccount, xdamage_direct_count);
 	}
 	now = time(NULL);
 	if (! last_rpt) {
@@ -620,7 +620,7 @@ if (0)	XEventsQueued(dpy, QueuedAfterFlush);
 			    "%04d/%04d =%.3f  rects: %d  desired: %d\n",
 			    XD_skip, XD_tot, rat, rect_count, XD_des);
 		}
-			
+
 		XD_skip = 0;
 		XD_tot  = 0;
 		XD_des  = 0;
@@ -708,7 +708,7 @@ int xdamage_hint_skip(int y) {
 	for (i=0; i<nreg; i++) {
 		/* go back thru the history starting at most recent */
 		n = (xdamage_ticker + nreg - i) % nreg;
-		reg = xdamage_regions[n];  
+		reg = xdamage_regions[n];
 		if (reg == NULL) {
 			continue;
 		}
@@ -776,7 +776,7 @@ void create_xdamage_if_needed(int force) {
 #if HAVE_LIBXDAMAGE
 	if (! xdamage || force) {
 		X_LOCK;
-		xdamage = XDamageCreate(dpy, window, XDamageReportRawRectangles); 
+		xdamage = XDamageCreate(dpy, window, XDamageReportRawRectangles);
 		XDamageSubtract(dpy, xdamage, None, None);
 		X_UNLOCK;
 		rfbLog("created   xdamage object: 0x%lx\n", xdamage);

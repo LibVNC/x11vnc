@@ -88,13 +88,13 @@ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -197,39 +197,39 @@ typedef unsigned char KeyCode;
 
 #define NoSymbol	     0L	/* special KeySym */
 
-/***************************************************************** 
- * EVENT DEFINITIONS 
+/*****************************************************************
+ * EVENT DEFINITIONS
  *****************************************************************/
 
 /* Input Event Masks. Used as event-mask window attribute and as arguments
    to Grab requests.  Not to be confused with event names.  */
 
 #define NoEventMask			0L
-#define KeyPressMask			(1L<<0)  
-#define KeyReleaseMask			(1L<<1)  
-#define ButtonPressMask			(1L<<2)  
-#define ButtonReleaseMask		(1L<<3)  
-#define EnterWindowMask			(1L<<4)  
-#define LeaveWindowMask			(1L<<5)  
-#define PointerMotionMask		(1L<<6)  
-#define PointerMotionHintMask		(1L<<7)  
-#define Button1MotionMask		(1L<<8)  
-#define Button2MotionMask		(1L<<9)  
-#define Button3MotionMask		(1L<<10) 
-#define Button4MotionMask		(1L<<11) 
-#define Button5MotionMask		(1L<<12) 
-#define ButtonMotionMask		(1L<<13) 
+#define KeyPressMask			(1L<<0)
+#define KeyReleaseMask			(1L<<1)
+#define ButtonPressMask			(1L<<2)
+#define ButtonReleaseMask		(1L<<3)
+#define EnterWindowMask			(1L<<4)
+#define LeaveWindowMask			(1L<<5)
+#define PointerMotionMask		(1L<<6)
+#define PointerMotionHintMask		(1L<<7)
+#define Button1MotionMask		(1L<<8)
+#define Button2MotionMask		(1L<<9)
+#define Button3MotionMask		(1L<<10)
+#define Button4MotionMask		(1L<<11)
+#define Button5MotionMask		(1L<<12)
+#define ButtonMotionMask		(1L<<13)
 #define KeymapStateMask			(1L<<14)
-#define ExposureMask			(1L<<15) 
-#define VisibilityChangeMask		(1L<<16) 
-#define StructureNotifyMask		(1L<<17) 
-#define ResizeRedirectMask		(1L<<18) 
-#define SubstructureNotifyMask		(1L<<19) 
-#define SubstructureRedirectMask	(1L<<20) 
-#define FocusChangeMask			(1L<<21) 
-#define PropertyChangeMask		(1L<<22) 
-#define ColormapChangeMask		(1L<<23) 
-#define OwnerGrabButtonMask		(1L<<24) 
+#define ExposureMask			(1L<<15)
+#define VisibilityChangeMask		(1L<<16)
+#define StructureNotifyMask		(1L<<17)
+#define ResizeRedirectMask		(1L<<18)
+#define SubstructureNotifyMask		(1L<<19)
+#define SubstructureRedirectMask	(1L<<20)
+#define FocusChangeMask			(1L<<21)
+#define PropertyChangeMask		(1L<<22)
+#define ColormapChangeMask		(1L<<23)
+#define OwnerGrabButtonMask		(1L<<24)
 
 /* Event names.  Used in "type" field in XEvent structures.  Not to be
 confused with event masks above.  They start from 2 because 0 and 1
@@ -326,7 +326,7 @@ are reserved in the protocol for errors and replies. */
 #define NotifyWhileGrabbed	3
 
 #define NotifyHint		1	/* for MotionNotify events */
-		       
+
 /* Notify detail */
 
 #define NotifyAncestor		0
@@ -396,7 +396,7 @@ are reserved in the protocol for errors and replies. */
 #define RevertToParent		2
 
 /*****************************************************************
- * ERROR CODES 
+ * ERROR CODES
  *****************************************************************/
 
 #define Success		   0	/* everything's okay */
@@ -411,9 +411,9 @@ are reserved in the protocol for errors and replies. */
 #define BadDrawable	   9	/* parameter not a Pixmap or Window */
 #define BadAccess	  10	/* depending on context:
 				 - key/button already grabbed
-				 - attempt to free an illegal 
-				   cmap entry 
-				- attempt to store into a read-only 
+				 - attempt to free an illegal
+				   cmap entry
+				- attempt to store into a read-only
 				   color map entry.
  				- attempt to modify the access control
 				   list from other than the local host.
@@ -430,7 +430,7 @@ are reserved in the protocol for errors and replies. */
 #define LastExtensionError	255
 
 /*****************************************************************
- * WINDOW DEFINITIONS 
+ * WINDOW DEFINITIONS
  *****************************************************************/
 
 /* Window classes used by CreateWindow */
@@ -622,7 +622,7 @@ are reserved in the protocol for errors and replies. */
 #define GCCapStyle              (1L<<6)
 #define GCJoinStyle		(1L<<7)
 #define GCFillStyle		(1L<<8)
-#define GCFillRule		(1L<<9) 
+#define GCFillRule		(1L<<9)
 #define GCTile			(1L<<10)
 #define GCStipple		(1L<<11)
 #define GCTileStipXOrigin	(1L<<12)
@@ -639,7 +639,7 @@ are reserved in the protocol for errors and replies. */
 
 #define GCLastBit		22
 /*****************************************************************
- * FONTS 
+ * FONTS
  *****************************************************************/
 
 /* used in QueryFont -- draw direction */
@@ -650,7 +650,7 @@ are reserved in the protocol for errors and replies. */
 #define FontChange		255
 
 /*****************************************************************
- *  IMAGING 
+ *  IMAGING
  *****************************************************************/
 
 /* ImageFormat -- PutImage, GetImage */
@@ -660,7 +660,7 @@ are reserved in the protocol for errors and replies. */
 #define ZPixmap			2	/* depth == drawable depth */
 
 /*****************************************************************
- *  COLOR MAP STUFF 
+ *  COLOR MAP STUFF
  *****************************************************************/
 
 /* For CreateColormap */
@@ -685,7 +685,7 @@ are reserved in the protocol for errors and replies. */
 #define TileShape		1	/* size tiled fastest */
 #define StippleShape		2	/* size stippled fastest */
 
-/***************************************************************** 
+/*****************************************************************
  * KEYBOARD/POINTER STUFF
  *****************************************************************/
 
@@ -716,7 +716,7 @@ are reserved in the protocol for errors and replies. */
 #define MappingPointer		2
 
 /*****************************************************************
- * SCREEN SAVER STUFF 
+ * SCREEN SAVER STUFF
  *****************************************************************/
 
 #define DontPreferBlanking	0
@@ -746,10 +746,10 @@ are reserved in the protocol for errors and replies. */
 
 /* for ChangeAccessControl */
 
-#define EnableAccess		1      
+#define EnableAccess		1
 #define DisableAccess		0
 
-/* Display classes  used in opening the connection 
+/* Display classes  used in opening the connection
  * Note that the statically allocated ones are even numbered and the
  * dynamically changeable ones are odd numbered */
 
@@ -770,7 +770,7 @@ are reserved in the protocol for errors and replies. */
 
 
 /* $Xorg: Xlib.h,v 1.6 2001/02/09 02:03:38 xorgcvs Exp $ */
-/* 
+/*
 
 Copyright 1985, 1986, 1987, 1991, 1998  The Open Group
 
@@ -855,7 +855,7 @@ typedef unsigned long wchar_t;
 
 #if defined(ISC) && defined(USE_XMBTOWC)
 #define wctomb(a,b)	_Xwctomb(a,b)
-#define mblen(a,b)	_Xmblen(a,b) 
+#define mblen(a,b)	_Xmblen(a,b)
 #ifndef USE_XWCHAR_STRING
 #define mbtowc(a,b,c)	_Xmbtowc(a,b,c)
 #endif
@@ -979,10 +979,10 @@ typedef struct {
 	unsigned long background;/* background pixel */
 	int line_width;		/* line width */
 	int line_style;	 	/* LineSolid, LineOnOffDash, LineDoubleDash */
-	int cap_style;	  	/* CapNotLast, CapButt, 
+	int cap_style;	  	/* CapNotLast, CapButt,
 				   CapRound, CapProjecting */
 	int join_style;	 	/* JoinMiter, JoinRound, JoinBevel */
-	int fill_style;	 	/* FillSolid, FillTiled, 
+	int fill_style;	 	/* FillSolid, FillTiled,
 				   FillStippled, FillOpaeueStippled */
 	int fill_rule;	  	/* EvenOddRule, WindingRule */
 	int arc_mode;		/* ArcChord, ArcPieSlice */
@@ -1033,7 +1033,7 @@ typedef struct {
 
 /*
  * Depth structure; contains information for each possible depth.
- */	
+ */
 typedef struct {
 	int depth;		/* this depth (Z) of the depth */
 	int nvisuals;		/* number of Visual types at this depth */
@@ -1064,7 +1064,7 @@ typedef struct {
 	unsigned long black_pixel;	/* White and Black pixel values */
 	int max_maps, min_maps;	/* max and min color maps */
 	int backing_store;	/* Never, WhenMapped, Always */
-	Bool save_unders;	
+	Bool save_unders;
 	long root_input_mask;	/* initial root input mask */
 } Screen;
 
@@ -1186,7 +1186,7 @@ typedef struct _XImage {
 	} f;
 } XImage;
 
-/* 
+/*
  * Data structure for XReconfigureWindow
  */
 typedef struct {
@@ -1207,7 +1207,7 @@ typedef struct {
 	char pad;
 } XColor;
 
-/* 
+/*
  * Data structures for graphics operations.  On most machines, these are
  * congruent with the wire protocol structures, so reformatting the data
  * can be avoided on these architectures.
@@ -1219,12 +1219,12 @@ typedef struct {
 typedef struct {
     short x, y;
 } XPoint;
-    
+
 typedef struct {
     short x, y;
     unsigned short width, height;
 } XRectangle;
-    
+
 typedef struct {
     short x, y;
     unsigned short width, height;
@@ -1283,7 +1283,7 @@ typedef struct _XDisplay Display;
 struct _XPrivate;		/* Forward declare before use for C++ */
 struct _XrmHashBucketRec;
 
-typedef struct 
+typedef struct
 #ifdef XLIB_ILLEGAL_ACCESS
 _XDisplay
 #endif
@@ -1342,7 +1342,7 @@ _XDisplay
 	/* there is more to this structure, but it is private to Xlib */
 }
 #ifdef XLIB_ILLEGAL_ACCESS
-Display, 
+Display,
 #endif
 *_XPrivDisplay;
 
@@ -1420,7 +1420,7 @@ typedef struct {
 	int mode;		/* NotifyNormal, NotifyGrab, NotifyUngrab */
 	int detail;
 	/*
-	 * NotifyAncestor, NotifyVirtual, NotifyInferior, 
+	 * NotifyAncestor, NotifyVirtual, NotifyInferior,
 	 * NotifyNonlinear,NotifyNonlinearVirtual
 	 */
 	Bool same_screen;	/* same screen flag */
@@ -1439,9 +1439,9 @@ typedef struct {
 	int mode;		/* NotifyNormal, NotifyGrab, NotifyUngrab */
 	int detail;
 	/*
-	 * NotifyAncestor, NotifyVirtual, NotifyInferior, 
+	 * NotifyAncestor, NotifyVirtual, NotifyInferior,
 	 * NotifyNonlinear,NotifyNonlinearVirtual, NotifyPointer,
-	 * NotifyPointerRoot, NotifyDetailNone 
+	 * NotifyPointerRoot, NotifyDetailNone
 	 */
 } XFocusChangeEvent;
 typedef XFocusChangeEvent XFocusInEvent;
@@ -1455,7 +1455,7 @@ typedef struct {
 	Display *display;	/* Display the event was read from */
 	Window window;
 	char key_vector[32];
-} XKeymapEvent;	
+} XKeymapEvent;
 
 typedef struct {
 	int type;
@@ -2024,7 +2024,7 @@ typedef struct {
 typedef unsigned long XIMFeedback;
 
 #define XIMReverse		1L
-#define XIMUnderline		(1L<<1) 
+#define XIMUnderline		(1L<<1)
 #define XIMHighlight		(1L<<2)
 #define XIMPrimary	 	(1L<<5)
 #define XIMSecondary		(1L<<6)
@@ -2036,11 +2036,11 @@ typedef unsigned long XIMFeedback;
 typedef struct _XIMText {
     unsigned short length;
     XIMFeedback *feedback;
-    Bool encoding_is_wchar; 
+    Bool encoding_is_wchar;
     union {
 	char *multi_byte;
 	wchar_t *wide_char;
-    } string; 
+    } string;
 } XIMText;
 
 typedef	unsigned long	 XIMPreeditState;
@@ -2070,11 +2070,11 @@ typedef unsigned long XIMStringConversionFeedback;
 typedef struct _XIMStringConversionText {
     unsigned short length;
     XIMStringConversionFeedback *feedback;
-    Bool encoding_is_wchar; 
+    Bool encoding_is_wchar;
     union {
 	char *mbs;
 	wchar_t *wcs;
-    } string; 
+    } string;
 } XIMStringConversionText;
 
 typedef	unsigned short	XIMStringConversionPosition;
@@ -2096,7 +2096,7 @@ typedef enum {
     XIMForwardWord, XIMBackwardWord,
     XIMCaretUp, XIMCaretDown,
     XIMNextLine, XIMPreviousLine,
-    XIMLineStart, XIMLineEnd, 
+    XIMLineStart, XIMLineEnd,
     XIMAbsolutePosition,
     XIMDontChange
 } XIMCaretDirection;
@@ -2117,7 +2117,7 @@ typedef struct _XIMPreeditDrawCallbackStruct {
 } XIMPreeditDrawCallbackStruct;
 
 typedef enum {
-    XIMIsInvisible,	/* Disable caret feedback */ 
+    XIMIsInvisible,	/* Disable caret feedback */
     XIMIsPrimary,	/* UI defined caret feedback */
     XIMIsSecondary	/* UI defined caret feedback */
 } XIMCaretStyle;
@@ -2132,7 +2132,7 @@ typedef enum {
     XIMTextType,
     XIMBitmapType
 } XIMStatusDataType;
-	
+
 typedef struct _XIMStatusDrawCallbackStruct {
     XIMStatusDataType type;
     union {
@@ -2222,7 +2222,7 @@ extern XModifierKeymap	*XInsertModifiermapEntry(
 #else
     KeyCode		/* keycode_entry */,
 #endif
-    int			/* modifier */    
+    int			/* modifier */
 #endif
 );
 
@@ -2279,7 +2279,7 @@ extern XImage *XGetSubImage(
 #endif
 );
 
-/* 
+/*
  * X function declarations.
  */
 extern Display *XOpenDisplay(
@@ -2325,7 +2325,7 @@ extern char *XGetDefault(
 #if NeedFunctionPrototypes
     Display*		/* display */,
     _Xconst char*	/* program */,
-    _Xconst char*	/* option */		  
+    _Xconst char*	/* option */
 #endif
 );
 extern char *XDisplayName(
@@ -2367,7 +2367,7 @@ extern Atom XInternAtom(
 #if NeedFunctionPrototypes
     Display*		/* display */,
     _Xconst char*	/* atom_name */,
-    Bool		/* only_if_exists */		 
+    Bool		/* only_if_exists */
 #endif
 );
 extern Status XInternAtoms(
@@ -2390,7 +2390,7 @@ extern Colormap XCreateColormap(
     Display*		/* display */,
     Window		/* w */,
     Visual*		/* visual */,
-    int			/* alloc */			 
+    int			/* alloc */
 #endif
 );
 extern Cursor XCreatePixmapCursor(
@@ -2401,7 +2401,7 @@ extern Cursor XCreatePixmapCursor(
     XColor*		/* foreground_color */,
     XColor*		/* background_color */,
     unsigned int	/* x */,
-    unsigned int	/* y */			   
+    unsigned int	/* y */
 #endif
 );
 extern Cursor XCreateGlyphCursor(
@@ -2452,7 +2452,7 @@ extern Pixmap XCreatePixmap(
     Drawable		/* d */,
     unsigned int	/* width */,
     unsigned int	/* height */,
-    unsigned int	/* depth */		        
+    unsigned int	/* depth */
 #endif
 );
 extern Pixmap XCreateBitmapFromData(
@@ -2510,7 +2510,7 @@ extern Window XCreateWindow(
     unsigned long	/* valuemask */,
     XSetWindowAttributes*	/* attributes */
 #endif
-); 
+);
 extern Colormap *XListInstalledColormaps(
 #if NeedFunctionPrototypes
     Display*		/* display */,
@@ -2935,7 +2935,7 @@ extern int XAddHosts(
 #if NeedFunctionPrototypes
     Display*		/* display */,
     XHostAddress*	/* hosts */,
-    int			/* num_hosts */    
+    int			/* num_hosts */
 #endif
 );
 
@@ -3228,7 +3228,7 @@ extern int XConfigureWindow(
     Display*		/* display */,
     Window		/* w */,
     unsigned int	/* value_mask */,
-    XWindowChanges*	/* values */		 
+    XWindowChanges*	/* values */
 #endif
 );
 
@@ -3340,7 +3340,7 @@ extern int XDestroySubwindows(
 
 extern int XDoesBackingStore(
 #if NeedFunctionPrototypes
-    Screen*		/* screen */    
+    Screen*		/* screen */
 #endif
 );
 
@@ -3703,7 +3703,7 @@ extern int XFreeCursor(
 
 extern int XFreeExtensionList(
 #if NeedFunctionPrototypes
-    char**		/* list */    
+    char**		/* list */
 #endif
 );
 
@@ -4159,7 +4159,7 @@ extern int XPending(
 extern int XPlanesOfScreen(
 #if NeedFunctionPrototypes
     Screen*		/* screen */
-    
+
 #endif
 );
 
@@ -4194,7 +4194,7 @@ extern int XPutImage(
     int			/* dest_x */,
     int			/* dest_y */,
     unsigned int	/* width */,
-    unsigned int	/* height */	  
+    unsigned int	/* height */
 #endif
 );
 
@@ -4306,7 +4306,7 @@ extern int XQueryTextExtents(
     int*		/* direction_return */,
     int*		/* font_ascent_return */,
     int*		/* font_descent_return */,
-    XCharStruct*	/* overall_return */    
+    XCharStruct*	/* overall_return */
 #endif
 );
 
@@ -4387,7 +4387,7 @@ extern int XRecolorCursor(
 
 extern int XRefreshKeyboardMapping(
 #if NeedFunctionPrototypes
-    XMappingEvent*	/* event_map */    
+    XMappingEvent*	/* event_map */
 #endif
 );
 
@@ -4593,7 +4593,7 @@ extern int XSetFontPath(
 #if NeedFunctionPrototypes
     Display*		/* display */,
     char**		/* directories */,
-    int			/* ndirs */	     
+    int			/* ndirs */
 #endif
 );
 
@@ -4984,7 +4984,7 @@ extern int XWarpPointer(
     unsigned int	/* src_width */,
     unsigned int	/* src_height */,
     int			/* dest_x */,
-    int			/* dest_y */	     
+    int			/* dest_y */
 #endif
 );
 
@@ -5017,7 +5017,7 @@ extern int XWriteBitmapFile(
     unsigned int	/* width */,
     unsigned int	/* height */,
     int			/* x_hot */,
-    int			/* y_hot */		     
+    int			/* y_hot */
 #endif
 );
 
@@ -5550,7 +5550,7 @@ typedef void (*XConnectionWatchProc)(
     XPointer*			/* watch_data */ /* open sets, close uses */
 #endif
 );
-    
+
 
 extern Status XInternalConnectionNumbers(
 #if NeedFunctionPrototypes
@@ -5586,7 +5586,7 @@ extern void XRemoveConnectionWatch(
 extern void XSetAuthorization(
 #if NeedFunctionPrototypes
     char *			/* name */,
-    int				/* namelen */, 
+    int				/* namelen */,
     char *			/* data */,
     int				/* datalen */
 #endif
@@ -5649,13 +5649,13 @@ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -5676,7 +5676,7 @@ SOFTWARE.
 #include <X11/Xlib.h>
 #endif
 
-/* 
+/*
  * Bitmask returned by XParseGeometry().  Each bit tells if the corresponding
  * value (x, y, width, height) was found in the parsed string.
  */
@@ -5772,7 +5772,7 @@ IconPositionHint|IconMaskHint|WindowGroupHint)
 
 
 /*
- * new structure for manipulating TEXT properties; used with WM_NAME, 
+ * new structure for manipulating TEXT properties; used with WM_NAME,
  * WM_ICON_NAME, WM_CLIENT_MACHINE, and WM_COMMAND.
  */
 typedef struct {
@@ -5857,16 +5857,16 @@ typedef struct _XComposeStatus {
    || ((KeySym)(keysym) == XK_Mode_switch) \
    || ((KeySym)(keysym) == XK_Num_Lock))
 /*
- * opaque reference to Region data type 
+ * opaque reference to Region data type
  */
-typedef struct _XRegion *Region; 
+typedef struct _XRegion *Region;
 
 /* Return values from XRectInRegion() */
- 
+
 #define RectangleOut 0
 #define RectangleIn  1
 #define RectanglePart 2
- 
+
 
 /*
  * Information used by the visual utility routines to find desired visual
@@ -6083,7 +6083,7 @@ extern Status XGetStandardColormap(
     Display*		/* display */,
     Window		/* w */,
     XStandardColormap*	/* colormap_return */,
-    Atom		/* property */			    
+    Atom		/* property */
 #endif
 );
 
@@ -6116,7 +6116,7 @@ extern Status XGetWMClientMachine(
 extern XWMHints *XGetWMHints(
 #if NeedFunctionPrototypes
     Display*		/* display */,
-    Window		/* w */		      
+    Window		/* w */
 #endif
 );
 
@@ -6141,7 +6141,7 @@ extern Status XGetWMNormalHints(
     Display*		/* display */,
     Window		/* w */,
     XSizeHints*		/* hints_return */,
-    long*		/* supplied_return */ 
+    long*		/* supplied_return */
 #endif
 );
 
@@ -6255,7 +6255,7 @@ extern int XSetIconSizes(
     Display*		/* display */,
     Window		/* w */,
     XIconSize*		/* size_list */,
-    int			/* count */    
+    int			/* count */
 #endif
 );
 

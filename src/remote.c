@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -124,7 +124,7 @@ int send_remote_cmd(char *cmd, int query, int wait) {
 	}
 
 	if (query || wait) {
-		char line[X11VNC_REMOTE_MAX];	
+		char line[X11VNC_REMOTE_MAX];
 		int rc=1, i=0, max=140, ms_sl=25;
 
 		if (!strcmp(cmd, "cmd=stop")) {
@@ -239,7 +239,7 @@ int do_remote_query(char *remote_cmd, char *query_cmd, int remote_sync,
 		fflush(stdout);
 		return 0;
 	}
-	
+
 	if (rcmd && qcmd) {
 		rc = send_remote_cmd(rcmd, 0, 1);
 		if (rc) {
@@ -372,7 +372,7 @@ int check_httpdir(void) {
 				} else {
 					base = program_name;
 				}
-				
+
 				p = strtok(path, ":");
 				while(p) {
 					if (prog) {
@@ -456,7 +456,7 @@ int check_httpdir(void) {
 			i = 0;
 			while (use[i] != NULL) {
 				if (stat(use[i], &sbuf) == 0) {
-					http_dir = strdup(use[i]);	
+					http_dir = strdup(use[i]);
 					return 1;
 				}
 				i++;
@@ -732,7 +732,7 @@ int remote_control_access_ok(void) {
 			xauth = getenv("XAUTHORITY");
 		} else if (home) {
 			int len = 1000 - strlen("/.Xauthority") - 1;
-			strncpy(tmp, home, len); 
+			strncpy(tmp, home, len);
 			strcat(tmp, "/.Xauthority");
 			xauth = tmp;
 		} else {
@@ -804,7 +804,7 @@ int remote_control_access_ok(void) {
 		    "XAUTHORITY\n", dpy_str);
 		fprintf(stderr, "   -- (ignore any Xlib: errors that"
 		    " follow) --\n");
-		dpy2 = XOpenDisplay_wr(dpy_str); 
+		dpy2 = XOpenDisplay_wr(dpy_str);
 		fflush(stderr);
 		fprintf(stderr, "   -- (done checking) --\n\n");
 
@@ -844,7 +844,7 @@ char *process_remote_cmd(char *cmd, int stringonly) {
 #if REMOTE_CONTROL
 	char *p = cmd;
 	char *co = "";
-	char buf[X11VNC_REMOTE_MAX]; 
+	char buf[X11VNC_REMOTE_MAX];
 	int bufn = X11VNC_REMOTE_MAX;
 	int query = 0;
 	static char *prev_cursors_mode = NULL;
@@ -915,7 +915,7 @@ char *process_remote_cmd(char *cmd, int stringonly) {
 			} else {
 				s = p;
 			}
-			q = strtok(s, ";"); 
+			q = strtok(s, ";");
 
 			while (q) {
 				char *t = lblanks(q);
@@ -960,7 +960,7 @@ char *process_remote_cmd(char *cmd, int stringonly) {
 
 			pieces = (char **) malloc(strlen(cmd) * sizeof(char *));
 			s = strdup(cmd + strlen("qry="));
-			q = strtok(s, ","); 
+			q = strtok(s, ",");
 
 			while (q) {
 				strcpy(tmp, "qry=");
@@ -2292,7 +2292,7 @@ char *process_remote_cmd(char *cmd, int stringonly) {
 		if (tile_shm_count < ntiles_x) {
 			rfbLog(" this has no effect: tile_shm_count=%d"
 			    " ntiles_x=%d\n", tile_shm_count, ntiles_x);
-			
+
 		}
 		single_copytile = 0;
 		goto done;
@@ -3100,7 +3100,7 @@ char *process_remote_cmd(char *cmd, int stringonly) {
 			goto qry;
 		}
 		rfbLog("remote_cmd: turning off cursorshape mode.\n");
-		
+
 		set_no_cursor();
 		for (i=0; i<max; i++) {
 			/* XXX: try to force empty cursor back to client */
@@ -5766,7 +5766,7 @@ char *process_remote_cmd(char *cmd, int stringonly) {
 	if (icon_mode && !query && strstr(p, "viewpasswd") == p) { /* skip-cmd-list */
 		char **passwds_new = (char **) malloc(3*sizeof(char *));
 		char **passwds_old = (char **) screen->authPasswdData;
-		
+
 		COLON_CHECK("viewpasswd:")
 		p += strlen("viewpasswd:");
 
@@ -6163,12 +6163,12 @@ char *process_remote_cmd(char *cmd, int stringonly) {
 			goto qry;
 		}
 		if (!strcmp(p, "pointer_pos") || !strcmp(p, "pointer_x") || !strcmp(p, "pointer_y") || !strcmp(p, "pointer_same") || !strcmp(p, "pointer_root") || !strcmp(p, "pointer_mask")) {
-			int px = -1, py = -1; 
+			int px = -1, py = -1;
 			int wx, wy;
 			unsigned int m = 0;
 			Window r, c;
 			Bool same_screen = True;
-			
+
 
 			if (!strcmp(p, "pointer_pos")) {			/* skip-cmd-list */
 				snprintf(buf, bufn, "aro=%s:%d,%d", p, px, py);
@@ -6182,7 +6182,7 @@ char *process_remote_cmd(char *cmd, int stringonly) {
 				snprintf(buf, bufn, "aro=%s:0x%x", p, (unsigned int) rootwin);
 			} else if (!strcmp(p, "pointer_mask")) {		/* skip-cmd-list */
 				snprintf(buf, bufn, "aro=%s:0x%x", p, m);
-			} 
+			}
 			if (!dpy) {
 				goto qry;
 			}
@@ -6206,7 +6206,7 @@ char *process_remote_cmd(char *cmd, int stringonly) {
 				snprintf(buf, bufn, "aro=%s:0x%x", p, (unsigned int) r);
 			} else if (!strcmp(p, "pointer_mask")) {		/* skip-cmd-list */
 				snprintf(buf, bufn, "aro=%s:0x%x", p, m);
-			} 
+			}
 			if (rc_npieces < 10) {
 				rfbLog("remote_cmd: %s: %s\n", p, buf);
 			}

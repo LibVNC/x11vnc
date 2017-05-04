@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -166,7 +166,7 @@ char *list_clients(void) {
 	 * so count+1 * 1000 must cover it.
 	 */
 	list = (char *) malloc((count+1)*1000);
-	
+
 	list[0] = '\0';
 
 	iter = rfbGetClientIterator(screen);
@@ -271,7 +271,7 @@ static rfbClientPtr *client_match(char *str) {
 
 	n = client_count + 10;
 	cl_list = (rfbClientPtr *) malloc(n * sizeof(rfbClientPtr));
-	
+
 	i = 0;
 	iter = rfbGetClientIterator(screen);
 	while( (cl = rfbClientIteratorNext(iter)) ) {
@@ -366,7 +366,7 @@ void close_clients(char *str) {
 	if (! screen) {
 		return;
 	}
-	
+
 	cl_list = client_match(str);
 
 	cp = cl_list;
@@ -395,7 +395,7 @@ void set_client_input(char *str) {
 	*p = '\0';
 	p++;
 	val = short_kmbcf(p);
-	
+
 	cl_list = client_match(str);
 
 	cp = cl_list;
@@ -527,7 +527,7 @@ int run_user_command(char *cmd, rfbClientPtr client, char *mode, char *input,
 
 	set_env("RFB_MODE", mode);
 
-	/* 
+	/*
 	 * now do RFB_SERVER_IP and RFB_SERVER_PORT (i.e. us!)
 	 * This will establish a 5-tuple (including tcp) the external
 	 * program can potentially use to work out the virtual circuit
@@ -570,10 +570,10 @@ int run_user_command(char *cmd, rfbClientPtr client, char *mode, char *input,
 	} else {
 		set_env("RFB_USERNAME", cd->username);
 	}
-	/* 
+	/*
 	 * Better set DISPLAY to the one we are polling, if they
 	 * want something trickier, they can handle on their own
-	 * via environment, etc. 
+	 * via environment, etc.
 	 */
 	if (getenv("DISPLAY")) {
 		old_display = strdup(getenv("DISPLAY"));
@@ -587,7 +587,7 @@ int run_user_command(char *cmd, rfbClientPtr client, char *mode, char *input,
 
 	/*
 	 * work out the number of clients (have to use client_count
-	 * since there is deadlock in rfbGetClientIterator) 
+	 * since there is deadlock in rfbGetClientIterator)
 	 */
 	sprintf(str, "%d", client_count);
 	set_env("RFB_CLIENT_COUNT", str);
@@ -646,7 +646,7 @@ int run_user_command(char *cmd, rfbClientPtr client, char *mode, char *input,
 			deltmp = 1;
 			cmd2 = (char *) malloc(100 + strlen(tmp) + strlen(cmd));
 			sprintf(cmd2, "/bin/cat %s | %s", tmp, cmd);
-			
+
 			ph = popen(cmd2, "r");
 		} else {
 			ph = popen(cmd, "r");
@@ -856,8 +856,8 @@ void client_gone(rfbClientPtr client) {
 			    cd->ssl_helper_pid);
 			kill(cd->ssl_helper_pid, SIGTERM);
 			usleep(200*1000);
-#if LIBVNCSERVER_HAVE_SYS_WAIT_H && HAVE_WAITPID 
-			waitpid(cd->ssl_helper_pid, &status, WNOHANG); 
+#if LIBVNCSERVER_HAVE_SYS_WAIT_H && HAVE_WAITPID
+			waitpid(cd->ssl_helper_pid, &status, WNOHANG);
 #endif
 			ssl_helper_pid(cd->ssl_helper_pid, -1);	/* delete */
 		}
@@ -901,7 +901,7 @@ void client_gone(rfbClientPtr client) {
 	}
 
 	/* remove clients XInput2 master device */
-        if(use_multipointer) 
+        if(use_multipointer)
 	  if(removeMD(dpy, cd->ptr_id))
 	    rfbLog("removed XInput2 MD for client %s.\n", client->host);
 
@@ -928,7 +928,7 @@ void client_gone(rfbClientPtr client) {
 		     client->state == RFB_INITIALISATION) && accepted_client) {
 			rfbLog("connect_once: invalid password or early "
 			   "disconnect.  %d\n", client->state);
-			rfbLog("connect_once: waiting for next connection.\n"); 
+			rfbLog("connect_once: waiting for next connection.\n");
 			accepted_client--;
 			if (accepted_client < 0) {
 				accepted_client = 0;
@@ -1018,7 +1018,7 @@ int check_access(char *addr) {
 		}
 		list = (char *) malloc(len);
 		list[0] = '\0';
-		
+
 		in = fopen(allow_list, "r");
 		if (in == NULL) {
 			rfbLogEnable(1);
@@ -1073,13 +1073,13 @@ int check_access(char *addr) {
 		free(allow_once);
 		allow_once = NULL;
 	}
-	
+
 	p = strtok(list, ", \t\n\r");
 	while (p) {
 		char *chk, *q, *r = NULL;
 		if (*p == '\0') {
 			p = strtok(NULL, ", \t\n\r");
-			continue;	
+			continue;
 		}
 		if (ipv6_ip(p)) {
 			chk = p;
@@ -1198,8 +1198,8 @@ static unsigned char t2x2_bits[] = {
 	int x, y, w = 345, h = 175, ret = 0;
 	int X_sh = 20, Y_sh = 30, dY = 20;
 	int Ye_x = 20,  Ye_y = 0, Ye_w = 45, Ye_h = 20;
-	int No_x = 75,  No_y = 0, No_w = 45, No_h = 20; 
-	int Vi_x = 130, Vi_y = 0, Vi_w = 45, Vi_h = 20; 
+	int No_x = 75,  No_y = 0, No_w = 45, No_h = 20;
+	int Vi_x = 130, Vi_y = 0, Vi_w = 45, Vi_h = 20;
 	char *sprop = "new x11vnc client";
 
 	KeyCode key_o;
@@ -1240,7 +1240,7 @@ static unsigned char t2x2_bits[] = {
 	} else {
 		x = X;			/* from upper left */
 	}
-	
+
 	if (Y < -dpy_y) {
 		y = (dpy_y - h)/2;
 		if (y < 0) y = 0;
@@ -1579,15 +1579,15 @@ static void ugly_geom(char *p, int *x, int *y) {
  * The command supplied via -accept is run as is (i.e. no string
  * substitution) with the RFB_CLIENT_IP environment variable set to the
  * incoming client's numerical IP address.
- * 
+ *
  * If the external command exits with 0 the client is accepted, otherwise
  * the client is rejected.
- * 
+ *
  * Some builtins are provided:
  *
- *	xmessage:  use homebrew xmessage(1) for the external command.  
+ *	xmessage:  use homebrew xmessage(1) for the external command.
  *	popup:     use internal X widgets for prompting.
- * 
+ *
  */
 int accept_client(rfbClientPtr client) {
 
@@ -1671,7 +1671,7 @@ int accept_client(rfbClientPtr client) {
 			action = "yes:0,no:*,view:3";
 		}
 		cmd = xmessage;
-		
+
 	} else {
 		/* use the user supplied command: */
 
@@ -1847,10 +1847,10 @@ void check_ipv6_listen(long usec) {
 		if (screen->httpListenSock < 0) {
 			/* this may not always work... */
 			int save = screen->httpListenSock;
-			screen->httpListenSock = ipv6_http_fd;	
+			screen->httpListenSock = ipv6_http_fd;
 			rfbLog("check_ipv6_listen: no httpListenSock, calling rfbHttpCheckFds()\n");
 			rfbHttpCheckFds(screen);
-			screen->httpListenSock = save;	
+			screen->httpListenSock = save;
 		}
 	}
 #endif
@@ -1928,7 +1928,7 @@ static void check_connect_file(char *file) {
 	FILE *in;
 	char line[VNC_CONNECT_MAX], host[VNC_CONNECT_MAX];
 	static int first_warn = 1, truncate_ok = 1;
-	static double last_time = 0.0, delay = 0.5; 
+	static double last_time = 0.0, delay = 0.5;
 	double now = dnow();
 	struct stat sbuf;
 
@@ -1977,7 +1977,7 @@ static void check_connect_file(char *file) {
 			if (strlen(host) > 0) {
 				char *str = strdup(host);
 				if (strlen(str) > 38) {
-					char trim[100]; 
+					char trim[100];
 					trim[0] = '\0';
 					strncat(trim, str, 38);
 					rfbLog("read connect file: %s ...\n",
@@ -2041,7 +2041,7 @@ static int socks5_proxy(char *host, int port, int sock) {
 	buf[3] = 0x3;
 
 	buf[4] = (unsigned char) strlen(host);
-	strcat((char *) buf+5, host); 
+	strcat((char *) buf+5, host);
 
 	len = 5 + strlen(host);
 
@@ -2137,7 +2137,7 @@ static int socks_proxy(char *host, int port, int sock) {
 	}
 	len = 8;
 
-	strcat((char *)buf+8, "nobody"); 
+	strcat((char *)buf+8, "nobody");
 	len += strlen("nobody") + 1;
 
 	if (socks4a) {
@@ -2409,7 +2409,7 @@ static int proxy_connect(char *host, int port) {
 			}
 			continue;
 		}
-	
+
 		if (pxy[n] == PXY_HTTP) {
 			s = strstr(c, "/");
 			if (s) {
@@ -2509,7 +2509,7 @@ static int proxy_connect(char *host, int port) {
 			close(psock); psock = -1; goto pxy_clean;
 		}
 		if (pxy_get_sock >= 0) {close(psock); psock = pxy_get_sock;}
-		
+
 		if (n >= 3) {
 			if (! pconnect(psock, pxy_h[2], pxy_p[2], pxy[1], pxy_g[1], pxy_h[1], pxy_p[1])) {
 				close(psock); psock = -1; goto pxy_clean;
@@ -2519,7 +2519,7 @@ static int proxy_connect(char *host, int port) {
 				close(psock); psock = -1; goto pxy_clean;
 			}
 			if (pxy_get_sock >= 0) {close(psock); psock = pxy_get_sock;}
-			
+
 		} else {
 			if (! pconnect(psock, host, port, pxy[1], pxy_g[1], pxy_h[1], pxy_p[1])) {
 				close(psock); psock = -1; goto pxy_clean;
@@ -2548,7 +2548,7 @@ static int proxy_connect(char *host, int port) {
 
 char *get_repeater_string(char *str, int *len) {
 	int pren, which = 0;
-	int prestring_len = 0;	
+	int prestring_len = 0;
 	char *prestring = NULL, *ptmp = NULL;
 	char *equals = strchr(str, '=');
 	char *plus   = strrchr(str, '+');
@@ -2901,7 +2901,7 @@ void reverse_connect(char *str) {
 
 	for (j = 0; j < lcnt; j++) {
 		p = list[j];
-		
+
 		if ((n = do_reverse_connect(p)) != 0) {
 			int i;
 			progress_client();
@@ -2957,7 +2957,7 @@ void reverse_connect(char *str) {
 
 	/*
 	 * XXX: we need to process some of the initial handshaking
-	 * events, otherwise the client can get messed up (why??) 
+	 * events, otherwise the client can get messed up (why??)
 	 * so we send rfbProcessEvents() all over the place.
 	 *
 	 * How much is this still needed?
@@ -2965,7 +2965,7 @@ void reverse_connect(char *str) {
 
 	n = cnt;
 	if (n >= n_max) {
-		n = n_max; 
+		n = n_max;
 	}
 	t = sleep_max - sleep_min;
 	tot = sleep_min + ((n-1) * t) / (n_max-1);
@@ -3161,11 +3161,11 @@ void read_x11vnc_remote_prop(int nomsg) {
 	    strstr(x11vnc_remote_str, "passwd")) {
 		rfbLog("read X11VNC_REMOTE: *\n");
 	} else if (strlen(x11vnc_remote_str) > 36) {
-		char trim[100]; 
+		char trim[100];
 		trim[0] = '\0';
 		strncat(trim, x11vnc_remote_str, 36);
 		rfbLog("read X11VNC_REMOTE: %s ...\n", trim);
-		
+
 	} else {
 		rfbLog("read X11VNC_REMOTE: %s\n", x11vnc_remote_str);
 	}
@@ -3198,7 +3198,7 @@ void grab_state(int *ptr_grabbed, int *kbd_grabbed) {
 	XUngrabPointer(dpy, CurrentTime);
 
 	tb = dnow();
-	
+
 	rck = XGrabKeyboard(dpy, window, False, GrabModeAsync, GrabModeAsync, CurrentTime);
 	XUngrabKeyboard(dpy, CurrentTime);
 
@@ -3245,7 +3245,7 @@ char *bcx_xattach(char *str, int *pg_init, int *kg_init) {
 	char *dir = "none", *flip = "none", *q;
 	int pg1, kg1, pg2, kg2;
 	char _bcx_res[128];
-	
+
 	/* str:[up,down,left,right]+nograbcheck+shift=n+final=x+y+extra_move=x+y+[master_to_slave,slave_to_master,M2S,S2M]+dt=n+retry=n+ifneeded */
 
 	if (strstr(str, "up")) {
@@ -3623,7 +3623,7 @@ char *wininfo(Window win, int show_children) {
 	int n, size = X11VNC_REMOTE_MAX;
 	char get_str[X11VNC_REMOTE_MAX+1];
 	unsigned int nchildren;
-	Window rr, pr, *children; 
+	Window rr, pr, *children;
 
 	RAWFB_RET(NULL)
 
@@ -3711,7 +3711,7 @@ void check_connect_inputs(void) {
 
 	/* connect file: */
 	if (client_connect_file != NULL) {
-		check_connect_file(client_connect_file);		
+		check_connect_file(client_connect_file);
 	}
 	send_client_connect();
 
@@ -3764,7 +3764,7 @@ void check_gui_inputs(void) {
 	if (nfds <= 0) {
 		return;
 	}
-	
+
 	for (i=0; i<n; i++) {
 		int k, fd = icon_mode_socks[socks[i]];
 		char *p;
@@ -3832,7 +3832,7 @@ rfbClientPtr create_new_client(int sock, int start_thread) {
 	cl = rfbNewClient(screen, sock);
 
 	if (cl == NULL) {
-		return NULL;	
+		return NULL;
 	}
 	if (use_threads) {
 		cl->onHold = FALSE;
@@ -3900,7 +3900,7 @@ void client_gone_chat_helper(rfbClientPtr client) {
 }
 
 void client_set_net(rfbClientPtr client) {
-	ClientData *cd; 
+	ClientData *cd;
 	if (client == NULL) {
 		return;
 	}
@@ -3921,7 +3921,7 @@ void client_set_net(rfbClientPtr client) {
  * libvncserver callback for when a new client connects
  */
 enum rfbNewClientAction new_client(rfbClientPtr client) {
-	ClientData *cd; 
+	ClientData *cd;
 
 	CLIENT_LOCK;
 
@@ -3930,7 +3930,7 @@ enum rfbNewClientAction new_client(rfbClientPtr client) {
 	latest_client = client;
 
 	if (inetd) {
-		/* 
+		/*
 		 * Set this so we exit as soon as connection closes,
 		 * otherwise client_gone is only called after RFB_CLIENT_ACCEPT
 		 */
@@ -4270,7 +4270,7 @@ void start_client_info_sock(char *host_port_cookie) {
 			rfbLog("failed client_info_sock: %s:%d\n", host, port);
 		}
 	} else {
-		rfbLog("malformed client_info_sock: %s\n", host_port_cookie);	
+		rfbLog("malformed client_info_sock: %s\n", host_port_cookie);
 	}
 
 	if (host) free(host);
@@ -4280,7 +4280,7 @@ void start_client_info_sock(char *host_port_cookie) {
 void send_client_info(char *str) {
 	int i;
 	static char *pstr = NULL;
-	static int len = 128; 
+	static int len = 128;
 
 	if (!str || strlen(str) == 0) {
 		return;
@@ -4410,7 +4410,7 @@ void check_new_clients(void) {
 			X_UNLOCK;
 		}
 	}
-	
+
 	if (last_count == -1) {
 		last_count = 0;
 	} else if (client_count == last_count) {

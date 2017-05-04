@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -211,7 +211,7 @@ void initialize_xrecord(void) {
 	/* protocol request ranges: */
 	rr_CA->core_requests.first = X_CopyArea;
 	rr_CA->core_requests.last  = X_CopyArea;
-	
+
 	rr_CW->core_requests.first = X_ConfigureWindow;
 	rr_CW->core_requests.last  = X_ConfigureWindow;
 
@@ -305,14 +305,14 @@ void shutdown_xrecord(void) {
 		XSync(rdpy_ctrl, False);
 		rc_scroll = 0;
 	}
-		
+
 	if (gdpy_ctrl && rc_grab) {
 		XRecordDisableContext(gdpy_ctrl, rc_grab);
 		XRecordFreeContext(gdpy_ctrl, rc_grab);
 		XSync(gdpy_ctrl, False);
 		rc_grab = 0;
 	}
-		
+
 	if (rdpy_data) {
 		XCloseDisplay_wr(rdpy_data);
 		rdpy_data = NULL;
@@ -470,7 +470,7 @@ static int lookup_attr_cache(Window win, int *cache_index, int *next_index) {
 
 	*cache_index = -1;
 	*next_index  = -1;
-	
+
 	if (win == None) {
 		return 0;
 	}
@@ -599,20 +599,20 @@ xterm, gnome-terminal, others.
 Note we miss the X_ImageText8 that clears the block cursor.  So there is a
 short period of time with a painting error: two cursors, one above the other.
 
- X_ImageText8 
+ X_ImageText8
     draw: 0x8c00017 nChars: 1, gc: 0x8c00013, x: 101, y: 585, chars=' '
- X_ClearArea 
+ X_ClearArea
     window: 0x8c00018, x:   2, y: 217, w:  10, h:   5
- X_FillPoly 
+ X_FillPoly
     draw: 0x8c00018 gc: 0x8c0000a, shape: 0, coordMode: 0,
- X_FillPoly 
+ X_FillPoly
     draw: 0x8c00018 gc: 0x8c0000b, shape: 0, coordMode: 0,
- X_CopyArea 
+ X_CopyArea
     src: 0x8c00017, dst: 0x8c00017, gc: 0x8c00013, srcX:  17, srcY:  15, dstX:  17, dstY:   2, w: 480, h: 572
- X_ChangeWindowAttributes 
- X_ClearArea 
+ X_ChangeWindowAttributes
+ X_ClearArea
     window: 0x8c00017, x:  17, y: 574, w: 480, h:  13
- X_ChangeWindowAttributes 
+ X_ChangeWindowAttributes
 
  */
 
@@ -953,7 +953,7 @@ if (db > 1) fprintf(stderr, "record_CW-%d\n", k++);
 		return;
 	}
 if (db > 1) fprintf(stderr, "record_CW-%d\n", k++);
-		
+
 	for (i=0; i<4; i++) {
 		vals[i] = 0;
 	}
@@ -1065,26 +1065,26 @@ Mozilla:
 
 Up arrow: window moves down a bit (dy > 0):
 
- X_ConfigureWindow 
-    length: 7, window: 0x2e000cd, mask: 0xf, v0 0,  v1 -18,  v2 760,  v3 906,  v4 327692,  v5 48234701,  v6 3, 
+ X_ConfigureWindow
+    length: 7, window: 0x2e000cd, mask: 0xf, v0 0,  v1 -18,  v2 760,  v3 906,  v4 327692,  v5 48234701,  v6 3,
         CW-mask: CWX,CWY,CWWidth,CWHeight,
- X_ConfigureWindow 
-    length: 5, window: 0x2e000cd, mask: 0x3, v0 0,  v1 0,  v2 506636,  v3 48234701,  v4 48234511, 
+ X_ConfigureWindow
+    length: 5, window: 0x2e000cd, mask: 0x3, v0 0,  v1 0,  v2 506636,  v3 48234701,  v4 48234511,
         CW-mask: CWX,CWY,
- X_ConfigureWindow 
-    length: 7, window: 0x2e000cd, mask: 0xf, v0 0,  v1 0,  v2 760,  v3 888,  v4 65579,  v5 0,  v6 108009, 
+ X_ConfigureWindow
+    length: 7, window: 0x2e000cd, mask: 0xf, v0 0,  v1 0,  v2 760,  v3 888,  v4 65579,  v5 0,  v6 108009,
         CW-mask: CWX,CWY,CWWidth,CWHeight,
 
 Down arrow: window moves up a bit (dy < 0):
 
- X_ConfigureWindow 
-    length: 7, window: 0x2e000cd, mask: 0xf, v0 0,  v1 0,  v2 760,  v3 906,  v4 327692,  v5 48234701,  v6 262147, 
+ X_ConfigureWindow
+    length: 7, window: 0x2e000cd, mask: 0xf, v0 0,  v1 0,  v2 760,  v3 906,  v4 327692,  v5 48234701,  v6 262147,
         CW-mask: CWX,CWY,CWWidth,CWHeight,
- X_ConfigureWindow 
-    length: 5, window: 0x2e000cd, mask: 0x3, v0 0,  v1 -18,  v2 506636,  v3 48234701,  v4 48234511, 
+ X_ConfigureWindow
+    length: 5, window: 0x2e000cd, mask: 0x3, v0 0,  v1 -18,  v2 506636,  v3 48234701,  v4 48234511,
         CW-mask: CWX,CWY,
- X_ConfigureWindow 
-    length: 7, window: 0x2e000cd, mask: 0xf, v0 0,  v1 0,  v2 760,  v3 888,  v4 96555,  v5 48265642,  v6 48265262, 
+ X_ConfigureWindow
+    length: 7, window: 0x2e000cd, mask: 0xf, v0 0,  v1 0,  v2 760,  v3 888,  v4 96555,  v5 48265642,  v6 48265262,
         CW-mask: CWX,CWY,CWWidth,CWHeight,
 
 
@@ -1186,15 +1186,15 @@ if (dba) fprintf(stderr, "%d/%d/%d/%d  %d/%d/%d/%d  %d/%d/%d/%d\n", x0, y0, w0, 
 if (db > 1) fprintf(stderr, "record_CW-%d\n", k++);
 
 	if (dy > 0) {
-		h -= dy;	
+		h -= dy;
 	} else {
-		h += dy;	
+		h += dy;
 		src_y -= dy;
 	}
 	if (dx > 0) {
-		w -= dx;	
+		w -= dx;
 	} else {
-		w += dx;	
+		w += dx;
 		src_x -= dx;
 	}
 
@@ -1419,7 +1419,7 @@ static void record_grab(XPointer ptr, XRecordInterceptData *rec_data) {
 		xserver_grabbed++;
 		if (db) rfbLog("X server Grabbed:    %d %.5f\n", xserver_grabbed, now);
 		if (xserver_grabbed > 1) {
-			/* 
+			/*
 			 * some apps do multiple grabs... very unlikely
 			 * two apps will be doing it at same time.
 			 */
@@ -1486,11 +1486,11 @@ static void shutdown_record_context(XRecordContext rc, int bequiet, int reopen) 
 
 	ret1 = XRecordDisableContext(rdpy_ctrl, rc);
 	if (!ret1 && verb) {
-		rfbLog("XRecordDisableContext(0x%lx) failed.\n", rc);	
+		rfbLog("XRecordDisableContext(0x%lx) failed.\n", rc);
 	}
 	ret2 = XRecordFreeContext(rdpy_ctrl, rc);
 	if (!ret2 && verb) {
-		rfbLog("XRecordFreeContext(0x%lx) failed.\n", rc);	
+		rfbLog("XRecordFreeContext(0x%lx) failed.\n", rc);
 	}
 	XFlush_wr(rdpy_ctrl);
 
@@ -1501,7 +1501,7 @@ static void shutdown_record_context(XRecordContext rc, int bequiet, int reopen) 
 		check_xrecord_grabserver();
 		if (xserver_grabbed) {
 			rfbLog("shutdown_record_context: skip reopen,"
-			    " server grabbed\n");	
+			    " server grabbed\n");
 			reopen = 0;
 		}
 	}
@@ -1622,7 +1622,7 @@ void check_xrecord_reset(int force) {
 			return;
 		}
 	}
-	
+
 	shutdown_record_context(rc_scroll, 0, 1);
 	rc_scroll = 0;
 
@@ -1733,7 +1733,7 @@ if (db || debug_grabs) fprintf(stderr, "XRECORD OFF: %d/%d  %.4f\n", xrecording,
 		}
 
 		SCR_LOCK;
-		
+
 		if (do_shutdown) {
 if (db > 1) fprintf(stderr, "=== shutdown-scroll 0x%lx\n", rc_scroll);
 			X_LOCK;
@@ -1941,7 +1941,7 @@ if (db) fprintf(stderr, "--- xrecord_watch: SKIP.\n");
 
 	/*
 	 * start trapping... there still are some occasional failures
-	 * not yet understood, likely some race condition WRT the 
+	 * not yet understood, likely some race condition WRT the
 	 * context being setup.
 	 */
 	trapped_record_xerror = 0;
@@ -1990,7 +1990,7 @@ if (db) fprintf(stderr, "NEW rc:    0x%lx\n", rc_scroll);
 if (db > 1) fprintf(stderr, "=2= unreg-scroll 0x%lx 0x%lx\n", rc_scroll, rcs_scroll);
 
 		}
-		
+
 		rcs_scroll = (XRecordClientSpec) clast;
 
 if (db > 1) fprintf(stderr, "=-=   reg-scroll 0x%lx 0x%lx\n", rc_scroll, rcs_scroll);

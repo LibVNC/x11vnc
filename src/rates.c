@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -95,7 +95,7 @@ static int get_rate(int which) {
 			continue;
 		}
 		count++;
-		
+
 		if (which == 0) {
 			rate = cd->send_cmp_rate;
 		} else {
@@ -104,7 +104,7 @@ static int get_rate(int which) {
 		if (slowest == -1.0 || rate < slowest) {
 			slowest = rate;
 		}
-		
+
 	}
 	rfbReleaseClientIterator(iter);
 
@@ -125,7 +125,7 @@ static int get_rate(int which) {
 	if (irate > irate_max) {
 		irate = irate_max;
 	}
-if (0) fprintf(stderr, "get_rate(%d) %d %.3f/%.3f\n", which, irate, save_rate, slowest); 
+if (0) fprintf(stderr, "get_rate(%d) %d %.3f/%.3f\n", which, irate, save_rate, slowest);
 
 	return irate;
 }
@@ -138,7 +138,7 @@ static int get_latency(void) {
 	double slowest = -1.0, lat;
 	static double save_lat = ((double) LATENCY0)/1000.0;
 	int count = 0;
-	
+
 	if (!screen) {
 		return 0;
 	}
@@ -146,7 +146,7 @@ static int get_latency(void) {
 	iter = rfbGetClientIterator(screen);
 	while( (cl = rfbClientIteratorNext(iter)) ) {
 		ClientData *cd = (ClientData *) cl->clientData;
-		
+
 		if (! cd) {
 			continue;
 		}
@@ -554,7 +554,7 @@ if (db) fprintf(stderr, "dt2 calc: num rects req: %d/%d mod: %d/%d  "
 		} else {
 			int tr, trm = 3;
 			double dts[10];
-			
+
 			/*
 			 * Note: since often select(2) cannot sleep
 			 * less than 1/HZ (e.g. 10ms), the resolution
@@ -562,7 +562,7 @@ if (db) fprintf(stderr, "dt2 calc: num rects req: %d/%d mod: %d/%d  "
 			 * of this order.  Effect may occur on both ends,
 			 * i.e. the viewer may not respond immediately.
 			 */
-		
+
 			for (tr = 0; tr < trm; tr++) {
 				usleep(5000);
 
@@ -631,7 +631,7 @@ if (db) fprintf(stderr, "dt3 calc: num rects req: %d/%d mod: %d/%d  "
 					}
 				}
 			}
-		
+
 			if (! got_t3) {
 				dt3 = 0.0;
 			} else {
@@ -656,7 +656,7 @@ if (db) fprintf(stderr, "dt3 calc: num rects req: %d/%d mod: %d/%d  "
 		}
 
 		ouch:
-		
+
 		screen->deferUpdateTime = defer;
 		screen->httpDir = httpdir;
 
@@ -692,7 +692,7 @@ if (db) fprintf(stderr, "dt3 calc: num rects req: %d/%d mod: %d/%d  "
 		}
 
 		cd->latency = dt3;
-		
+
 		rfbLog("client %d network rate %.1f KB/sec (%.1f eff KB/sec)\n",
 		    cd->uid, cmp_rate/1000.0, raw_rate/1000.0);
 		rfbLog("client %d latency:  %.1f ms\n", cd->uid, 1000.0*dt3);

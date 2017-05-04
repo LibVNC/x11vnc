@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -348,7 +348,7 @@ static void parse_wireframe_str(char *wf) {
 
 	/* leading ",", make it start with ignorable string "z" */
 	if (*str == ',') {
-		char *tmp = (char *) malloc(strlen(str)+2);	
+		char *tmp = (char *) malloc(strlen(str)+2);
 		strcpy(tmp, "z");
 		strcat(tmp, str);
 		free(str);
@@ -400,11 +400,11 @@ static void parse_wireframe_str(char *wf) {
 		if (ok) {
 			;
 		} else if (sscanf(str, "0x%lx", &n) == 1) {
-			wireframe_shade = n;	
+			wireframe_shade = n;
 		} else if (sscanf(str, "%lu", &n) == 1) {
-			wireframe_shade = n;	
+			wireframe_shade = n;
 		} else if (sscanf(str, "%lx", &n) == 1) {
-			wireframe_shade = n;	
+			wireframe_shade = n;
 		}
 		free(str);
 	}
@@ -413,12 +413,12 @@ static void parse_wireframe_str(char *wf) {
 	if ((str = part[1]) != NULL) {
 		int n;
 		if (sscanf(str, "%d", &n) == 1) {
-			wireframe_lw = n;	
+			wireframe_lw = n;
 			if (wireframe_lw < 1) {
-				wireframe_lw = 1; 
+				wireframe_lw = 1;
 			}
 			if (wireframe_lw > LW_MAX) {
-				wireframe_lw = LW_MAX; 
+				wireframe_lw = LW_MAX;
 			}
 		}
 		free(str);
@@ -465,7 +465,7 @@ static void parse_wireframe_str(char *wf) {
 		if (*str == '0' || !strcmp(str, "none")) {
 			;
 		} else if (*str == '1' || !strcmp(str, "all")) {
-			wireframe_mods = strdup("all");	
+			wireframe_mods = strdup("all");
 		} else if (!strcmp(str, "Alt") || !strcmp(str, "Shift")
 		    || !strcmp(str, "Control") || !strcmp(str, "Meta")
 		    || !strcmp(str, "Super") || !strcmp(str, "Hyper")) {
@@ -585,11 +585,11 @@ void initialize_scroll_keys(void) {
 		}
 		p++;
 	}
-	
+
 	nkeys++;	/* exclude/include 0 element */
 	nkeys++;	/* trailing NoSymbol */
 
-	scroll_key_list = (KeySym *) malloc(nkeys*sizeof(KeySym)); 
+	scroll_key_list = (KeySym *) malloc(nkeys*sizeof(KeySym));
 	for (i=0; i<nkeys; i++) {
 		scroll_key_list[i] = NoSymbol;
 	}
@@ -619,7 +619,7 @@ void initialize_scroll_keys(void) {
 				scroll_key_list[i++] = (rfbKeySym) in;
 			} else if (sscanf(p, "0x%x", &in) == 1) {
 				scroll_key_list[i++] = (rfbKeySym) in;
-			} else if (XStringToKeysym(p) != NoSymbol) { 
+			} else if (XStringToKeysym(p) != NoSymbol) {
 				scroll_key_list[i++] = XStringToKeysym(p);
 			} else {
 				rfbLog("initialize_scroll_keys: skip unknown "
@@ -821,8 +821,8 @@ static void draw_box(int x, int y, int w, int h, int restore) {
 
 	/* handle -8to24 mode: use 2nd fb only */
 	use_fb  = main_fb;
-	use_Bpl = main_bytes_per_line; 
-	
+	use_Bpl = main_bytes_per_line;
+
 	if (cmap8to24 && cmap8to24_fb) {
 		use_fb = cmap8to24_fb;
 		pixelsize = 4;
@@ -848,7 +848,7 @@ static void draw_box(int x, int y, int w, int h, int restore) {
 			save[i]->saved = 0;
 			save[i]->data = (char *) malloc( (LW_MAX+1)*len*4 );
 
-			/* 
+			/*
 			 * Four types of lines:
 			 *	0) top horizontal
 			 *	1) bottom horizontal
@@ -1092,7 +1092,7 @@ if (db) dtime0(&tm);
 		XRANDR_SET_TRAP_RET(0, "direct_fb_copy-set");
 		copy_image(scanline, x1, y, x2 - x1, 1);
 		XRANDR_CHK_TRAP_RET(0, "direct_fb_copy-chk");
-		
+
 		src = scanline->data;
 		dst = main_fb + y * main_bytes_per_line + x1 * pixelsize;
 
@@ -1304,7 +1304,7 @@ static int set_ypad(void) {
 	int dy_sum = 0, ys = 0, sign;
 	int font_size = 15;
 	int win_y, scr_y, loc_cut = 4*font_size, y_cut = 10*font_size;
-	
+
 	if (!xrecord_set_by_keys || !xrecord_name_info) {
 		return 0;
 	}
@@ -1483,7 +1483,7 @@ if (db) fprintf(stderr, "ypad: %d  dy[0]: %d ev_tot: %d\n", ypad, scr_ev[0].dy, 
 
 	for (ev=0; ev < ev_tot; ev++) {
 		double ag;
-	
+
 		x   = scr_ev[ev].x;
 		y   = scr_ev[ev].y;
 		w   = scr_ev[ev].w;
@@ -1508,7 +1508,7 @@ if (db) fprintf(stderr, "ypad: %d  dy[0]: %d ev_tot: %d\n", ypad, scr_ev[0].dy, 
 
 		if (dabs(ag) > max_age) {
 if (db) fprintf(stderr, "push_scr_ev: TOO OLD: %.4f :: (%.4f - %.4f) "
-    "- %.4f \n", ag, dnow(), servertime_diff, st);				
+    "- %.4f \n", ag, dnow(), servertime_diff, st);
 			dret = 0;
 			break;
 		} else {
@@ -1579,8 +1579,8 @@ if (db > 1) fprintf(stderr, "------------ got: %d x: %4d y: %3d"
 			int k, gotk = -1;
 			for (k = stack_list_num - 1; k >= 0; k--) {
 				if (stack_list[k].win == frame &&
-				    stack_list[k].fetched && 
-				    stack_list[k].valid && 
+				    stack_list[k].fetched &&
+				    stack_list[k].valid &&
 				    stack_list[k].map_state == IsViewable) {
 					gotk = k;
 					break;
@@ -1623,7 +1623,7 @@ if (db > 1) fprintf(stderr, "------------ got: %d x: %4d y: %3d"
 		}
 
 		if (fast_push) {
-			int nbatch = 0; 
+			int nbatch = 0;
 			double delay, d1 = 0.1, d2 = 0.02;
 			rc = try_copyrect(frame, frame, x, y, w, h, dx, dy, &obscured,
 			    tmpregion, waittime, &nbatch);
@@ -1653,7 +1653,7 @@ PUSH_TEST(0);
 		if (! rc) {
 			dret = 0;
 			sraRgnDestroy(tmpregion);
-			break;	
+			break;
 		}
 		dt = dtime(&tm);
 if (0) fprintf(stderr, "  try_copyrect dt: %.4f\n", dt);
@@ -1665,7 +1665,7 @@ if (0) fprintf(stderr, "  try_copyrect dt: %.4f\n", dt);
 
 		if (ypad) {
 			if (ypad < 0) {
-				ny += ypad;	
+				ny += ypad;
 				nh -= ypad;
 			} else {
 				;
@@ -1780,7 +1780,7 @@ if (db && bdpush) fprintf(stderr, "BDPUSH-TIME:  0x%lx\n", xrecord_wm_window);
 		w = scr_ev[0].w;
 		h = scr_ev[0].h;
 		do_fb_push += do_bdpush(xrecord_wm_window, x, y, w, h,
-		    bdx, bdy, bdskinny); 
+		    bdx, bdy, bdskinny);
 		if (fast_push) {
 			fb_push();
 		}
@@ -1806,7 +1806,7 @@ if (0) fprintf(stderr, "  fb_push dt: %.4f", dt);
 			}
 
 			trate = typing_rate(0.0, &repeating);
-			
+
 			if (xrecord_set_by_mouse || repeating >= 3) {
 				if (now > last_scroll_event_save + first_wait) {
 					skip_first = 1;
@@ -1814,7 +1814,7 @@ if (0) fprintf(stderr, "  fb_push dt: %.4f", dt);
 			}
 
 			if (skip_first) {
-				/* 
+				/*
 				 * try not to send the first one, but a
 				 * single keystroke scroll would be OK.
 				 */
@@ -1833,7 +1833,7 @@ if (0) fprintf(stderr, "  fb_push dt: %.4f", dt);
 }
 
 static void get_client_regions(int *req, int *mod, int *cpy, int *num)  {
-	
+
 	rfbClientIteratorPtr i;
 	rfbClientPtr cl;
 
@@ -1877,12 +1877,12 @@ void do_copyregion(sraRegionPtr region, int dx, int dy, int mode)  {
 	if (rfb_fb == main_fb && ! rotating && mode == DCR_Normal) {
 		/* normal case, no -scale or -8to24 */
 		get_client_regions(&req, &mod, &cpy, &ncli);
-if (0 || debug_scroll > 1) fprintf(stderr, ">>>-rfbDoCopyRect req: %d mod: %d cpy: %d\n", req, mod, cpy); 
+if (0 || debug_scroll > 1) fprintf(stderr, ">>>-rfbDoCopyRect req: %d mod: %d cpy: %d\n", req, mod, cpy);
 
 		rfbDoCopyRegion(screen, region, dx, dy);
 
 		get_client_regions(&req, &mod, &cpy, &ncli);
-if (0 || debug_scroll > 1) fprintf(stderr, "<<<-rfbDoCopyRect req: %d mod: %d cpy: %d\n", req, mod, cpy); 
+if (0 || debug_scroll > 1) fprintf(stderr, "<<<-rfbDoCopyRect req: %d mod: %d cpy: %d\n", req, mod, cpy);
 
 		return;
 	}
@@ -1935,8 +1935,8 @@ if (0) fprintf(stderr, "copyrect: cmap8to24_fb: mode=%d\n", mode);
 				src = cmap8to24_fb + (y1-dy)*stride + (x1-dx)*Bpp;
 			}
 
-			w = (x2 - x1)*Bpp; 
-			
+			w = (x2 - x1)*Bpp;
+
 			if (dy < 0) {
 				for (j=y1; j<y2; j++) {
 					memmove(dst, src, w);
@@ -2008,7 +2008,7 @@ if (0) fprintf(stderr, "sa.. %d %d %d %d %d %d\n", sx1, sy1, sx2, sy2, sdx, sdy)
 		/* XXX -1? */
 		if (sx2 < 0) sx2 = 0;
 		if (sy2 < 0) sy2 = 0;
-		
+
 		if (sx2 < sx1) {
 			t = sx1;
 			sx1 = sx2;
@@ -2034,7 +2034,7 @@ if (0) fprintf(stderr, "sb.. %d %d %d %d %d %d\n", sx1, sy1, sx2, sy2, sdx, sdy)
 			}
 			rfbReleaseClientIterator(i);
 			sraRgnDestroy(r);
-			
+
 		} else {
 			rfbDoCopyRect(screen, sx1, sy1, sx2, sy2, sdx, sdy);
 		}
@@ -2178,7 +2178,7 @@ void fb_push(void) {
 	if (use_threads) {
 		return;
 	}
-	
+
 if (db)	get_client_regions(&req0, &mod0, &cpy0, &ncli);
 
 	i = rfbGetClientIterator(screen);
@@ -2211,7 +2211,7 @@ int fb_push_wait(double max_wait, int flags) {
 	int req, mod, cpy, ncli;
 	int ok = 0, first = 1;
 
-	dtime0(&tm);	
+	dtime0(&tm);
 	while (dt < max_wait) {
 		int done = 1;
 		fb_push();
@@ -2231,7 +2231,7 @@ int fb_push_wait(double max_wait, int flags) {
 		}
 		if (first) {
 			first = 0;
-			continue;	
+			continue;
 		}
 
 		rfbCFD(0);
@@ -2241,7 +2241,7 @@ int fb_push_wait(double max_wait, int flags) {
 	return ok;
 }
 
-/* 
+/*
  * utility routine for CopyRect of the window (but not CopyRegion)
  */
 static int crfix(int x, int dx, int Lx) {
@@ -2249,7 +2249,7 @@ static int crfix(int x, int dx, int Lx) {
 	if (dx > 0) {
 		if (x-dx < 0) {
 			/* off on the left */
-			x = dx;	
+			x = dx;
 		}
 	} else {
 		if (x-dx >= Lx) {
@@ -2342,7 +2342,7 @@ static int scrollability(Window win, int set) {
 
 void eat_viewonly_input(int max_eat, int keep) {
 	int i, gp, gk;
-	
+
 	for (i=0; i<max_eat; i++) {
 		int cont = 0;
 		gp = got_pointer_calls;
@@ -2643,7 +2643,7 @@ if (0 || db) fprintf(stderr, "check_xrecord: SPIN-OUT: %.3f/%.3f\n", spin,
 		bdx = last_wx + last_ww + 3;
 		bdy = last_wy + last_wh/2;
 		bdskinny = 32;
-			
+
 		if (persist_start == 0.0) {
 			bdpush = 0;
 		} else {
@@ -2865,7 +2865,7 @@ if (db) fprintf(stderr, "check_xrecord_mouse: BEGIN LOOP: scr_ev_cnt: "
 				bdy += off_y;
 			}
 			bdskinny = 32;
-			
+
 			set_bdpush(SCR_MOUSE, &last_bdpush, &bdpush);
 
 			dtime0(&tm);
@@ -3164,9 +3164,9 @@ static int try_copyrect(Window orig_frame, Window frame, int x, int y, int w, in
 
 	*obscured = 0;
 	/*
-	 * XXX KDE and xfce do some weird things with the 
+	 * XXX KDE and xfce do some weird things with the
 	 * stacking, it does not match XQueryTree.  Work around
-	 * it for now by CopyRect-ing the *whole* on-screen 
+	 * it for now by CopyRect-ing the *whole* on-screen
 	 * rectangle (whether obscured or not!)
 	 */
 	if (time(NULL) > dt_bad_check + 5) {
@@ -3272,7 +3272,7 @@ if (db2) fprintf(stderr, "sw: %d/%lx\n", k, swin);
  if (db2) {
  saw_me = 1; fprintf(stderr, "  ----------\n");
  } else {
-				break;	
+				break;
  }
 			}
 
@@ -3456,7 +3456,7 @@ if (db2) fprintf(stderr, "  stack_work dt: %.4f\n", dt);
 					batch_dys[*nbatch] = dy;
 					batch_reg[*nbatch] = sraRgnCreateRgn(shifted_region);
 					(*nbatch)++;
-					
+
 				}
 				dt = dtime(&tm);
 if (0 || db2) fprintf(stderr, "do_copyregion: %d %d %d %d  dx: %d  dy: %d dt: %.4f\n",
@@ -3469,7 +3469,7 @@ if (0 || db2) fprintf(stderr, "do_copyregion: %d %d %d %d  dx: %d  dy: %d dt: %.
 	}
 	return sent_copyrect;
 }
-		
+
 int near_wm_edge(int x, int y, int w, int h, int px, int py) {
 	/* heuristics: */
 	int wf_t = wireframe_top;
@@ -3478,7 +3478,7 @@ int near_wm_edge(int x, int y, int w, int h, int px, int py) {
 	int wf_r = wireframe_right;
 
 	int near_edge = 0;
-	
+
 	if (wf_t || wf_b || wf_l || wf_r) {
 		if (nabs(y - py) < wf_t) {
 			near_edge = 1;
@@ -3507,7 +3507,7 @@ int near_scrollbar_edge(int x, int y, int w, int h, int px, int py) {
 	int sb_r = scrollcopyrect_right;
 
 	int near_edge = 0;
-	
+
 	if (sb_t || sb_b || sb_l || sb_r) {
 		if (nabs(y - py) < sb_t) {
 			near_edge = 1;
@@ -3545,7 +3545,7 @@ void check_fixscreen(void) {
 			last = now;
 			didfull = 1;
 		}
-		
+
 	}
 	if (screen_fixup_V > 0.0) {
 		static double last = 0.0;
@@ -3687,8 +3687,8 @@ void push_borders(sraRect *rects, int nrect) {
 		int i, s = 2;
 		sraRegionPtr r0, r1, r2;
 
-		r0 = sraRgnCreate(); 
-		r1 = sraRgnCreateRect(0, 0, dpy_x, dpy_y); 
+		r0 = sraRgnCreate();
+		r1 = sraRgnCreateRect(0, 0, dpy_x, dpy_y);
 
 		for (i=0; i<nrect; i++) {
 			int x = rects[i].x1;
@@ -3697,25 +3697,25 @@ void push_borders(sraRect *rects, int nrect) {
 			int h = rects[i].y2;
 
 			if (w > 0 && h > 0 && w * h > 64 * 64) {
-				r2 = sraRgnCreateRect(x - s, y , x , y + h); 
-				sraRgnOr(r0, r2); 
-				sraRgnDestroy(r2);
-				
-				r2 = sraRgnCreateRect(x + w, y , x + w + s, y + h); 
-				sraRgnOr(r0, r2); 
+				r2 = sraRgnCreateRect(x - s, y , x , y + h);
+				sraRgnOr(r0, r2);
 				sraRgnDestroy(r2);
 
-				r2 = sraRgnCreateRect(x - s, y - s, x + w + s, y + s); 
-				sraRgnOr(r0, r2); 
+				r2 = sraRgnCreateRect(x + w, y , x + w + s, y + h);
+				sraRgnOr(r0, r2);
 				sraRgnDestroy(r2);
-				
-				r2 = sraRgnCreateRect(x - s, y , x + w + s, y + h + s); 
-				sraRgnOr(r0, r2); 
+
+				r2 = sraRgnCreateRect(x - s, y - s, x + w + s, y + s);
+				sraRgnOr(r0, r2);
+				sraRgnDestroy(r2);
+
+				r2 = sraRgnCreateRect(x - s, y , x + w + s, y + h + s);
+				sraRgnOr(r0, r2);
 				sraRgnDestroy(r2);
 			}
 		}
 
-		sraRgnAnd(r0, r1); 
+		sraRgnAnd(r0, r1);
 
 		if (!sraRgnEmpty(r0)) {
 			double d = dnow();
@@ -3756,7 +3756,7 @@ void ncache_pre_portions(Window orig_frame, Window frame, int *nidx_in, int try_
 	NPP_roffscreen = NULL;
 	NPP_r_bs_tmp = NULL;
 	NPP_nwin = None;
-	
+
 	if (ncache <= 0) {
 		return;
 	}
@@ -3778,10 +3778,10 @@ void ncache_pre_portions(Window orig_frame, Window frame, int *nidx_in, int try_
 	if (nidx > 0) {
 		sraRegionPtr r0, r1, r2;
 		int dx, dy;
-		int bs_x = cache_list[nidx].bs_x;	
-		int bs_y = cache_list[nidx].bs_y;	
-		int bs_w = cache_list[nidx].bs_w;	
-		int bs_h = cache_list[nidx].bs_h;	
+		int bs_x = cache_list[nidx].bs_x;
+		int bs_y = cache_list[nidx].bs_y;
+		int bs_w = cache_list[nidx].bs_w;
+		int bs_h = cache_list[nidx].bs_h;
 
 		*nidx_in = nidx;
 
@@ -3805,14 +3805,14 @@ void ncache_pre_portions(Window orig_frame, Window frame, int *nidx_in, int try_
 		}
 
 		if (ncache_pad) {
-			orig_x -= np;	
-			orig_y -= np;	
-			orig_w += 2 * np;	
-			orig_h += 2 * np;	
-			x -= np;	
-			y -= np;	
-			w += 2 * np;	
-			h += 2 * np;	
+			orig_x -= np;
+			orig_y -= np;
+			orig_w += 2 * np;
+			orig_h += 2 * np;
+			x -= np;
+			y -= np;
+			w += 2 * np;
+			h += 2 * np;
 		}
 
 		if (clipshift) {
@@ -3822,7 +3822,7 @@ void ncache_pre_portions(Window orig_frame, Window frame, int *nidx_in, int try_
 			y -= coff_y;
 		}
 
-		r0 = sraRgnCreateRect(0, 0, dpy_x, dpy_y); 
+		r0 = sraRgnCreateRect(0, 0, dpy_x, dpy_y);
 
 		r2 = sraRgnCreateRect(orig_x, orig_y, orig_x + orig_w, orig_y + orig_h);
 		sraRgnSubtract(r2, r0);
@@ -3916,14 +3916,14 @@ if (db) fprintf(stderr, "su: %dx%d+%d+%d  bs: %dx%d+%d+%d\n", su_w, su_h, su_x, 
 		}
 
 		if (ncache_pad) {
-			orig_x -= np;	
-			orig_y -= np;	
-			orig_w += 2 * np;	
-			orig_h += 2 * np;	
-			x -= np;	
-			y -= np;	
-			w += 2 * np;	
-			h += 2 * np;	
+			orig_x -= np;
+			orig_y -= np;
+			orig_w += 2 * np;
+			orig_h += 2 * np;
+			x -= np;
+			y -= np;
+			w += 2 * np;
+			h += 2 * np;
 		}
 
 		if (clipshift) {
@@ -3933,7 +3933,7 @@ if (db) fprintf(stderr, "su: %dx%d+%d+%d  bs: %dx%d+%d+%d\n", su_w, su_h, su_x, 
 			y -= coff_y;
 		}
 
-		r0 = sraRgnCreateRect(0, 0, dpy_x, dpy_y); 
+		r0 = sraRgnCreateRect(0, 0, dpy_x, dpy_y);
 
 		/* 0b) copy this bs part stored in saveunder */
 		if (NPP_roffscreen != NULL) {
@@ -3941,7 +3941,7 @@ if (db) fprintf(stderr, "su: %dx%d+%d+%d  bs: %dx%d+%d+%d\n", su_w, su_h, su_x, 
 			dy = y - su_y;
 			sraRgnOffset(NPP_roffscreen, dx, dy);
 			sraRgnAnd(NPP_roffscreen, r0);
-			
+
 			if (! use_batch) {
 				do_copyregion(NPP_roffscreen, dx, dy, 0);
 				if (!fb_push_wait(0.2, FB_COPY)) {
@@ -3984,7 +3984,7 @@ if (db && ncdb) fprintf(stderr, "sent_copyrect: %.4f su_restore: done.\n", dnow(
 		sraRgnDestroy(r2);
 
 		/* 4) if overlap between orig and displaced, move the corner that will still be su: */
-		r0 = sraRgnCreateRect(0, 0, dpy_x, dpy_y); 
+		r0 = sraRgnCreateRect(0, 0, dpy_x, dpy_y);
 
 		r1 = sraRgnCreateRect(orig_x, orig_y, orig_x + orig_w, orig_y + orig_h);
 		sraRgnAnd(r1, r0);
@@ -3996,11 +3996,11 @@ if (db && ncdb) fprintf(stderr, "sent_copyrect: %.4f su_restore: done.\n", dnow(
 			int dy2 = su_y - orig_y;
 
 			r3 = sraRgnCreateRgn(r2);
-			sraRgnOffset(r2, dx2, dy2); 
+			sraRgnOffset(r2, dx2, dy2);
 
 			dx = su_x - x;
 			dy = su_y - y;
-			sraRgnOffset(r3, dx, dy); 
+			sraRgnOffset(r3, dx, dy);
 
 			dx = dx - dx2;
 			dy = dy - dy2;
@@ -4026,7 +4026,7 @@ if (db) fprintf(stderr, "FB_COPY: %.4f 4) FAILED.\n", dnow() - ntim);
 		dx = su_x - bs_x;
 		dy = su_y - bs_y;
 		if (NPP_r_bs_tmp == NULL) {
-			r1 = sraRgnCreateRect(su_x, su_y, su_x + su_w, su_y + su_h); 
+			r1 = sraRgnCreateRect(su_x, su_y, su_x + su_w, su_y + su_h);
 		} else {
 			r1 = sraRgnCreateRgn(NPP_r_bs_tmp);
 			sraRgnOffset(r1, dx, dy);
@@ -4054,7 +4054,7 @@ if (db) fprintf(stderr, "FB_COPY: %.4f 5) FAILED.\n", dnow() - ntim);
 		sraRgnDestroy(r1);
 
 		/* 6) not really necessary, update bs with current view: */
-		r0 = sraRgnCreateRect(0, 0, dpy_x, dpy_y); 
+		r0 = sraRgnCreateRect(0, 0, dpy_x, dpy_y);
 		r1 = sraRgnCreateRect(x, y, x + w, y + h);
 		sraRgnAnd(r1, r0);
 		dx = bs_x - x;
@@ -4095,7 +4095,7 @@ if (ncdb) fprintf(stderr, "FB_COPY: %.4f XX did batch 0x%x %3d su: %dx%d+%d+%d  
 	}
 
 	if (scaling) {
-		sraRect rects[2];	
+		sraRect rects[2];
 
 		rects[0].x1 = orig_x;
 		rects[0].y1 = orig_y;
@@ -4137,11 +4137,11 @@ void do_copyrect_drag_move(Window orig_frame, Window frame, int *nidx, int try_b
 		return;
 	}
 if (ncdb) fprintf(stderr, "do_COPY: now_xy: %d %d, orig_wh: %d %d, xy: %d %d, wh: %d %d\n",now_x, now_y, orig_w, orig_h, x, y, w, h);
-	
+
 	ncache_pre_portions(orig_frame, frame, nidx, try_batch, &use_batch,
 	    now_x, now_y, orig_w, orig_h, x, y, w, h, ntim);
 
-	r0 = sraRgnCreateRect(0, 0, dpy_x, dpy_y); 
+	r0 = sraRgnCreateRect(0, 0, dpy_x, dpy_y);
 	r1 = sraRgnCreateRect(x, y, x + w, y + h);
 	sraRgnAnd(r1, r0);
 
@@ -4284,7 +4284,7 @@ if (ncdb) fprintf(stderr, "--YES, wf_raise\n");
 		}
 		valid = 1;
 		bs_restore(idx, nb, NULL, &attr, 0, 1, &valid, 1);
-		try_to_fix_su(orig_frame, idx, 0x1, nb, NULL);	
+		try_to_fix_su(orig_frame, idx, 0x1, nb, NULL);
 		if (nb && nr) {
 			batch_push(nr, -1.0);
 		}
@@ -4359,7 +4359,7 @@ int check_wireframe(void) {
 	static int first_dt_cnt = 0;
 	static time_t last_save_stacklist = 0;
 	int bdown0, bdown, gotui, cnt = 0;
-	
+
 	/* heuristics: */
 	double first_event_spin   = wireframe_t1;
 	double frame_changed_spin = wireframe_t2;
@@ -4443,7 +4443,7 @@ if (db) fprintf(stderr, "a: %d  wf: %.3f  A: %d  origfrm: 0x%lx\n", w*h, wirefra
 if (db) fprintf(stderr, "small window %.3f\n", ((double) w*h)/(dpy_x * dpy_y));
 		return 0;
 	}
-if (db) fprintf(stderr, "  frame: x: %d  y: %d  w: %d  h: %d  px: %d  py: %d  fr: 0x%lx\n", x, y, w, h, px, py, frame);	
+if (db) fprintf(stderr, "  frame: x: %d  y: %d  w: %d  h: %d  px: %d  py: %d  fr: 0x%lx\n", x, y, w, h, px, py, frame);
 
 	/*
 	 * see if the pointer is within range of the assumed wm frame
@@ -4482,7 +4482,7 @@ if (db) fprintf(stderr, "INTERIOR\n");
 	if (button_mask_prev) {
 		already_down = 1;
 	}
-	
+
 	if (! wireframe_str || !strcmp(wireframe_str, WIREFRAME_PARMS)) {
 		int link, latency, netrate;
 		static int didmsg = 0;
@@ -4554,9 +4554,9 @@ if (db) fprintf(stderr, "INTERIOR\n");
 
 	/* this is the box frame we would draw */
 	box_x = x;
-	box_y = y; 
+	box_y = y;
 	box_w = w;
-	box_h = h; 
+	box_h = h;
 
 	dtime0(&tm);
 
@@ -4668,7 +4668,7 @@ if (db || db2) fprintf(stderr, " SPIN-OUT-NO2ND_PTR: %.3f\n", spin);
 		    (wireframe_local && (got_local_pointer_input > gd))) {
 
 if (db) fprintf(stderr, "  ++pointer event!! [%02d]  dt: %.3f  x: %d  y: %d  mask: %d\n",
-    got_2nd_pointer+1, spin, cursor_x, cursor_y, button_mask);	
+    got_2nd_pointer+1, spin, cursor_x, cursor_y, button_mask);
 
 			g = got_pointer_input;
 			gd = got_local_pointer_input;
@@ -4732,8 +4732,8 @@ if (db) fprintf(stderr, "OUT-OF-FRAME: old: x: %d  y: %d  px: %d py: %d 0x%lx\n"
 			}
 			X_UNLOCK;
 
-if (db) fprintf(stderr, "  frame: x: %d  y: %d  w: %d  h: %d  px: %d  py: %d  fr: 0x%lx\n", x, y, w, h, px, py, frame);	
-if (db) fprintf(stderr, "        MO,PT,FR: %d/%d %d/%d %d/%d\n", cursor_x - orig_cursor_x, cursor_y - orig_cursor_y, px - orig_px, py - orig_py, x - orig_x, y - orig_y);	
+if (db) fprintf(stderr, "  frame: x: %d  y: %d  w: %d  h: %d  px: %d  py: %d  fr: 0x%lx\n", x, y, w, h, px, py, frame);
+if (db) fprintf(stderr, "        MO,PT,FR: %d/%d %d/%d %d/%d\n", cursor_x - orig_cursor_x, cursor_y - orig_cursor_y, px - orig_px, py - orig_py, x - orig_x, y - orig_y);
 
 			if (frame_changed && frame != orig_frame) {
 if (db) fprintf(stderr, "CHANGED and window switch: 0x%lx\n", frame);
@@ -4810,7 +4810,7 @@ if (0) fprintf(stderr, "DRAW1 %d %d\n", x - box_x, y - box_y);
 if (0) fprintf(stderr, "*** NO GPI DRAW_BOX\n");
 					}
 				}
-		
+
 				if (doit) {
 					if (try_copyrect_drag && ncache > 0) {
 						if (!ncache_copyrect) {
@@ -4886,7 +4886,7 @@ if (0) fprintf(stderr, "*** NO GPI DRAW_BOX\n");
 			box_h = h;
 		}
 
-		/* 
+		/*
 		 * Now (not earlier) check if the button has come back up.
 		 * we check here to get a better location and size of
 		 * the final window.
@@ -4900,7 +4900,7 @@ if (0) fprintf(stderr, "*** NO GPI DRAW_BOX\n");
 		if (! bdown) {
 if (db || db2) fprintf(stderr, "NO button_mask\n");
 			break_reason = 6;
-			break;	
+			break;
 		}
 	}
 
@@ -5417,7 +5417,7 @@ int fb_update_sent(int *count) {
 		*count = sent;
 	}
 	last_count = sent;
-	return rc; 
+	return rc;
 }
 
 static void check_user_input4(double dt, double dtr, int tile_diffs) {
@@ -5503,7 +5503,7 @@ static void check_user_input4(double dt, double dtr, int tile_diffs) {
 			/* damn, they didn't push our frame! */
 			iter++;
 			rfbPE(rfb_wait_ms * 1000);
-			
+
 			push_spin += dtime(&tp);
 		}
 		if (iter) {
@@ -5694,7 +5694,7 @@ if (debug_scroll && rc > 1) fprintf(stderr, "  CXR: check_user_input ret %d\n", 
 			 * *keyboard* input.
 			 */
 			if (*cnt % ui_skip != 0) {
-				*cnt = *cnt + 1; 
+				*cnt = *cnt + 1;
 				return 1;
 			}
 		}
@@ -5757,7 +5757,7 @@ int cache_list_len = 0;
 
 void snapshot_cache_list(int free_only, double allowed_age) {
 	static double last_snap = 0.0, last_free = 0.0;
-	double now; 
+	double now;
 	int num, rc, i;
 	unsigned int ui;
 	Window r, w;
@@ -6003,7 +6003,7 @@ if (ncdb) fprintf(stderr, "lookup_freeA: %d\n", rfree);
 
 			cache_new = (winattr_t *) calloc(n*sizeof(winattr_t), 1);
 			for (i=0; i<cache_list_num-1; i++) {
-				cache_new[i] = cache_list[i]; 
+				cache_new[i] = cache_list[i];
 			}
 			cache_list_len = n;
 			free(cache_list);
@@ -6359,10 +6359,10 @@ if (ncdb) fprintf(stderr, ">>**--**>> found rect via EXPIRE: %d 0x%lx -- %dx%d+%
 			} else {
 				if (big2 && nr > 2) {
 					nrand =  1 + (int) ((nr - 2) * rfac());
-					nrand += 2; 
+					nrand += 2;
 				} else {
 					nrand =  1 + (int) ((nr - 1) * rfac());
-					nrand += 1; 
+					nrand += 1;
 				}
 			}
 		}
@@ -6373,15 +6373,15 @@ if (ncdb) fprintf(stderr, ">>**--**>> found rect via EXPIRE: %d 0x%lx -- %dx%d+%
 			corner_x = 1;
 		}
 
-		y0 += dpy_y; 
+		y0 += dpy_y;
 		if (nrand > 1) {
-			y0 += 2 * (nrand - 1) * dpy_y; 
+			y0 += 2 * (nrand - 1) * dpy_y;
 		}
 		if (corner_y) {
-			y0 += dpy_y - h; 
+			y0 += dpy_y - h;
 		}
 		if (corner_x) {
-			x0 += dpy_x - w; 
+			x0 += dpy_x - w;
 		}
 		r1 = sraRgnCreateRect(x0, y0, x0+w, y0+h);
 
@@ -6550,13 +6550,13 @@ if (ncdb) fprintf(stderr, "Expire[%02d]   %9.5f  age=%9.4f  area=%8d  need=%8d\n
 
 				x0 = 0;
 				y0 = 0;
-				y0 += n * dpy_y; 
+				y0 += n * dpy_y;
 
 				if (corner_y) {
-					y0 += dpy_y - h; 
+					y0 += dpy_y - h;
 				}
 				if (corner_x) {
-					x0 += dpy_x - w; 
+					x0 += dpy_x - w;
 				}
 				r1 = sraRgnCreateRect(x0, y0, x0+w, y0+h);
 
@@ -6633,7 +6633,7 @@ if (ncdb) fprintf(stderr, "nwgt=0\n");
 		norm += wgt[i];
 	}
 	for (i=0; i < nwgt; i++) {
-		wgt[i] /= norm; 
+		wgt[i] /= norm;
 	}
 
 	r = rfac();
@@ -6641,7 +6641,7 @@ if (ncdb) fprintf(stderr, "nwgt=0\n");
 	norm = 0.0;
 	for (j=0; j < nwgt; j++) {
 		norm += wgt[j];
-if (ncdb) fprintf(stderr, "j=%2d  acc=%.6f r=%.6f\n", j, norm, r); 
+if (ncdb) fprintf(stderr, "j=%2d  acc=%.6f r=%.6f\n", j, norm, r);
 		if (r < norm) {
 			break;
 		}
@@ -6675,13 +6675,13 @@ if (ncdb) fprintf(stderr, ">>**--**>> found rect [%d] via RAN EXPIRE: %d 0x%lx -
 			fprintf(stderr, "failure to find y n in find_rect\n");
 			clean_up_exit(1);
 		}
-		
+
 	} else if (type[j] == Force) {
 
 		int x0 = val[1][j];
 		int y0 = val[2][j];
 		n = val[0][j];
-		
+
 		r1 = sraRgnCreateRect(x0, y0, x0+w, y0+h);
 
 		for (i=0; i<cache_list_num; i++) {
@@ -6795,10 +6795,10 @@ if (ncdb) fprintf(stderr, "free_rect: bad index: %d\n", idx);
 	cache_list[idx].su_time = 0.0;
 
 	if (ncache_pad) {
-		x -= ncache_pad;	
-		y -= ncache_pad;	
-		w += 2 * ncache_pad;	
-		h += 2 * ncache_pad;	
+		x -= ncache_pad;
+		y -= ncache_pad;
+		w += 2 * ncache_pad;
+		h += 2 * ncache_pad;
 	}
 
 	if (ncache <= 2) {
@@ -6810,11 +6810,11 @@ if (ncdb) fprintf(stderr, "free_rect: bad index: %d\n", idx);
 	}
 	if (macosx_console && !macosx_ncache_macmenu) {
 		if (cram) {
-			fac1 *= 1.5;	
-			fac2 *= 1.5;	
+			fac1 *= 1.5;
+			fac2 *= 1.5;
 		} else {
-			fac1 *= 2.5;	
-			fac2 *= 2.5;	
+			fac1 *= 2.5;
+			fac2 *= 2.5;
 		}
 	}
 	if (w * h > fac1 * (dpy_x * dpy_y)) {
@@ -6892,7 +6892,7 @@ if (ncdb) fprintf(stderr, ">>**--**>> found rect via REGION: %dx%d+%d+%d -- %d %
 		}
 	}
 
-	
+
 	/* next try moving corner to grid points */
 	if (x_hit < 0) {
 	    for (n = 1; n < ncache; n += 2) {
@@ -7031,7 +7031,7 @@ int valid_wr(int idx, Window win, XWindowAttributes *attr) {
 }
 
 int clipped(int idx) {
-	int ic;	
+	int ic;
 	sraRegionPtr r0, r1, r2;
 	int x1, y1, w1, h1;
 	Window win;
@@ -7094,7 +7094,7 @@ if (0) fprintf(stderr, "clip[0x%lx]: %s\n", win, clip ? "clipped" : "no-clipped"
 }
 
 void clip_region(sraRegionPtr r, Window win) {
-	int ic, idx2;	
+	int ic, idx2;
 	sraRegionPtr r1;
 	for (ic = old_stack_n - 1; ic >= 0; ic--) {
 		int xc, yc, wc, hc;
@@ -7136,14 +7136,14 @@ int bs_save(int idx, int *nbatch, XWindowAttributes *attr, int clip, int only_if
 	int x, y, w, h;
 	int dx, dy, rc = 1;
 	sraRegionPtr r, r0;
-	
+
 	x1 = cache_list[idx].x;
 	y1 = cache_list[idx].y;
 	w1 = cache_list[idx].width;
 	h1 = cache_list[idx].height;
 
 if (ncdb && verb) fprintf(stderr, "backingstore save:       0x%lx  %3d clip=%d\n", win, idx, clip);
-	
+
 	X_LOCK;
 	if (*valid) {
 		attr->x = x1;
@@ -7188,10 +7188,10 @@ if (ncdb) fprintf(stderr, "BS_save: FAIL FOR: %d\n", idx);
 	}
 
 	if (ncache_pad) {
-		x2 -= ncache_pad;	
-		y2 -= ncache_pad;	
-		w2 += 2 * ncache_pad;	
-		h2 += 2 * ncache_pad;	
+		x2 -= ncache_pad;
+		y2 -= ncache_pad;
+		w2 += 2 * ncache_pad;
+		h2 += 2 * ncache_pad;
 	}
 
 	if (clipshift) {
@@ -7214,8 +7214,8 @@ if (ncdb && verb) fprintf(stderr, "BS_save: Region Empty: %d\n", idx);
 		return 0;
 	}
 
-	dx = x - x2; 
-	dy = y - y2; 
+	dx = x - x2;
+	dy = y - y2;
 
 	sraRgnOffset(r, dx, dy);
 
@@ -7242,14 +7242,14 @@ int su_save(int idx, int *nbatch, XWindowAttributes *attr, int clip, int *valid,
 	int x, y, w, h;
 	int dx, dy, rc = 1;
 	sraRegionPtr r, r0;
-	
+
 if (ncdb && verb) fprintf(stderr, "save-unders save:        0x%lx  %3d \n", win, idx);
 
 	x1 = cache_list[idx].x;
 	y1 = cache_list[idx].y;
 	w1 = cache_list[idx].width;
 	h1 = cache_list[idx].height;
-	
+
 	X_LOCK;
 	if (*valid) {
 		attr->x = x1;
@@ -7289,10 +7289,10 @@ if (ncdb) fprintf(stderr, "SU_save: FAIL FOR: %d\n", idx);
 	}
 
 	if (ncache_pad) {
-		x2 -= ncache_pad;	
-		y2 -= ncache_pad;	
-		w2 += 2 * ncache_pad;	
-		h2 += 2 * ncache_pad;	
+		x2 -= ncache_pad;
+		y2 -= ncache_pad;
+		w2 += 2 * ncache_pad;
+		h2 += 2 * ncache_pad;
 	}
 
 	if (clipshift) {
@@ -7316,8 +7316,8 @@ if (ncdb && verb) fprintf(stderr, "SU_save: Region Empty: %d\n", idx);
 	}
 
 
-	dx = x - x2; 
-	dy = y - y2; 
+	dx = x - x2;
+	dy = y - y2;
 
 	sraRgnOffset(r, dx, dy);
 
@@ -7333,7 +7333,7 @@ if (ncdb && verb) fprintf(stderr, "SU_save: %.4f %.2f %d done.  %dx%d+%d+%d %dx%
 	sraRgnDestroy(r);
 
 	last_su_save = cache_list[idx].su_time = dnow();
-	
+
 	return 1;
 }
 
@@ -7351,7 +7351,7 @@ if (ncdb && verb) fprintf(stderr, "backingstore restore:    0x%lx  %3d \n", win,
 	y1 = cache_list[idx].y;
 	w1 = cache_list[idx].width;
 	h1 = cache_list[idx].height;
-	
+
 	X_LOCK;
 	if (*valid) {
 		attr->x = x1;
@@ -7384,15 +7384,15 @@ if (ncdb) fprintf(stderr, "BS_restore: not a valid X window: 0x%lx\n", win);
 
 	if (ncache_pad) {
 		if (nopad) {
-			x += ncache_pad;	
-			y += ncache_pad;	
-			w -= 2 * ncache_pad;	
-			h -= 2 * ncache_pad;	
+			x += ncache_pad;
+			y += ncache_pad;
+			w -= 2 * ncache_pad;
+			h -= 2 * ncache_pad;
 		} else {
-			x2 -= ncache_pad;	
-			y2 -= ncache_pad;	
-			w2 += 2 * ncache_pad;	
-			h2 += 2 * ncache_pad;	
+			x2 -= ncache_pad;
+			y2 -= ncache_pad;
+			w2 += 2 * ncache_pad;
+			h2 += 2 * ncache_pad;
 		}
 	}
 
@@ -7411,8 +7411,8 @@ if (ncdb) fprintf(stderr, "BS_restore: not a valid X window: 0x%lx\n", win);
 	r0 = sraRgnCreateRect(0, 0, dpy_x, dpy_y);
 	r = sraRgnCreateRect(x, y, x+w2, y+h2);
 
-	dx = x2 - x; 
-	dy = y2 - y; 
+	dx = x2 - x;
+	dy = y2 - y;
 
 	sraRgnOffset(r, dx, dy);
 	sraRgnAnd(r, r0);
@@ -7436,7 +7436,7 @@ if (ncdb && verb) fprintf(stderr, "BS_rest: %.4f %.2f %d done.  %dx%d+%d+%d %dx%
 	sraRgnDestroy(r);
 
 	last_bs_restore = dnow();
-	
+
 	return 1;
 }
 
@@ -7449,12 +7449,12 @@ int su_restore(int idx, int *nbatch, sraRegionPtr rmask, XWindowAttributes *attr
 	sraRegionPtr r, r0;
 
 if (ncdb && verb) fprintf(stderr, "save-unders  restore:    0x%lx  %3d \n", win, idx);
-	
+
 	x1 = cache_list[idx].x;
 	y1 = cache_list[idx].y;
 	w1 = cache_list[idx].width;
 	h1 = cache_list[idx].height;
-	
+
 	X_LOCK;
 	if (*valid) {
 		attr->x = x1;
@@ -7493,15 +7493,15 @@ if (ncdb) fprintf(stderr, "SU_rest: su_x/bs_x/su_time: %d %d %.3f\n", x, cache_l
 
 	if (ncache_pad) {
 		if (nopad) {
-			x += ncache_pad;	
-			y += ncache_pad;	
-			w -= 2 * ncache_pad;	
-			h -= 2 * ncache_pad;	
+			x += ncache_pad;
+			y += ncache_pad;
+			w -= 2 * ncache_pad;
+			h -= 2 * ncache_pad;
 		} else {
-			x2 -= ncache_pad;	
-			y2 -= ncache_pad;	
-			w2 += 2 * ncache_pad;	
-			h2 += 2 * ncache_pad;	
+			x2 -= ncache_pad;
+			y2 -= ncache_pad;
+			w2 += 2 * ncache_pad;
+			h2 += 2 * ncache_pad;
 		}
 	}
 
@@ -7520,8 +7520,8 @@ if (ncdb) fprintf(stderr, "SU_rest: su_x/bs_x/su_time: %d %d %.3f\n", x, cache_l
 	r0 = sraRgnCreateRect(0, 0, dpy_x, dpy_y);
 	r = sraRgnCreateRect(x, y, x+w2, y+h2);
 
-	dx = x2 - x; 
-	dy = y2 - y; 
+	dx = x2 - x;
+	dy = y2 - y;
 
 	sraRgnOffset(r, dx, dy);
 	sraRgnAnd(r, r0);
@@ -7558,7 +7558,7 @@ void check_zero_rects(void) {
 	if (sraRgnEmpty(zero_rects)) {
 		return;
 	}
-		
+
 	iter = sraRgnGetIterator(zero_rects);
 	while (sraRgnIteratorNext(iter, &rt)) {
 		zero_fb(rt.x1, rt.y1, rt.x2, rt.y2);
@@ -7637,7 +7637,7 @@ void block_stats(void) {
 				if (ncdb) fprintf(stderr, "     [%02d] %04d 0x%08lx bs: %04dx%04d+%04d+%05d vw: %04dx%04d+%04d+%04d cl: %04dx%04d+%04d+%04d map=%d su=%9.3f bs=%9.3f cnt=%d/%d\n",
 				    n, k, win, w, h, x, y, attr.width, attr.height, attr.x, attr.y,
 				    cache_list[k].width, cache_list[k].height, cache_list[k].x, cache_list[k].y,
-				    attr.map_state == IsViewable, t1, t2, cache_list[k].create_cnt, cache_list[k].map_cnt); 
+				    attr.map_state == IsViewable, t1, t2, cache_list[k].create_cnt, cache_list[k].map_cnt);
 			}
 		}
 		frac = area /(dpy_x * dpy_y);
@@ -7806,7 +7806,7 @@ int try_to_fix_resize_su(Window orig_frame, int orig_x, int orig_y, int orig_w, 
 	if (try_batch) {
 		nbat = &nr;
 	}
-	
+
 	if (orig_w >= w && orig_h >= h) {
 
 if (0) fprintf(stderr, "Shrinking resize %d  %dx%d+%d+%d -> %dx%d+%d+%d\n", idx, orig_w, orig_h, orig_x, orig_y, w, h, x, y);
@@ -7867,19 +7867,19 @@ if (0) fprintf(stderr, "Growing resize %d  %dx%d+%d+%d -> %dx%d+%d+%d\n", idx, o
 		by1 = cache_list[idx].bs_y;
 		bw1 = cache_list[idx].bs_w;
 		bh1 = cache_list[idx].bs_h;
-		
+
 		if (find_rect(idx, x, y, w, h)) {
 			r3 = sraRgnCreateRgn(r2);
 			sraRgnAnd(r3, r1);
 
 			dx = cache_list[idx].su_x - x;
 			dy = cache_list[idx].su_y - y;
-	
+
 			sraRgnOffset(r3, dx, dy);
 
 			dx = dx - (sx1 - orig_x);
 			dy = dy - (sy1 - orig_y);
-			
+
 			cache_cr(r3, dx, dy, 0.075, 0.05, nbat);
 			sraRgnDestroy(r3);
 
@@ -7888,7 +7888,7 @@ if (0) fprintf(stderr, "Growing resize %d  %dx%d+%d+%d -> %dx%d+%d+%d\n", idx, o
 
 			dx = cache_list[idx].su_x - x;
 			dy = cache_list[idx].su_y - y;
-	
+
 			sraRgnOffset(r3, dx, dy);
 
 			cache_cr(r3, dx, dy, 0.075, 0.05, nbat);
@@ -7903,7 +7903,7 @@ if (0) fprintf(stderr, "Growing resize %d  %dx%d+%d+%d -> %dx%d+%d+%d\n", idx, o
 			if (0) cache_list[idx].su_time = dnow();
 		}
 	}
-	
+
 	sraRgnDestroy(r0);
 	sraRgnDestroy(r1);
 	sraRgnDestroy(r2);
@@ -7912,7 +7912,7 @@ if (0) fprintf(stderr, "Growing resize %d  %dx%d+%d+%d -> %dx%d+%d+%d\n", idx, o
 }
 
 int try_to_fix_su(Window win, int idx, Window above, int *nbatch, char *mode) {
-	int i, idx2, n = 0, found = 0, found_above = 0; 	
+	int i, idx2, n = 0, found = 0, found_above = 0;
 	sraRegionPtr r0, r1, r2;
 	Window win2;
 	int x, y, w, h, on = 0;
@@ -8100,7 +8100,7 @@ if (0) fprintf(stderr, "0x%lx turn off: 0x%lx  i=%d\n", win, win2, i);
 void idx_add_rgn(sraRegionPtr r, sraRegionPtr r0, int idx) {
 	int x, y, w, h;
 	sraRegionPtr rtmp;
-	
+
 	if (idx < 0) {
 		return;
 	}
@@ -8120,7 +8120,7 @@ void idx_add_rgn(sraRegionPtr r, sraRegionPtr r0, int idx) {
 sraRegionPtr idx_create_rgn(sraRegionPtr r0, int idx) {
 	int x, y, w, h;
 	sraRegionPtr rtmp;
-	
+
 	if (idx < 0) {
 		return NULL;
 	}
@@ -8298,12 +8298,12 @@ void read_events(int *n_in) {
 	int n = *n_in;
 	Window win, win2;
 	XEvent ev;
-	
+
 	while (xcheckmaskevent(dpy, all_ev, &Ev[n])) {
 		int cfg_size = 0;
 		int cfg_pos = 0;
 		int cfg_stack = 0;
-		int type = Ev[n].type; 
+		int type = Ev[n].type;
 		Window w = None;
 
 		win = Ev[n].xany.window;
@@ -8340,10 +8340,10 @@ void read_events(int *n_in) {
 			if (type == VisibilityNotify) {
 				msg = VState(Ev[n].xvisibility.state);
 			} else if (type == ConfigureNotify) {
-				int x_new = Ev[n].xconfigure.x; 
-				int y_new = Ev[n].xconfigure.y; 
-				int w_new = Ev[n].xconfigure.width; 
-				int h_new = Ev[n].xconfigure.height; 
+				int x_new = Ev[n].xconfigure.x;
+				int y_new = Ev[n].xconfigure.y;
+				int w_new = Ev[n].xconfigure.width;
+				int h_new = Ev[n].xconfigure.height;
 				if (idx >= 0) {
 					if (w_new != wd || h_new != ht) {
 						msg = "change size";
@@ -8360,7 +8360,7 @@ void read_events(int *n_in) {
 					}
 				}
 			}
-			
+
 			if (ncdb) fprintf(stderr, "----- %02d inputev 0x%08lx w: 0x%08lx %04dx%04d+%04d+%04d %s  %s\n", n, win, w, wd, ht, x, y, Etype(type), msg);
 		}
 
@@ -8459,7 +8459,7 @@ if (ncdb) fprintf(stderr, "----- skip %s\n", Etype(type));
 }
 
 int try_to_synthesize_su(int force, int urgent, int *nbatch) {
-	int i, idx, idx2, n = 0; 	
+	int i, idx, idx2, n = 0;
 	sraRegionPtr r0, r1, r2;
 	Window win = None;
 	int x0, y0, w0, h0;
@@ -8498,7 +8498,7 @@ int try_to_synthesize_su(int force, int urgent, int *nbatch) {
 				attr.width = 0;
 				attr.height = 0;
 			}
-			
+
 		}
 		if (attr.map_state != IsViewable) {
 			continue;
@@ -8648,7 +8648,7 @@ if (ncdb) fprintf(stderr, "\n**** checking cache_list[%d]\n\n", cache_list_num);
 
 		for(k=0; k<cache_list_num; k++) {
 			valid = 0;
-			win = cache_list[k].win; 
+			win = cache_list[k].win;
 			X_LOCK;
 			if (win == None) {
 				;
@@ -8708,11 +8708,11 @@ if (ncdb) fprintf(stderr, "Created window never mapped: freeing(%d) 0x%lx\n", k,
 				}
 			}
 		}
-		
+
 		for (i=0; i < NSCHED; i++) {
 			if (sched_bs[i] != None) {
 				int idx;
-				win = sched_bs[i];	
+				win = sched_bs[i];
 				if (now < sched_tm[i] + 0.55) {
 					continue;
 				}
@@ -8722,8 +8722,8 @@ if (ncdb) fprintf(stderr, "Created window never mapped: freeing(%d) 0x%lx\n", k,
 				}
 				idx = lookup_win_index(win);
 				if (idx >= 0) {
-					int aw = cache_list[idx].width; 
-					int ah = cache_list[idx].height; 
+					int aw = cache_list[idx].width;
+					int ah = cache_list[idx].height;
 					if (cache_list[idx].map_state != IsViewable) {
 						;
 					} else if (cache_list[idx].vis_state != VisibilityUnobscured) {
@@ -8731,7 +8731,7 @@ if (ncdb) fprintf(stderr, "Created window never mapped: freeing(%d) 0x%lx\n", k,
 					} else if (aw * ah < 64 * 64) {
 						;
 					} else {
-if (ncdb) fprintf(stderr, "*SNAP BS_save: 0x%lx %d %d %d\n", win, aw, ah, cache_list[idx].map_state); 
+if (ncdb) fprintf(stderr, "*SNAP BS_save: 0x%lx %d %d %d\n", win, aw, ah, cache_list[idx].map_state);
 						valid = 0;
 						bs_save(idx, bat, &attr, 1, 0, &valid, 0);
 						if (valid) {
@@ -8764,8 +8764,8 @@ if (ncdb) fprintf(stderr, "*SCHED LOOKUP FAIL: i=%d 0x%lx\n", i, win);
 			for (i=0; i < cache_list_num; i++) {
 				int ok = 0;
 				int top_only = 1;
-				int aw = cache_list[i].width; 
-				int ah = cache_list[i].height; 
+				int aw = cache_list[i].width;
+				int ah = cache_list[i].height;
 				int map_prev = cache_list[i].map_state;
 
 				win = cache_list[i].win;
@@ -8837,7 +8837,7 @@ if (ncdb && vis_now_n) fprintf(stderr, "*VIS  snapshot all %.4f\n", dnowx());
 					i = vis_now[k];
 					win = cache_list[i].win;
 					valid = 0;
-if (ncdb) fprintf(stderr, "*VIS  BS_save: 0x%lx %d %d %d\n", win, cache_list[i].width, cache_list[i].height, cache_list[i].map_state); 
+if (ncdb) fprintf(stderr, "*VIS  BS_save: 0x%lx %d %d %d\n", win, cache_list[i].width, cache_list[i].height, cache_list[i].map_state);
 					if (now < cache_list[i].vis_unobs_time + 0.75 && now < cache_list[i].vis_obs_time + 0.75) {
 						continue;
 					}
@@ -8882,7 +8882,7 @@ if (ncdb) fprintf(stderr, "got_XROOTPMAP_ID\n");
 int check_ncache(int reset, int mode) {
 	static int first = 1;
 	static int last_client_count = -1;
-	int i, k, n; 
+	int i, k, n;
 	int did_sched = 0;
 
 	Window win, win2;
@@ -8960,7 +8960,7 @@ int check_ncache(int reset, int mode) {
 				}
 				X_UNLOCK;
 				last_purge = dnow();
-if (ncdb && c) fprintf(stderr, "check_ncache purged %d events\n", c); 
+if (ncdb && c) fprintf(stderr, "check_ncache purged %d events\n", c);
 			}
 			if (!client_count && last_client_count >= 0 &&
 			    client_count != last_client_count) {
@@ -9180,7 +9180,7 @@ if (hack_val == 2) {
 				n0 = n;
 			}
 		}
-			
+
 		nxsel = 0;
 
 		/* handle creates and reparenting: */
@@ -9338,10 +9338,10 @@ if (ncdb) fprintf(stderr, "SKIPWINS: Ev_unmap/map: 0x%lx %d\n", twin, n2);
 			if (idx < 0) {
 				continue;
 			}
-			x_new = ev.xconfigure.x; 
-			y_new = ev.xconfigure.y; 
-			w_new = ev.xconfigure.width; 
-			h_new = ev.xconfigure.height; 
+			x_new = ev.xconfigure.x;
+			y_new = ev.xconfigure.y;
+			w_new = ev.xconfigure.width;
+			h_new = ev.xconfigure.height;
 
 			x_old = cache_list[idx].x;
 			y_old = cache_list[idx].y;
@@ -9423,7 +9423,7 @@ if (ncdb) fprintf(stderr, "M Ev_tmp[%d] = %d\n", cnt, i);
 		}
 		/* unmap from top to bottom */
 		for (s = old_stack_n - 1; s >= 0; s--) {
-			twin = old_stack[s];	
+			twin = old_stack[s];
 			if (twin == None || twin == rootwin) {
 				continue;
 			}
@@ -9438,7 +9438,7 @@ if (ncdb) fprintf(stderr, "U Ev_tmp2[%d] = %d\n", add, i);
 		}
 		/* map from bottom to top */
 		for (s = 0; s < old_stack_n; s++) {
-			twin = old_stack[s];	
+			twin = old_stack[s];
 			if (twin == None || twin == rootwin) {
 				continue;
 			}
@@ -9508,7 +9508,7 @@ if (ncdb) fprintf(stderr, "UM Ev_order[%d] = %d oku=%d okm=%d\n", i, j, oku, okm
 		}
 		/* unmap from top to bottom */
 		for (s = old_stack_n - 1; s >= 0; s--) {
-			twin = old_stack[s];	
+			twin = old_stack[s];
 			for (k = 0; k < cnt; k++) {
 				i = Ev_tmp[k];
 				if (twin == Ev_unmap[i]) {
@@ -9544,7 +9544,7 @@ if (ncdb) fprintf(stderr, "UM Ev_order[%d] = %d oku=%d okm=%d\n", i, j, oku, okm
 		}
 		/* map from bottom to top */
 		for (s = 0; s < old_stack_n; s++) {
-			twin = old_stack[s];	
+			twin = old_stack[s];
 			for (k = 0; k < cnt; k++) {
 				i = Ev_tmp[k];
 				if (twin == Ev_map[i]) {
@@ -9679,7 +9679,7 @@ for (k = 0; k < skipwins_n; k++) {
 if (ncdb) fprintf(stderr, "skip%02d: ** SpecialSkip   0x%lx/0x%lx type: %s\n", ik, win, win2, Etype(type));
 			continue;
 		}
-		
+
 		if (win == rootwin) {
 			if (type == CreateNotify) {
 				int x=0, y=0, w=0, h=0;
@@ -9704,7 +9704,7 @@ if (ncdb) fprintf(stderr, "skip%02d: ** SpecialSkip   0x%lx/0x%lx type: %s\n", i
 						X_LOCK;
 
 						if (! desktop_change) {
-							SCHED(win2, 1) 
+							SCHED(win2, 1)
 						}
 						create_cnt++;
 					}
@@ -9740,10 +9740,10 @@ if (ncdb) fprintf(stderr, "----%02d: ConfigureNotify  0x%lx  %3d  -- above: 0x%l
 					continue;
 				}
 
-				x_new = ev.xconfigure.x; 
-				y_new = ev.xconfigure.y; 
-				w_new = ev.xconfigure.width; 
-				h_new = ev.xconfigure.height; 
+				x_new = ev.xconfigure.x;
+				y_new = ev.xconfigure.y;
+				w_new = ev.xconfigure.width;
+				h_new = ev.xconfigure.height;
 
 				x_old = cache_list[idx].x;
 				y_old = cache_list[idx].y;
@@ -9823,7 +9823,7 @@ if (ncdb) fprintf(stderr, "          OLD_WM_OFF::   0x%lx wh:  %dx%d+%d+%d   %dx
 if (ncdb) fprintf(stderr, "          CONF_IGNORE: Too many stacking changes: 0x%lx\n", win);
 							}
 						}
-						
+
 					}
 					if (ok) {
 						if (ev_lookup(ev.xconfigure.above, EV_UNMAP)) {
@@ -9844,7 +9844,7 @@ if (ncdb) fprintf(stderr, "          CONF_IGNORE: Too many stacking changes: 0x%
 						}
 					}
 					if (ok) {
-						int rc = try_to_fix_su(win, idx, ev.xconfigure.above, nbatch, NULL);	
+						int rc = try_to_fix_su(win, idx, ev.xconfigure.above, nbatch, NULL);
 						if (rc == 0 && su_fix_cnt == 0 && n_MN == 0 && n_UN == 0) {
 							X_UNLOCK;
 							try_to_synthesize_su(1, 1, nbatch);
@@ -9954,7 +9954,7 @@ if (ncdb) fprintf(stderr, "----%02d: VisibilityNotify 0x%lx  %3d  state: %s U/P 
 							Ev_rects[nrects].x2 = cache_list[idx].width;
 							Ev_rects[nrects].y2 = cache_list[idx].height;
 							nrects++;
-							SCHED(win, 1) 
+							SCHED(win, 1)
 						} else {
 							DELETE(idx);
 						}
@@ -10113,7 +10113,7 @@ if (ncdb) fprintf(stderr, "----%02d: UnmapNotify      0x%lx  %3d\n", ik, win, id
 					}
 					valid = 0;
 					if (su_restore(idx, nbatch, NULL, &attr, 1, 0, &valid, 1)) {
-						try_to_fix_su(win, idx, None, nbatch, "unmapped");	
+						try_to_fix_su(win, idx, None, nbatch, "unmapped");
 						if (valid) {
 							STORE(idx, win, attr);
 						} else {
@@ -10141,8 +10141,8 @@ if (ncdb) fprintf(stderr, "----%02d: UnmapNotify      0x%lx  %3d\n", ik, win, id
 				w2 = cache_list[idx].width;
 				h2 = cache_list[idx].height;
 				r = sraRgnCreateRect(x2, y2, x2+w2, y2+h2);
-				sraRgnAnd(r, r0); 
-				sraRgnOr(unmapped_rgn, r); 
+				sraRgnAnd(r, r0);
+				sraRgnOr(unmapped_rgn, r);
 				sraRgnDestroy(r);
 
 				cache_list[idx].map_state = IsUnmapped;

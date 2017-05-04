@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -124,7 +124,7 @@ static char *devs[] = {
 #endif
 #endif
 
-/* 
+/*
  * User may need to do:
  	modprode uinput
 	mknod /dev/input/uinput c 10 223
@@ -230,7 +230,7 @@ void shutdown_uinput(void) {
 #endif
 }
 
-/* 
+/*
 grep BUS_ /usr/include/linux/input.h | awk '{print $2}' | perl -e 'while (<>) {chomp; print "#ifdef $_\n\t\tif(!strcmp(s, \"$_\"))\tudev.id.bustype = $_\n#endif\n"}'
  */
 static int get_bustype(char *s) {
@@ -371,11 +371,11 @@ int initialize_uinput(void) {
 	}
 
 	if (tslib_cal) {
-		load_tslib_cal();	
+		load_tslib_cal();
 	}
 
 	init_key_tracker();
-	
+
 	if (uinput_dev) {
 		if (!strcmp(uinput_dev, "nouinput")) {
 			rfbLog("initialize_uinput: not creating uinput device.\n");
@@ -750,7 +750,7 @@ static void apply_tslib(int *x, int *y) {
 	*x = (int) x2;
 	*y = (int) y2;
 }
-	
+
 
 static void ptr_abs(int x, int y, int p) {
 #ifdef UINPUT_OK
@@ -866,7 +866,7 @@ static void ptr_rel(int dx, int dy) {
 			double alpha, t;
 			/* XXX */
 			if (1 || inside_thresh(dx, dy, thresh_mid)) {
-				t = thresh; 
+				t = thresh;
 				accel = 2;
 			} else {
 				accel = 3;
@@ -884,7 +884,7 @@ static void ptr_rel(int dx, int dy) {
 				dyf = (int) fy;
 				fx = dx;
 				fy = dy;
-				
+
 			} else {
 				if (t > 1) {
 					/* XXX */
@@ -1011,7 +1011,7 @@ void uinput_pointer_command(int mask, int x, int y, rfbClientPtr client) {
 		}
 	}
 	first = 0;
-	
+
 	if (db) fprintf(stderr, "uinput_pointer_command: %d %d - %d\n", x, y, mask);
 
 	if (view_only) {
@@ -1114,7 +1114,7 @@ void uinput_pointer_command(int mask, int x, int y, rfbClientPtr client) {
 				} else {
 					usleep(1*1000);
 				}
-				
+
 			} else {
 				usleep(30*1000);
 			}
@@ -1734,7 +1734,7 @@ NoSymbol	KEY_BRIGHTNESSUP
 NoSymbol	KEY_MEDIA
 
 NoSymbol	KEY_UNKNOWN
-NoSymbol	
+NoSymbol
 NoSymbol	BTN_MISC
 NoSymbol	BTN_0
 NoSymbol	BTN_1
@@ -1746,7 +1746,7 @@ NoSymbol	BTN_6
 NoSymbol	BTN_7
 NoSymbol	BTN_8
 NoSymbol	BTN_9
-NoSymbol	
+NoSymbol
 NoSymbol	BTN_MOUSE
 NoSymbol	BTN_LEFT
 NoSymbol	BTN_RIGHT
@@ -1756,7 +1756,7 @@ NoSymbol	BTN_EXTRA
 NoSymbol	BTN_FORWARD
 NoSymbol	BTN_BACK
 NoSymbol	BTN_TASK
-NoSymbol	
+NoSymbol
 NoSymbol	BTN_JOYSTICK
 NoSymbol	BTN_TRIGGER
 NoSymbol	BTN_THUMB

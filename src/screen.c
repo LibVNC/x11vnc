@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -336,7 +336,7 @@ void set_colormap(int reset) {
 		screen->colourMap.data.shorts[i*3+2] = color[i].blue;
 
 		if (prev[i].red   != color[i].red ||
-		    prev[i].green != color[i].green || 
+		    prev[i].green != color[i].green ||
 		    prev[i].blue  != color[i].blue ) {
 			diffs++;
 		}
@@ -451,7 +451,7 @@ static void set_visual(char *str) {
 		*p = '\0';
 		vdepth = visual_depth;
 	} else {
-		vdepth = defdepth; 
+		vdepth = defdepth;
 	}
 	if (! quiet) {
 		fprintf(stderr, "\nVisual Info:\n");
@@ -605,15 +605,15 @@ static char *raw_fb_orig_dpy = NULL;
 
 void set_raw_fb_params(int restore) {
 	static int first = 1;
-	static int vo0, us0, sm0, ws0, wp0, wc0, wb0, na0, tn0;  
+	static int vo0, us0, sm0, ws0, wp0, wc0, wb0, na0, tn0;
 	static int xr0, xrm0, sb0, re0;
 	static char *mc0;
 
 	/*
-	 * set turn off a bunch of parameters not compatible with 
-	 * -rawfb mode: 1) ignoring the X server 2) ignoring user input. 
+	 * set turn off a bunch of parameters not compatible with
+	 * -rawfb mode: 1) ignoring the X server 2) ignoring user input.
 	 */
-	
+
 	if (first) {
 		/* at least save the initial settings... */
 		vo0 = view_only;
@@ -789,7 +789,7 @@ static void nofb_hook(rfbClientPtr cl) {
 
 void free_old_fb(void) {
 	char *fbs[16];
-	int i, j, nfb = 0, db = 0; 
+	int i, j, nfb = 0, db = 0;
 
 	fbs[nfb++] = main_fb;		main_fb = NULL;
 	fbs[nfb++] = rfb_fb;		rfb_fb = NULL;
@@ -861,7 +861,7 @@ static int lock_client_sends(int lock) {
 			cls_len = client_count + 256;
 			cls = (rfbClientPtr *) calloc(cls_len * sizeof(rfbClientPtr), 1);
 		}
-		
+
 		iter = rfbGetClientIterator(screen);
 		blocked = 0;
 		while ((cl = rfbClientIteratorNext(iter)) != NULL) {
@@ -940,7 +940,7 @@ static void settle_clients(int init) {
 		}
 		rfbReleaseClientIterator(iter);
 		if (fb_pend > 0) {
-			rfbLog("do_new_fb: newFBSizePending extra -threads sleep (%d)\n", i+1); 
+			rfbLog("do_new_fb: newFBSizePending extra -threads sleep (%d)\n", i+1);
 			usleep(ms * 1000);
 		} else {
 			break;
@@ -1186,7 +1186,7 @@ void vnc_reflect_recv_cuttext(rfbClient *cl, const char *str, int len) {
 	}
 	if (! all_clients_initialized()) {
 		rfbLog("vnc_reflect_recv_cuttext: no send: uninitialized clients\n");
-		return; /* some clients initializing, cannot send */ 
+		return; /* some clients initializing, cannot send */
 	}
 	rfbSendServerCutText(screen, (char *)str, len);
 }
@@ -1217,7 +1217,7 @@ void vnc_reflect_got_cursorshape(rfbClient *cl, int xhot, int yhot, int width, i
 	}
 	if (! all_clients_initialized()) {
 		rfbLog("vnc_reflect_got_copyshape: no send: uninitialized clients\n");
-		return; /* some clients initializing, cannot send */ 
+		return; /* some clients initializing, cannot send */
 	}
 	if (! client->rcSource) {
 		return;
@@ -1284,7 +1284,7 @@ rfbBool vnc_reflect_cursor_pos(rfbClient *cl, int x, int y) {
 	}
 	if (! all_clients_initialized()) {
 		rfbLog("vnc_reflect_cursor_pos: no send: uninitialized clients\n");
-		return TRUE; /* some clients initializing, cannot send */ 
+		return TRUE; /* some clients initializing, cannot send */
 	}
 
 	cursor_position(x, y, NULL);
@@ -1345,7 +1345,7 @@ void vnc_reflect_got_copyrect(rfbClient *cl, int src_x, int src_y, int w, int h,
 	}
 	if (! all_clients_initialized()) {
 		rfbLog("vnc_reflect_got_copyrect: no send: uninitialized clients\n");
-		return; /* some clients initializing, cannot send */ 
+		return; /* some clients initializing, cannot send */
 	}
 	dx = dest_x - src_x;
 	dy = dest_y - src_y;
@@ -1428,7 +1428,7 @@ static char* vnc_reflect_get_password(rfbClient* client) {
 	if (client) {}
 
 	if (str) {
-		len += 2*strlen(str);	
+		len += 2*strlen(str);
 	}
 	p = (char *) calloc(len, 1);
 	if (!str || strlen(str) == 0) {
@@ -1665,7 +1665,7 @@ XImage *initialize_raw_fb(int reset) {
 		}
 		raw_fb_fd = -1;
 if (db) fprintf(stderr, "initialize_raw_fb reset\n");
-			
+
 		fd = -1;
 		if (rawfb_dev_video) {
 			fd = open(last_file, O_RDWR);
@@ -2152,7 +2152,7 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 		macosx_console = 0;
 		if (strstr(q, "macosx:") == q) {
 			/* mmap:macosx:/dev/null@... */
-			q += strlen("macosx:");			
+			q += strlen("macosx:");
 			do_macosx = 1;
 			do_mmap = 0;
 			macosx_console = 1;
@@ -2332,7 +2332,7 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 	if (raw_fb_native_bpp < 8) {
 		raw_fb_image->depth = raw_fb_expand_bytes * 8;
 	}
-	if (! raw_fb_image->depth) { 
+	if (! raw_fb_image->depth) {
 		raw_fb_image->depth = (b == 32) ? 24 : b;
 	}
 
@@ -2396,7 +2396,7 @@ static void initialize_clipshift(void) {
 		}
 		if (bad) {
 			rfbLog("*** ignoring invalid -clip WxH+X+Y: %s\n",
-			    clip_str); 
+			    clip_str);
 		} else {
 			/* OK, change geom behind everyone's back... */
 			cdpy_x = w;
@@ -2473,9 +2473,9 @@ XImage *initialize_xdisplay_fb(void) {
 			clean_up_exit(1);
 		}
 	}
-	
+
 	if (overlay) {
-		/* 
+		/*
 		 * ideally we'd like to not have to cook up the
 		 * visual variables but rather let it all come out
 		 * of XReadScreen(), however there is no way to get
@@ -2515,7 +2515,7 @@ XImage *initialize_xdisplay_fb(void) {
 		XImage *xi = XGetImage_wr(dpy, DefaultRootWindow(dpy), 0, 0, 2, 2, AllPlanes,
 		    ZPixmap);
 		if (xi && xi->bits_per_pixel < 8) {
-			int lowbpp = xi->bits_per_pixel; 
+			int lowbpp = xi->bits_per_pixel;
 			if (!vis_str) {
 				char tmp[32];
 				sprintf(tmp, "0x%x:8", (int) s->root_visual->visualid);
@@ -2605,7 +2605,7 @@ if (0) fprintf(stderr, "DefaultDepth: %d  visial_id: %d\n", depth, (int) visual_
 		 * visual_id and visual_depth were set in set_visual().
 		 */
 
-		vinfo_tmpl.visualid = visual_id; 
+		vinfo_tmpl.visualid = visual_id;
 		vinfo = XGetVisualInfo(dpy, VisualIDMask, &vinfo_tmpl, &n);
 		if (vinfo == NULL || n == 0) {
 			rfbLogEnable(1);
@@ -2702,9 +2702,9 @@ if (0) fprintf(stderr, "DefaultDepth: %d  visial_id: %d\n", depth, (int) visual_
 	try++;
 
 	if (nofb) {
-		/* 
+		/*
 		 * For -nofb we do not allocate the framebuffer, so we
-		 * can save a few MB of memory. 
+		 * can save a few MB of memory.
 		 */
 		fb = XCreateImage_wr(dpy, default_visual, depth, ZPixmap,
 		    0, NULL, dpy_x, dpy_y, BitmapPad(dpy), 0);
@@ -2825,7 +2825,7 @@ void parse_scale_string(char *str, double *factor_x, double *factor_y, int *scal
 		return;
 	}
 	tstr = strdup(str);
-	
+
 	if ( (p = strchr(tstr, ':')) != NULL) {
 		/* options */
 		if (strstr(p+1, "nb") != NULL) {
@@ -2876,7 +2876,7 @@ void parse_scale_string(char *str, double *factor_x, double *factor_y, int *scal
 						*numer = m;
 						*denom = n;
 						break;
-					
+
 					}
 				}
 				if (*denom) {
@@ -2959,7 +2959,7 @@ int parse_rotate_string(char *str, int *mode) {
 
 int scale_round(int len, double fac) {
 	double eps = 0.000001;
-	
+
 	len = (int) (len * fac + eps);
 	if (len < 1) {
 		len = 1;
@@ -2989,7 +2989,7 @@ static void setup_scaling(int *width_in, int *height_in) {
 				w += scale_denom - (w % scale_denom);
 				if (!scaling_nomult4 && w % 4 != 0) {
 					/* need to make mult of 4 as well */
-					int c = 0;	
+					int c = 0;
 					while (w % 4 != 0 && c++ <= 5) {
 						w += scale_denom;
 					}
@@ -3063,7 +3063,7 @@ static rfbBool set_xlate_wrapper(rfbClientPtr cl) {
 		ncache_xrootpmap = save;
 		INPUT_UNLOCK;
 	}
-	return rfbSetTranslateFunction(cl);	
+	return rfbSetTranslateFunction(cl);
 }
 
 /*
@@ -3147,7 +3147,7 @@ void initialize_screen(int *argc, char **argv, XImage *fb) {
 # else
 		if (! raw_fb_str) {
 # endif
-			
+
 			char *new_fb;
 			int sz = fb->height * fb->bytes_per_line;
 			int ns = 1+ncache;
@@ -3258,7 +3258,7 @@ void initialize_screen(int *argc, char **argv, XImage *fb) {
 		rfbLog("renamed: -X,       use -cursor X\n");
 		rfbLog("renamed: -nomouse, use -nocursor\n");
 		rfbLog("renamed: -old_pointer, use -pointer_mode 1\n");
-	
+
 		clean_up_exit(1);
 	}
 
@@ -3373,7 +3373,7 @@ void initialize_screen(int *argc, char **argv, XImage *fb) {
 		set_colormap(1);
 		debug_colormap(fb);
 	} else {
-		/* 
+		/*
 		 * general case, we call it truecolor, but could be direct
 		 * color, static color, etc....
 		 */
@@ -3556,7 +3556,7 @@ void initialize_screen(int *argc, char **argv, XImage *fb) {
 
 		if (use_multipointer) {
 		  /* needed to allow multiple dragging actions at once */
-		  screen->deferPtrUpdateTime = 0; 
+		  screen->deferPtrUpdateTime = 0;
 		}
 
 		if (cmap8to24) {
@@ -3587,7 +3587,7 @@ void initialize_screen(int *argc, char **argv, XImage *fb) {
 			memset(rfb_fb, 0, n);
 
 		} else if (cmap8to24) {
-			rfb_fb = cmap8to24_fb;	
+			rfb_fb = cmap8to24_fb;
 		} else {
 			rfb_fb = main_fb;
 		}
@@ -3621,7 +3621,7 @@ void initialize_screen(int *argc, char **argv, XImage *fb) {
 		rfbClientIteratorPtr iter;
 		rfbClientPtr cl;
 
-		/* 
+		/*
 		 * since bits_per_color above may have been approximate,
 		 * try to reset the individual translation tables...
 		 * we do not seem to need this with rfbGetScreen()...
@@ -3633,7 +3633,7 @@ void initialize_screen(int *argc, char **argv, XImage *fb) {
 		}
 		rfbReleaseClientIterator(iter);
 		if (!quiet) rfbLog("  done.\n");
-		
+
 		/* done for framebuffer change case */
 		if (locked_sends) {
 			lock_client_sends(0);
@@ -3655,11 +3655,11 @@ void initialize_screen(int *argc, char **argv, XImage *fb) {
 	screen->setXCutText = xcut_receive;
 	screen->setTranslateFunction = set_xlate_wrapper;
 
-	screen->kbdReleaseAllKeys = kbd_release_all_keys; 
-	screen->setSingleWindow = set_single_window; 
-	screen->setServerInput = set_server_input; 
-	screen->setTextChat = set_text_chat; 
-	screen->getFileTransferPermission = get_file_transfer_permitted; 
+	screen->kbdReleaseAllKeys = kbd_release_all_keys;
+	screen->setSingleWindow = set_single_window;
+	screen->setServerInput = set_server_input;
+	screen->setTextChat = set_text_chat;
+	screen->getFileTransferPermission = get_file_transfer_permitted;
 
 	/* called from inetd, we need to treat stdio as our socket */
 	if (inetd && use_openssl) {
@@ -3719,7 +3719,7 @@ void initialize_screen(int *argc, char **argv, XImage *fb) {
 
 		screen->autoPort = ap;
 		screen->port = port;
-		
+
 	} else {
 		rfbInitServer(screen);
 	}
@@ -3772,7 +3772,7 @@ void initialize_screen(int *argc, char **argv, XImage *fb) {
 	}
 
 void announce(int lport, int ssl, char *iface) {
-	
+
 	char *host = this_host();
 	char *tvdt;
 
@@ -3836,7 +3836,7 @@ void announce(int lport, int ssl, char *iface) {
 }
 
 static void announce_http(int lport, int ssl, char *iface, char *extra) {
-	
+
 	char *host = this_host();
 	char *jvu;
 	int http = 0;
@@ -3961,8 +3961,8 @@ void set_vnc_desktop_name(void) {
 		}
 
 		do_announce_http();
-		
-		fflush(stderr);	
+
+		fflush(stderr);
 		if (inetd) {
 			;	/* should not occur (port != 0) */
 		} else {
@@ -3978,7 +3978,7 @@ void set_vnc_desktop_name(void) {
 					fprintf(stdout, "SSLPORT=%d\n", screen->port);
 				}
 			}
-			fflush(stdout);	
+			fflush(stdout);
 			if (flagfile) {
 				FILE *flag = fopen(flagfile, "w");
 				if (flag) {
@@ -3987,7 +3987,7 @@ void set_vnc_desktop_name(void) {
 						fprintf(flag, "SSL_PORT=%d\n",
 						    stunnel_port);
 					}
-					fflush(flag);	
+					fflush(flag);
 					fclose(flag);
 				} else {
 					rfbLog("could not open flag file: %s\n",
@@ -4020,7 +4020,7 @@ void set_vnc_desktop_name(void) {
 				}
 			}
 		}
-		fflush(stdout);	
+		fflush(stdout);
 	}
 }
 
@@ -4041,7 +4041,7 @@ static void check_cursor_changes(void) {
 		}
 
 		if (0) cursor_shape = cursor_shape_updates_clients(screen);
-	
+
 		dtime0(&tm);
 		link = link_rate(&latency, &netrate);
 		if (link == LR_DIALUP) {
@@ -4055,14 +4055,14 @@ static void check_cursor_changes(void) {
 		} else if (latency < 5 && netrate > 200) {
 			max_push = 0.01;
 		}
-		
+
 		if (tm > last_push + max_push) {
 			dopush = 1;
 		} else if (cursor_changes > 1 && tm > last_push + multi_push) {
 			dopush = 1;
 		}
 
-		if (dopush) { 
+		if (dopush) {
 			mark_rect_as_modified(0, 0, 1, 1, 1);
 			fb_push_wait(wait, FB_MOD);
 			last_push = tm;
@@ -4082,8 +4082,8 @@ static void check_filexfer(void) {
 	static time_t last_check = 0;
 	rfbClientIteratorPtr iter;
 	rfbClientPtr cl;
-	int transferring = 0; 
-	
+	int transferring = 0;
+
 	if (time(NULL) <= last_check) {
 		return;
 	}
@@ -4169,7 +4169,7 @@ static void record_last_fb_update(void) {
 
 
 static int choose_delay(double dt) {
-	static double t0 = 0.0, t1 = 0.0, t2 = 0.0, now; 
+	static double t0 = 0.0, t1 = 0.0, t2 = 0.0, now;
 	static int x0, y0, x1, y1, x2, y2, first = 1;
 	int dx0, dy0, dx1, dy1, dm, i, msec = waitms;
 	double cut1 = 0.15, cut2 = 0.075, cut3 = 0.25;
@@ -4608,7 +4608,7 @@ void watch_loop(void) {
 			dt = 0.0;
 		} else { /* scan for updates case */
 			static double last_dt = 0.0;
-			double xdamage_thrash = 0.4; 
+			double xdamage_thrash = 0.4;
 			static int tilecut = -1;
 
 			/* for timing the scan to try to detect thrashing */
@@ -4691,7 +4691,7 @@ void watch_loop(void) {
 			/* important to have this here since it draws cursors into framebuffer */
 			check_cursor_changes();
 
-			/* 
+			/*
 			   Release the send ban again.
 			*/
 			if(use_threads){
@@ -4702,7 +4702,7 @@ void watch_loop(void) {
 			  }
 			  rfbReleaseClientIterator(iter);
 			}
-			
+
 		} /* END scan for updates case */
 
 		/* sleep a bit to lessen load */

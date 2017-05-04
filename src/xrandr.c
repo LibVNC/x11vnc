@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -171,7 +171,7 @@ static void handle_xrandr_change(int new_x, int new_y) {
 		}
 		rfbReleaseClientIterator(iter);
 	}
-	
+
 	/* default, resize, and newfbsize create a new fb: */
 	rfbLog("check_xrandr_event: trying to create new framebuffer...\n");
 	if (new_x < wdpy_x || new_y < wdpy_y) {
@@ -215,7 +215,7 @@ int check_xrandr_event(char *msg) {
 			}
 		}
 		first = 0;
-			
+
 		rfbLog("check_xrandr_event():\n");
 		rfbLog("Detected XRANDR event at location '%s':\n", msg);
 
@@ -291,12 +291,12 @@ int check_xrandr_event(char *msg) {
 
 int known_xrandr_mode(char *s) {
 /*
- * default:	
+ * default:
  * resize:	the default
  * exit:	shutdown clients and exit.
  * newfbsize:	shutdown clients that do not support NewFBSize encoding.
  */
-	if (strcmp(s, "default") && strcmp(s, "resize") && 
+	if (strcmp(s, "default") && strcmp(s, "resize") &&
 	    strcmp(s, "exit") && strcmp(s, "newfbsize")) {
 		return 0;
 	} else {

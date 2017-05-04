@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -35,7 +35,7 @@ so, delete this exception statement from your version.
 
 /* -- options.h -- */
 
-/* 
+/*
  * variables for the command line options
  */
 extern int debug;
@@ -141,8 +141,8 @@ extern char *viewonly_passwd;
 extern char **passwd_list;
 extern int begin_viewonly;
 extern int inetd;
-extern int tightfilexfer; 
-extern int got_ultrafilexfer; 
+extern int tightfilexfer;
+extern int got_ultrafilexfer;
 extern int first_conn_timeout;
 extern int ping_interval;
 extern int flash_cmap;
@@ -317,7 +317,7 @@ extern int add_keysyms;
 extern char *remap_file;
 extern char *pointer_remap;
 extern int pointer_mode;
-extern int pointer_mode_max;	
+extern int pointer_mode_max;
 extern int single_copytile;
 extern int single_copytile_orig;
 extern int single_copytile_count;

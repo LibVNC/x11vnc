@@ -1,5 +1,5 @@
 /*
-  XInput2 device handling routines for x11vnc.  
+  XInput2 device handling routines for x11vnc.
 
   Copyright (C) 2009-2010 Christian Beier <dontmind@freeshell.org>
   All rights reserved.
@@ -15,7 +15,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with x11vnc; if not, write to the Free Software
   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA
@@ -26,7 +26,7 @@
 #define _X11VNC_XI2_DEVICES
 
 #ifdef HAVE_XI2
-#include <X11/extensions/XInput2.h> 
+#include <X11/extensions/XInput2.h>
 #endif
 
 extern int xinput2_present;
@@ -41,7 +41,7 @@ extern int xi2_device_creation_in_progress;
 extern int createMD(Display* dpy, char* name);
 
 /*
-  remove master device 
+  remove master device
   returns 1 on success, 0 on failure
 */
 extern int removeMD(Display* dpy, int dev_id);
@@ -60,7 +60,7 @@ void removeAllMDs(Display *dpy);
 extern int getPairedMD(Display* dpy, int dev_id);
 
 
-/* 
+/*
    set cursor of pointer dev
 */
 extern rfbCursorPtr setClientCursor(Display *dpy, int dev_id, float r, float g, float b, char *label);

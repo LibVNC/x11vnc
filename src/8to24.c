@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -649,7 +649,7 @@ static XWindowAttributes *vw_lookup(Window win) {
 	if (j >= 0) {
 MV_hit++;
 		return vw_cache_attr+j;
-		
+
 	} else if (k >= 0) {
 		XWindowAttributes attr2;
 		int rc = valid_window(win, &attr2, 1);
@@ -808,7 +808,7 @@ if (db24) fprintf(stderr, "multivis: CANNOT STORE 0x%lx j=%d\n", win, j);
 			for (i=0; i < MAX_8BPP_WINDOWS; i++) {
 if (db24 > 1) fprintf(stderr, "          ------------ 0x%lx i=%d\n", windows_8bpp[i].win, i);
 			}
-			
+
 		}
 		return 1;
 	}
@@ -864,7 +864,7 @@ static int poll_line(int x1, int x2, int y1, int n, sraRegionPtr mod) {
 	Window c, win = windows_8bpp[n].win;
 
 	static XWindowAttributes attr;
-	static Window last_win = None; 
+	static Window last_win = None;
 	static double last_time = 0.0;
 	double now;
 
@@ -979,7 +979,7 @@ if (db24 > 2) fprintf(stderr, "avoid bad match...\n");
 
 				rect = sraRgnCreateRect(mx1, my1, mx2, my2);
 				sraRgnOr(mod, rect);
-				sraRgnDestroy(rect);	
+				sraRgnDestroy(rect);
 				inrun = 0;
 			}
 		}
@@ -997,7 +997,7 @@ if (db24 > 2) fprintf(stderr, "avoid bad match...\n");
 
 		rect = sraRgnCreateRect(mx1, my1, mx2, my2);
 		sraRgnOr(mod, rect);
-		sraRgnDestroy(rect);	
+		sraRgnDestroy(rect);
 	}
 	return 1;
 #endif	/* NO_X11 */
@@ -1052,7 +1052,7 @@ static void poll_line_complement(int x1, int x2, int y1, sraRegionPtr mod) {
 
 				rect = sraRgnCreateRect(mx1, my1, mx2, my2);
 				sraRgnOr(mod, rect);
-				sraRgnDestroy(rect);	
+				sraRgnDestroy(rect);
 
 				inrun = 0;
 			}
@@ -1071,7 +1071,7 @@ static void poll_line_complement(int x1, int x2, int y1, sraRegionPtr mod) {
 
 		rect = sraRgnCreateRect(mx1, my1, mx2, my2);
 		sraRgnOr(mod, rect);
-		sraRgnDestroy(rect);	
+		sraRgnDestroy(rect);
 
 		inrun = 0;
 	}
@@ -1089,7 +1089,7 @@ static int poll_8bpp(sraRegionPtr mod, int validate) {
 	sraRectangleIterator *iter;
 	int br = 0, area = 0;
 	static double last_call = 0.0;
-	
+
 	map_count = get_8bpp_regions(validate);
 
 if (db24 > 1) fprintf(stderr, "poll_8bpp mc: %d\n", map_count);
@@ -1160,7 +1160,7 @@ static void poll_8bpp_complement(sraRegionPtr mod) {
 			continue;
 		}
 		if (windows_8bpp[i].map_state != IsViewable) {
-			continue;	
+			continue;
 		}
 		sraRgnSubtract(disp, reg);
 	}
@@ -1194,7 +1194,7 @@ static void mark_rgn_rects(sraRegionPtr mod) {
 	if (sraRgnEmpty(mod)) {
 		return;
 	}
-	
+
 	iter = sraRgnGetIterator(mod);
 	while (sraRgnIteratorNext(iter, &rect)) {
 		mark_rect_as_modified(rect.x1, rect.y1, rect.x2, rect.y2, 0);
@@ -1223,7 +1223,7 @@ static int get_8bpp_regions(int validate) {
 		int x, y;
 
 		if (windows_8bpp[i].clip_region) {
-			sraRgnDestroy(windows_8bpp[i].clip_region);	
+			sraRgnDestroy(windows_8bpp[i].clip_region);
 		}
 		windows_8bpp[i].clip_region = NULL;
 
@@ -1282,8 +1282,8 @@ if (db24 > 1) fprintf(stderr, "get_8bpp_regions: 0x%lx ms=%d dep=%d i=%d\n", w, 
 			attr.width = windows_8bpp[i].w;
 			attr.height = windows_8bpp[i].h;
 
-			x =  windows_8bpp[i].x; 
-			y =  windows_8bpp[i].y; 
+			x =  windows_8bpp[i].x;
+			y =  windows_8bpp[i].y;
 		}
 
 		mapcount++;
@@ -1784,7 +1784,7 @@ if (db24) fprintf(stderr, "xi: wrong depth: %d\n", xi->depth);
 			fac = 1;
 			src = cmap8to24_fb + n_off;
 		}
-		
+
 		/* line by line ... */
 		for (line = 0; line < h; line++) {
 			/* pixel by pixel... */
@@ -1794,7 +1794,7 @@ if (db24) fprintf(stderr, "xi: wrong depth: %d\n", xi->depth);
 				ui = (unsigned int *) (src + ps * j);
 
 				/* extract top 8 bits (FIXME: masks?) */
-				hi = (*ui) & 0xff000000; 
+				hi = (*ui) & 0xff000000;
 
 				/* map to lookup index; rewrite pixel */
 				idx = hi >> 24;
@@ -1914,7 +1914,7 @@ if (db24 > 2) histo[idx]++;
 				dst += main_bytes_per_line * (4/ps1);
 			}
 		}
-		
+
 	}
 
 	if (last_map_count > MAX_8BPP_WINDOWS/4) {
@@ -2062,7 +2062,7 @@ void mark_8bpp(int mode) {
 	if (! cmap8to24 || !cmap8to24_fb) {
 		return;
 	}
-	
+
 	if (mode == MARK_8BPP_TOP) {
 		int k;
 		for (k = stack_list_num - 1; k >= 0; k--) {

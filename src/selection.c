@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -340,7 +340,7 @@ void cutbuffer_send(void) {
 
 	if (! all_clients_initialized()) {
 		rfbLog("cutbuffer_send: no send: uninitialized clients\n");
-		return; /* some clients initializing, cannot send */ 
+		return; /* some clients initializing, cannot send */
 	}
 	if (unixpw_in_progress) {
 		return;
@@ -357,7 +357,7 @@ void cutbuffer_send(void) {
 #endif	/* NO_X11 */
 }
 
-/* 
+/*
  * "callback" for our SelectionNotify polling.  We try to determine if
  * the PRIMARY selection has changed (checking length and first CHKSZ bytes)
  * and if it has we store it and send it off to any connected VNC clients.
@@ -411,7 +411,7 @@ void selection_send(XEvent *ev) {
 	} else {
 		return;
 	}
-	
+
 	oldlen = strlen(selection_str);
 	strncpy(before, selection_str, CHKSZ);
 
@@ -483,7 +483,7 @@ if (debug_sel) fprintf(stderr, "selection_send: data: '%s' dlen: %d nitems: %lu 
 
 	if (! all_clients_initialized()) {
 		rfbLog("selection_send: no send: uninitialized clients\n");
-		return; /* some clients initializing, cannot send */ 
+		return; /* some clients initializing, cannot send */
 	}
 
 	if (unixpw_in_progress) {
@@ -520,7 +520,7 @@ void resend_selection(char *type) {
 
 	if (! all_clients_initialized()) {
 		rfbLog("selection_send: no send: uninitialized clients\n");
-		return; /* some clients initializing, cannot send */ 
+		return; /* some clients initializing, cannot send */
 	}
 	if (unixpw_in_progress) {
 		return;

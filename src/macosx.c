@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -149,7 +149,7 @@ int macosx_checkevent(XEvent *ev) {
 }
 
 
-#else 
+#else
 
 void macosx_event_loop(void) {
 	macosxCG_event_loop();
@@ -211,7 +211,7 @@ char *macosx_console_guess(char *str, int *fd) {
 
 			bps = macosx_opengl_get_bps();
 			dep = macosx_opengl_get_spp() * bps;
-			
+
 		} else {
 			w = macosxCG_CGDisplayPixelsWide();
 			h = macosxCG_CGDisplayPixelsHigh();
@@ -234,7 +234,7 @@ char *macosx_console_guess(char *str, int *fd) {
 			gm = 0x38;
 			bm = 0xc0;
 		}
-		
+
 		/* @66666x66666x32:0xffffffff:... */
 		atparms = (char *) malloc(200);
 		sprintf(atparms, "%dx%dx%d:%lx/%lx/%lx", w, h, b, rm, gm, bm);
@@ -242,9 +242,9 @@ char *macosx_console_guess(char *str, int *fd) {
 	if (atparms) {
 		int gw, gh, gb;
 		if (sscanf(atparms, "%dx%dx%d", &gw, &gh, &gb) == 3)  {
-			fb_x = gw;	
-			fb_y = gh;	
-			fb_b = gb;	
+			fb_x = gw;
+			fb_y = gh;
+			fb_b = gb;
 		}
 	}
 	if (! atparms) {
@@ -537,8 +537,8 @@ typedef struct windat {
 	int ncache_only;
 } windat_t;
 
-extern int macwinmax; 
-extern windat_t macwins[]; 
+extern int macwinmax;
+extern windat_t macwins[];
 
 int macosx_get_wm_frame_pos(int *px, int *py, int *x, int *y, int *w, int *h,
     Window *frame, Window *win) {
@@ -639,7 +639,7 @@ int macosx_valid_window(Window w, XWindowAttributes* a) {
 	}
 
 	last_idx = idx;
-	
+
 	return 1;
 }
 

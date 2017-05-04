@@ -91,7 +91,7 @@
  * cursor, but we cannot extract what the cursor is... (UPDATE: we now
  * use XFIXES extension for this.  Also on Solaris and IRIX Overlay
  * extensions exists that allow drawing the mouse into the framebuffer)
- * 
+ *
  * The current *position* of the remote X mouse pointer is shown with
  * the -cursor option.  Further, if -cursor X is used, a trick
  * is done to at least show the root window cursor vs non-root cursor.
@@ -572,7 +572,7 @@ if (tstk[j] != 0) fprintf(stderr, "B redir[%d][%d] = %d  %s\n", i, j, tstk[j], t
 			pid_t p = ts_tasks[i];
 			if (p > 0) {
 				int status;
-				pid_t p2 = waitpid(p, &status, WNOHANG); 
+				pid_t p2 = waitpid(p, &status, WNOHANG);
 				if (p2 == p) {
 					ts_tasks[i] = 0;
 				}
@@ -695,7 +695,7 @@ void do_tsd(void) {
 	}
 	sprintf(cmd, "%s -display %s -tsd '%s' -env TSD_RESTART=1 %s </dev/null 1>%s 2>&1 &",
 	    program_name, disp, prop, ipv6_listen ? "-6" : "",
-	    logfile ? logfile : "/dev/null" ); 
+	    logfile ? logfile : "/dev/null" );
 	rfbLog("running: %s\n", cmd);
 
 #if LIBVNCSERVER_HAVE_FORK && HAVE_SETSID
@@ -749,8 +749,8 @@ void set_redir_properties(void) {
 
 	i = 0;
 	while (ts_services[i][0] != NULL) {
-		f = ts_services[i][0]; 
-		t = ts_services[i][1]; 
+		f = ts_services[i][0];
+		t = ts_services[i][1];
 		e = getenv(f);
 		if (!e || strstr(e, "DAEMON-") != e) {
 			i++;
@@ -880,7 +880,7 @@ void ssh_remote_tunnel(char *instr, int lport) {
 		disp = atoi(q+1);
 		*q = '\0';
 	}
-	
+
 	/* :sshport */
 	q = strrchr(s, ':');
 	if (q) {
@@ -984,7 +984,7 @@ void ssh_remote_tunnel(char *instr, int lport) {
 	free(s);
 }
 
-/* 
+/*
  * check blacklist for OSs with tight shm limits.
  */
 static int limit_shm(void) {
@@ -1024,7 +1024,7 @@ static void check_rcfile(int argc, char **argv) {
 	int i, j, pwlast, enclast, norc = 0, argmax = 1024;
 	char *infile = NULL;
 	char rcfile[1024];
-	FILE *rc = NULL; 
+	FILE *rc = NULL;
 
 	for (i=1; i < argc; i++) {
 		if (!strcmp(argv[i], "-printgui")) {
@@ -1188,10 +1188,10 @@ static void check_rcfile(int argc, char **argv) {
 				exit(1);
 			}
 			if (parm[0] == '-') {
-				strncpy(tmp, parm, 400); 
+				strncpy(tmp, parm, 400);
 			} else {
 				tmp[0] = '-';
-				strncpy(tmp+1, parm, 400); 
+				strncpy(tmp+1, parm, 400);
 			}
 
 			if (strstr(tmp, "-loop") == tmp) {
@@ -1206,7 +1206,7 @@ static void check_rcfile(int argc, char **argv) {
 				fprintf(stderr, "too many rcfile options\n");
 				exit(1);
 			}
-			
+
 			p = buf;
 			p += strlen(parm);
 			p = lblanks(p);
@@ -1246,7 +1246,7 @@ static void check_rcfile(int argc, char **argv) {
 
 		if (pwlast || !strcmp("-passwd", argv[i])
 		    || !strcmp("-viewpasswd", argv[i])) {
-			char *p = argv[i];		
+			char *p = argv[i];
 			if (pwlast) {
 				pwlast = 0;
 			} else {
@@ -1255,7 +1255,7 @@ static void check_rcfile(int argc, char **argv) {
 			strzero(p);
 		}
 		if (enclast || !strcmp("-enc", argv[i])) {
-			char *q, *p = argv[i];		
+			char *q, *p = argv[i];
 			if (enclast) {
 				enclast = 0;
 			} else {
@@ -1371,10 +1371,10 @@ static void quick_pw(char *str) {
 		strcpy(inp, tmp);
 		t = strchr(inp, '\n');
 		if (t) {
-			*t = ':'; 
+			*t = ':';
 		} else {
 			strcat(inp, ":");
-			
+
 		}
 		fprintf(stdout, "password: ");
 		/* test mode: no_external_cmds does not apply */
@@ -1664,7 +1664,7 @@ static void check_loop_mode(int argc, char* argv[], int force) {
 				set_env("X11VNC_LOOP_MODE_BG", "1");
 				loop_sleep = 500;
 			}
-			
+
 			q = strpbrk(p, "0123456789");
 			if (q) {
 				loop_sleep = atoi(q);
@@ -1704,7 +1704,7 @@ static void check_loop_mode(int argc, char* argv[], int force) {
 				exit(1);
 			} else {
 				/* loop mode: no_external_cmds does not apply */
-				execvp(argv[0], argv2); 
+				execvp(argv[0], argv2);
 				exit(1);
 			}
 
@@ -1713,7 +1713,7 @@ static void check_loop_mode(int argc, char* argv[], int force) {
 				    " done. ---\n\n", loop_max);
 				break;
 			}
-			
+
 			fprintf(stderr, "\n --- x11vnc loop: sleeping %d ms "
 			    "---\n\n", loop_sleep);
 			usleep(loop_sleep * 1000);
@@ -1792,7 +1792,7 @@ static void store_homedir_passwd(char *file) {
 	if (file != NULL) {
 		f = file;
 	} else {
-		
+
 		h = getenv("HOME");
 		if (! h) {
 			fprintf(stderr, "** $HOME not set.\n");
@@ -1842,7 +1842,7 @@ static void store_homedir_passwd(char *file) {
 
 void ncache_beta_tester_message(void) {
 
-char msg[] = 
+char msg[] =
 "\n"
 "******************************************************************************\n"
 "\n"
@@ -1877,7 +1877,7 @@ char msg[] =
 "waiting for connections:\n"
 ;
 
-char msg2[] = 
+char msg2[] =
 "\n"
 "******************************************************************************\n"
 "Have you tried the x11vnc '-ncache' VNC client-side pixel caching feature yet?\n"
@@ -1926,7 +1926,7 @@ static void do_sleepin(char *sleep) {
 	double f1, f2, ft;
 
 	if (strchr(sleep, '-')) {
-		double s = atof(strchr(sleep, '-')+1); 
+		double s = atof(strchr(sleep, '-')+1);
 		if (sscanf(sleep, "%d-%d", &n1, &n2) == 2) {
 			if (n1 > n2) {
 				nt = n1;
@@ -2244,7 +2244,7 @@ int main(int argc, char* argv[]) {
 		}
 		if (!strcmp(arg, "-create_xsrv")) {
 			CHECK_ARGC
-			use_dpy = (char *) malloc(strlen(argv[i+1])+100); 
+			use_dpy = (char *) malloc(strlen(argv[i+1])+100);
 			sprintf(use_dpy, "WAIT:cmd=FINDCREATEDISPLAY-%s", argv[++i]);
 			continue;
 		}
@@ -3353,16 +3353,16 @@ int main(int argc, char* argv[]) {
 			}
 			continue;
 		}
-		if (!strcmp(arg, "-nocursor")) { 
+		if (!strcmp(arg, "-nocursor")) {
 			multiple_cursors_mode = strdup("none");
 			show_cursor = 0;
 			continue;
 		}
-		if (!strcmp(arg, "-cursor_drag")) { 
+		if (!strcmp(arg, "-cursor_drag")) {
 			cursor_drag_changes = 1;
 			continue;
 		}
-		if (!strcmp(arg, "-nocursor_drag")) { 
+		if (!strcmp(arg, "-nocursor_drag")) {
 			cursor_drag_changes = 0;
 			continue;
 		}
@@ -3371,11 +3371,11 @@ int main(int argc, char* argv[]) {
 			alt_arrow = atoi(argv[++i]);
 			continue;
 		}
-		if (!strcmp(arg, "-xfixes")) { 
+		if (!strcmp(arg, "-xfixes")) {
 			use_xfixes = 1;
 			continue;
 		}
-		if (!strcmp(arg, "-noxfixes")) { 
+		if (!strcmp(arg, "-noxfixes")) {
 			use_xfixes = 0;
 			continue;
 		}
@@ -4302,7 +4302,7 @@ int main(int argc, char* argv[]) {
 		argv_vnc[argc_vnc++] = strdup("3.6");
 		argv_vnc[argc_vnc++] = strdup("-permitfiletransfer");
 	}
-	
+
 	if (launch_gui) {
 		int sleep = 0;
 		if (SHOW_NO_PASSWORD_WARNING && !nopw) {
@@ -4332,7 +4332,7 @@ int main(int argc, char* argv[]) {
 				char *t = strstr(q, pstr);
 				if (!t) break;
 				n++;
-				q = t+1; 
+				q = t+1;
 			}
 			newlog = (char *) malloc(strlen(logfile) + n * strlen(pstr));
 			newlog[0] = '\0';
@@ -4346,12 +4346,12 @@ int main(int argc, char* argv[]) {
 				}
 				strncat(newlog, q, t - q);
 				strcat(newlog, s);
-				q = t + strlen(pstr); 
+				q = t + strlen(pstr);
 			}
 			logfile = newlog;
 			if (!quiet && !got_inetd) {
 				rfbLog("Expanded logfile to '%s'\n", newlog);
-				
+
 			}
 			free(s);
 		}
@@ -4368,7 +4368,7 @@ int main(int argc, char* argv[]) {
 				char *t = strstr(q, pstr);
 				if (!t) break;
 				n++;
-				q = t+1; 
+				q = t+1;
 			}
 			newlog = (char *) malloc(strlen(logfile) + n * strlen(pstr));
 			newlog[0] = '\0';
@@ -4382,7 +4382,7 @@ int main(int argc, char* argv[]) {
 				}
 				strncat(newlog, q, t - q);
 				strcat(newlog, s);
-				q = t + strlen(pstr); 
+				q = t + strlen(pstr);
 			}
 			logfile = newlog;
 			if (!quiet && !got_inetd) {
@@ -4521,7 +4521,7 @@ int main(int argc, char* argv[]) {
 				exit(1);
 			} else {
 				int s;
-				waitpid(pid, &s, 0); 
+				waitpid(pid, &s, 0);
 				if (WIFEXITED(s) && WEXITSTATUS(s) == 0) {
 					got_rfbauth = 1;
 					set_rfbauth = 1;
@@ -4573,7 +4573,7 @@ int main(int argc, char* argv[]) {
 		int i;
 		for (i=pw_loc; i <= pw_loc+1; i++) {
 			if (i < argc) {
-				char *p = argv[i];		
+				char *p = argv[i];
 				strzero(p);
 			}
 		}
@@ -4602,7 +4602,7 @@ int main(int argc, char* argv[]) {
 		int i;
 		for (i=vpw_loc; i <= vpw_loc+1; i++) {
 			if (i < argc) {
-				char *p = argv[i];		
+				char *p = argv[i];
 				strzero(p);
 			}
 		}
@@ -4810,7 +4810,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	/* fixup settings that do not make sense */
-		
+
 	if (use_threads && nofb && cursor_pos_updates) {
 		if (! quiet) {
 			rfbLog("disabling -threads under -nofb -cursorpos\n");
@@ -4978,13 +4978,13 @@ int main(int argc, char* argv[]) {
 	CLIENT_INIT;
 	INPUT_INIT;
 	POINTER_INIT;
-	
+
 	/* open the X display: */
 
 #if HAVE_XKEYBOARD
 	/*
 	 * Disable XKEYBOARD before calling XOpenDisplay()
-	 * this should be used if there is ambiguity in the keymapping. 
+	 * this should be used if there is ambiguity in the keymapping.
 	 */
 	if (xkbcompat) {
 		Bool rc = XkbIgnoreExtension(True);
@@ -5024,15 +5024,15 @@ int main(int argc, char* argv[]) {
 			ud = strdup(ud);
 			p = strrchr(ud, ':');
 			if (p) {
-				int N;	
+				int N;
 				char *q = strchr(p, '.');
 				if (q) {
 					*q = '\0';
 				}
-				N = atoi(p+1);	
+				N = atoi(p+1);
 				if (argc_vnc+1 < argc_vnc_max) {
 					char Nstr[16];
-					sprintf(Nstr, "%d", (5900 + N) % 65536); 
+					sprintf(Nstr, "%d", (5900 + N) % 65536);
 					argv_vnc[argc_vnc++] = strdup("-rfbport");
 					argv_vnc[argc_vnc++] = strdup(Nstr);
 					got_rfbport = 1;
@@ -5125,7 +5125,7 @@ int main(int argc, char* argv[]) {
 		dpy = XOpenDisplay_wr("");
 	}
 	last_open_xdisplay = time(NULL);
-	
+
 	is_wayland_session = getenv("WAYLAND_DISPLAY") ? 1 : 0;
 	if (is_wayland_session) {
 	    rfbLog("Wayland display server detected.\n");
@@ -5134,7 +5134,7 @@ int main(int argc, char* argv[]) {
 		exit(1);
 	    }
 	}
-	
+
 	if (terminal_services_daemon != NULL) {
 		terminal_services(terminal_services_daemon);
 		exit(0);
@@ -5369,7 +5369,7 @@ int main(int argc, char* argv[]) {
 		rfbLog("X COMPOSITE available on display, using it for window polling.\n");
 		rfbLog("  To disable this behavior use: '-noxcomposite'\n");
 	}
-	
+
 	if (! quiet && wireframe && ! raw_fb_str) {
 		rfbLog("\n");
 		rfbLog("Wireframing: -wireframe mode is in effect for window moves.\n");
@@ -5543,11 +5543,11 @@ int main(int argc, char* argv[]) {
 		}
 	} else {
 		xinput2_present = 1;
-		/* set the virtual core pointer (id 2) as client pointer so 
+		/* set the virtual core pointer (id 2) as client pointer so
 		   that ambigious calls like XQueryPointer() get this one */
 		XISetClientPointer(dpy, None, 2);
 	}
-        
+
         if(!xinput2_present)
           use_multipointer = 0;
 #endif
@@ -5724,7 +5724,7 @@ int main(int argc, char* argv[]) {
 		argv_vnc[argc_vnc++] = choose_title(use_dpy);
 		rfb_desktop_name = strdup(argv_vnc[argc_vnc-1]);
 	}
-	
+
 	/*
 	 * Create the XImage corresponding to the display framebuffer.
 	 */
@@ -5758,7 +5758,7 @@ int main(int argc, char* argv[]) {
 			int i = 0;
 			iter = rfbGetClientIterator(screen);
 			while( (cl = rfbClientIteratorNext(iter)) ) {
-				i++;	
+				i++;
 				if (i != 1) {
 					rfbLog("WAIT popup: too many clients\n");
 					clean_up_exit(1);

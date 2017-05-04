@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -217,7 +217,7 @@ XImage *solid_root(char *color) {
 
 		/* restore the root window from the XImage snapshot */
 		pixmap = XCreatePixmap(dpy, window, wdpy_x, wdpy_y, depth);
-		
+
 		/* draw the image to a pixmap: */
 		gcv.function = GXcopy;
 		gcv.plane_mask = AllPlanes;
@@ -234,7 +234,7 @@ XImage *solid_root(char *color) {
 		XFreePixmap(dpy, pixmap);
 		XClearWindow(dpy, window);
 		XFlush_wr(dpy);
-		
+
 		/* generate exposures */
 		XMapWindow(dpy, expose);
 		XSync(dpy, False);
@@ -344,7 +344,7 @@ static void solid_cde(char *color) {
 
 			pixmap = XCreatePixmap(dpy, twin, wdpy_x, wdpy_y,
 			    depth);
-			
+
 			/* draw the image to a pixmap: */
 			gcv.function = GXcopy;
 			gcv.plane_mask = AllPlanes;
@@ -365,7 +365,7 @@ static void solid_cde(char *color) {
 			XClearWindow(dpy, twin);
 			XFlush_wr(dpy);
 		}
-		
+
 		/* generate exposures */
 		XMapWindow(dpy, expose);
 		XSync(dpy, False);
@@ -489,7 +489,7 @@ static void solid_cde(char *color) {
 				XRaiseWindow(dpy, twin);
 			}
 			XSync(dpy, False);
-		
+
 			/* create image window: */
 			iswa.override_redirect = True;
 			iswa.backing_store = NotUseful;
@@ -554,7 +554,7 @@ static void solid_cde(char *color) {
 static char _dbus_str[1100];
 
 char *dbus_session(void) {
-	char *dbus_env = getenv("DBUS_SESSION_BUS_ADDRESS"); 
+	char *dbus_env = getenv("DBUS_SESSION_BUS_ADDRESS");
 	char tmp[1000];
 
 	if (dbus_env != NULL && strlen(dbus_env) > 0) {
@@ -602,7 +602,7 @@ char *dbus_session(void) {
 		}
 		for (i=0; i < (int) ui; i++) {
 			int pid = -1;
-	
+
 			X_LOCK;
 			memset(tmp, 0, sizeof(tmp));
 			get_prop(tmp, sizeof(tmp)-1, dbus_prop, children[i]);
@@ -681,7 +681,7 @@ static void solid_gnome(char *color) {
 
 	dbus = dbus_session();
 	rfbLog("guessed dbus: %s\n", dbus);
-	
+
 	if (! color) {
 		if (! orig_color) {
 			orig_color = strdup("#FFFFFF");
@@ -785,7 +785,7 @@ static void solid_xfce(char *color) {
 
 	dbus = dbus_session();
 	rfbLog("guessed dbus: %s\n", dbus);
-	
+
 	if (! color) {
 		if (! orig_image_show) {
 			orig_image_show = "true";
@@ -1184,7 +1184,7 @@ static void solid_macosx(int restore) {
 #if HAVE_WAITPID
 			for (i=0; i < 7; i++) {
 				usleep(1000 * 1000);
-				waitpid(solid_macosx_pid, &status, WNOHANG); 
+				waitpid(solid_macosx_pid, &status, WNOHANG);
 				if (kill(solid_macosx_pid, 0) != 0) {
 					break;
 				}

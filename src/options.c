@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -35,7 +35,7 @@ so, delete this exception statement from your version.
 #define _X11VNC_OPTIONS_H
 #include "x11vnc.h"
 
-/* 
+/*
  * variables for the command line options
  */
 int debug = 0;
@@ -171,8 +171,8 @@ int inetd = 0;			/* spawned from inetd(8) */
 #ifndef TIGHTFILEXFER
 #define TIGHTFILEXFER 0
 #endif
-int tightfilexfer = TIGHTFILEXFER; 
-int got_ultrafilexfer = 0; 
+int tightfilexfer = TIGHTFILEXFER;
+int got_ultrafilexfer = 0;
 int first_conn_timeout = 0;	/* -timeout */
 int ping_interval = 0;		/* -ping */
 int flash_cmap = 0;		/* follow installed colormaps */
@@ -288,7 +288,7 @@ int wireframe_local = 1;
 
 #ifndef NCACHE
 #ifdef NO_NCACHE
-#define NCACHE 0 
+#define NCACHE 0
 #else
 #define xxNCACHE -12
 #define NCACHE -1
@@ -415,7 +415,7 @@ char *pointer_remap = NULL;
 #define POINTER_MODE_DEFAULT 2
 #endif
 int pointer_mode = POINTER_MODE_DEFAULT;
-int pointer_mode_max = 4;	
+int pointer_mode_max = 4;
 int single_copytile = 0;	/* use the old way copy_tiles() */
 int single_copytile_orig = 0;
 int single_copytile_count = 0;

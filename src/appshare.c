@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -434,7 +434,7 @@ static void launch(Window win) {
 	if (uf) {
 		timeo = 0;
 	}
-	
+
 	len = 1000 + strlen(x11vnc) + strlen(connto) + strlen(x11vnc_args)
 	    + 3 * (trackdir ? strlen(trackdir) : 100);
 
@@ -553,8 +553,8 @@ static void kill_helper_pid(void) {
 	usleep(50 * 1000);
 	kill(helper_pid, SIGKILL);
 	usleep(25 * 1000);
-#if LIBVNCSERVER_HAVE_SYS_WAIT_H && HAVE_WAITPID 
-	waitpid(helper_pid, &status, WNOHANG); 
+#if LIBVNCSERVER_HAVE_SYS_WAIT_H && HAVE_WAITPID
+	waitpid(helper_pid, &status, WNOHANG);
 #endif
 }
 
@@ -678,7 +678,7 @@ static void appshare_cleanup(int s) {
 	}
 
 	kill_helper_pid();
-			
+
 #if !NO_X11
 	XCloseDisplay(dpy);
 #endif
@@ -782,7 +782,7 @@ static Window get_parent(Window win) {
 
 static int get_xy(Window win, int *x, int *y) {
 	Window cr;
-	Bool rc = False; 
+	Bool rc = False;
 #if !NO_X11
 	XErrorHandler old_handler = XSetErrorHandler(trap_xerror);
 
@@ -804,7 +804,7 @@ static Window check_inside(Window win) {
 	Window wins[WMAX];
 
 	if (!win_attr(win)) {
-		return None; 
+		return None;
 	}
 
 	/* store them first to give the win app more time to settle.  */
@@ -837,7 +837,7 @@ static Window check_inside(Window win) {
 	}
 
 	if (!win_attr(win)) {
-		return None; 
+		return None;
 	}
 	w = attr.width;
 	h = attr.height;
@@ -909,7 +909,7 @@ static void recurse_search(int level, int level_max, Window top, Window app, int
 	if (level >= level_max) {
 		return;
 	}
-	
+
 #if !NO_X11
 	ok = XQueryTree(dpy, top, &r, &parent, &list, &nchild);
 	if (ok) {
@@ -930,7 +930,7 @@ static void recurse_search(int level, int level_max, Window top, Window app, int
 			w = list[i];
 			if (w == None || ours(w)) {
 				continue;
-			} 
+			}
 			recurse_search(level+1, level_max, w, app, nw);
 		}
 	}
@@ -939,7 +939,7 @@ static void recurse_search(int level, int level_max, Window top, Window app, int
 	}
 #endif
 }
-		
+
 static void add_app(Window app) {
 	int i, nw = 0, free = -1;
         XErrorHandler old_handler;
@@ -1096,7 +1096,7 @@ static void unmapped(Window win) {
 	if (f < 0 || win == None) {
 		return;
 	}
-	stop(win);	
+	stop(win);
 	state[f] = 0;
 }
 
@@ -1178,7 +1178,7 @@ static void add_or_del_win(char *str, int add) {
 				}
 			}
 		}
-	} 
+	}
 }
 
 static void add_or_del_client(char *str, int add) {
@@ -1529,7 +1529,7 @@ static int check_control(void) {
 	if (!strcmp(control, "internal")) {
 		return 1;
 	}
-		
+
 	control_cmd = (char *)malloc(strlen(control) + strlen(".cmd") + 1);
 	sprintf(control_cmd, "%s.cmd", control);
 	if (stat(control_cmd, &sb) == 0) {
@@ -1692,8 +1692,8 @@ static void handle_shell(void) {
 
 	FD_ZERO(&rfds);
 	FD_SET(fd0, &rfds);
-	tv.tv_sec = 0; 
-	tv.tv_usec = 0; 
+	tv.tv_sec = 0;
+	tv.tv_usec = 0;
 	select(fd0+1, &rfds, NULL, NULL, &tv);
 	if (FD_ISSET(fd0, &rfds)) {
 		char line[1000], line2[1010];

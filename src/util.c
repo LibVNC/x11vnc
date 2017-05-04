@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -374,7 +374,7 @@ char **create_str_list(char *cslist) {
 	if (! cslist) {
 		return NULL;
 	}
-	
+
 	str = strdup(cslist);
 	n = 1;
 	p = str;
@@ -404,7 +404,7 @@ char **create_str_list(char *cslist) {
  * a double to hold the value.
  */
 double dtime(double *t_old) {
-	/* 
+	/*
 	 * usage: call with 0.0 to initialize, subsequent calls give
 	 * the time difference since last call.
 	 */
@@ -439,7 +439,7 @@ double dnowx(void) {
 
 double rnow(void) {
 	double t = dnow();
-	t = t - ((int) t); 
+	t = t - ((int) t);
 	if (t > 1.0) {
 		t = 1.0;
 	} else if (t < 0.0) {
@@ -685,7 +685,7 @@ double rect_overlap(int x1, int y1, int x2, int y2, int X1, int Y1,
 	R = sraRgnCreateRect(X1, Y1, X2, Y2);
 
 	sraRgnAnd(r, R);
-	
+
 	o = 0.0;
 	iter = sraRgnGetIterator(r);
 	while (sraRgnIteratorNext(iter, &rt)) {
@@ -708,7 +708,7 @@ double rect_overlap(int x1, int y1, int x2, int y2, int X1, int Y1,
  * choose a desktop name
  */
 char *choose_title(char *display) {
-	static char title[(MAXN+10)];	
+	static char title[(MAXN+10)];
 
 	memset(title, 0, sizeof(title));
 	strcpy(title, "x11vnc");

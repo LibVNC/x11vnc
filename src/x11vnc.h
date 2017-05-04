@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -34,7 +34,7 @@ so, delete this exception statement from your version.
 #define _X11VNC_X11VNC_H
 
 /* -- x11vnc.h -- */
-/* 
+/*
  * These ' -- filename.[ch] -- ' comments represent a partial cleanup:
  * they are an odd way to indicate how this huge file would be split up
  * someday into multiple files.
@@ -129,16 +129,16 @@ so, delete this exception statement from your version.
  *
  * -DPOINTER_MODE_DEFAULT={0,1,2,3,4}  set default -pointer_mode.
  * -DBOLDLY_CLOSE_DISPLAY=0  to not close X DISPLAY under -rawfb.
- * -DSMALL_FOOTPRINT=1  for smaller binary size (no help, no gui, etc) 
+ * -DSMALL_FOOTPRINT=1  for smaller binary size (no help, no gui, etc)
  *                      use 2 or 3 for even smaller footprint.
  * -DNOGUI  do not include the gui tkx11vnc.
  * -DSKIP_HELP=1   smaller.
  * -DSKIP_XKB=1    a little smaller.
  * -DSKIP_8to24=1  a little smaller.
- * -DPOLL_8TO24_DELAY=N  
+ * -DPOLL_8TO24_DELAY=N
  * -DDEBUG_XEVENTS=1  enable printout for X events.
  *
- * -DX11VNC_MACOSX_USE_GETMAINDEVICE use deprecated GetMainDevice on macosx 
+ * -DX11VNC_MACOSX_USE_GETMAINDEVICE use deprecated GetMainDevice on macosx
  *
  * -DX11VNC_MACOSX_NO_DEPRECATED_LOCALEVENTS={0,1}
  * -DX11VNC_MACOSX_NO_DEPRECATED_POSTEVENTS={0,1}
@@ -200,7 +200,7 @@ so, delete this exception statement from your version.
 #undef  LIBVNCSERVER_WITH_TIGHTVNC_FILETRANSFER
 #undef  LIBVNCSERVER_HAS_STATS
 #undef  LIBVNCSERVER_HAS_SHUTDOWNSOCKETS
-#undef  LIBVNCSERVER_HAS_TEXTCHAT 
+#undef  LIBVNCSERVER_HAS_TEXTCHAT
 #define LIBVNCSERVER_HAS_STATS 0
 #define LIBVNCSERVER_HAS_SHUTDOWNSOCKETS 0
 #define LIBVNCSERVER_HAS_TEXTCHAT 0
@@ -598,7 +598,7 @@ extern unsigned char *tile_has_xdamage_diff, *tile_row_has_xdamage_diff;
 
 /* times of recent events */
 extern time_t last_event, last_input, last_client, last_open_xdisplay;
-extern time_t last_keyboard_input, last_pointer_input; 
+extern time_t last_keyboard_input, last_pointer_input;
 extern time_t last_local_input;	/* macosx */
 extern time_t last_fb_bytes_sent;
 extern double last_keyboard_time;
@@ -654,10 +654,10 @@ extern rfbKeySym last_rfb_keysym;
 extern double last_rfb_keytime;
 extern double last_rfb_key_injected;
 extern double last_rfb_ptr_injected;
-extern int fb_copy_in_progress;	
-extern int drag_in_progress;	
-extern int shut_down;	
-extern int do_copy_screen;	
+extern int fb_copy_in_progress;
+extern int drag_in_progress;
+extern int shut_down;
+extern int do_copy_screen;
 extern time_t damage_time;
 extern int damage_delay;
 
@@ -699,7 +699,7 @@ typedef struct _ClientData {
 	int cmp_bytes_sent;
 	int raw_bytes_sent;
 
-        int ptr_id; /* pointer and keyboard device ids used in multipointer mode */ 
+        int ptr_id; /* pointer and keyboard device ids used in multipointer mode */
         int kbd_id;
         int ptr_buttonmask;
         int cursor_x; /* these are used in multipointer mode to draw  */

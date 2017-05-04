@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com> 
+   Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
    All rights reserved.
 
 This file is part of x11vnc.
@@ -259,7 +259,7 @@ void initialize_pointer_map(char *pointer_remap) {
 	 * buttons).  And also initializes any pointer button remapping
 	 * from -buttonmap option.
 	 */
-	
+
 	if (!raw_fb_str) {
 #if NO_X11
 		num_buttons = 5;
@@ -293,12 +293,12 @@ void initialize_pointer_map(char *pointer_remap) {
 
 	if (pointer_remap && *pointer_remap != '\0') {
 		/* -buttonmap, format is like: 12-21=2 */
-		char *p, *q, *remap = strdup(pointer_remap);	
+		char *p, *q, *remap = strdup(pointer_remap);
 		int n;
 
 		if ((p = strchr(remap, '=')) != NULL) {
 			/* undocumented max button number */
-			n = atoi(p+1);	
+			n = atoi(p+1);
 			*p = '\0';
 			if (n < num_buttons || num_buttons == 0) {
 				num_buttons = n;
@@ -311,7 +311,7 @@ void initialize_pointer_map(char *pointer_remap) {
 		if ((q = strchr(remap, '-')) != NULL) {
 			/*
 			 * The '-' separates the 'from' and 'to' lists,
-			 * then it is kind of like tr(1).  
+			 * then it is kind of like tr(1).
 			 */
 			char str[2];
 			int from;
@@ -440,7 +440,7 @@ void do_button_mask_change(int mask, int button, rfbClientPtr client) {
 
 			if (! bmask) {
 				/* do not send keysym on button up */
-				continue; 
+				continue;
 			}
 			if (debug_pointer && dpy) {
 				char *str = XKeysymToString(XKeycodeToKeysym_wr(
@@ -481,15 +481,15 @@ static void update_x11_pointer_mask(int mask, rfbClientPtr client) {
 
 	RAWFB_RET_VOID
 
-	  if(client && client->clientData) { 
+	  if(client && client->clientData) {
 	    ptr_buttonmask = ((ClientData*)client->clientData)->ptr_buttonmask;
-	   
+
 	    /* set XIClientPointer */
 	    /* FIXME done all the time while button down, maybe establish
 	       some concept like window ownership? */
-	    if(use_multipointer && mask) /* down */ 
+	    if(use_multipointer && mask) /* down */
 	      setXIClientPointer(dpy, ((ClientData*)client->clientData)->ptr_id);
-				 
+
 	  }
 
 	if (mask != ptr_buttonmask) {
@@ -576,7 +576,7 @@ if (debug_scroll > 1) fprintf(stderr, "internal scrollbar: %dx%d\n", w, h);
 
 	/* some button down, was  up before */
 	if (mask && !ptr_buttonmask) {
-	        /* set keyboard focus to window underneath this pointer. 
+	        /* set keyboard focus to window underneath this pointer.
 		   we do it ourselves since most window managers are buggy wrt XI2 */
 	        if(use_multipointer && client && client->clientData)
 		  setDeviceFocus(dpy,((ClientData*)client->clientData)->ptr_id);
@@ -702,12 +702,12 @@ void pointer_event(int mask, int x, int y, rfbClientPtr client) {
 	int sent = 0, buffer_it = 0;
 	double now;
 	ClientData *cd = NULL;
-        
+
 	if(client && client->clientData)
 	  cd = (ClientData *) client->clientData;
-	
+
 	/* needed to allow multiple dragging actions at once */
-        if(client && use_multipointer) 
+        if(client && use_multipointer)
           client->screen->pointerClient = NULL;
 
 	if (threads_drop_input) {
@@ -866,7 +866,7 @@ void pointer_event(int mask, int x, int y, rfbClientPtr client) {
 
 		POINTER_LOCK;
 
-		/* 
+		/*
 		 * If the framebuffer is being copied in another thread
 		 * (scan_for_updates()), we will queue up to 32 pointer
 		 * events for later.  The idea is by delaying these input
@@ -879,7 +879,7 @@ void pointer_event(int mask, int x, int y, rfbClientPtr client) {
 		 * Maybe that is a possibility with a mutex...
 		 */
 		if (buffer_it) {
-			/* 
+			/*
 			 * mask = -1 is an all-clear signal from
 			 * scan_for_updates().
 			 *
@@ -948,7 +948,7 @@ void pointer_event(int mask, int x, int y, rfbClientPtr client) {
 					    "%.4f\n", dnowx());
 				}
 				X_LOCK;
-				XFlush_wr(dpy);	
+				XFlush_wr(dpy);
 				X_UNLOCK;
 			}
 		    }
@@ -985,7 +985,7 @@ void pointer_event(int mask, int x, int y, rfbClientPtr client) {
 	if (! dpy) {
 		;
 	} else if (nofb && sent) {
-		/* 
+		/*
 		 * nofb is for, e.g. Win2VNC, where fastest pointer
 		 * updates are desired.
 		 */
@@ -998,7 +998,7 @@ void pointer_event(int mask, int x, int y, rfbClientPtr client) {
 			    "%.4f\n", dnowx());
 		}
 		X_LOCK;
-		XFlush_wr(dpy);	
+		XFlush_wr(dpy);
 		X_UNLOCK;
 	}
 	INPUT_UNLOCK;
@@ -1234,7 +1234,7 @@ int check_pipeinput(void) {
 	}
 	if (ferror(pipeinput_fh)) {
 		rfbLog("pipeinput pipe has ferror. %p\n", pipeinput_fh);
-		
+
 		if (pipeinput_opts && strstr(pipeinput_opts, "reopen")) {
 			rfbLog("restarting -pipeinput pipe...\n");
 			initialize_pipeinput();
