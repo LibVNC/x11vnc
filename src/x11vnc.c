@@ -2047,7 +2047,7 @@ int main(int argc, char* argv[]) {
 	char *gui_str = NULL;
 	int got_gui_pw = 0;
 	int pw_loc = -1, got_passwd = 0, got_rfbauth = 0, nopw = NOPW;
-	int got_viewpasswd = 0, got_localhost = 0, got_passwdfile = 0;
+	int got_viewpasswd = 0, got_passwdfile = 0;
 	int vpw_loc = -1;
 	int dt = 0, bg = 0;
 	int got_rfbwait = 0;

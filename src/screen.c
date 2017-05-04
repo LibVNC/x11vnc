@@ -3704,6 +3704,10 @@ void initialize_screen(int *argc, char **argv, XImage *fb) {
 		defer_update = screen->deferUpdateTime;
 	}
 
+	if (got_localhost) {
+		screen->listen6Interface = "::1";
+	}
+
 	if (noipv4 || getenv("IPV4_FAILS")) {
 		rfbBool ap = screen->autoPort;
 		int port = screen->port;
