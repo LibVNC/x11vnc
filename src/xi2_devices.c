@@ -281,7 +281,7 @@ rfbCursorPtr setClientCursor(Display *dpy, int dev_id, float r, float g, float b
   X_UNLOCK;
 
   /* convert to rfb cursor which we return later */
-  rfbcursor = pixels2curs(cursor_image->pixels,
+  rfbcursor = pixels2curs((unsigned long*)cursor_image->pixels,
 			  cursor_image->width,
 			  cursor_image->height,
 			  cursor_image->xhot,
