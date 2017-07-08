@@ -1738,7 +1738,7 @@ void unixpw_keystroke(rfbBool down, rfbKeySym keysym, int init) {
 		return;
 	}
 
-	rc = snprintf(keystr, 100, "%s", str);
+	rc = snprintf(keystr, sizeof keystr, "%s", str);
 	if (rc < 1 || rc > 90) {
 		rfbLog("unixpw_keystroke: bad keysym3: 0x%x\n", (int) keysym);
 		return;
