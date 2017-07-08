@@ -1728,7 +1728,6 @@ void restore_cursor_shape_updates(rfbScreenInfoPtr s) {
 void disable_cursor_shape_updates(rfbScreenInfoPtr s) {
 	rfbClientIteratorPtr iter;
 	rfbClientPtr cl;
-	static int changed = 0;
 	int count = 0;
 
 	if (! s || ! s->clientHead) {
@@ -1765,10 +1764,6 @@ void disable_cursor_shape_updates(rfbScreenInfoPtr s) {
 		cl->cursorWasChanged = FALSE;
 	}
 	rfbReleaseClientIterator(iter);
-
-	if (count) {
-		changed = 1;
-	}
 }
 
 int cursor_shape_updates_clients(rfbScreenInfoPtr s) {
