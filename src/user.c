@@ -142,14 +142,15 @@ static char *get_login_list(int with_display) {
 	char *out;
 #if HAVE_UTMPX_H
 	int i, cnt, max = 200, ut_namesize = 32;
-	int dpymax = 1000, sawdpy[1000];
+#define DPYMAX 1000
+	int sawdpy[DPYMAX];
 	struct utmpx *utx;
 
 	/* size based on "username:999," * max */
 	out = (char *) malloc(max * (ut_namesize+1+3+1) + 1);
 	out[0] = '\0';
 
-	for (i=0; i<dpymax; i++) {
+	for (i=0; i < DPYMAX; i++) {
 		sawdpy[i] = 0;
 	}
 
@@ -200,7 +201,7 @@ static char *get_login_list(int with_display) {
 				}
 			}
 
-			if (d < 0 || d >= dpymax || sawdpy[d]) {
+			if (d < 0 || d >= DPYMAX || sawdpy[d]) {
 				continue;
 			}
 			sawdpy[d] = 1;
