@@ -2455,7 +2455,6 @@ XImage *initialize_xdisplay_fb(void) {
 	char *vis_str = visual_str;
 	int try = 0, subwin_tries = 3;
 	XErrorHandler old_handler = NULL;
-	int subwin_bs;
 
 	if (raw_fb_str) {
 		return initialize_raw_fb(0);
@@ -2571,8 +2570,6 @@ if (0) fprintf(stderr, "vis_str %s\n", vis_str ? vis_str : "notset");
 		}
 		dpy_x = wdpy_x = attr.width;
 		dpy_y = wdpy_y = attr.height;
-
-		subwin_bs = attr.backing_store;
 
 		/* this may be overridden via visual_id below */
 		default_visual = attr.visual;
@@ -2747,7 +2744,9 @@ if (0) fprintf(stderr, "DefaultDepth: %d  visial_id: %d\n", depth, (int) visual_
 		trapped_xerror = 0;
 
 	} else if (fb == NULL) {
+#if HAVE_LIBXRANDR
 		XEvent xev;
+#endif
 		rfbLog("initialize_xdisplay_fb: *** fb creation failed: 0x%x try: %d\n", fb, try);
 #if HAVE_LIBXRANDR
 		if (xrandr_present && xrandr_base_event_type) {
@@ -4033,14 +4032,12 @@ static void check_cursor_changes(void) {
 
 	if (cursor_changes) {
 		double tm, max_push = 0.125, multi_push = 0.01, wait = 0.02;
-		int cursor_shape, dopush = 0, link, latency, netrate;
+		int dopush = 0, link, latency, netrate;
 
 		if (! all_clients_initialized()) {
 			/* play it safe */
 			return;
 		}
-
-		if (0) cursor_shape = cursor_shape_updates_clients(screen);
 	
 		dtime0(&tm);
 		link = link_rate(&latency, &netrate);
