@@ -2644,7 +2644,7 @@ static void reverse_connect_timeout (int sig) {
 
 static int do_reverse_connect(char *str_in) {
 	rfbClientPtr cl;
-	char *host, *p, *str = str_in, *s = NULL;
+	char *host, *p, *str = str_in;
 	char *prestring = NULL;
 	int prestring_len = 0;
 	int rport = 5500, len = strlen(str);
@@ -2673,7 +2673,6 @@ static int do_reverse_connect(char *str_in) {
 		/*   repeater=string+host:port */
 		char *plus = strrchr(str, '+');
 		str = (char *) malloc(strlen(str_in)+1);
-		s = str;
 		*plus = '\0';
 		sprintf(str, "repeater=%s+%s", plus+1, str_in + strlen("repeater://"));
 		prestring = get_repeater_string(str, &prestring_len);
