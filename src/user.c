@@ -947,7 +947,7 @@ int read_passwds(char *passfile) {
 		db_passwd = 1;
 	}
 
-	while (fgets(line, 1024, in) != NULL) {
+	while (fgets(line, sizeof line, in) != NULL) {
 		char *p;
 		int blank = 1;
 		int len = strlen(line); 
@@ -2128,7 +2128,7 @@ static char *build_create_cmd(char *cmd, int *saw_xdmcp, char *usslpeer, char *t
 		snprintf(fdtag, sizeof fdtag, "%s", getenv("FD_TAG"));
 	}
 	if (fdxdmcpif[0] == '\0' && getenv("FD_XDMCP_IF")) {
-		snprintf(fdxdmcpif,  120, "%s", getenv("FD_XDMCP_IF"));
+		snprintf(fdxdmcpif,  sizeof fdxdmcpif, "%s", getenv("FD_XDMCP_IF"));
 	}
 	if (fdxdum[0] == '\0' && getenv("FD_XDUMMY_RUN_AS_ROOT")) {
 		snprintf(fdxdum, sizeof fdxdum, "%s", getenv("FD_XDUMMY_RUN_AS_ROOT"));
@@ -2614,11 +2614,11 @@ if (db) fprintf(stderr, "c-res=%d n=%d line: '%s'\n", res, n, line);
 				if (! p) {
 					rfbLog("wait_for_client: popen failed: %s\n", create_cmd);
 					res = 0;
-				} else if (fgets(line1, 1024, p) == NULL) {
+				} else if (fgets(line1, sizeof line1, p) == NULL) {
 					rfbLog("wait_for_client: read failed: %s\n", create_cmd);
 					res = 0;
 				} else {
-					n = fread(line2, 1, 16384, p);
+					n = fread(line2, 1, sizeof line2, p);
 					if (pclose(p) != 0) {
 						res = 0;
 					} else {
@@ -2720,7 +2720,7 @@ if (db) fprintf(stderr, "\n");
 			}
 			clean_up_exit(1);
 		}
-		if (fgets(line1, 1024, p) == NULL) {
+		if (fgets(line1, sizeof line1, p) == NULL) {
 			rfbLog("wait_for_client: read failed: %s\n", cmd);
 			rfbLogPerror("fgets");
 			if (tmp_fd >= 0) {
@@ -2728,7 +2728,7 @@ if (db) fprintf(stderr, "\n");
 			}
 			clean_up_exit(1);
 		}
-		n = fread(line2, 1, 16384, p);
+		n = fread(line2, 1, sizeof line2, p);
 		rc = pclose(p);
 
 		if (rc != 0) {
@@ -2761,7 +2761,7 @@ if (db) fprintf(stderr, "\n");
 				}
 				clean_up_exit(1);
 			}
-			if (fgets(line1, 1024, p) == NULL) {
+			if (fgets(line1, sizeof line1, p) == NULL) {
 				rfbLog("wait_for_client: read failed: %s\n", create_cmd);
 				rfbLogPerror("fgets");
 				if (tmp_fd >= 0) {
@@ -2769,7 +2769,7 @@ if (db) fprintf(stderr, "\n");
 				}
 				clean_up_exit(1);
 			}
-			n = fread(line2, 1, 16384, p);
+			n = fread(line2, 1, sizeof line2, p);
 			pclose(p);
 		}
 		if (tmp_fd >= 0) {
@@ -2812,7 +2812,7 @@ if (db) fprintf(stderr, "%d -- %s\n", i, proc);
 					buf[k] = '\0';
 				}
 	
-				if (readlink(proc, buf, 100) != -1) {
+				if (readlink(proc, buf, sizeof buf) != -1) {
 					buf[100-1] = '\0';
 if (db) fprintf(stderr, "%d -- %s -- %s\n", i, proc, buf);
 					if (strstr(buf, "/dev/tty") == buf) {

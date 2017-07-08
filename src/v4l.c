@@ -1208,7 +1208,7 @@ static char *guess_via_v4l_info(char *dev, int *fd) {
 	}
 	
 	curr = 0;
-	while (fgets(line, 1024, out) != NULL) {
+	while (fgets(line, sizeof line, out) != NULL) {
 		char *lb = lblanks(line);
 		if (strstr(line, "video capture") == line) {
 			curr = C_VIDEO_CAPTURE;
@@ -1466,7 +1466,7 @@ static void init_freqtab(char *file) {
 		clean_up_exit(1);
 	}
 	if (v) fprintf(stderr, "loading frequencies from: %s\n", file);
-	while (fgets(line, 1024, in1) != NULL) {
+	while (fgets(line, sizeof line, in1) != NULL) {
 		char *lb;
 		char line2[1024];
 		size += strlen(line);
@@ -1488,7 +1488,7 @@ static void init_freqtab(char *file) {
 				clean_up_exit(1);
 			}
 			if (v) fprintf(stderr, "loading frequencies from: %s\n", file2);
-			while (fgets(line2, 1024, in2) != NULL) {
+			while (fgets(line2, sizeof line2, in2) != NULL) {
 				size += strlen(line2);
 			}
 			fclose(in2);
@@ -1507,7 +1507,7 @@ static void init_freqtab(char *file) {
 		rfbLog("error opening freqtab: %s\n", file);
 		clean_up_exit(1);
 	}
-	while (fgets(line, 1024, in1) != NULL) {
+	while (fgets(line, sizeof line, in1) != NULL) {
 		char *lb;
 		char line2[1024];
 		lb = lblanks(line);
@@ -1532,7 +1532,7 @@ static void init_freqtab(char *file) {
 				rfbLog("error opening freqtab include: %s %s\n", line, file2);
 				clean_up_exit(1);
 			}
-			while (fgets(line2, 1024, in2) != NULL) {
+			while (fgets(line2, sizeof line2, in2) != NULL) {
 				lb2 = lblanks(line2);
 				if (lb2[0] == '[') {
 					strcat(text, lb2);
