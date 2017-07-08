@@ -234,12 +234,10 @@ int get_local_port(int sock) {
 static char *get_host(int sock, int remote) {
 	struct sockaddr_in saddr;
 	unsigned int saddr_len;
-	int saddr_port;
 	char *saddr_ip_str = NULL;
 	
 	saddr_len = sizeof(saddr);
 	memset(&saddr, 0, sizeof(saddr));
-	saddr_port = -1;
 #if LIBVNCSERVER_HAVE_NETINET_IN_H
 	if (remote) {
 		if (!getpeername(sock, (struct sockaddr *)&saddr, &saddr_len)) {
