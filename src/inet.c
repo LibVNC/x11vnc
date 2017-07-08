@@ -696,7 +696,8 @@ int accept_unix(int s) {
 	if (s) {}
 	return -1;
 #else
-	int fd, fromlen;
+	int fd;
+	socklen_t fromlen;
 	struct sockaddr_un fsaun;
 
 	fd = accept(s, (struct sockaddr *)&fsaun, &fromlen);
