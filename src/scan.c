@@ -2819,7 +2819,8 @@ if (db && snapcnt++ < 5) rfbLog("rawfb copy_snap took: %.5f secs\n", dnow() - st
 	return 0;
 }
 
-
+/* STFU: Only for debugging */
+#if 0
 /* 
  * debugging: print out a picture of the tiles.
  */
@@ -2861,6 +2862,7 @@ static void print_tiles(void) {
 	}
 	usleep(ms * 1000);
 }
+#endif
 
 /*
  * Utilities for managing the "naps" to cut down on amount of polling.
@@ -3358,7 +3360,6 @@ int scan_for_updates(int count_only) {
 	double frac2 = 0.35;  /* or 3rd */
 	double frac3 = 0.02;  /* do scan_display() again after copy_tiles() */
 	static double last_poll = 0.0;
-	double dtmp = 0.0;
 
 	if (unixpw_in_progress) return 0;
  
@@ -3587,24 +3588,12 @@ int scan_for_updates(int count_only) {
 
 	if (unixpw_in_progress) return 0;
 
-/* XXX Y */
-if (0 && tile_count > 20) print_tiles();
-#if 0
-dtmp = dnow();
-#else
-dtmp = 0.0;
-#endif
-
 	if (old_copy_tile) {
 		tile_diffs = copy_all_tiles();
 	} else {
 		tile_diffs = copy_all_tile_runs();
 	}
 	SCAN_FATAL(tile_diffs);
-
-#if 0
-if (tile_count) fprintf(stderr, "XX copytile: %.4f  tile_count: %d\n", dnow() - dtmp, tile_count);
-#endif
 
 	/*
 	 * This backward pass for upward and left tiles complements what
