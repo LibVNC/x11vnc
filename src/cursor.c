@@ -1052,7 +1052,7 @@ rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h,
 			pixels32 = (unsigned int*) malloc(4*W*H);
 			for (j=0; j<H; j++) {
 			    for (i=0; i<W; i++) {
-				*(pixels32+k) = 0xffffffff & (*(pixels+k));
+				*(pixels32+k) = 0xffffffff & (*(pixels+2*k));
 				k++;
 			    }
 			}
@@ -1113,7 +1113,7 @@ rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h,
 		for (x = 0; x < w; x++) {
 			unsigned long a;
 
-			a = 0xff000000 & (*(pixels+i));
+			a = 0xff000000 & (*(pixels+2*i));
 			a = a >> 24;	/* alpha channel */
 			if (a > 0) {
 				n_alpha++;
@@ -1158,7 +1158,7 @@ rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h,
 			unsigned int ui;
 			char *p;
 
-			a = 0xff000000 & (*(pixels+i));
+			a = 0xff000000 & (*(pixels+2*i));
 			a = a >> 24;	/* alpha channel */
 
 			if (a < (unsigned int) thresh) {
@@ -1167,9 +1167,9 @@ rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h,
 				bitmap[i] = 'x';
 			}
 
-			r = 0x00ff0000 & (*(pixels+i));
-			g = 0x0000ff00 & (*(pixels+i));
-			b = 0x000000ff & (*(pixels+i));
+			r = 0x00ff0000 & (*(pixels+2*i));
+			g = 0x0000ff00 & (*(pixels+2*i));
+			b = 0x000000ff & (*(pixels+2*i));
 			r = r >> 16;	/* red */
 			g = g >> 8;	/* green */
 			b = b >> 0;	/* blue */
