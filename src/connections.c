@@ -695,7 +695,7 @@ int run_user_command(char *cmd, rfbClientPtr client, char *mode, char *input,
 
 #if LIBVNCSERVER_HAVE_FORK
 	{
-		pid_t pid, pidw;
+		pid_t pid;
 		struct sigaction sa, intr, quit;
 		sigset_t omask;
 
@@ -711,7 +711,7 @@ int run_user_command(char *cmd, rfbClientPtr client, char *mode, char *input,
 		if ((pid = fork()) > 0 || pid == -1) {
 
 			if (pid != -1) {
-				pidw = waitpid(pid, &rc, 0);
+				waitpid(pid, &rc, 0);
 			}
 
 			sigaction(SIGINT,  &intr, (struct sigaction *) NULL);
