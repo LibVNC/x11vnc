@@ -1033,7 +1033,6 @@ rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h,
 	if (scaling_cursor && (scale_cursor_fac_x != 1.0 || scale_cursor_fac_y != 1.0)) {
 		int W, H;
 		char *pixels_use = (char *) pixels;
-		unsigned int *pixels32 = NULL;
 
 		W = w;
 		H = h;
