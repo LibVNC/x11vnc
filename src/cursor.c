@@ -1328,7 +1328,7 @@ static int get_exact_cursor(int init) {
 	return(which);
 }
 
-int store_cursor(int serial, unsigned long *data, int w, int h, int cbpp,
+int store_cursor(int serial, uint32_t *data, int w, int h, int cbpp,
     int xhot, int yhot) {
 	int which = CURS_ARROW;
 	int use, oldest, i;
@@ -1414,7 +1414,7 @@ fprintf(stderr, "sc: %d  %d/%d %d - %d %d\n", serial, w, h, cbpp, xhot, yhot);
 	}
 
 	/* place cursor into our collection */
-	cursors[use]->rfb = pixels2curs((uint32_t*)data, w, h, xhot, yhot, bpp/8);
+	cursors[use]->rfb = pixels2curs(data, w, h, xhot, yhot, bpp/8);
 
 	/* update time and serial index: */
 	curs_times[use] = now;
