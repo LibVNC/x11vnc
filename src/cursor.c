@@ -1015,7 +1015,6 @@ rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h,
 	int n_opaque, n_trans, n_alpha, len, histo[256];
 	int send_alpha = 0, alpha_shift = 0, thresh;
 	int i, x, y;
-
 	if (first && dpy) {	/* raw_fb hack */
 		X_LOCK;
 		black = BlackPixel(dpy, scr);
@@ -1072,7 +1071,7 @@ rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h,
 	i = 0;
 	for (y = 0; y < h; y++) {
 		for (x = 0; x < w; x++) {
-			unsigned long a;
+			uint32_t a;
 
 			a = 0xff000000 & (*(pixels+i));
 			a = a >> 24;	/* alpha channel */
@@ -1283,6 +1282,7 @@ static int get_exact_cursor(int init) {
 	}
 	if (xfixes_present && dpy) {
 #if HAVE_LIBXFIXES
+		uint32_t *pixel32 = NULL;
 		int last_idx = (int) get_cursor_serial(1);
 		XFixesCursorImage *xfc;
 
@@ -1311,14 +1311,36 @@ static int get_exact_cursor(int init) {
 
 		/* retrieve the cursor info + pixels from server: */
 		xfc = XFixesGetCursorImage(dpy);
+		{
+			/* 2017-07-09, Stephan Fuhrmann: This fixes an implementation flaw for 64 bit systems.
+			 * The XFixesCursorImage structure says xfc->pixels is (unsigned long*) in the structure, but
+			 * the protocol spec says it's 32 bit per pixel
+			 * (https://www.x.org/releases/X11R7.6/doc/fixesproto/fixesproto.txt).
+			 * I'm converting the data anyway to 32 bit to be sure. Only necessary for 64 bit systems,
+			 * but doing it anyway for 32 bit.
+			 * */
+			int x,y;
+			pixel32 = malloc(xfc->width * xfc->height * sizeof(uint32_t));
+			for (y = 0; y < xfc->height; y++) {
+				for (x = 0; x < xfc->width; x++) {
+					uint32_t ofs = x + y*xfc->width;
+					*(pixel32 + ofs) = *(xfc->pixels + ofs);
+				}
+			}
+		}
+
 		X_UNLOCK;
 		if (! xfc) {
 			/* failure. */
 			return which;
 		}
 
-		which = store_cursor(xfc->cursor_serial, (uint32_t *)xfc->pixels,
+		which = store_cursor(xfc->cursor_serial, pixel32,
 		    xfc->width, xfc->height, 32, xfc->xhot, xfc->yhot);
+
+		if (pixel32 != NULL) {
+			free(pixel32);
+		}
 
 		X_LOCK;
 		XFree_wr(xfc);
