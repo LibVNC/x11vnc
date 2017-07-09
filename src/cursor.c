@@ -1043,48 +1043,10 @@ rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h,
 
 		pixels_new = (char *) malloc(4*w*h);
 
-		if (sizeof(unsigned long) == 8) {
-			int i, j, k = 0;
-			/*
-			 * to avoid 64bpp code in scale_rect() we knock
-			 * down to unsigned int on 64bit machines:
-			 */
-			pixels32 = (unsigned int*) malloc(4*W*H);
-			for (j=0; j<H; j++) {
-			    for (i=0; i<W; i++) {
-				*(pixels32+k) = 0xffffffff & (*(pixels+k));
-				k++;
-			    }
-			}
-			pixels_use = (char *) pixels32;
-		}
-
 		scale_rect(scale_cursor_fac_x, scale_cursor_fac_y, scaling_cursor_blend,
 		    scaling_cursor_interpolate,
 		    4, pixels_use, 4*W, pixels_new, 4*w,
 		    W, H, w, h, 0, 0, W, H, 0);
-
-		if (sizeof(unsigned long) == 8) {
-			int i, j, k = 0;
-			unsigned long *pixels64;
-			unsigned int* source = (unsigned int*) pixels_new;
-			/*
-			 * now knock it back up to unsigned long:
-			 */
-			pixels64 = (unsigned long*) malloc(8*w*h);
-			for (j=0; j<h; j++) {
-			    for (i=0; i<w; i++) {
-				*(pixels64+k) = (unsigned long) (*(source+k));
-				k++;
-			    }
-			}
-			free(pixels_new);
-			pixels_new = (char *) pixels64;
-			if (pixels32) {
-				free(pixels32);
-				pixels32 = NULL;
-			}
-		}
 			
 		pixels = (uint32_t *) pixels_new;
 
