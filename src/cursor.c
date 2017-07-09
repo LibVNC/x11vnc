@@ -68,7 +68,7 @@ void set_no_cursor(void);
 void set_warrow_cursor(void);
 int set_cursor(int x, int y, int which);
 int check_x11_pointer(void);
-int store_cursor(int serial, unsigned long *data, int w, int h, int cbpp, int xhot, int yhot);
+int store_cursor(int serial, uint32_t *data, int w, int h, int cbpp, int xhot, int yhot);
 unsigned long get_cursor_serial(int mode);
 rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h, int xhot, int yhot, int Bpp);
 void save_under_cursor_buffer(rfbClientPtr cl);
