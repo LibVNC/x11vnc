@@ -1008,7 +1008,7 @@ void initialize_xfixes(void) {
 rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h,
     int xhot, int yhot, int Bpp) {
 	rfbCursorPtr c;
-	static unsigned long black = 0, white = 1;
+	static uint32_t black = 0, white = 1;
 	static int first = 1;
 	char *bitmap, *rich, *alpha;
 	char *pixels_new = NULL;
@@ -1154,8 +1154,8 @@ rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h,
 	i = 0;
 	for (y = 0; y < h; y++) {
 		for (x = 0; x < w; x++) {
-			unsigned long r, g, b, a;
-			unsigned int ui;
+			uint32_t r, g, b, a;
+			uint32_t ui;
 			char *p;
 
 			a = 0xff000000 & (*(pixels+i));
