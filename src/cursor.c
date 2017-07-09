@@ -1317,7 +1317,7 @@ static int get_exact_cursor(int init) {
 			return which;
 		}
 
-		which = store_cursor(xfc->cursor_serial, xfc->pixels,
+		which = store_cursor(xfc->cursor_serial, (uint32_t *)xfc->pixels,
 		    xfc->width, xfc->height, 32, xfc->xhot, xfc->yhot);
 
 		X_LOCK;
