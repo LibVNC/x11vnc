@@ -1206,10 +1206,10 @@ void vnc_reflect_got_update(rfbClient *cl, int x, int y, int w, int h) {
 void vnc_reflect_got_cursorshape(rfbClient *cl, int xhot, int yhot, int width, int height, int bytesPerPixel) {
 	static int serial = 1;
 	int i, j;
-	char *pixels = NULL;
-	unsigned long r, g, b;
-	unsigned int ui = 0;
-	unsigned long red_mask, green_mask, blue_mask;
+	uint32_t *pixels = NULL;
+	uint32_t r, g, b;
+	uint32_t ui = 0;
+	uint32_t red_mask, green_mask, blue_mask;
 
 	if (cl) {}
 	if (unixpw_in_progress) {
@@ -1230,21 +1230,20 @@ void vnc_reflect_got_cursorshape(rfbClient *cl, int xhot, int yhot, int width, i
 	green_mask = (client->format.greenMax << client->format.greenShift);
 	blue_mask  = (client->format.blueMax  << client->format.blueShift);
 
-	pixels = (char *)malloc(4*width*height);
+	pixels = (uint32_t *)malloc(4*width*height);
 	for (j=0; j<height; j++) {
 		for (i=0; i<width; i++) {
-			unsigned int* uip;
 			unsigned char* uic;
 			int m;
 			if (bytesPerPixel == 1) {
-				unsigned char* p = (unsigned char *) client->rcSource;
-				ui = (unsigned long) *(p + j * width + i);
+				uint8_t* p = (uint8_t *) client->rcSource;
+				ui = (uint32_t) *(p + j * width + i);
 			} else if (bytesPerPixel == 2) {
-				unsigned short* p = (unsigned short *) client->rcSource;
-				ui = (unsigned long) *(p + j * width + i);
+				uint16_t* p = (uint16_t *) client->rcSource;
+				ui = (uint32_t) *(p + j * width + i);
 			} else if (bytesPerPixel == 4) {
-				unsigned int* p = (unsigned int *) client->rcSource;
-				ui = (unsigned long) *(p + j * width + i);
+				uint32_t* p = (uint32_t *) client->rcSource;
+				ui = (uint32_t) *(p + j * width + i);
 			}
 			r = (red_mask   & ui) >> client->format.redShift;
 			g = (green_mask & ui) >> client->format.greenShift;
@@ -1261,12 +1260,11 @@ void vnc_reflect_got_cursorshape(rfbClient *cl, int xhot, int yhot, int width, i
 			if (m) {
 				ui |= 0xff000000;
 			}
-			uip = (unsigned int *)pixels;
-			*(uip + j * width + i) = ui;
+			*(pixels + j * width + i) = ui;
 		}
 	}
 
-	store_cursor(serial++, (unsigned long*) pixels, width, height, 32, xhot, yhot);
+	store_cursor(serial++, pixels, width, height, 32, xhot, yhot);
 	free(pixels);
 	set_cursor(cursor_x, cursor_y, get_which_cursor());
 }

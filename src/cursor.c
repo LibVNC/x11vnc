@@ -68,7 +68,7 @@ void set_no_cursor(void);
 void set_warrow_cursor(void);
 int set_cursor(int x, int y, int which);
 int check_x11_pointer(void);
-int store_cursor(int serial, unsigned long *data, int w, int h, int cbpp, int xhot, int yhot);
+int store_cursor(int serial, uint32_t *data, int w, int h, int cbpp, int xhot, int yhot);
 unsigned long get_cursor_serial(int mode);
 rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h, int xhot, int yhot, int Bpp);
 void save_under_cursor_buffer(rfbClientPtr cl);
@@ -1008,14 +1008,13 @@ void initialize_xfixes(void) {
 rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h,
     int xhot, int yhot, int Bpp) {
 	rfbCursorPtr c;
-	static unsigned long black = 0, white = 1;
+	static uint32_t black = 0, white = 1;
 	static int first = 1;
 	char *bitmap, *rich, *alpha;
 	char *pixels_new = NULL;
 	int n_opaque, n_trans, n_alpha, len, histo[256];
 	int send_alpha = 0, alpha_shift = 0, thresh;
 	int i, x, y;
-
 	if (first && dpy) {	/* raw_fb hack */
 		X_LOCK;
 		black = BlackPixel(dpy, scr);
@@ -1033,7 +1032,6 @@ rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h,
 	if (scaling_cursor && (scale_cursor_fac_x != 1.0 || scale_cursor_fac_y != 1.0)) {
 		int W, H;
 		char *pixels_use = (char *) pixels;
-		unsigned int *pixels32 = NULL;
 
 		W = w;
 		H = h;
@@ -1043,48 +1041,10 @@ rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h,
 
 		pixels_new = (char *) malloc(4*w*h);
 
-		if (sizeof(unsigned long) == 8) {
-			int i, j, k = 0;
-			/*
-			 * to avoid 64bpp code in scale_rect() we knock
-			 * down to unsigned int on 64bit machines:
-			 */
-			pixels32 = (unsigned int*) malloc(4*W*H);
-			for (j=0; j<H; j++) {
-			    for (i=0; i<W; i++) {
-				*(pixels32+k) = 0xffffffff & (*(pixels+k));
-				k++;
-			    }
-			}
-			pixels_use = (char *) pixels32;
-		}
-
 		scale_rect(scale_cursor_fac_x, scale_cursor_fac_y, scaling_cursor_blend,
 		    scaling_cursor_interpolate,
 		    4, pixels_use, 4*W, pixels_new, 4*w,
 		    W, H, w, h, 0, 0, W, H, 0);
-
-		if (sizeof(unsigned long) == 8) {
-			int i, j, k = 0;
-			unsigned long *pixels64;
-			unsigned int* source = (unsigned int*) pixels_new;
-			/*
-			 * now knock it back up to unsigned long:
-			 */
-			pixels64 = (unsigned long*) malloc(8*w*h);
-			for (j=0; j<h; j++) {
-			    for (i=0; i<w; i++) {
-				*(pixels64+k) = (unsigned long) (*(source+k));
-				k++;
-			    }
-			}
-			free(pixels_new);
-			pixels_new = (char *) pixels64;
-			if (pixels32) {
-				free(pixels32);
-				pixels32 = NULL;
-			}
-		}
 			
 		pixels = (uint32_t *) pixels_new;
 
@@ -1111,7 +1071,7 @@ rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h,
 	i = 0;
 	for (y = 0; y < h; y++) {
 		for (x = 0; x < w; x++) {
-			unsigned long a;
+			uint32_t a;
 
 			a = 0xff000000 & (*(pixels+i));
 			a = a >> 24;	/* alpha channel */
@@ -1154,8 +1114,8 @@ rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h,
 	i = 0;
 	for (y = 0; y < h; y++) {
 		for (x = 0; x < w; x++) {
-			unsigned long r, g, b, a;
-			unsigned int ui;
+			uint32_t r, g, b, a;
+			uint32_t ui;
 			char *p;
 
 			a = 0xff000000 & (*(pixels+i));
@@ -1322,6 +1282,7 @@ static int get_exact_cursor(int init) {
 	}
 	if (xfixes_present && dpy) {
 #if HAVE_LIBXFIXES
+		uint32_t *pixel32 = NULL;
 		int last_idx = (int) get_cursor_serial(1);
 		XFixesCursorImage *xfc;
 
@@ -1350,14 +1311,36 @@ static int get_exact_cursor(int init) {
 
 		/* retrieve the cursor info + pixels from server: */
 		xfc = XFixesGetCursorImage(dpy);
+		{
+			/* 2017-07-09, Stephan Fuhrmann: This fixes an implementation flaw for 64 bit systems.
+			 * The XFixesCursorImage structure says xfc->pixels is (unsigned long*) in the structure, but
+			 * the protocol spec says it's 32 bit per pixel
+			 * (https://www.x.org/releases/X11R7.6/doc/fixesproto/fixesproto.txt).
+			 * I'm converting the data anyway to 32 bit to be sure. Only necessary for 64 bit systems,
+			 * but doing it anyway for 32 bit.
+			 * */
+			int x,y;
+			pixel32 = malloc(xfc->width * xfc->height * sizeof(uint32_t));
+			for (y = 0; y < xfc->height; y++) {
+				for (x = 0; x < xfc->width; x++) {
+					uint32_t ofs = x + y*xfc->width;
+					*(pixel32 + ofs) = *(xfc->pixels + ofs);
+				}
+			}
+		}
+
 		X_UNLOCK;
 		if (! xfc) {
 			/* failure. */
 			return which;
 		}
 
-		which = store_cursor(xfc->cursor_serial, xfc->pixels,
+		which = store_cursor(xfc->cursor_serial, pixel32,
 		    xfc->width, xfc->height, 32, xfc->xhot, xfc->yhot);
+
+		if (pixel32 != NULL) {
+			free(pixel32);
+		}
 
 		X_LOCK;
 		XFree_wr(xfc);
@@ -1367,7 +1350,7 @@ static int get_exact_cursor(int init) {
 	return(which);
 }
 
-int store_cursor(int serial, unsigned long *data, int w, int h, int cbpp,
+int store_cursor(int serial, uint32_t *data, int w, int h, int cbpp,
     int xhot, int yhot) {
 	int which = CURS_ARROW;
 	int use, oldest, i;
@@ -1453,7 +1436,7 @@ fprintf(stderr, "sc: %d  %d/%d %d - %d %d\n", serial, w, h, cbpp, xhot, yhot);
 	}
 
 	/* place cursor into our collection */
-	cursors[use]->rfb = pixels2curs((uint32_t*)data, w, h, xhot, yhot, bpp/8);
+	cursors[use]->rfb = pixels2curs(data, w, h, xhot, yhot, bpp/8);
 
 	/* update time and serial index: */
 	curs_times[use] = now;
