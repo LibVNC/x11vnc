@@ -70,7 +70,7 @@ extern double rect_overlap(int x1, int y1, int x2, int y2, int X1, int Y1,
 extern char *choose_title(char *display);
 
 
-#define NONUL(x) ((x) ? (x) : "")
+#define NONUL(x) ((x != NULL) ? (x) : "")
 
 /*
 	Put this in usleep2() for debug printout.

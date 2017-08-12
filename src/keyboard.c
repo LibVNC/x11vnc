@@ -3073,7 +3073,9 @@ void keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 	static rfbKeySym last_keysym = NoSymbol;
 	static rfbKeySym max_keyrepeat_last_keysym = NoSymbol;
 	static double max_keyrepeat_last_time = 0.0;
+#ifdef MAX_KEYREPEAT
 	static double max_keyrepeat_always = -1.0;
+#endif
         ClientData *cd = (ClientData *) client->clientData;
 
 	if (threads_drop_input) {
@@ -3231,8 +3233,6 @@ void keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 	if (max_keyrepeat_always > 0.0) {
 		max_keyrepeat_time = max_keyrepeat_always;
 	}
-#else
-	if (0) {max_keyrepeat_always=0;}
 #endif
 	if (!down && skipped_last_down) {
 		int db = debug_scroll;

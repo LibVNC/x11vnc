@@ -695,7 +695,7 @@ int run_user_command(char *cmd, rfbClientPtr client, char *mode, char *input,
 
 #if LIBVNCSERVER_HAVE_FORK
 	{
-		pid_t pid, pidw;
+		pid_t pid;
 		struct sigaction sa, intr, quit;
 		sigset_t omask;
 
@@ -711,7 +711,7 @@ int run_user_command(char *cmd, rfbClientPtr client, char *mode, char *input,
 		if ((pid = fork()) > 0 || pid == -1) {
 
 			if (pid != -1) {
-				pidw = waitpid(pid, &rc, 0);
+				waitpid(pid, &rc, 0);
 			}
 
 			sigaction(SIGINT,  &intr, (struct sigaction *) NULL);
@@ -2644,7 +2644,7 @@ static void reverse_connect_timeout (int sig) {
 
 static int do_reverse_connect(char *str_in) {
 	rfbClientPtr cl;
-	char *host, *p, *str = str_in, *s = NULL;
+	char *host, *p, *str = str_in;
 	char *prestring = NULL;
 	int prestring_len = 0;
 	int rport = 5500, len = strlen(str);
@@ -2673,7 +2673,6 @@ static int do_reverse_connect(char *str_in) {
 		/*   repeater=string+host:port */
 		char *plus = strrchr(str, '+');
 		str = (char *) malloc(strlen(str_in)+1);
-		s = str;
 		*plus = '\0';
 		sprintf(str, "repeater=%s+%s", plus+1, str_in + strlen("repeater://"));
 		prestring = get_repeater_string(str, &prestring_len);

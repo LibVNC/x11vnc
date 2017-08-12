@@ -120,7 +120,6 @@ static char *cmd_output(char *cmd) {
 	FILE *p;
 	static char output[50000];
 	char line[1024];
-	int rc;
 
 	if (!cmd || *cmd == '\0') {
 		return "";
@@ -149,7 +148,7 @@ static char *cmd_output(char *cmd) {
 			strcat(output, line);
 		}
 	}
-	rc = pclose(p);
+	pclose(p);
 	return(output);
 }
 
