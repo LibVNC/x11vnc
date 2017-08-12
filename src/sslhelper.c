@@ -266,16 +266,16 @@ char *create_tmp_pem(char *pathin, int prompt) {
 
 	C = strdup("AU");
 	L = strdup(UT.sysname ? UT.sysname : "unknown-os");
-	snprintf(line, 1024, "%s-%f", UT.nodename ? UT.nodename :
+	snprintf(line, sizeof line, "%s-%f", UT.nodename ? UT.nodename :
 	    "unknown-node", dnow());
 	line[1024-1] = '\0';
 
 	OU = strdup(line);
 	O = strdup("x11vnc");
 	if (pathin) {
-		snprintf(line, 1024, "x11vnc-SELF-SIGNED-CERT-%d", getpid());
+		snprintf(line, sizeof line, "x11vnc-SELF-SIGNED-CERT-%d", getpid());
 	} else {
-		snprintf(line, 1024, "x11vnc-SELF-SIGNED-TEMPORARY-CERT-%d",
+		snprintf(line, sizeof line, "x11vnc-SELF-SIGNED-TEMPORARY-CERT-%d",
 		    getpid());
 	}
 	line[1024-1] = '\0';

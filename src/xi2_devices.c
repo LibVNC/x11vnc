@@ -60,7 +60,7 @@ int createMD(Display* dpy, char* name)
   XIDeviceInfo	*devinfo;
   int		num_devices, i;
   char handle[256]; /* device name */
-  snprintf(handle, 256, "%s pointer", name);
+  snprintf(handle, sizeof handle, "%s pointer", name);
 
   c.type = XIAddMaster;
   c.name = name;

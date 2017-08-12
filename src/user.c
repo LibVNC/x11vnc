@@ -142,14 +142,15 @@ static char *get_login_list(int with_display) {
 	char *out;
 #if HAVE_UTMPX_H
 	int i, cnt, max = 200, ut_namesize = 32;
-	int dpymax = 1000, sawdpy[1000];
+#define DPYMAX 1000
+	int sawdpy[DPYMAX];
 	struct utmpx *utx;
 
 	/* size based on "username:999," * max */
 	out = (char *) malloc(max * (ut_namesize+1+3+1) + 1);
 	out[0] = '\0';
 
-	for (i=0; i<dpymax; i++) {
+	for (i=0; i < DPYMAX; i++) {
 		sawdpy[i] = 0;
 	}
 
@@ -200,7 +201,7 @@ static char *get_login_list(int with_display) {
 				}
 			}
 
-			if (d < 0 || d >= dpymax || sawdpy[d]) {
+			if (d < 0 || d >= DPYMAX || sawdpy[d]) {
 				continue;
 			}
 			sawdpy[d] = 1;
@@ -414,7 +415,7 @@ static int lurk(char **users) {
 		u = users+1;
 		while (*u != NULL) {
 			char *q, chk[100];
-			snprintf(chk, 100, "%s:DPY", *u);
+			snprintf(chk, sizeof chk, "%s:DPY", *u);
 			q = strstr(tmp, chk);
 			if (q) {
 				char *p = q + strlen(chk);
@@ -468,7 +469,7 @@ static int lurk(char **users) {
 		}
 		*q = '\0';
 		user = t;
-		snprintf(dpystr, 10, ":%s", q+1);
+		snprintf(dpystr, sizeof dpystr, ":%s", q+1);
 
 		if (users) {
 			u = users;
@@ -946,7 +947,7 @@ int read_passwds(char *passfile) {
 		db_passwd = 1;
 	}
 
-	while (fgets(line, 1024, in) != NULL) {
+	while (fgets(line, sizeof line, in) != NULL) {
 		char *p;
 		int blank = 1;
 		int len = strlen(line); 
@@ -2092,48 +2093,48 @@ static char *build_create_cmd(char *cmd, int *saw_xdmcp, char *usslpeer, char *t
 		free(t);
 	}
 	if (fdgeom[0] == '\0' && getenv("FD_GEOM")) {
-		snprintf(fdgeom,  120, "%s", getenv("FD_GEOM"));
+		snprintf(fdgeom,  sizeof fdgeom, "%s", getenv("FD_GEOM"));
 	}
 	if (fdsess[0] == '\0' && getenv("FD_SESS")) {
-		snprintf(fdsess, 120, "%s", getenv("FD_SESS"));
+		snprintf(fdsess, sizeof fdsess, "%s", getenv("FD_SESS"));
 	}
 	if (fdopts[0] == '\0' && getenv("FD_OPTS")) {
-		snprintf(fdopts, 120, "%s", getenv("FD_OPTS"));
+		snprintf(fdopts, sizeof fdopts, "%s", getenv("FD_OPTS"));
 	}
 	if (fdextra[0] == '\0' && getenv("FD_EXTRA")) {
 		if (!strchr(getenv("FD_EXTRA"), '\'')) {
-			snprintf(fdextra, 250, "%s", getenv("FD_EXTRA"));
+			snprintf(fdextra, sizeof fdextra, "%s", getenv("FD_EXTRA"));
 		}
 	}
 	if (fdprog[0] == '\0' && getenv("FD_PROG")) {
-		snprintf(fdprog, 120, "%s", getenv("FD_PROG"));
+		snprintf(fdprog, sizeof fdprog, "%s", getenv("FD_PROG"));
 	}
 	if (fdxsrv[0] == '\0' && getenv("FD_XSRV")) {
-		snprintf(fdxsrv, 120, "%s", getenv("FD_XSRV"));
+		snprintf(fdxsrv, sizeof fdxsrv, "%s", getenv("FD_XSRV"));
 	}
 	if (fdcups[0] == '\0' && getenv("FD_CUPS")) {
-		snprintf(fdcups, 120, "%s", getenv("FD_CUPS"));
+		snprintf(fdcups, sizeof fdcups, "%s", getenv("FD_CUPS"));
 	}
 	if (fdesd[0] == '\0' && getenv("FD_ESD")) {
-		snprintf(fdesd, 120, "%s", getenv("FD_ESD"));
+		snprintf(fdesd, sizeof fdesd, "%s", getenv("FD_ESD"));
 	}
 	if (fdnas[0] == '\0' && getenv("FD_NAS")) {
-		snprintf(fdnas, 120, "%s", getenv("FD_NAS"));
+		snprintf(fdnas, sizeof fdnas, "%s", getenv("FD_NAS"));
 	}
 	if (fdsmb[0] == '\0' && getenv("FD_SMB")) {
-		snprintf(fdsmb, 120, "%s", getenv("FD_SMB"));
+		snprintf(fdsmb, sizeof fdsmb, "%s", getenv("FD_SMB"));
 	}
 	if (fdtag[0] == '\0' && getenv("FD_TAG")) {
-		snprintf(fdtag, 120, "%s", getenv("FD_TAG"));
+		snprintf(fdtag, sizeof fdtag, "%s", getenv("FD_TAG"));
 	}
 	if (fdxdmcpif[0] == '\0' && getenv("FD_XDMCP_IF")) {
-		snprintf(fdxdmcpif,  120, "%s", getenv("FD_XDMCP_IF"));
+		snprintf(fdxdmcpif,  sizeof fdxdmcpif, "%s", getenv("FD_XDMCP_IF"));
 	}
 	if (fdxdum[0] == '\0' && getenv("FD_XDUMMY_RUN_AS_ROOT")) {
-		snprintf(fdxdum, 120, "%s", getenv("FD_XDUMMY_RUN_AS_ROOT"));
+		snprintf(fdxdum, sizeof fdxdum, "%s", getenv("FD_XDUMMY_RUN_AS_ROOT"));
 	}
 	if (getenv("CREATE_DISPLAY_OUTPUT")) {
-		snprintf(cdout, 120, "CREATE_DISPLAY_OUTPUT='%s'", getenv("CREATE_DISPLAY_OUTPUT"));
+		snprintf(cdout, sizeof cdout, "CREATE_DISPLAY_OUTPUT='%s'", getenv("CREATE_DISPLAY_OUTPUT"));
 	}
 
 	if (strchr(fdgeom, '\''))	fdgeom[0] = '\0';
@@ -2523,7 +2524,7 @@ static int do_run_cmd(char *cmd, char *create_cmd, char *users_list_save, int cr
 
 		fdout[0] = '\0';
 		if (getenv("FIND_DISPLAY_OUTPUT")) {
-			snprintf(fdout, 120, " FIND_DISPLAY_OUTPUT='%s' ", getenv("FIND_DISPLAY_OUTPUT"));
+			snprintf(fdout, sizeof fdout, " FIND_DISPLAY_OUTPUT='%s' ", getenv("FIND_DISPLAY_OUTPUT"));
 		}
 
 		cmd = (char *) malloc(strlen("env X11VNC_SKIP_DISPLAY='' ")
@@ -2613,11 +2614,11 @@ if (db) fprintf(stderr, "c-res=%d n=%d line: '%s'\n", res, n, line);
 				if (! p) {
 					rfbLog("wait_for_client: popen failed: %s\n", create_cmd);
 					res = 0;
-				} else if (fgets(line1, 1024, p) == NULL) {
+				} else if (fgets(line1, sizeof line1, p) == NULL) {
 					rfbLog("wait_for_client: read failed: %s\n", create_cmd);
 					res = 0;
 				} else {
-					n = fread(line2, 1, 16384, p);
+					n = fread(line2, 1, sizeof line2, p);
 					if (pclose(p) != 0) {
 						res = 0;
 					} else {
@@ -2719,7 +2720,7 @@ if (db) fprintf(stderr, "\n");
 			}
 			clean_up_exit(1);
 		}
-		if (fgets(line1, 1024, p) == NULL) {
+		if (fgets(line1, sizeof line1, p) == NULL) {
 			rfbLog("wait_for_client: read failed: %s\n", cmd);
 			rfbLogPerror("fgets");
 			if (tmp_fd >= 0) {
@@ -2727,7 +2728,7 @@ if (db) fprintf(stderr, "\n");
 			}
 			clean_up_exit(1);
 		}
-		n = fread(line2, 1, 16384, p);
+		n = fread(line2, 1, sizeof line2, p);
 		rc = pclose(p);
 
 		if (rc != 0) {
@@ -2760,7 +2761,7 @@ if (db) fprintf(stderr, "\n");
 				}
 				clean_up_exit(1);
 			}
-			if (fgets(line1, 1024, p) == NULL) {
+			if (fgets(line1, sizeof line1, p) == NULL) {
 				rfbLog("wait_for_client: read failed: %s\n", create_cmd);
 				rfbLogPerror("fgets");
 				if (tmp_fd >= 0) {
@@ -2768,7 +2769,7 @@ if (db) fprintf(stderr, "\n");
 				}
 				clean_up_exit(1);
 			}
-			n = fread(line2, 1, 16384, p);
+			n = fread(line2, 1, sizeof line2, p);
 			pclose(p);
 		}
 		if (tmp_fd >= 0) {
@@ -2811,7 +2812,7 @@ if (db) fprintf(stderr, "%d -- %s\n", i, proc);
 					buf[k] = '\0';
 				}
 	
-				if (readlink(proc, buf, 100) != -1) {
+				if (readlink(proc, buf, sizeof buf) != -1) {
 					buf[100-1] = '\0';
 if (db) fprintf(stderr, "%d -- %s -- %s\n", i, proc, buf);
 					if (strstr(buf, "/dev/tty") == buf) {
@@ -2872,9 +2873,9 @@ fprintf(stderr, "\n");}
 		}
 
 		if (created_disp) {
-			snprintf(str, 30, "Created DISPLAY %s", use_dpy);
+			snprintf(str, sizeof str, "Created DISPLAY %s", use_dpy);
 		} else {
-			snprintf(str, 30, "Using DISPLAY %s", use_dpy);
+			snprintf(str, sizeof str, "Using DISPLAY %s", use_dpy);
 		}
 		unixpw_msg(str, 2);
 	}

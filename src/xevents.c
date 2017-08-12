@@ -915,7 +915,7 @@ void sync_tod_with_servertime(void) {
 		set_prop_atom(xev.xproperty.atom);
 	}
 
-	snprintf(diff, 128, "%d/%08d/%lu/%.6f", (int) getpid(), seq++,
+	snprintf(diff, sizeof diff, "%d/%08d/%lu/%.6f", (int) getpid(), seq++,
 	    xserver_ticks, servertime_diff); 
 	XChangeProperty(dpy, rootwin, ticker_atom, XA_STRING, 8,
 	    PropModeReplace, (unsigned char *) diff, strlen(diff));

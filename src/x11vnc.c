@@ -460,7 +460,7 @@ if (tstk[j] != 0) fprintf(stderr, "B redir[%d][%d] = %d  %s\n", i, j, tstk[j], t
 					int p0, p, found = -1, jzero = -1;
 					int conn = -1;
 
-					get_prop(num, 32, atom[i], None);
+					get_prop(num, sizeof num, atom[i], None);
 					p0 = atoi(num);
 
 					for (j = TSSTK-1; j >= 0; j--) {
@@ -797,7 +797,7 @@ static void check_redir_services(void) {
 	a = XInternAtom(dpy, "TS_REDIR_PID", False);
 	if (a != None) {
 		prop[0] = '\0';
-		get_prop(prop, 512, a, None);
+		get_prop(prop, sizeof prop-1, a, None);
 		if (prop[0] != '\0') {
 			pid = (pid_t) atoi(prop);
 		}
@@ -819,7 +819,7 @@ static void check_redir_services(void) {
 	prop[0] = '\0';
 	a = XInternAtom(dpy, "TS_REDIR", False);
 	if (a != None) {
-		get_prop(prop, 512, a, None);
+		get_prop(prop, sizeof prop-1, a, None);
 	}
 	if (db) fprintf(stderr, "TS_REDIR Atom: %d = '%s'\n", (int) a, prop);
 	if (prop[0] == '\0') {

@@ -1302,11 +1302,11 @@ static unsigned char t2x2_bits[] = {
 				ip = openssl_last_ip;
 			}
 		}
-		snprintf(strh, 100, "x11vnc: %s connection from %s?", type, ip);
+		snprintf(strh, sizeof strh, "x11vnc: %s connection from %s?", type, ip);
 	} else {
-		snprintf(strh, 100, "x11vnc: client disconnected from %s", addr);
+		snprintf(strh, sizeof strh, "x11vnc: client disconnected from %s", addr);
 	}
-	snprintf(stri, 100, "        (%s)", userhost);
+	snprintf(stri, sizeof stri, "        (%s)", userhost);
 
 	key_o = XKeysymToKeycode(dpy, XStringToKeysym("o"));
 	key_y = XKeysymToKeycode(dpy, XStringToKeysym("y"));
@@ -2563,7 +2563,7 @@ char *get_repeater_string(char *str, int *len) {
 		/* ultravnc repeater http://www.uvnc.com/addons/repeater.html */
 		prestring_len = 250;
 		ptmp = (char *) calloc(prestring_len+1, 1);
-		snprintf(ptmp, 250, "%s", str + strlen("repeater="));
+		snprintf(ptmp, prestring_len, "%s", str + strlen("repeater="));
 		which = 1;
 	} else if (strstr(str, "pre=") == str) {
 		prestring_len = strlen(str + strlen("pre="));
@@ -4047,7 +4047,7 @@ enum rfbNewClientAction new_client(rfbClientPtr client) {
         if(use_multipointer)
           {
 	    char tmp[256];
-            snprintf(tmp, 256, "x11vnc %s", client->host);
+            snprintf(tmp, sizeof tmp, "x11vnc %s", client->host);
 
             xi2_device_creation_in_progress = 1;
 
@@ -4065,7 +4065,7 @@ enum rfbNewClientAction new_client(rfbClientPtr client) {
 
             xi2_device_creation_in_progress = 0;
 
-            snprintf(tmp, 256, "%i", cd->uid);
+            snprintf(tmp, sizeof tmp, "%i", cd->uid);
 	    cd->cursor = setClientCursor(dpy, cd->ptr_id, 0.4*(cd->ptr_id%3), 0.2*(cd->ptr_id%5), 1*(cd->ptr_id%2), tmp);
 	    if(!cd->cursor)
               rfbLog("Setting cursor for client %s failed.\n", client->host);

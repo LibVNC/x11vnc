@@ -440,17 +440,18 @@ static char *crash_debug_command = NULL;
 
 void initialize_crash_handler(void) {
 	int pid = program_pid;
-	crash_stack_command1 = (char *) malloc(1000);
-	crash_stack_command2 = (char *) malloc(1000);
-	crash_debug_command =  (char *) malloc(1000);
+	size_t buffer_size = 1000;
+	crash_stack_command1 = (char *) malloc(buffer_size);
+	crash_stack_command2 = (char *) malloc(buffer_size);
+	crash_debug_command =  (char *) malloc(buffer_size);
 
-	snprintf(crash_stack_command1, 500, "echo where > /tmp/gdb.%d;"
+	snprintf(crash_stack_command1, buffer_size, "echo where > /tmp/gdb.%d;"
 	    " env PATH=$PATH:/usr/local/bin:/usr/sfw/bin:/usr/bin"
 	    " gdb -x /tmp/gdb.%d -batch -n %s %d;"
 	    " rm -f /tmp/gdb.%d", pid, pid, program_name, pid, pid);
-	snprintf(crash_stack_command2, 500, "pstack %d", program_pid);
+	snprintf(crash_stack_command2, buffer_size, "pstack %d", program_pid);
 	
-	snprintf(crash_debug_command, 500, "gdb %s %d", program_name, pid);
+	snprintf(crash_debug_command, buffer_size, "gdb %s %d", program_name, pid);
 }
 
 static void crash_shell_help(void) {
@@ -479,7 +480,7 @@ static void crash_shell(void) {
 
 	crash_shell_help();
 	fprintf(stderr, "\ncrash> ");
-	while (fgets(line, 1000, stdin) != NULL) {
+	while (fgets(line, sizeof line, stdin) != NULL) {
 		str = lblanks(line);
 
 		p = str;
@@ -516,7 +517,7 @@ static void crash_shell(void) {
 			system(cmd);
 			usleep(1000*1000);
 		} else {
-			snprintf(qry, 1000, "qry=%s", str);
+			snprintf(qry, sizeof qry, "qry=%s", str);
 			p = process_remote_cmd(qry, 1);
 			fprintf(stderr, "\n\nresult:\n%s\n", p);
 			free(p);

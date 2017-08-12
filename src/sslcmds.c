@@ -195,7 +195,7 @@ int start_stunnel(int stunnel_port, int x11vnc_port, int hport, int x11vnc_hport
 			if (in != NULL) {
 				char line[128];
 				fprintf(stderr, "\n");
-				while (fgets(line, 128, in) != NULL) {
+				while (fgets(line, sizeof line, in) != NULL) {
 					fprintf(stderr, "%s", line);
 				}
 				fprintf(stderr, "\n");
@@ -828,7 +828,7 @@ void sslEncKey(char *path, int mode) {
 		}
 		incert = 0;
 		cert[0] = '\0';
-		while (fgets(line, 1024, file) != NULL) {
+		while (fgets(line, sizeof line, file) != NULL) {
 			if (strstr(line, "-----BEGIN CERTIFICATE-----")
 			    == line) {
 				incert = 1;
@@ -879,7 +879,7 @@ void sslEncKey(char *path, int mode) {
 			rfbLogPerror("fopen");
 			exit(1);
 		}
-		while (fgets(line, 1024, file) != NULL) {
+		while (fgets(line, sizeof line, file) != NULL) {
 			if (strstr(line, "-----BEGIN CERTIFICATE-----")
 			    == line) {
 				got_cert++;

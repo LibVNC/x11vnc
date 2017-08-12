@@ -855,7 +855,7 @@ void initialize_remap(char *infile) {
 		rewind(in);
 	}
 
-	while (fgets(line, 256, in) != NULL) {
+	while (fgets(line, sizeof line, in) != NULL) {
 		p = lblanks(line);
 		if (*p == '\0') {
 			continue;
