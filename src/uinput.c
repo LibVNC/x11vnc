@@ -41,7 +41,7 @@ so, delete this exception statement from your version.
 #include "keyboard.h"
 #include "allowed_input_t.h"
 
-#if LIBVNCSERVER_HAVE_SYS_IOCTL_H
+#if HAVE_SYS_IOCTL_H
 #if HAVE_LINUX_INPUT_H
 #if HAVE_LINUX_UINPUT_H
 #define UINPUT_OK

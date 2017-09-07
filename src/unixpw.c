@@ -75,7 +75,7 @@ extern char *crypt(const char*, const char *);
 #endif
 #endif
 
-#if LIBVNCSERVER_HAVE_SYS_IOCTL_H
+#if HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>
 #endif
 #if HAVE_TERMIOS_H
@@ -538,7 +538,7 @@ char *get_pty_ptmx(int *fd_p) {
 		return NULL;
 	}
 
-#if LIBVNCSERVER_HAVE_SYS_IOCTL_H && defined(TIOCPKT)
+#if HAVE_SYS_IOCTL_H && defined(TIOCPKT)
 	tmp = 0;
 	ioctl(fd, TIOCPKT, (char *) &tmp);
 #endif
@@ -561,7 +561,7 @@ char *get_pty_ptmx(int *fd_p) {
 		return NULL;
 	}
 
-#if LIBVNCSERVER_HAVE_SYS_IOCTL_H && defined(TIOCFLUSH)
+#if HAVE_SYS_IOCTL_H && defined(TIOCFLUSH)
 	ioctl(fd, TIOCFLUSH, (char *) 0);
 #endif
 
@@ -611,7 +611,7 @@ char *get_pty_loop(int *fd_p) {
 		return NULL;
 	}
 
-#if LIBVNCSERVER_HAVE_SYS_IOCTL_H && defined(TIOCFLUSH)
+#if HAVE_SYS_IOCTL_H && defined(TIOCFLUSH)
 	ioctl(fd, TIOCFLUSH, (char *) 0);
 #endif
 
@@ -1065,7 +1065,7 @@ int su_verify(char *user, char *pass, char *cmd, char *rbuf, int *rbuf_size, int
 			perror("setpgrp");
 			exit(1);
 		}
-#if LIBVNCSERVER_HAVE_SYS_IOCTL_H && defined(TIOCNOTTY)
+#if HAVE_SYS_IOCTL_H && defined(TIOCNOTTY)
 		ttyfd = open("/dev/tty", O_RDWR);
 		if (ttyfd >= 0) {
 			(void) ioctl(ttyfd, TIOCNOTTY, (char *) 0);
@@ -1087,7 +1087,7 @@ int su_verify(char *user, char *pass, char *cmd, char *rbuf, int *rbuf_size, int
 /* streams options fixups, handle cases as they are found: */
 #if defined(__hpux)
 #if HAVE_SYS_STROPTS_H
-#if LIBVNCSERVER_HAVE_SYS_IOCTL_H && defined(I_PUSH)
+#if HAVE_SYS_IOCTL_H && defined(I_PUSH)
 		if (used_get_pty_ptmx) {
 			ioctl(sfd, I_PUSH, "ptem");
 			ioctl(sfd, I_PUSH, "ldterm");
@@ -1105,7 +1105,7 @@ int su_verify(char *user, char *pass, char *cmd, char *rbuf, int *rbuf_size, int
 			exit(1);
 		}
 
-#if LIBVNCSERVER_HAVE_SYS_IOCTL_H && defined(TIOCSCTTY)
+#if HAVE_SYS_IOCTL_H && defined(TIOCSCTTY)
 		ioctl(sfd, TIOCSCTTY, (char *) 0);
 #endif
 
@@ -1204,7 +1204,7 @@ int su_verify(char *user, char *pass, char *cmd, char *rbuf, int *rbuf_size, int
 		return 0;
 	}
 
-#if LIBVNCSERVER_HAVE_SYS_IOCTL_H && defined(TIOCTRAP)
+#if HAVE_SYS_IOCTL_H && defined(TIOCTRAP)
 	{
 		int control = 1;
 		ioctl(fd, TIOCTRAP, &control);
