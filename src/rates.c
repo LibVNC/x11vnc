@@ -531,14 +531,13 @@ if (db) fprintf(stderr, "%d client num rects req: %d  mod: %d  cbs: %d  "
 			if (use_threads) UNLOCK(cl->updateMutex);
 
 if (db) fprintf(stderr, "dt2 calc: num rects req: %d/%d mod: %d/%d  "
+#if LIBVNCSERVER_HAS_STATS
     "fbu-sent: %d  dt: %.4f dt2: %.4f  tm: %.4f\n",
     req0, req1, mod0, mod1,
-#if 0
-    cl->framebufferUpdateMessagesSent,
-#else
-#if LIBVNCSERVER_HAS_STATS
     rfbStatGetMessageCountSent(cl, rfbFramebufferUpdate),
-#endif
+#else
+    "dt: %.4f dt2: %.4f  tm: %.4f\n",
+    req0, req1, mod0, mod1,
 #endif
     dt, dt2, tm);
 			if (req1 != 0 && mod1 == 0) {
@@ -614,14 +613,13 @@ if (db) fprintf(stderr, "dt2 calc: num rects req: %d/%d mod: %d/%d  "
 					if (use_threads) UNLOCK(cl->updateMutex);
 
 if (db) fprintf(stderr, "dt3 calc: num rects req: %d/%d mod: %d/%d  "
+#if LIBVNCSERVER_HAS_STATS
     "fbu-sent: %d  dt: %.4f dt3: %.4f  tm: %.4f\n",
     req0, req1, mod0, mod1,
-#if 0
-    cl->framebufferUpdateMessagesSent,
-#else
-#if LIBVNCSERVER_HAS_STATS
     rfbStatGetMessageCountSent(cl, rfbFramebufferUpdate),
-#endif
+#else
+    "dt: %.4f dt3: %.4f  tm: %.4f\n",
+    req0, req1, mod0, mod1,
 #endif
     dt, dt3, tm);
 
