@@ -2747,6 +2747,7 @@ static int do_reverse_connect(char *str_in) {
 		if(strcmp(host, "localhost") && strcmp(host, "127.0.0.1")) {
 			if (!getenv("STUNNEL_DISABLE_LOCALHOST")) {
 				rfbLog("reverse_connect: error host not localhost in -stunnel mode.\n");
+				free(host);
 				return 0;
 			}
 		}
@@ -2767,6 +2768,7 @@ static int do_reverse_connect(char *str_in) {
 				rfbLog("reverse_connect: warning disabling localhost constraint in -unixpw\n");
 			} else {
 				rfbLog("reverse_connect: error not localhost in -unixpw\n");
+				free(host);
 				return 0;
 			}
 		}
