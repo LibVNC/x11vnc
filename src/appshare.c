@@ -719,7 +719,7 @@ typedef struct {
 #endif
 
 static void get_wm_name(Window win, char **name) {
-	int ok;
+	int ok = 0;
 
 #if !NO_X11
         XErrorHandler old_handler = XSetErrorHandler(trap_xerror);
