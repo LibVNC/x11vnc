@@ -54,7 +54,8 @@ void check_bell_event(void);
 void initialize_xkb(void) {
 	int ir, reason;
 	int op, ev, er, maj, min;
-	
+	Display* xkb_disp;
+
 	RAWFB_RET_VOID
 
 	if (xkbcompat) {
@@ -76,14 +77,19 @@ void initialize_xkb(void) {
 		return;
 	}
 
-	if (! XkbOpenDisplay(DisplayString(dpy), &xkb_base_event_type, &ir,
-	    NULL, NULL, &reason) ) {
+	/* XkbOpenDisplay returns a connection, close it to avoid a memleak */
+	xkb_disp = XkbOpenDisplay(DisplayString(dpy), &xkb_base_event_type, &ir,
+		NULL, NULL, &reason);
+
+	if (!xkb_disp) {
 		if (! quiet) {
 			rfbLog("warning: disabling XKEYBOARD. XkbOpenDisplay"
 			    " failed.\n");
 		}
 		xkb_base_event_type = 0;
 		xkb_present = 0;
+	} else {
+		XCloseDisplay(xkb_disp);
 	}
 	xauth_raw(0);
 }

@@ -1772,10 +1772,11 @@ char *process_remote_cmd(char *cmd, int stringonly) {
 		}
 		rfbLog("remote_cmd: enable -avahi mDNS mode.\n");
 		if (!avahi) {
+			char *host = this_host();
 			avahi = 1;
 			avahi_initialise();
-			avahi_advertise(vnc_desktop_name, this_host(),
-			    screen->port);
+			avahi_advertise(vnc_desktop_name, host, screen->port);
+			free(host);
 		}
 		goto done;
 	}
@@ -5833,8 +5834,10 @@ char *process_remote_cmd(char *cmd, int stringonly) {
 				d = DisplayString(dpy);
 				if (! d) d = "unknown";
 				if (*d == ':') {
+					char *host = this_host();
 					snprintf(buf, bufn, "aro=%s:%s%s", p,
-					    this_host(), d);
+					    host, d);
+					free(host);
 				} else {
 					snprintf(buf, bufn, "aro=%s:%s", p, d);
 				}
