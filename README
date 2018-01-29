@@ -1,5 +1,13 @@
 [![Build Status](https://travis-ci.org/LibVNC/x11vnc.svg?branch=master)](https://travis-ci.org/LibVNC/x11vnc)
 
+This is x11vnc with its development continued by LibVNC and the GitHub community.
+While 0.9.13 was the last release by the original author Karl Runge, 0.9.14 was
+the first community-based release here on GitHub.
+
+This repo represents the x11vnc codebase that once resided in the LibVNCServer repo.
+It was splitt off LibVNCServer and moved here with
+https://github.com/LibVNC/libvncserver/commit/498d222976975f53dea885cfe43ef0f805abd412.
+
 Copyright (C) 2002-2010 Karl J. Runge <runge@karlrunge.com>
 All rights reserved.
 
