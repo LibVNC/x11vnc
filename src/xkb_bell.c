@@ -52,40 +52,21 @@ void check_bell_event(void);
  * check for XKEYBOARD, set up xkb_base_event_type
  */
 void initialize_xkb(void) {
-	int ir, reason;
-	int op, ev, er, maj, min;
+	int op, er, maj, min;
 	
 	RAWFB_RET_VOID
 
 	if (xkbcompat) {
 		xkb_present = 0;
-	} else if (! XkbQueryExtension(dpy, &op, &ev, &er, &maj, &min)) {
+	} else if (! XkbQueryExtension(dpy, &op, &xkb_base_event_type, &er, &maj, &min)) {
 		if (! quiet) {
 			rfbLog("warning: XKEYBOARD extension not present.\n");
 		}
 		xkb_present = 0;
+		xkb_base_event_type = 0;
 	} else {
 		xkb_present = 1;
 	}
-
-	if (! xkb_present) {
-		return;
-	}
-
-	if (! xauth_raw(1)) {
-		return;
-	}
-
-	if (! XkbOpenDisplay(DisplayString(dpy), &xkb_base_event_type, &ir,
-	    NULL, NULL, &reason) ) {
-		if (! quiet) {
-			rfbLog("warning: disabling XKEYBOARD. XkbOpenDisplay"
-			    " failed.\n");
-		}
-		xkb_base_event_type = 0;
-		xkb_present = 0;
-	}
-	xauth_raw(0);
 }
 
 void initialize_watch_bell(void) {
