@@ -1,3 +1,16 @@
+x11vnc 0.9.15	2018-02-04
+
+New in the 0.9.15 x11vnc release:
+
+	Misc. buffer overflow and memleak fixes.
+
+	Support for OpenSSL 1.1.0.
+
+	Fix for Debian bug #672435.
+
+
+-----------------------------------------------------------------------------
+
 
 x11vnc 0.9.14	2015-11-14
 
