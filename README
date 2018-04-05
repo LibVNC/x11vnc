@@ -437,7 +437,10 @@ nc -localhost -display :0'
    If you can't remember it, or are otherwise not worried about port
    scanners detecting the presence of your SSH server and there is just
    one internal PC involved you could map 22:
+
+  ```
   Port 22 -> 192.168.1.3, Port 22 (SSH)
+  ```
 
    Again, this SSH gateway access can be done automatically for you via
    the "Proxy/Gateway" setting in SSVNC. And under the "Remote SSH
@@ -488,7 +491,6 @@ nc -localhost -display :0'
    The IP address would need to be communicated to the person running the
    VNC Viewer. The site http://www.whatismyip.com/ can help here.
 
-     _________________________________________________________________
 
    Scripts to automate ssh tunneling: As discussed below, there may be
    some problems with port 5900 being available. If that happens, the
@@ -738,7 +740,10 @@ $MAKE
    Shortcuts: On Solaris 10 you can pick up almost everything just by
    insuring that your PATH has /usr/sfw/bin (for gcc) and /usr/ccs/bin
    (for other build tools), e.g.:
+
+  ```
   env PATH=/usr/sfw/bin:/usr/ccs/bin:$PATH sh -c './configure; make'
+  ```
 
    (The only thing this misses is /usr/X11/lib/libXrandr.so.2, which is
    for the little used -xrandr option, see the script below to pick it up
@@ -749,8 +754,11 @@ $MAKE
    /usr/sfw/lib), and zlib in Solaris 8 and later (/usr/include and
    /usr/lib.) So on Solaris 9 you can pick up everything with something
    like this:
+
+  ```
   env PATH=/usr/local/bin:/usr/ccs/bin:$PATH sh -c './configure --with-jpeg=/us
 r/sfw; make'
+  ```
 
    assuming your gcc is in /usr/local/bin and x11vnc 0.7.1 or later.
    These are getting pretty long, see those assignments split up in the
@@ -969,6 +977,7 @@ make
 
 
    Here are some features that will appear in the 0.9.13 release:
+
      * Improved support for non-X11 touchscreen devices (e.g. handheld or
        cell phone) via Linux uinput input injection. Additional tuning
        parameters are added. TSLIB touchscreen calibration is supported.
@@ -1016,6 +1025,7 @@ make
 
 
    Here are some features that appeared in the 0.9.12 release (Sep/2010):
+
      * One can now specify the maximum number of displays that can be
        created in -create mode via the env. var.
        X11VNC_CREATE_MAX_DISPLAYS
@@ -1029,6 +1039,7 @@ make
 
 
    Here are some features that appeared in the 0.9.11 release (Aug/2010):
+
      * The source tree is synchronized with the most recent libvncclient
        (this only affects -reflect mode.) Build is fixed for
        incompatibilities when using an external LibVNCServer (e.g.
@@ -1045,6 +1056,7 @@ make
 
 
    Here are some features that appeared in the 0.9.10 release (May/2010):
+
      * The included SSL enabled Java applet viewer now supports Chained
        SSL Certificates. The debugCerts=yes applet parameter aids
        troubleshooting certificate validation. The x11vnc -ssl mode has
@@ -1096,6 +1108,7 @@ make
 
 
    Here are some features that appeared in the 0.9.9 release (Dec/2009):
+
      * The -unixpw_system_greeter option, when used in combined unixpw
        and XDMCP FINDCREATEDISPLAY mode (for example: -xdmsvc), enables
        the user to press Escape to jump directly to the XDM/GDM/KDM login
@@ -1165,6 +1178,7 @@ make
 
 
    Here are some features that appeared in the 0.9.8 release (Jul/2009):
+
      * Stability improvements to -threads mode. Running x11vnc this way
        is more reliable now. Threaded operation sometimes gives better
        interactive response and faster updates: try it out. The threaded
@@ -1190,6 +1204,7 @@ make
 
 
    Here are some features that appeared in the 0.9.7 release (Mar/2009):
+
      * Support for polling Linux Virtual Terminals (also called virtual
        consoles) directly instead of using /dev/fb. The option to use is,
        for example, "-rawfb vt2" for Virtual Terminal 2, etc. In this
@@ -1213,6 +1228,7 @@ make
 
 
    Here are some features that appeared in the 0.9.6 release (Dec/2008):
+
      * Support for VeNCrypt SSL/TLS encrypted connections. It is enabled
        by default in the -ssl mode. VNC Viewers like vinagre,
        gvncviewer/gtk-vnc, the vencrypt package, SSVNC, and others
@@ -1280,6 +1296,7 @@ LAY
 
 
    Here are some features that appeared in the 0.9.5 release (Oct/2008):
+
      * Symmetric key encryption ciphers. ARC4, AES-128, AES-256,
        blowfish, and 3des are supported. Salt and initialization vector
        seeding is provided. These compliment the more widely used SSL and
@@ -1301,6 +1318,7 @@ LAY
 
 
    Here are some features that appeared in the 0.9.4 release (Sep/2008):
+
      * Improvements to the -find and -create X session finding or
        creating modes: new desktop types and service redirection options.
        Personal cupsd daemon and SSH port redirection helper for use with
@@ -1345,6 +1363,7 @@ LAY
 
 
    Here are some features that appeared in the 0.9.3 release (Oct/2007):
+
      * Viewer-side pixmap caching. A large area of pixels (at least 2-3
        times as big as the framebuffer itself; the bigger the better...
        default is 10X) is placed below the framebuffer to act as a
@@ -1358,6 +1377,7 @@ LAY
 
 
    Here are some features that appeared in the 0.9.2 release (Jun/2007):
+
      * Building with no OpenSSL libssl available (or with --without-ssl)
        has been fixed.
      * One can configure x11vnc via "./configure
@@ -1373,6 +1393,7 @@ LAY
 
 
    Here are some features that appeared in the 0.9.1 release (May/2007):
+
      * The UltraVNC Java viewer has been enhanced to support SSL (as the
        TightVNC viewer had been previously.) The UltraVNC Java supports
        ultravnc filetransfer, and so can be used as a VNC viewer on Unix
@@ -1398,6 +1419,7 @@ LAY
 
 
    Here are some features that appeared in the 0.9 release (Apr/2007):
+
      * VNC Service advertising via mDNS / ZeroConf / BonJour with the
        Avahi client library. Enable via "-avahi" or "-zeroconf".
      * Implementations of UltraVNC's TextChat, SingleWindow, and
@@ -1422,6 +1444,7 @@ LAY
 
 
    Here are some features that appeared in the 0.8.4 release (Feb/2007):
+
      * Native Mac OS X Aqua/Quartz support. (i.e. OSXvnc alternative;
        some activities are faster)
      * A new login mode: "-display WAIT:cmd=FINDCREATEDISPLAY -unixpw
@@ -1456,6 +1479,7 @@ LAY
 
 
    Here are some features that appeared in the 0.8.3 release (Nov/2006):
+
      * The -ssl option provides SSL encryption and authentication
        natively via the www.openssl.org library. One can use from a
        simple self-signed certificate server certificate up to full CA
@@ -1509,7 +1533,6 @@ LAY
        me a problem report.
 
 #  Here are some Previous Release Notes
-     _________________________________________________________________
 
 ##  Some Notes:
 
@@ -1546,8 +1569,11 @@ LAY
    to take advantage of this encoding.
 
    TCP port issues:   Notice the lines
+
+  ```
   18/07/2003 14:36:31 Autoprobing selected port 5900
   PORT=5900
+  ```
 
    in the output. 5900 is the default VNC listening port (just like 6000
    is X11's default listening port.) Had port 5900 been taken by some
@@ -1596,14 +1622,12 @@ LAY
    XBell "beeps" once, you get an infinite loop of beeps going off.
    Although all of this is mildly exciting it is not much use: you will
    normally run and display the viewer on a different machine!
-     _________________________________________________________________
 
 ##  Sun Ray Notes:
 
    You can run x11vnc on your (connected or disconnected) SunRay session.
    Here are some notes on SunRay usage with x11vnc.
 
-     _________________________________________________________________
 
 ##  Limitations:
 
@@ -1708,12 +1732,8 @@ LAY
    Also, some people ask if they can make a donation, see this link for
    that.
 	
-=======================================================================
 http://www.karlrunge.com/x11vnc/faq.html:
 
-
-   x11vnc Home    Donations
-     _________________________________________________________________
 
 #   x11vnc FAQ:
 
