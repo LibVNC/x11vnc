@@ -28,7 +28,7 @@ http://www.karlrunge.com/x11vnc/index.html:
 
      _________________________________________________________________
 
-x11vnc: a VNC server for real X displays
+# x11vnc: a VNC server for real X displays
                 (to FAQ)    (to Downloads)    (to Building)    (to Beta Test)
   (to Donations) [PayPal] 
 
@@ -85,7 +85,7 @@ x11vnc: a VNC server for real X displays
 
      _________________________________________________________________
 
-    Announcements:
+#   Announcements:
 
    Important: If you created any permanent SSL certificates (e.g. via
    "x11vnc -ssl SAVE ...") on a Debian or Ubuntu system from Sept. 2006
@@ -108,7 +108,7 @@ to:     http://www.karlrunge.com/x11vnc/faq.html#faq-singleclick
 
      _________________________________________________________________
 
-    Background:
+#   Background:
 
    VNC (Virtual Network Computing) is a very useful network graphics
    protocol (applications running on one computer but displaying their
@@ -153,7 +153,7 @@ to:     http://www.karlrunge.com/x11vnc/faq.html#faq-singleclick
    work out on the deck for a while. This is where x11vnc is useful.
      _________________________________________________________________
 
-    How to use x11vnc:
+#   How to use x11vnc:
 
    In this basic example let's assume the remote machine with the X
    display you wish to view is "far-away.east:0" and the workstation you
@@ -293,7 +293,7 @@ to:     http://www.karlrunge.com/x11vnc/faq.html#faq-singleclick
    vncviewers in "-listen" mode on the list of hosts.
      _________________________________________________________________
 
-    Tunnelling x11vnc via SSH:
+#   Tunnelling x11vnc via SSH:
 
    The above example had no security or privacy at all. When logging into
    remote machines (certainly when going over the internet) it is best to
@@ -572,7 +572,7 @@ vncviewer -via $host localhost:0      # must be TightVNC vncviewer.
 
      _________________________________________________________________
 
-    Tunnelling x11vnc via SSL/TLS:
+#   Tunnelling x11vnc via SSL/TLS:
 
    One can also encrypt the VNC traffic using an SSL/TLS tunnel such as
    stunnel.mirt.net (also stunnel.org) or using the built-in (Mar/2006)
@@ -589,7 +589,7 @@ vncviewer -via $host localhost:0      # must be TightVNC vncviewer.
    too.
      _________________________________________________________________
 
-    Downloading x11vnc:
+#   Downloading x11vnc:
 
    x11vnc is a contributed program to the LibVNCServer project at
    SourceForge.net. I use libvncserver for all of the VNC aspects; I
@@ -631,7 +631,7 @@ vncviewer -via $host localhost:0      # must be TightVNC vncviewer.
 
      _________________________________________________________________
 
-    Building x11vnc:
+#   Building x11vnc:
 
    Make sure you have all the needed build/compile/development packages
    installed (e.g. Linux distributions foolishly don't install them by
@@ -896,7 +896,7 @@ make
 
      _________________________________________________________________
 
-    Beta Testing:
+#   Beta Testing:
 
    I don't have any formal beta-testers for the releases of x11vnc, so
    I'd appreciate any additional testing very much.
@@ -1465,10 +1465,10 @@ LAY
        "-v") to turn it back on for debugging or if you are going to send
        me a problem report.
 
-   Here are some Previous Release Notes
+#  Here are some Previous Release Notes
      _________________________________________________________________
 
-    Some Notes:
+##  Some Notes:
 
    Both a client and a server:   It is sometimes confusing to people that
    x11vnc is both a client and a server at the same time. It is an X
@@ -1555,14 +1555,14 @@ LAY
    normally run and display the viewer on a different machine!
      _________________________________________________________________
 
-    Sun Ray Notes:
+##  Sun Ray Notes:
 
    You can run x11vnc on your (connected or disconnected) SunRay session.
    Here are some notes on SunRay usage with x11vnc.
 
      _________________________________________________________________
 
-    Limitations:
+##  Limitations:
 
      * Due to the polling nature, some activities (opaque window moves,
        scrolling), can be pretty choppy/ragged and others (exposures of
@@ -1672,7 +1672,7 @@ http://www.karlrunge.com/x11vnc/faq.html:
    x11vnc Home    Donations
      _________________________________________________________________
 
-    x11vnc FAQ:
+#   x11vnc FAQ:
 
 
    [Building and Starting]
