@@ -26,11 +26,7 @@ they contain the most up to date info.
 http://www.karlrunge.com/x11vnc/index.html:
 
 
-     _________________________________________________________________
-
 # x11vnc: a VNC server for real X displays
-                (to FAQ)    (to Downloads)    (to Building)    (to Beta Test)
-  (to Donations) [PayPal] 
 
    x11vnc allows one to view remotely and interact with real X displays
    (i.e. a display corresponding to a physical monitor, keyboard, and
@@ -83,7 +79,6 @@ http://www.karlrunge.com/x11vnc/index.html:
    a USB memory stick for SSL/SSH VNC viewing from nearly any networked
    computer.
 
-     _________________________________________________________________
 
 #   Announcements:
 
@@ -106,7 +101,6 @@ to:     http://www.karlrunge.com/x11vnc/faq.html#faq-singleclick
    automatically redirect to the new page since the '#' anchor is not
    sent to the webserver.
 
-     _________________________________________________________________
 
 #   Background:
 
@@ -117,6 +111,7 @@ to:     http://www.karlrunge.com/x11vnc/faq.html#faq-singleclick
    framebuffer (RFB) protocol.
 
    Some VNC links:
+
      * http://www.realvnc.com
      * http://www.tightvnc.com
      * http://www.ultravnc.com/
@@ -138,6 +133,7 @@ to:     http://www.karlrunge.com/x11vnc/faq.html#faq-singleclick
 
    So the standard Xvnc/vncserver program is very useful, I use it for
    things like:
+
      * Desktop conferencing with other users (e.g. code reviews.)
      * Long running apps/tasks I want to be able to view from many places
        (e.g. from home and work.)
@@ -151,7 +147,6 @@ to:     http://www.karlrunge.com/x11vnc/faq.html#faq-singleclick
    an already running application, or would like to help a distant
    colleague solve a problem with their desktop, or would just like to
    work out on the deck for a while. This is where x11vnc is useful.
-     _________________________________________________________________
 
 #   How to use x11vnc:
 
@@ -175,7 +170,7 @@ to:     http://www.karlrunge.com/x11vnc/faq.html#faq-singleclick
    in this example) run x11vnc directed at the far-away.east X session
    display:
 
-  far-away> x11vnc -display :0
+   `far-away> x11vnc -display :0`
 
    You could have also set the environment variable DISPLAY=:0 instead of
    using "-display :0". This step attaches x11vnc to the far-away.east:0
@@ -203,6 +198,8 @@ to:     http://www.karlrunge.com/x11vnc/faq.html#faq-singleclick
 
    When x11vnc starts up there will then be much chatter printed out (use
    "-q" to quiet it), until it finally says something like:
+
+  ```
   .
   .
   13/05/2004 14:59:54 Autoprobing selected port 5900
@@ -210,6 +207,7 @@ to:     http://www.karlrunge.com/x11vnc/faq.html#faq-singleclick
   13/05/2004 14:59:54
   13/05/2004 14:59:54 The VNC desktop is far-away:0
   PORT=5900
+  ```
 
    which means all is OK, and we are ready for the final step.
 
@@ -224,7 +222,7 @@ to:     http://www.karlrunge.com/x11vnc/faq.html#faq-singleclick
    In this example we'll use the Unix vncviewer program on sitting-here
    by typing the following command in a second terminal window:
 
-  sitting-here> vncviewer far-away.east:0
+  `sitting-here> vncviewer far-away.east:0`
 
    That should pop up a viewer window on sitting-here.west showing and
    allowing interaction with the far-away.east:0  X11 desktop. Pretty
@@ -247,6 +245,7 @@ to:     http://www.karlrunge.com/x11vnc/faq.html#faq-singleclick
 
    Super Shortcut: Here is a potentially very easy way to get all of it
    working.
+
      * Have x11vnc (0.9.3 or later) available to run on the remote host
        (i.e. in $PATH.)
      * Download and unpack a SSVNC bundle (1.0.19 or later, e.g.
@@ -291,7 +290,6 @@ to:     http://www.karlrunge.com/x11vnc/faq.html#faq-singleclick
    start their VNC viewers. For this usage mode the "-connect
    host1,host2" option may be of use to automatically connect to the
    vncviewers in "-listen" mode on the list of hosts.
-     _________________________________________________________________
 
 #   Tunnelling x11vnc via SSH:
 
@@ -6962,7 +6960,7 @@ EndSection
        physical display the keysym dead_tilde is pressed and released
        (this usually involves holding AltGr down while another key is
        pressed) and then space is pressed. (this can also be used get
-       characters with the "~" symbol on top, e.g. "ã" by typing "a"
+       characters with the "~" symbol on top, e.g. "\E3" by typing "a"
        instead of space.)
        What to do? In general the VNC protocol has not really solved this
        problem: what should be done if the VNC viewer sends a keysym not
