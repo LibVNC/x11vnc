@@ -10,6 +10,9 @@ compiler:
   - gcc
   - clang
 
+env:
+  - CONFIGURE_ARGS=
+  - CONFIGURE_ARGS=--without-x
 
 # install all vnc-related dependencies
 before_install:
@@ -22,4 +25,4 @@ before_install:
 before_script: autoreconf -fiv
 
 # Default is "./configure && make && make test", but no tests yet
-script: "./configure && make"
+script: "./configure $CONFIGURE_ARGS && make"
