@@ -664,69 +664,31 @@ vncviewer -via $host localhost:0      # must be TightVNC vncviewer.
 #   Building x11vnc:
 
    Make sure you have all the needed build/compile/development packages
-   installed (e.g. Linux distributions foolishly don't install them by
-   default.) See this build FAQ for more details.
+   installed. On a Debian-based distro you can simply do
 
-   If your OS has libjpeg.so and libz.so in standard locations you can
-   build as follows (example given for the 0.9.12 release of x11vnc:
-   replace with the version you downloaded):
+   ```
+   apt-get build-dep x11vnc
+   ```
 
-  ```
-(un-tar the x11vnc+libvncserver tarball)
-# gzip -dc x11vnc-0.9.12.tar.gz | tar -xvf -
+   to install most of them.
 
-(cd to the source directory)
-# cd x11vnc-0.9.12
+   To generate the build system, do a
 
-(run configure and then run make)
-# ./configure
-# make
+   ```
+   autoreconf -fiv
+   ```
 
-(if all went OK, copy x11vnc to the desired destination, e.g. $HOME/bin)
-# cp ./x11vnc/x11vnc $HOME/bin
-  ```
+   After that, it's the usual
 
-   Or do make install, it will probably install to /usr/local/bin (run
-   ./configure --help for information on customizing your configuration,
-   e.g. --prefix=/my/place.) You can now run it via typing "x11vnc",
-   "x11vnc -help | more", "x11vnc -forever -shared -display :0", etc.
+   ```
+   ./configure
+   make
+   ```
 
+   You might want to take a look at the dfferent configure options
+   provided by `configure --help` to build without X11 or adapt the
+   build to your needs in other ways.
 
-   Note: Currently gcc is recommended to build libvncserver. In some
-   cases it will build with non-gcc compilers, but the resulting binary
-   sometimes fails to run properly. For Solaris pre-built gcc binaries
-   are at http://www.sunfreeware.com/. Some Solaris pre-built x11vnc
-   binaries are here.
-
-   However, one user reports it does work fine when built with Sun Studio
-   10, so YMMV. In fact, here is a little build script to do this on
-   Solaris 10:
-
-  ```
-#!/bin/sh
-PATH=/usr/ccs/bin:/opt/SUNWspro/bin:$PATH; export PATH
-
-CC='cc' \
-CFLAGS='-xO4' \
-LDFLAGS='-L/usr/sfw/lib -L/usr/X11/lib -R/usr/sfw/lib -R/usr/X11/lib' \
-CPPFLAGS='-I /usr/sfw/include -I/usr/X11/include' \
-./configure
-
-MAKE="make -e"
-AM_CFLAGS=""
-export MAKE AM_CFLAGS
-$MAKE
-  ```
-
-   In general you can use the "make -e" trick if you don't like
-   libvncserver's choice of AM_CFLAGS. See the build scripts below for
-   more ideas. Scripts similar to the above have been shown to work with
-   vendor C compilers on HP-UX (ccom: HP92453-01) and Tru64 (Compaq C
-   V6.5-011.)
-
-   You can find information on Misc. Build problems here.
-
- 
    Building on Solaris, FreeBSD, etc:   Depending on your version of
    Solaris or other Unix OS the jpeg and/or zlib libraries may be in
    non-standard places (e.g. /usr/local, /usr/sfw, /opt/sfw, etc.)
