@@ -273,7 +273,7 @@ char *get_user_name(void) {
 		user = getenv("LOGNAME");
 	}
 
-#if LIBVNCSERVER_HAVE_PWD_H
+#if HAVE_PWD_H
 	if (user == NULL) {
 		struct passwd *pw = getpwuid(getuid());
 		if (pw) {
@@ -294,7 +294,7 @@ char *get_home_dir(void) {
 
 	home = getenv("HOME");
 
-#if LIBVNCSERVER_HAVE_PWD_H
+#if HAVE_PWD_H
 	if (home == NULL) {
 		struct passwd *pw = getpwuid(getuid());
 		if (pw) {
@@ -315,7 +315,7 @@ char *get_shell(void) {
 
 	shell = getenv("SHELL");
 
-#if LIBVNCSERVER_HAVE_PWD_H
+#if HAVE_PWD_H
 	if (shell == NULL) {
 		struct passwd *pw = getpwuid(getuid());
 		if (pw) {

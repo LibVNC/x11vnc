@@ -66,7 +66,7 @@ extern char *crypt(const char*, const char *);
 #define HAVE_GETSPNAM 0
 #endif
 
-#if LIBVNCSERVER_HAVE_PWD_H && HAVE_GETPWNAM
+#if HAVE_PWD_H && HAVE_GETPWNAM
 #if LIBVNCSERVER_HAVE_CRYPT || LIBVNCSERVER_HAVE_LIBCRYPT || HAVE_LIBCRYPT
 #define UNIXPW_CRYPT
 #if HAVE_GETSPNAM
@@ -639,7 +639,7 @@ char *get_pty(int *fd_p) {
 
 void try_to_be_nobody(void) {
 
-#if LIBVNCSERVER_HAVE_PWD_H
+#if HAVE_PWD_H
 	struct passwd *pw;
 	pw = getpwnam("nobody");
 
@@ -1523,7 +1523,7 @@ void check_unixpw_userprefs(void) {
 	if (keep_unixpw_user == NULL || keep_unixpw_opts == NULL) {
 		return;
 	}
-#if LIBVNCSERVER_HAVE_PWD_H
+#if HAVE_PWD_H
 	if (prefs != NULL && !strchr(prefs, '/')) {
 		struct passwd *pw = getpwnam(keep_unixpw_user);
 		if (pw != NULL) {

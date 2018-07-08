@@ -340,7 +340,7 @@ static void user2uid(char *user, uid_t *uid, gid_t *gid, char **name, char **hom
 		*uid = (uid_t) u;
 	}
 
-#if LIBVNCSERVER_HAVE_PWD_H
+#if HAVE_PWD_H
 	if (1) {
 		struct passwd *pw;
 		if (numerical) {
@@ -651,7 +651,7 @@ static int guess_user_and_switch(char *str, int fb_mode) {
 
 static int try_user_and_display(uid_t uid, gid_t gid, char *dpystr) {
 	/* NO strtoks */
-#if LIBVNCSERVER_HAVE_FORK && LIBVNCSERVER_HAVE_SYS_WAIT_H && LIBVNCSERVER_HAVE_PWD_H
+#if LIBVNCSERVER_HAVE_FORK && LIBVNCSERVER_HAVE_SYS_WAIT_H && HAVE_PWD_H
 	pid_t pid, pidw;
 	char *home, *name;
 	int st;
@@ -775,7 +775,7 @@ static int switch_user_env(uid_t uid, gid_t gid, char *name, char *home, int fb_
 		free_tiles();
 	}
 #if HAVE_INITGROUPS
-#if LIBVNCSERVER_HAVE_PWD_H
+#if HAVE_PWD_H
 	if (getpwuid(uid) != NULL && getenv("X11VNC_SINGLE_GROUP") == NULL) {
 		struct passwd *p = getpwuid(uid);
 		/* another possibility is p->pw_gid instead of gid */

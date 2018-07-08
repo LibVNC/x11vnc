@@ -256,10 +256,10 @@ so, delete this exception statement from your version.
 
 #if (SMALL_FOOTPRINT > 2)
 #undef HAVE_UTMPX_H
-#undef LIBVNCSERVER_HAVE_PWD_H
+#undef HAVE_PWD_H
 #undef REMOTE_CONTROL
 #define HAVE_UTMPX_H 0
-#define LIBVNCSERVER_HAVE_PWD_H 0
+#define HAVE_PWD_H 0
 #define REMOTE_CONTROL 0
 #endif
 
