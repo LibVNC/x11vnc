@@ -67,7 +67,7 @@ extern char *crypt(const char*, const char *);
 #endif
 
 #if HAVE_PWD_H && HAVE_GETPWNAM
-#if LIBVNCSERVER_HAVE_CRYPT || LIBVNCSERVER_HAVE_LIBCRYPT || HAVE_LIBCRYPT
+#if HAVE_CRYPT || LIBVNCSERVER_HAVE_LIBCRYPT || HAVE_LIBCRYPT
 #define UNIXPW_CRYPT
 #if HAVE_GETSPNAM
 #include <shadow.h>
