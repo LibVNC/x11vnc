@@ -87,7 +87,7 @@ char *host2ip(char *host) {
 
 char *raw2host(char *raw, int len) {
 	char *str;
-#if LIBVNCSERVER_HAVE_NETDB_H && LIBVNCSERVER_HAVE_NETINET_IN_H
+#if HAVE_NETDB_H && LIBVNCSERVER_HAVE_NETINET_IN_H
 	struct hostent *hp;
 
 	if (! host_lookup) {
@@ -111,7 +111,7 @@ char *raw2ip(char *raw) {
 
 char *ip2host(char *ip) {
 	char *str;
-#if LIBVNCSERVER_HAVE_NETDB_H && LIBVNCSERVER_HAVE_NETINET_IN_H
+#if HAVE_NETDB_H && LIBVNCSERVER_HAVE_NETINET_IN_H
 	struct hostent *hp;
 	in_addr_t iaddr;
 
