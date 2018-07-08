@@ -142,7 +142,7 @@ static int try_avahi_helper(char *name, char *host, uint16_t port) {
 #endif
 }
 
-#if !defined(LIBVNCSERVER_HAVE_AVAHI) || !defined(LIBVNCSERVER_HAVE_LIBPTHREAD)
+#if !defined(HAVE_AVAHI) || !defined(LIBVNCSERVER_HAVE_LIBPTHREAD)
 void avahi_initialise(void) {
 	rfbLog("avahi_initialise: no Avahi support at buildtime.\n");
 }
