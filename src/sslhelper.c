@@ -2202,11 +2202,11 @@ static int ssl_init(int s_in, int s_out, int skip_vnc_tls, double last_https) {
 			}
 		} else {
 			rfbLog("SSL: ssl_helper[%d]: accepted client %s x509 cert is:\n", getpid(), name);
-#if LIBVNCSERVER_HAVE_X509_PRINT_EX_FP
+#if HAVE_X509_PRINT_EX_FP
 			X509_print_ex_fp(stderr, x, 0, XN_FLAG_MULTILINE);
 #endif
 			if (cr != NULL) {
-#if LIBVNCSERVER_HAVE_X509_PRINT_EX_FP
+#if HAVE_X509_PRINT_EX_FP
 				X509_print_ex_fp(cr, x, 0, XN_FLAG_MULTILINE);
 #else
 				rfbLog("** not compiled with libssl X509_print_ex_fp() function **\n");
