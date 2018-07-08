@@ -46,7 +46,7 @@ so, delete this exception statement from your version.
 #if HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>
 #endif
-#if LIBVNCSERVER_HAVE_LINUX_FB_H
+#if HAVE_LINUX_FB_H
 #include <linux/fb.h>
 #endif
 
@@ -178,7 +178,7 @@ char *console_guess(char *str, int *fd) {
 	rfbLog("console_guess: file is %s\n", file);
 
 	if (! atparms) {
-#if LIBVNCSERVER_HAVE_LINUX_FB_H
+#if HAVE_LINUX_FB_H
 #if HAVE_SYS_IOCTL_H
 		struct fb_var_screeninfo var_info;
 		int d = open(file, O_RDWR);
