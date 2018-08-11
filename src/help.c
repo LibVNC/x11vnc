@@ -165,7 +165,7 @@ void print_help(int mode) {
 "                       Currently, for absolutely everything to work correctly\n"
 "                       the machine may need to have some IPv4 support, at the\n"
 "                       least for the loopback interface.  However, for nearly\n"
-"                       all usage modes no IPv4 support is required. See -nopiv4.\n"
+"                       all usage modes no IPv4 support is required. See -noipv4.\n"
 "\n"
 "                       If you have trouble compiling or running in IPv6 mode,\n"
 "                       set -DX11VNC_IPV6=0 in CPPFLAGS when configuring to\n"
