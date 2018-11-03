@@ -667,7 +667,7 @@ vncviewer -via $host localhost:0      # must be TightVNC vncviewer.
    installed. On a Debian-based distro you can simply do
 
    ```
-   apt-get build-dep x11vnc
+   sudo apt-get build-dep x11vnc
    ```
 
    to install most of them.
