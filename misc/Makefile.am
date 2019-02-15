@@ -18,7 +18,10 @@ EXTRA_DIST = \
 	uinput.pl \
 	ultravnc_repeater.pl \
 	vcinject.pl \
-	x11vnc_loop \
+	x11vnc_loop
+
+if HAVE_X11
+EXTRA_DIST += \
 	Xdummy.c \
 	Xdummy.in
 
@@ -32,3 +35,4 @@ do_dummy_c_subst = $(SED) \
 Xdummy: $(srcdir)/Xdummy.in $(srcdir)/Xdummy.c
 	$(do_dummy_c_subst) < $< > $@.tmp
 	mv -f $@.tmp $@
+endif
