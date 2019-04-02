@@ -670,7 +670,7 @@ int listen_unix(char *file) {
 		return -1;
 	}
 	saun.sun_family = AF_UNIX;
-	strcpy(saun.sun_path, file);
+	snprintf(saun.sun_path, sizeof(saun.sun_path), "%s", file);
 	unlink(file);
 
 	len = sizeof(saun.sun_family) + strlen(saun.sun_path);
