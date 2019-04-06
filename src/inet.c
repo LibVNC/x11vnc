@@ -670,6 +670,10 @@ int listen_unix(char *file) {
 		return -1;
 	}
 	saun.sun_family = AF_UNIX;
+	if(strlen(file) + 1 > sizeof(saun.sun_path)) {
+	        rfbLogPerror("listen_unix: socket name too long");
+		return -1;
+	}
 	strcpy(saun.sun_path, file);
 	unlink(file);
 
