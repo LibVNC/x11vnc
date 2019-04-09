@@ -492,7 +492,7 @@ static void crash_shell(void) {
 		}
 
 		if (*str == 'q' && *(str+1) == '\0') {
-			fprintf(stderr, "quiting.\n");
+			fprintf(stderr, "quitting.\n");
 			return;
 		} else if (*str == 'h' && *(str+1) == '\0') {
 			crash_shell_help();

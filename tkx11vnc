@@ -495,7 +495,7 @@ state if successful.  Usually the channel used to attach is via the X
 display (VNC_CONNECT rootwin property) being polled by the x11vnc server.
 To change or set the X display to use do \"Displays -> display\".
 
-Sometimes the \"-connect /path/to/filename\" is used as the communcation
+Sometimes the \"-connect /path/to/filename\" is used as the comunication
 channel.  The running x11vnc has to know that \"/path/to/filename\"
 is the communication channel (i.e. it is using the same -connect option).
 "
@@ -1216,7 +1216,7 @@ tkx11vnc is a simple frontend to x11vnc.  Nothing fancy, it merely
 provides an interface to each of the many x11vnc command line options and
 remote control commands.  See \"Help -> all\" for much info about x11vnc.
 
-For a simplier gui, run x11vnc in \"tray\" or \"icon\" mode such as
+For a simpler gui, run x11vnc in \"tray\" or \"icon\" mode such as
 \"-gui tray\", \"-gui icon\", or \"-gui tray=setpass\".  In that
 mode the full gui is only available under \"Advanced ...\".
 
@@ -3355,7 +3355,7 @@ proc do_var {item} {
 proc menu_help {item} {
 	if ![help_win $item] {
 		textwin "nohelp" "No help available" \
-			"Sorry, no help avaiable for \"$item\""
+			"Sorry, no help available for \"$item\""
 	}
 }
 

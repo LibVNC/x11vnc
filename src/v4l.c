@@ -1339,7 +1339,7 @@ static void parse_str(char *str, char **dev, char **settings, char **atparms) {
 		}
                 if (stat(s, &sbuf) != 0) {
 			rfbLogPerror("stat");
-			rfbLog("You will need to specify the video device more explicity.\n");
+			rfbLog("You will need to specify the video device more explicitly.\n");
 		}
 
 		*dev = s;
