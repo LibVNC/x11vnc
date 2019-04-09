@@ -8,3 +8,4 @@ Type=Application
 StartupNotify=false
 #StartupWMClass=x11vnc_port_prompt
 Categories=Network;RemoteAccess;
+Keywords=VNC;Server;Screencast
