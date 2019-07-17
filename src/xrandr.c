@@ -304,4 +304,158 @@ int known_xrandr_mode(char *s) {
 	}
 }
 
+/* Set framebuffer size to w x h
+ * Does not alter physical resolution but scales desired framebuffer to physical display resolution */
+rfbBool xrandr_set_scale_from(int w, int h)
+{
+#if HAVE_LIBXRANDR
+    XTransform transform;
+    XRRScreenResources *screens;
+    XRRCrtcInfo *crtcInfo;
+    XRROutputInfo *outputInfo;
+    RRCrtc xrandr_crtc;
+    RROutput xrandr_output;
+    XRRModeInfo *modeInfo = NULL;
+    int i;
+
+    double sx, sy;
+    int	major, minor, minWidth, minHeight, maxWidth, maxHeight;
+    char *filter;
+
+    if (!xrandr_present)
+        return FALSE;
+
+    X_LOCK;
+    XRRQueryVersion(dpy, &major, &minor);
+    if (major < 1 || (major == 1 && minor < 3)) {
+        rfbLog("Need at least RANDR 1.3 to support scaling, only %d.%d available\n", major, minor);
+        X_UNLOCK;
+        return FALSE;
+    }
+
+    if (w != -1 && XRRGetScreenSizeRange(dpy, rootwin, &minWidth, &minHeight, &maxWidth, &maxHeight)) {
+        if (w > maxWidth || h > maxHeight) {
+            w = nmin(w, maxWidth);
+            h = nmin(h, maxHeight);
+            rfbLog("Requested size exceeds maximum size of (%dx%d), reduced to (%dx%d)\n", maxWidth, maxHeight, w, h);
+        }
+        if (w < minWidth || h < minHeight) {
+            w = nmax(w, minWidth);
+            h = nmax(h, minHeight);
+            rfbLog("Requested size is smaller than minimum size of (%dx%d), enlarged to (%dx%d)\n", minWidth, minHeight, w, h);
+        }
+    }
+
+    screens = XRRGetScreenResourcesCurrent(dpy, rootwin);
+    if (!screens->ncrtc || !screens->noutput) {
+        rfbLog("RANDR Error: XRRGetScreenResourcesCurrent() did not return any crtcs and/or outputs\n");
+        XRRFreeScreenResources(screens);
+        X_UNLOCK;
+        return FALSE;
+    }
+
+    /* We only support using using one screen for now */
+    xrandr_output = XRRGetOutputPrimary(dpy, rootwin);
+    if (!xrandr_output)
+        xrandr_output = screens->outputs[0];
+
+    xrandr = 1;
+    outputInfo = XRRGetOutputInfo(dpy, screens, xrandr_output);
+    xrandr_crtc = outputInfo->crtc;
+
+    if (!xrandr_crtc) {
+        if (w != -1) {
+            rfbLog("RANDR: running headless without screen. Setting fb size without scaling.\n");
+            XRRSetScreenSize(dpy, rootwin, w, h, w / 2.8, h / 2.8);
+        }
+        XRRFreeOutputInfo(outputInfo);
+        XRRFreeScreenResources(screens);
+        X_UNLOCK;
+        return TRUE;
+    }
+    crtcInfo = XRRGetCrtcInfo(dpy, screens, xrandr_crtc);
+
+    for (i=0; i<screens->nmode; i++)
+    {
+        if (screens->modes[i].id == crtcInfo->mode)
+        {
+            modeInfo = &screens->modes[i];
+            break;
+        }
+    }
+
+    if (!modeInfo) {
+        rfbLog("RANDR Error: cannot find current mode\n");
+        XRRFreeCrtcInfo(crtcInfo);
+        XRRFreeOutputInfo(outputInfo);
+        XRRFreeScreenResources(screens);
+        X_UNLOCK;
+        return FALSE;
+    }
+
+    if (w == -1) {
+        w = modeInfo->width;
+        h = modeInfo->height;
+    }
+    if (!outputInfo->mm_width) {
+        /* Just assume 72 dpi, which is about 2.8 dpmm */
+        outputInfo->mm_width = modeInfo->width / 2.8;
+        outputInfo->mm_height = modeInfo->height / 2.8;
+    }
+
+    sx = (double) w / modeInfo->width;
+    sy = (double) h / modeInfo->height;
+
+    memset(&transform, 0, sizeof(transform));
+    transform.matrix[0][0] = XDoubleToFixed(sx);
+    transform.matrix[1][1] = XDoubleToFixed(sy);
+    transform.matrix[2][2] = XDoubleToFixed(1.0);
+
+    if (sx != 1 || sy != 1)
+        filter = "bilinear";
+    else
+        filter = "nearest";
+
+    XGrabServer(dpy);
+
+    /* Disable all crtc */
+    for (i=0; i<screens->ncrtc; i++)
+    {
+        XRRSetCrtcConfig(dpy, screens, screens->crtcs[i], CurrentTime,
+                          0, 0, None, RR_Rotate_0, NULL, 0);
+    }
+
+    /* Set framebuffer size */
+    XRRSetScreenSize(dpy, rootwin, w, h, outputInfo->mm_width, outputInfo->mm_height);
+    /* Set transform */
+    XRRSetCrtcTransform(dpy, xrandr_crtc, &transform, filter, NULL, 0);
+    /* Enable first crtc again */
+    XRRSetCrtcConfig(dpy, screens, xrandr_crtc, CurrentTime,
+        0, 0, crtcInfo->mode, crtcInfo->rotation, crtcInfo->outputs, crtcInfo->noutput);
+
+    XUngrabServer(dpy);
+    XRRFreeOutputInfo(outputInfo);
+    XRRFreeCrtcInfo(crtcInfo);
+    XRRFreeScreenResources(screens);
+    X_UNLOCK;
+
+    /* Leave creating the new frame buffer up to the xrandr event monitoring
+       code. (If we already create it here, we risk it is going
+       to be resized back to the old size, because multiple randr events
+       are enroute due to our changes, and the first may still mention
+       the old size.) */
+
+    return TRUE;
+#else
+    rfbLog("Cannot resize desktop. XRANDR support not compiled into x11vnc\n");
+    return FALSE;
+#endif
+}
+
+/* Restore scaling to original size */
+void xrandr_reset_scaling()
+{
+    xrandr_set_scale_from(-1, -1);
+}
+
 

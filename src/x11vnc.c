@@ -3888,6 +3888,10 @@ int main(int argc, char* argv[]) {
 			grab_buster = 0;
 			continue;
 		}
+		if (!strcmp(arg, "-setdesktopsize")) {
+			enable_setdesktopsize = 1;
+			continue;
+		}
 		if (!strcmp(arg, "-snapfb")) {
 			use_snapfb = 1;
 			continue;

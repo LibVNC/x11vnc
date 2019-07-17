@@ -838,7 +838,9 @@ void client_gone(rfbClientPtr client) {
 		}
 	}
 
-
+	if (enable_setdesktopsize && xrandr && client_count == 0) {
+		xrandr_reset_scaling();
+	}
 	if (no_autorepeat && client_count == 0) {
 		autorepeat(1, 0);
 	}
