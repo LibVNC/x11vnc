@@ -304,11 +304,11 @@ int known_xrandr_mode(char *s) {
 	}
 }
 
+#if HAVE_SETDESKTOPSIZE
 /* Set framebuffer size to w x h
  * Does not alter physical resolution but scales desired framebuffer to physical display resolution */
 rfbBool xrandr_set_scale_from(int w, int h)
 {
-#if HAVE_LIBXRANDR
     XTransform transform;
     XRRScreenResources *screens;
     XRRCrtcInfo *crtcInfo;
@@ -446,10 +446,6 @@ rfbBool xrandr_set_scale_from(int w, int h)
        the old size.) */
 
     return TRUE;
-#else
-    rfbLog("Cannot resize desktop. XRANDR support not compiled into x11vnc\n");
-    return FALSE;
-#endif
 }
 
 /* Restore scaling to original size */
@@ -457,5 +453,5 @@ void xrandr_reset_scaling()
 {
     xrandr_set_scale_from(-1, -1);
 }
-
+#endif
 

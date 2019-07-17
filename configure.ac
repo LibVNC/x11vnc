@@ -285,6 +285,12 @@ elif test "$X_CFLAGS" != "-DX_DISPLAY_MISSING"; then
 			case `(uname -sr) 2>/dev/null` in
 			"SunOS 5"*) CPPFLAGS="$CPPFLAGS -I/usr/X11/include" ;;
 			esac
+
+			# support for setdesktopsize needs xrandr and libvncserver with setDesktopSizeHook
+			AC_CHECK_MEMBER([struct _rfbScreenInfo.setDesktopSizeHook],
+				[AC_DEFINE(HAVE_SETDESKTOPSIZE, 1, [libvncserver supports setDesktopSizeHook])],
+				[AC_MSG_WARN([Support for option -setdesktopsize disabled. Needs libvncserver 0.9.13])],
+				[[#include "rfb/rfb.h"]])
 		fi
 
 		X_LIBS="$X_LIBS $X_PRELIBS -lX11 $X_EXTRA_LIBS"
