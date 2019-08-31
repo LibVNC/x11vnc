@@ -2171,7 +2171,10 @@ http://www.karlrunge.com/x11vnc/faq.html:
 
    Q-132: Thanks for your program or for your help! Can I make a
    donation? 
-     _________________________________________________________________
+
+   Q-133: I am experiencing extreme framebuffer update lags and am
+   using the `intel` x.org driver. What to do?
+_________________________________________________________________
 
 
    [Building and Starting]
@@ -9273,7 +9276,15 @@ or:
    you for your support! Click on the PayPal button below for more info.
 
    [x-click-but04.gif]-Submit
-	
+
+
+   Q-133: I am experiencing extreme framebuffer update lags and am
+   using the `intel` x.org driver. What to do?
+
+   Try to set the drivers option named "AccelMethod" to "UXA" or use
+   the `modesetting` driver instead of `intel`.
+
+
 =======================================================================
 http://www.karlrunge.com/x11vnc/chainingssh.html:
 
