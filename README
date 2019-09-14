@@ -2173,7 +2173,8 @@ http://www.karlrunge.com/x11vnc/faq.html:
    donation? 
 
    Q-133: I am experiencing extreme framebuffer update lags and am
-   using the `intel` x.org driver. What to do?
+   using an Intel graphics card. What to do?
+
 _________________________________________________________________
 
 
@@ -9279,10 +9280,24 @@ or:
 
 
    Q-133: I am experiencing extreme framebuffer update lags and am
-   using the `intel` x.org driver. What to do?
+   using an Intel graphics card. What to do?
 
-   Try to set the drivers option named "AccelMethod" to "UXA" or use
-   the `modesetting` driver instead of `intel`.
+   Depending on your graphics card model and x.org driver used, several
+   approaches might work out for you:
+
+   Some users [have reported](https://github.com/LibVNC/x11vnc/issues/58)
+   that when using the 'intel' x.org driver, switching  the driver's
+   option named "AccelMethod" to "UXA" helped.
+
+   Others [reported](https://github.com/LibVNC/x11vnc/issues/100) that
+   using the 'modesetting' x.org driver caused the lags and switching to
+   the 'intel' x.org driver helped.
+
+   Some [reported](https://github.com/LibVNC/x11vnc/issues/102) that
+   lags only occured with xfwm as window manager and with x11vnc started
+   with monitors off, no matter what the x.org driver. In their case, one
+   of disabling vsync, using 'modesetting' with "AccelMethod" "none" or
+   disabling compositing all helped.
 
 
 =======================================================================
