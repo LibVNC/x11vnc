@@ -102,9 +102,9 @@ extern struct timeval _mysleep;
 #ifdef LIBVNCSERVER_HAVE_LIBPTHREAD
 extern MUTEX(x11Mutex);
 extern MUTEX(scrollMutex);
-MUTEX(clientMutex);
-MUTEX(inputMutex);
-MUTEX(pointerMutex);
+extern MUTEX(clientMutex);
+extern MUTEX(inputMutex);
+extern MUTEX(pointerMutex);
 #endif
 
 #define X_INIT INIT_MUTEX(x11Mutex)
