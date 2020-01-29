@@ -47,6 +47,9 @@ int hxl = 0;
 #ifdef LIBVNCSERVER_HAVE_LIBPTHREAD
 MUTEX(x11Mutex);
 MUTEX(scrollMutex);
+MUTEX(clientMutex);
+MUTEX(inputMutex);
+MUTEX(pointerMutex);
 #endif
 
 int nfix(int i, int n);
