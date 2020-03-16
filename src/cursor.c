@@ -1311,7 +1311,7 @@ static int get_exact_cursor(int init) {
 
 		/* retrieve the cursor info + pixels from server: */
 		xfc = XFixesGetCursorImage(dpy);
-		{
+		if (xfc) {
 			/* 2017-07-09, Stephan Fuhrmann: This fixes an implementation flaw for 64 bit systems.
 			 * The XFixesCursorImage structure says xfc->pixels is (unsigned long*) in the structure, but
 			 * the protocol spec says it's 32 bit per pixel
