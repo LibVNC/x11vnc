@@ -109,6 +109,7 @@ static int choose_delay(double dt);
 int rawfb_reset = -1;
 int rawfb_dev_video = 0;
 int rawfb_vnc_reflect = 0;
+int rawfb_double_buffer = 0;
 
 /*
  * X11 and rfb display/screen related routines
@@ -1942,14 +1943,25 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 
 
 	/* +O offset */
+	char *end;
 	if ((q = strrchr(str, '+')) != NULL) {
-		if (sscanf(q, "+%d", &raw_fb_offset) == 1) {
-			*q = '\0';
-		} else {
+		end = q;
+		if (sscanf(q, "+%d", &raw_fb_offset) != 1) {
 			raw_fb_offset = 0;
 		}
 	}
-	/* :R/G/B masks */
+
+	/* #VWxVH virtual dimensions */
+	if ((q = strrchr(str, '#')) != NULL) {
+		if (q < end) end = q;
+		if (sscanf(q, "#%dx%d", &raw_fb_virt_x, &raw_fb_virt_y) != 2) {
+			raw_fb_virt_x = 0;
+			raw_fb_virt_y = 0;
+		}
+	}
+
+	if (end != NULL) *end = '\0';
+
 	if ((q = strrchr(str, ':')) != NULL) {
 		if (sscanf(q, ":%lx/%lx/%lx", &rm, &gm, &bm) == 3) {
 			*q = '\0';
@@ -2138,7 +2150,7 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 	} else if (strstr(str, "map:") == str || strstr(str, "mmap:") == str
 	    || strstr(str, "file:") == str) {
 		/* map:/path/... or file:/path  */
-		int fd, do_mmap = 1, size;
+		int fd, do_mmap = 1, size, vsize;
 		struct stat sbuf;
 
 		if (*str == 'f') {
@@ -2178,9 +2190,15 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 			size = w*h*raw_fb_native_bpp/8 + raw_fb_offset;
 		} else if (xform24to32) {
 			size = w*h*24/8 + raw_fb_offset;
+		} else if (raw_fb_virt_x != 0 && raw_fb_virt_y != 0) {
+			size = w*h*b/8;
+			vsize = raw_fb_virt_x*raw_fb_virt_y*b/8;
+			rawfb_double_buffer = 1;
+			rfbLog("virtual size: %d", vsize);
 		} else {
 			size = w*h*b/8 + raw_fb_offset;
 		}
+
 		if (fstat(fd, &sbuf) == 0) {
 			if (S_ISREG(sbuf.st_mode)) {
 				if (0) size = sbuf.st_size;
@@ -2205,8 +2223,11 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 
 		} else if (do_mmap) {
 #if LIBVNCSERVER_HAVE_MMAP
-			raw_fb_addr = mmap(0, size, PROT_READ, MAP_SHARED,
-			    fd, 0);
+			if (vsize != 0) {
+				raw_fb_addr = mmap(0, vsize, PROT_READ, MAP_SHARED, fd, 0);
+			} else {
+				raw_fb_addr = mmap(0, size, PROT_READ, MAP_SHARED, fd, 0);
+			}
 
 			if (raw_fb_addr == MAP_FAILED || raw_fb_addr == NULL) {
 				rfbLogEnable(1);
@@ -2223,8 +2244,13 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 				raw_fb_mmap = size;
 
 				rfbLog("rawfb: mmap file: %s\n", q);
-				rfbLog("   w: %d h: %d b: %d addr: %p sz: %d\n", w, h,
-				    b, raw_fb_addr, size);
+				if (vsize != 0) {
+					rfbLog("   w: %d h: %d b: %d addr: %p sz: %d\n", w, h,
+						b, raw_fb_addr, vsize);
+				} else {
+					rfbLog("   w: %d h: %d b: %d addr: %p sz: %d\n", w, h,
+						b, raw_fb_addr, size);
+				}
 				last_mode = RAWFB_MMAP;
 			}
 #else
@@ -4652,6 +4678,12 @@ void watch_loop(void) {
 			/* Now, for scanning and drawing soft cursors (i.e. writing to the framebuffer),
 			   make sure we're not sending any updates to clients (i.e. reading the framebuffer).
 			   Otherwise we get flicker! */
+
+			/* Update offset in case local framebuffer is double buffered */
+			if (rawfb_double_buffer) {
+				raw_fb_offset = rawfb_get_offset(&raw_fb_fd);
+			}
+
 			if(use_threads){
 			  rfbClientPtr cl;
 			  rfbClientIteratorPtr iter = rfbGetClientIterator(screen);
