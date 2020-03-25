@@ -16858,22 +16858,33 @@ er
                        discussion below where the framebuffer is taken as that
                        of another remote VNC server.
 
-                       Optional suffixes are ":R/G/B" and "+O" to specify
-                       red, green, and blue masks (in hex) and an offset into
-                       the memory object.  If the masks are not provided x11vnc
-                       guesses them based on the bpp (if the colors look wrong,
-                       you need to provide the masks.)
+                       Optional suffixes are ":R/G/B", "+O", and "#VWxVH" to
+                       specify red, green, and blue masks (in hex), offset into
+                       the memory object, and virtual width and height.
+
+                       If the masks are not provided x11vnc guesses them based on
+                       the bpp (if the colors look wrong, you need to provide the
+                       masks.)
 
                        Another optional suffix is the Bytes Per Line which in
                        some cases is not WxB/8.  Specify it as WxHxB-BPL
                        e.g. 800x600x16-2048.  This could be a normal width
                        1024 at 16bpp fb, but only width 800 shows up.
 
-                       So the full format is: mode:file@WxHxB:R/G/B+O-BPL
+                       The last optional suffix is virtual dimensions VWxVH. Some
+                       devices will double buffer the display in the framebuffer,
+                       allowing updating contents of display and then "panning"
+                       to the buffer via yoffset. x11vnc will map the virutal
+                       size specified by the options stead of just WxH, and track
+                       yoffset appropriately so remote clients get all updates to
+                       the frame buffer.
+
+                       So the full format is: mode:file@WxHxB:R/G/B+O-BPL#VWxVH
 
                        Examples:
                            -rawfb shm:210337933@800x600x32:ff/ff00/ff0000
                            -rawfb map:/dev/fb0@1024x768x32
+                           -rawfb map:/dev/fb0@800x480x16#800x960
                            -rawfb map:/tmp/Xvfb_screen0@640x480x8+3232
                            -rawfb file:/tmp/my.pnm@250x200x24+37
                            -rawfb file:/dev/urandom@128x128x8

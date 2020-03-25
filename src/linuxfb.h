@@ -37,6 +37,7 @@ so, delete this exception statement from your version.
 extern char *console_guess(char *str, int *fd);
 extern void console_key_command(rfbBool down, rfbKeySym keysym, rfbClientPtr client);
 extern void console_pointer_command(int mask, int x, int y, rfbClientPtr client);
+extern int rawfb_get_offset(int *fd);
 
 
 #endif /* _X11VNC_LINUXFB_H */

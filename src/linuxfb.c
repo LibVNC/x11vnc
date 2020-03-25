@@ -53,9 +53,31 @@ so, delete this exception statement from your version.
 char *console_guess(char *str, int *fd);
 void console_key_command(rfbBool down, rfbKeySym keysym, rfbClientPtr client);
 void console_pointer_command(int mask, int x, int y, rfbClientPtr client);
-
-
 void linux_dev_fb_msg(char *);
+
+/* Returns offset into fb memory based on yoffset. */
+int rawfb_get_offset(int *fd)
+{
+#if HAVE_LINUX_FB_H
+	int offset;
+	struct fb_var_screeninfo var_info;
+	if (ioctl(*fd, FBIOGET_VSCREENINFO, &var_info)) {
+		perror("ioctl");
+		return 0;
+	}
+
+	/* todo: How should x offset be handled? */
+	if (var_info.xoffset != 0) {
+		rfbLog("rawfb xoffset handling not implemented");
+	}
+
+	if (var_info.yoffset != 0) {
+		offset = main_bytes_per_line * var_info.yoffset;
+		return offset;
+	}
+#endif
+	return 0;
+}
 
 char *console_guess(char *str, int *fd) {
 	char *q, *in = strdup(str);

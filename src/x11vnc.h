@@ -541,6 +541,8 @@ extern char *rot_fb;			/* used under -rotate */
 extern char *raw_fb;
 extern char *raw_fb_addr;
 extern int raw_fb_offset;
+extern int raw_fb_virt_x;
+extern int raw_fb_virt_y;
 extern int raw_fb_shm;
 extern int raw_fb_mmap;
 extern int raw_fb_seek;
