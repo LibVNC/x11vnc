@@ -1600,7 +1600,7 @@ static int switch_to_anon_dh(void) {
 	/* Security level must be set to 0 for unauthenticated suites. */
 	SSL_CTX_set_security_level(ctx, 0);
 #endif
-	if (!SSL_CTX_set_cipher_list(ctx, "ADH:@STRENGTH")) {
+	if (!SSL_CTX_set_cipher_list(ctx, "ADH:@SECLEVEL=0")) {
 		return 0;
 	}
 	if (!add_anon_dh()) {
