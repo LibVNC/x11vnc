@@ -1943,7 +1943,7 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 
 
 	/* +O offset */
-	char *end;
+	char *end = NULL;
 	if ((q = strrchr(str, '+')) != NULL) {
 		end = q;
 		if (sscanf(q, "+%d", &raw_fb_offset) != 1) {
@@ -2150,7 +2150,7 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 	} else if (strstr(str, "map:") == str || strstr(str, "mmap:") == str
 	    || strstr(str, "file:") == str) {
 		/* map:/path/... or file:/path  */
-		int fd, do_mmap = 1, size, vsize;
+		int fd, do_mmap = 1, size, vsize = 0;
 		struct stat sbuf;
 
 		if (*str == 'f') {
