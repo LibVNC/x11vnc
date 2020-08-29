@@ -1745,10 +1745,17 @@ static void check_appshare_mode(int argc, char* argv[]) {
 
 static void store_homedir_passwd(char *file) {
 	char str1[32], str2[32], *p, *h, *f;
+	int newlines, maxlen;
 	struct stat sbuf;
 
 	str1[0] = '\0';
 	str2[0] = '\0';
+	/* fgets() stops at and includes the newline */
+	/* unless the input limit was reached, then it stops at the limit */
+	/* and does _not_ include the newline. trailing null is always set. */
+	newlines = 0;
+	/* maxlen excludes trailing null and newline from input */
+	maxlen = (sizeof(str1)/sizeof(char)) - 2;
 
 	/* storepasswd */
 	if (no_external_cmds || !cmd_ok("storepasswd")) {
@@ -1775,10 +1782,17 @@ static void store_homedir_passwd(char *file) {
 	system("stty echo");
 
 	if ((p = strchr(str1, '\n')) != NULL) {
+		++newlines;
 		*p = '\0';
 	}
 	if ((p = strchr(str2, '\n')) != NULL) {
+		++newlines;
 		*p = '\0';
+	}
+	if (2 != newlines) {
+		/* this is just for a clearer error message. strcmp() will also fail */
+		fprintf(stderr, "** password exceeds maximum %d bytes.\n", maxlen);
+		exit(1);
 	}
 	if (strcmp(str1, str2)) {
 		fprintf(stderr, "** passwords differ.\n");
