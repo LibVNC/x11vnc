@@ -1749,7 +1749,6 @@ static void store_homedir_passwd(char *file) {
 
 	str1[0] = '\0';
 	str2[0] = '\0';
-
 	/* storepasswd */
 	if (no_external_cmds || !cmd_ok("storepasswd")) {
 		fprintf(stderr, "-nocmds cannot be used with -storepasswd\n");
@@ -1779,6 +1778,12 @@ static void store_homedir_passwd(char *file) {
 	}
 	if ((p = strchr(str2, '\n')) != NULL) {
 		*p = '\0';
+	}
+	if (8 < strlen(str1)) {
+		/* RFC6143 states: "the password is truncated to eight characters" */
+		/* there's room for ambiguity (characters vs bytes) */
+		fprintf(stderr, "** password exceeds maximum 8 bytes.\n");
+		exit(1);
 	}
 	if (strcmp(str1, str2)) {
 		fprintf(stderr, "** passwords differ.\n");
