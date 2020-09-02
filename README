@@ -6823,10 +6823,9 @@ EndSection
    -debug_keyboard option prints out much info for every keystroke and so
    can be useful debugging things.
 
-   Note that one user had a strange setup and none of the above helped.
-   His solution was to disable all of the above and use -nomodtweak. This
-   is the simplest form of keystroke insertion and it actually solved the
-   problem. Try it if the other options don't help.
+   Note that for some users, the solution is to disable all of the above,
+   and use -nomodtweak. This is the simplest form of keystroke insertion and
+   it actually solved the problem. Try it if the other options don't help.
 
 
    Q-88: When I try to type a "<" (i.e. less than) instead I get ">"
