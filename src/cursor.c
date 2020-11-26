@@ -2043,11 +2043,12 @@ int check_x11_pointer(void) {
 	    if (clipshift) {
 	      static int cnt = 0;
 	      if (x < 0 || y < 0 || x >= dpy_x || y >= dpy_y)  {
-		if (cnt++ % 4 != 0) {
-		  if (debug_pointer)
-		    rfbLog("Skipping cursor_position() outside our clipshift\n");
-		  continue;
-		}
+	        if (cnt++ % 4 != 0) {
+	          if (debug_pointer)
+	            rfbLog("Skipping cursor_position() outside our clipshift\n");
+	        }
+	        set_no_cursor();
+	        continue;
 	      }
 	    }
 
@@ -2098,8 +2099,9 @@ if (0) fprintf(stderr, "check_x11_pointer %d %d\n", root_x, root_y);
 				if (debug_pointer) {
 					rfbLog("Skipping cursor_position() outside our clipshift\n");
 				}
-				return 0;
 			}
+			rint = set_cursor(0, 0, CURS_EMPTY);
+			return rint;
 		}
 	}
 
