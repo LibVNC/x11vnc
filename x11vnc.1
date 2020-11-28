@@ -546,7 +546,7 @@ allow redirs and listening clients to start up)
 .IP
 If a range is given: '-sleepin min-max', a random value
 between min and max is slept. E.g. '-sleepin 0-20' and
-\'-sleepin 10-30'.  Floats are allowed too.
+\(aq-sleepin 10-30\(aq.  Floats are allowed too.
 .PP
 \fB-inetd\fR
 .IP
@@ -1978,7 +1978,7 @@ ANONTLS is an older SSL/TLS mode introduced by vino.
 .IP
 It is referred to as 'TLS' for its registered VNC
 security-type name, but we use the more descriptive
-\'ANONTLS' here because it provides only Anonymous
+\(aqANONTLS\(aq here because it provides only Anonymous
 Diffie-Hellman encrypted connections, and hence no
 possibility for certificate authentication.
 .IP
@@ -2781,7 +2781,7 @@ or server (VNC or otherwise.) The cipher (1st arg)
 is basically the same syntax as we use above.
 .IP
 Also see the 'Non-Ultra DSM' SSVNC option for the
-\'UltraVNC DSM Encryption Plugin' advanced option.
+\(aqUltraVNC DSM Encryption Plugin\(aq advanced option.
 .IP
 For both ways of using the viewer, you can specify the
 salt,ivec sizes (in GUI or, e.g. arc4@8,16).
@@ -3304,7 +3304,7 @@ them (as opposed to simply crashing by assuming the
 old screen size).  See the 
 .IR xrandr (1)
 manpage and run
-\'xrandr \fB-q'\fR for more info.  [mode] is optional and
+\(aqxrandr \fB-q\(aq\fR for more info.  [mode] is optional and
 described below.
 .IP
 Since watching for XRANDR events and trapping errors
@@ -5171,7 +5171,7 @@ be loaded.  E.g. vesafb or vga16fb and also by setting
 the boot parameter vga=0x301 (or 0x314, 0x317, etc.)
 (The vga=... method is the preferred way; set your
 machines up that way.)  Otherwise there will be a
-\'No such device' error.  You can also load a Linux
+\(aqNo such device\(aq error.  You can also load a Linux
 framebuffer driver specific to your make of video card
 for more functionality.  Once the machine is booted one
 can often 'modprobe' the fb driver as root to obtain
@@ -5712,9 +5712,9 @@ because that disables the communication channel.
 See below for alternate channels.
 .IP
 For example: 'x11vnc \fB-remote\fR stop' (which is the same as
-\'x11vnc \fB-R\fR stop') will close down the x11vnc server.
-\'x11vnc \fB-R\fR shared' will enable shared connections, and
-\'x11vnc \fB-R\fR scale:3/4' will rescale the desktop.
+\(aqx11vnc \fB-R\fR stop\(aq) will close down the x11vnc server.
+\(aqx11vnc \fB-R\fR shared\(aq will enable shared connections, and
+\(aqx11vnc \fB-R\fR scale:3/4\(aq will rescale the desktop.
 .IP
 To use a different name for the X11 property (e.g. to
 have separate communication channels for multiple
@@ -6473,8 +6473,8 @@ one via the XTEST extension.
 What the x11vnc bcx_xattach command does is to perform
 some pointer movements to try to INDUCE xattach/x2x
 to 'jump' to the other display.  In what follows the
-\'master' display refers to the one that when it has
-\'focus' it is basically doing nothing besides watching
+\(aqmaster\(aq display refers to the one that when it has
+\(aqfocus\(aq it is basically doing nothing besides watching
 for the mouse to go over an edge.  The 'slave'
 display refers to the one to which the mouse and
 keyboard is redirected to once an edge in the master
