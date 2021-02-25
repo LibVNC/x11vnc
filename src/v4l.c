@@ -47,6 +47,9 @@ so, delete this exception statement from your version.
 #define CONFIG_VIDEO_V4L1_COMPAT
 #if HAVE_LIBV4L1_VIDEODEV_H
 #include <libv4l1-videodev.h>
+#if HAVE_LINUX_VIDEODEV2_H
+#include <linux/videodev2.h>
+#endif
 #else
 #include <linux/videodev.h>
 #endif
