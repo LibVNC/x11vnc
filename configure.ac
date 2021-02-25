@@ -104,6 +104,7 @@ AH_TEMPLATE(HAVE_SOLARIS_XREADSCREEN, [Solaris XReadScreen available])
 AH_TEMPLATE(HAVE_IRIX_XREADDISPLAY, [IRIX XReadDisplay available])
 AH_TEMPLATE(HAVE_FBPM, [FBPM extension build environment present])
 AH_TEMPLATE(HAVE_DPMS, [DPMS extension build environment present])
+AH_TEMPLATE(HAVE_LIBV4L1_VIDEODEV_H, [libv4l build environment present])
 AH_TEMPLATE(HAVE_LINUX_VIDEODEV_H, [video4linux build environment present])
 AH_TEMPLATE(HAVE_LINUX_FB_H, [linux fb device build environment present])
 AH_TEMPLATE(HAVE_LINUX_INPUT_H, [linux/input.h present])
@@ -333,6 +334,8 @@ configure again.
 fi
 
 if test "x$with_v4l" != "xno"; then
+	AC_CHECK_HEADER(libv4l1-videodev.h,
+		[AC_DEFINE(HAVE_LIBV4L1_VIDEODEV_H)],,)
 	AC_CHECK_HEADER(linux/videodev.h,
 		[AC_DEFINE(HAVE_LINUX_VIDEODEV_H)],,)
 fi
