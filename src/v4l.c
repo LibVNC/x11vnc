@@ -41,11 +41,18 @@ so, delete this exception statement from your version.
 #include "keyboard.h"
 #include "allowed_input_t.h"
 
-#if HAVE_LINUX_VIDEODEV_H
+#if HAVE_LIBV4L1_VIDEODEV_H || HAVE_LINUX_VIDEODEV_H
 #if HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>
 #define CONFIG_VIDEO_V4L1_COMPAT
+#if HAVE_LIBV4L1_VIDEODEV_H
+#include <libv4l1-videodev.h>
+#if HAVE_LINUX_VIDEODEV2_H
+#include <linux/videodev2.h>
+#endif
+#else
 #include <linux/videodev.h>
+#endif
 #ifdef __LINUX_VIDEODEV2_H
 # ifndef HAVE_V4L2
 # define HAVE_V4L2 1
