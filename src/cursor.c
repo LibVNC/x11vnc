@@ -2103,11 +2103,16 @@ if (0) fprintf(stderr, "check_x11_pointer %d %d\n", root_x, root_y);
 		}
 	}
 
+	int x_rotated = x, y_rotated = y;
+	if (screen) {
+		rotate_cursor_coords(x, y, &x_rotated, &y_rotated, screen->width, screen->height);
+	}
+
 	/* record the cursor position in the rfb screen */
-	cursor_position(x, y, NULL);
+	cursor_position(x_rotated, y_rotated, NULL);
 
 	/* change the cursor shape if necessary */
-	rint = set_cursor(x, y, get_which_cursor());
+	rint = set_cursor(x_rotated, y_rotated, get_which_cursor());
 	return rint;
 }
 

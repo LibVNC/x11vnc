@@ -69,6 +69,7 @@ int scan_for_updates(int count_only);
 void rotate_curs(char *dst_0, char *src_0, int Dx, int Dy, int Bpp);
 void rotate_coords(int x, int y, int *xo, int *yo, int dxi, int dyi);
 void rotate_coords_inverse(int x, int y, int *xo, int *yo, int dxi, int dyi);
+void rotate_cursor_coords(int x, int y, int *xo, int *yo, int dxi, int dyi);
 
 static void set_fs_factor(int max);
 static char *flip_ximage_byte_order(XImage *xim);
@@ -1382,6 +1383,36 @@ void rotate_coords(int x, int y, int *xo, int *yo, int dxi, int dyi) {
 	} else if (rotating == ROTATE_270) {
 		*xo = yi;
 		*yo = Dx - xi - 1;
+	}
+}
+
+void rotate_cursor_coords(int x, int y, int *xo, int *yo, int dxi, int dyi) {
+	int xi = x, yi = y;
+
+	if (rotating == ROTATE_NONE) {
+		*xo = xi;
+		*yo = yi;
+	} else if (rotating == ROTATE_X) {
+		*xo = dxi - xi;
+		*yo = yi;
+	} else if (rotating == ROTATE_Y) {
+		*xo = xi;
+		*yo = dyi - yi;
+	} else if (rotating == ROTATE_XY) {
+		*xo = dxi - xi;
+		*yo = dyi - yi;
+	} else if (rotating == ROTATE_90) {
+		*xo = dxi - yi;
+		*yo = xi;
+	} else if (rotating == ROTATE_90X) {
+		*xo = yi;
+		*yo = xi;
+	} else if (rotating == ROTATE_90Y) {
+		*xo = dxi - yi;
+		*yo = dyi - xi;
+	} else if (rotating == ROTATE_270) {
+		*xo = yi;
+		*yo = dyi - xi;
 	}
 }
 
