@@ -1386,6 +1386,11 @@ void rotate_coords(int x, int y, int *xo, int *yo, int dxi, int dyi) {
 	}
 }
 
+
+/* 
+ rotate cursor coordinates for `rotating` rotation. assumes that dxi and dyi are **not** rotated.
+ separate from rotate_coords because it returns incorrect coords for 90, 90y & 270 deg rotations.
+*/
 void rotate_cursor_coords(int x, int y, int *xo, int *yo, int dxi, int dyi) {
 	int xi = x, yi = y;
 
