@@ -1833,6 +1833,8 @@ void cursor_position(int x, int y, rfbClientPtr client) {
 		if (y >= dpy_y) y = dpy_y-1;
 	}
 
+	if (rotating)
+	    rotate_cursor_coords(x, y, &x, &y, screen->width, screen->height);
 
 	if(client == NULL) {
 	/* handle screen's master cursor */
