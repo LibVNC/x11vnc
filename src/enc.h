@@ -1449,7 +1449,7 @@ static void securevnc_setup(int conn1, int conn2) {
 		fprintf(stderr, "securevnc_setup: RAND_pseudo_bytes() rc=%d\n", rc);
 		if (getenv("RANDSTR")) {
 			char *s = getenv("RANDSTR"); 
-			fprintf(stderr, "securevnc_setup: seeding with RANDSTR len=%d\n", strlen(s));
+			fprintf(stderr, "securevnc_setup: seeding with RANDSTR len=%zu\n", strlen(s));
 			RAND_add(s, strlen(s), strlen(s));
 		}
 	}
