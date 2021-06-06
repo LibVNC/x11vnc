@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # shm_clear: clean out unattached (NATTACH=0) shm segments.
-# See ipcs(1) and ipcrm(1).  Tested on Linux and Solaris.
+# See ipcs(1) and ipcrm(1).  Tested on Linux, Solaris, and OpenBSD.
 #
 # Usage:
 #    shm_clear      list and prompt for removal of your unattached shm segments.
@@ -28,7 +28,7 @@ if [ `uname` = "Linux" ]; then
 	g_arg="^0x"
 	s_cmd="ipcs $m_arg -i %ID"
 	awkcut='{print $2, $6}'
-elif [ `uname` = "SunOS" ]; then
+elif [ `uname` = "SunOS" -o `uname` = "OpenBSD" ]; then
 	m_arg="-ma"
 	r_arg="-m"
 	g_arg="^m"
