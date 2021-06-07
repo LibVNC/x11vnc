@@ -211,6 +211,7 @@ extern char *xrandr_mode;
 extern char *pad_geometry;
 extern time_t pad_geometry_time;
 extern int use_snapfb;
+extern int enable_setdesktopsize;
 
 extern int use_xrecord;
 extern int noxrecord;
