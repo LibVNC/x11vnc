@@ -2348,7 +2348,7 @@ static char *get_usslpeer() {
 	}
 	rfbLog("sslpeer unix username extracted from x509 cert: %s\n", upeer);
 
-	u = (char *) malloc(strlen(upeer+2));
+	u = (char *) malloc(strlen(upeer)+2);
 	u[0] = '\0';
 	if (!strcmp(users_list, "sslpeer=")) {
 		sprintf(u, "+%s", upeer);
@@ -2379,7 +2379,7 @@ static void do_try_switch(char *usslpeer, char *users_list_save) {
 		return;
 	}
 	if (usslpeer) {
-		char *u = (char *) malloc(strlen(usslpeer+2));
+		char *u = (char *) malloc(strlen(usslpeer)+2);
 		sprintf(u, "+%s", usslpeer);
 		if (switch_user(u, 0)) {
 			rfbLog("sslpeer switched to user: %s\n", usslpeer);
