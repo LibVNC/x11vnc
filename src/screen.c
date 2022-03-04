@@ -1231,7 +1231,7 @@ void vnc_reflect_got_cursorshape(rfbClient *cl, int xhot, int yhot, int width, i
 	green_mask = (client->format.greenMax << client->format.greenShift);
 	blue_mask  = (client->format.blueMax  << client->format.blueShift);
 
-	pixels = (uint32_t *)malloc(4*width*height);
+	pixels = (uint32_t *)malloc((size_t)4*width*height);
 	for (j=0; j<height; j++) {
 		for (i=0; i<width; i++) {
 			unsigned char* uic;
@@ -1367,7 +1367,7 @@ rfbBool vnc_reflect_resize(rfbClient *cl)  {
 	if(cl->frameBuffer) {
 		free(cl->frameBuffer);
 	}
-	cl->frameBuffer= malloc(cl->width * cl->height * cl->format.bitsPerPixel/8);
+	cl->frameBuffer= malloc((size_t)cl->width * cl->height * cl->format.bitsPerPixel/8);
 	rfbLog("vnc_reflect_resize: %dx%dx%d first=%d\n", cl->width, cl->height,
 	    cl->format.bitsPerPixel, first);
 	if (!first) {
@@ -2297,7 +2297,7 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 	}
 
 	raw_fb_image->bytes_per_line = dpy_x * b/8;
-	raw_fb = (char *) malloc(dpy_y * dpy_x * b/8);
+	raw_fb = (char *) malloc((size_t)dpy_y * dpy_x * b/8);
 	raw_fb_image->data = raw_fb;
 	raw_fb_image->format = ZPixmap;
 	raw_fb_image->width  = dpy_x;
@@ -2323,7 +2323,7 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 			b_use = 24;
 			raw_fb_bytes_per_line = dpy_x * b_use/8;
 		}
-		snap_fb = (char *) malloc(dpy_y * dpy_x * b_use/8);
+		snap_fb = (char *) malloc((size_t)dpy_y * dpy_x * b_use/8);
 		snap = &ximage_struct_snap;
 		snap->data = snap_fb;
 		snap->format = ZPixmap;
@@ -2368,11 +2368,11 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 	}
 
 	if (clipshift || raw_fb_native_bpp < 8) {
-		memset(raw_fb, 0xff, dpy_y * raw_fb_image->bytes_per_line);
+		memset(raw_fb, 0xff, (size_t)dpy_y * raw_fb_image->bytes_per_line);
 	} else if (raw_fb_addr && ! xform24to32) {
-		memcpy(raw_fb, raw_fb_addr + raw_fb_offset, dpy_y * raw_fb_image->bytes_per_line);
+		memcpy(raw_fb, raw_fb_addr + raw_fb_offset, (size_t)dpy_y * raw_fb_image->bytes_per_line);
 	} else {
-		memset(raw_fb, 0xff, dpy_y * raw_fb_image->bytes_per_line);
+		memset(raw_fb, 0xff, (size_t)dpy_y * raw_fb_image->bytes_per_line);
 	}
 
 	if (verbose) {
@@ -2737,7 +2737,7 @@ if (0) fprintf(stderr, "DefaultDepth: %d  visial_id: %d\n", depth, (int) visual_
 		fb = XCreateImage_wr(dpy, default_visual, depth, ZPixmap,
 		    0, NULL, dpy_x, dpy_y, BitmapPad(dpy), 0);
 		if (fb) {
-			fb->data = (char *) malloc(fb->bytes_per_line * fb->height);
+			fb->data = (char *) malloc((size_t)fb->bytes_per_line * fb->height);
 		}
 
 	} else {

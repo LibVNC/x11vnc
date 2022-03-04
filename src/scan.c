@@ -278,7 +278,7 @@ static int shm_create(XShmSegmentInfo *shm, XImage **ximg_ptr, int w, int h,
 			return 0;
 		}
 		if (db) fprintf(stderr, "shm_create simple %d %d\t%p %s\n", w, h, (void *)xim, name);
-		xim->data = (char *) malloc(xim->bytes_per_line * xim->height);
+		xim->data = (char *) malloc((size_t)xim->bytes_per_line * xim->height);
 		if (xim->data == NULL) {
 			rfbErr("XCreateImage(%s) data malloc failed.\n", name);
 			if (quiet) {
@@ -321,7 +321,7 @@ static int shm_create(XShmSegmentInfo *shm, XImage **ximg_ptr, int w, int h,
 
 #if HAVE_XSHM
 	shm->shmid = shmget(IPC_PRIVATE,
-	    xim->bytes_per_line * xim->height, IPC_CREAT | 0600);
+	    (size_t)xim->bytes_per_line * xim->height, IPC_CREAT | 0600);
 
 	if (shm->shmid == -1) {
 		rfbErr("shmget(%s) failed.\n", name);
@@ -2017,7 +2017,7 @@ static int copy_tiles(int tx, int ty, int nt) {
 
 	for (line = first_min; line <= last_max; line++) {
 		/* for I/O speed we do not do this tile by tile */
-		memcpy(s_dst, s_src, size_x * pixelsize);
+		memcpy(s_dst, s_src, (size_t)size_x * pixelsize);
 		if (nt == 1) {
 			/*
 			 * optimization for tall skinny lines, e.g. wm
@@ -2705,7 +2705,7 @@ static void snap_vcsa_rawfb(void) {
 		}
 		rfbDrawChar(fake_screen, &default8x16Font, x, y + Ch, chr, fore);
 	}
-	memcpy(vcsabuf0, vcsabuf, 2 * rows * cols); 
+	memcpy(vcsabuf0, vcsabuf, (size_t)2 * rows * cols);
 	prev_xpos = xpos;
 	prev_ypos = ypos;
 }
@@ -2768,7 +2768,7 @@ static void snap_all_rawfb(void) {
 		dst = snap->data;
 
 		for (h = 0; h < dpy_y; h++) {
-			memcpy(dst, src, dpy_x * pixelsize);
+			memcpy(dst, src, (size_t)dpy_x * pixelsize);
 			src += wdpy_x * pixelsize;
 			dst += snap->bytes_per_line;
 		}
@@ -3352,7 +3352,7 @@ if (ncdb) fprintf(stderr, "\n*** SCAN_DISPLAY CHECK_NCACHE/%d *** %d rescan=%d\n
 				w = NSCAN;
 			}
 
-			if (diff_hint || memcmp(dst, src, w * pixelsize)) {
+			if (diff_hint || memcmp(dst, src, (size_t)w * pixelsize)) {
 				/* found a difference, record it: */
 				if (! blackouts) {
 					tile_has_diff[n] = 1;
