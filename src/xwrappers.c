@@ -301,7 +301,7 @@ XImage *XGetSubImage_wr(Display *disp, Drawable d, int x, int y,
 	ADJUST_ROOTSHIFT
 
 	if (overlay && dest_x == 0 && dest_y == 0) {
-		size_t size = dest_image->height * dest_image->bytes_per_line;
+		size_t size = (size_t)dest_image->height * dest_image->bytes_per_line;
 		XImage *xi;
 
 		xi = xreadscreen(disp, d, x, y, width, height,
@@ -621,7 +621,7 @@ static void copy_raw_fb_24_to_32(XImage *dest, int x, int y, unsigned int w,
 		if (buf) {
 			free(buf);
 		}
-		buf = (char *) malloc(4*(sz + 1000));
+		buf = (char *) malloc((size_t)4*(sz + 1000));
 	}
 
 	if (clipshift && ! use_snapfb) {
@@ -764,7 +764,7 @@ void copy_raw_fb(XImage *dest, int x, int y, unsigned int w, unsigned int h) {
 if (db) fprintf(stderr, "snap->bytes_per_line: %d, dest->bytes_per_line: %d, w: %d h: %d dpy_x: %d wdpy_x: %d cdpy_x: %d bpp: %d pixelsize: %d\n", snap->bytes_per_line, dest->bytes_per_line, w, h, dpy_x, wdpy_x, cdpy_x, bpp, pixelsize);
 
 		for (line = 0; line < h; line++) {
-			memcpy(dst, src, w * pixelsize);
+			memcpy(dst, src, (size_t)w * pixelsize);
 			src += snap->bytes_per_line;
 			dst += dest->bytes_per_line;
 		}
@@ -783,7 +783,7 @@ if (db) fprintf(stderr, "snap->bytes_per_line: %d, dest->bytes_per_line: %d, w: 
 if (db) fprintf(stderr, "bpl: %d, dest->bytes_per_line: %d, w: %d h: %d dpy_x: %d wdpy_x: %d cdpy_x: %d bpp: %d pixelsize: %d\n", bpl, dest->bytes_per_line, w, h, dpy_x, wdpy_x, cdpy_x, bpp, pixelsize);
 
 		for (line = 0; line < h; line++) {
-			memcpy(dst, src, w * pixelsize);
+			memcpy(dst, src, (size_t)w * pixelsize);
 			src += bpl;
 			dst += dest->bytes_per_line;
 		}
@@ -852,7 +852,7 @@ void copy_image(XImage *dest, int x, int y, unsigned int w, unsigned int h) {
 		src = snap->data + snap->bytes_per_line*y + pixelsize*x;
 		dst = dest->data;
 		for (line = 0; line < h; line++) {
-			memcpy(dst, src, w * pixelsize);
+			memcpy(dst, src, (size_t)w * pixelsize);
 			src += snap->bytes_per_line;
 			dst += dest->bytes_per_line;
 		}

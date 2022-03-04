@@ -712,7 +712,7 @@ static int process_watch(char *str, int parent, int db) {
 			fac *= npids;
 		}
 
-		if (now > watches[i].change + fac*too_long) {
+		if (now > watches[i].change + (size_t)fac*too_long) {
 			int process_alive = 1;
 
 			fprintf(stderr, "grab_buster: problem with pid: "

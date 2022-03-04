@@ -754,7 +754,7 @@ static void setup_cursors(void) {
 			w = ci->wx;
 			h = ci->wy;
 
-			pixels = (uint32_t *) malloc(w * h
+			pixels = (uint32_t *) malloc((size_t)w * h
 			    * sizeof(uint32_t));
 
 			k = 0;
@@ -834,7 +834,7 @@ static void setup_cursors(void) {
 				}
 
 				rfb_curs->richSource = (unsigned char *)
-				    calloc(ci->wx * ci->wy, 1);
+				    calloc((size_t)ci->wx * ci->wy, 1);
 
 				for (y = 0; y < ci->wy; y++) {
 				    for (x = 0; x < ci->wx; x++) {
@@ -1039,7 +1039,7 @@ rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h,
 		w = scale_round(W, scale_cursor_fac_x);
 		h = scale_round(H, scale_cursor_fac_y);
 
-		pixels_new = (char *) malloc(4*w*h);
+		pixels_new = (char *) malloc((size_t)4*w*h);
 
 		scale_rect(scale_cursor_fac_x, scale_cursor_fac_y, scaling_cursor_blend,
 		    scaling_cursor_interpolate,
@@ -1058,8 +1058,8 @@ rfbCursorPtr pixels2curs(uint32_t *pixels, int w, int h,
 	bitmap[len] = '\0';
 
 	/* for rich cursor pixel data */
-	rich  = (char *)calloc(Bpp*len, 1);
-	alpha = (char *)calloc(1*len, 1);
+	rich  = (char *)calloc((size_t)Bpp*len, 1);
+	alpha = (char *)calloc((size_t)1*len, 1);
 
 	n_opaque = 0;
 	n_trans = 0;
@@ -1320,7 +1320,7 @@ static int get_exact_cursor(int init) {
 			 * but doing it anyway for 32 bit.
 			 * */
 			int x,y;
-			pixel32 = malloc(xfc->width * xfc->height * sizeof(uint32_t));
+			pixel32 = malloc((size_t)xfc->width * xfc->height * sizeof(uint32_t));
 			for (y = 0; y < xfc->height; y++) {
 				for (x = 0; x < xfc->width; x++) {
 					uint32_t ofs = x + y*xfc->width;
@@ -1419,10 +1419,10 @@ fprintf(stderr, "sc: %d  %d/%d %d - %d %d\n", serial, w, h, cbpp, xhot, yhot);
 		char *dst;
 		int tx, ty;
 
-		dst = (char *) malloc(w * h * cbpp/8);
+		dst = (char *) malloc((size_t)w * h * cbpp/8);
 		rotate_curs(dst, (char *) data, w, h, cbpp/8);
 
-		memcpy(data, dst, w * h * cbpp/8);
+		memcpy(data, dst, (size_t)w * h * cbpp/8);
 		free(dst);
 
 		rotate_coords(xhot, yhot, &tx, &ty, w, h);
@@ -2365,7 +2365,7 @@ void restore_under_cursor_buffer(rfbClientPtr cl)
     for(j=0;j<y2;j++)
       memcpy(screen->frameBuffer+(y1+j)*rowstride+x1*bpp,
 	     cd->under_cursor_buffer+j*x2*bpp,
-	     x2*bpp);
+	     (size_t)x2*bpp);
 
     /* seems the additional w/2 and h/2 rect extension is needed in threaded mode */
     mark_rect_as_modified(x1-x2/2, y1-y2/2, x1+x2+x2/2, y1+y2+y2/2, 1);

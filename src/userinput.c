@@ -587,7 +587,7 @@ void initialize_scroll_keys(void) {
 	nkeys++;	/* exclude/include 0 element */
 	nkeys++;	/* trailing NoSymbol */
 
-	scroll_key_list = (KeySym *) malloc(nkeys*sizeof(KeySym)); 
+	scroll_key_list = (KeySym *) malloc((size_t)nkeys*sizeof(KeySym));
 	for (i=0; i<nkeys; i++) {
 		scroll_key_list[i] = NoSymbol;
 	}
@@ -912,7 +912,7 @@ static void draw_box(int x, int y, int w, int h, int restore) {
 			}
 			src = save[i]->data + (yu-y_start)*y_step;
 			dst = use_fb + yu*use_Bpl + x0*pixelsize;
-			memcpy(dst, src, (x1-x0)*pixelsize);
+			memcpy(dst, src, (size_t)(x1-x0)*pixelsize);
 		}
 		if (y_min >= 0) {
 if (0) fprintf(stderr, "Mark-1 %d %d %d %d\n", x0, y_min, x1, y_max+1);
@@ -1018,11 +1018,11 @@ if (0) fprintf(stderr, "  DrawBox: %04dx%04d+%04d+%04d B=%d rest=%d lw=%d %.4f\n
 			save[i]->saved = 1;
 			src = use_fb + yu*use_Bpl + x0*pixelsize;
 			dst = save[i]->data + (yu-y_start)*y_step;
-			memcpy(dst, src, (x1-x0)*pixelsize);
+			memcpy(dst, src, (size_t)(x1-x0)*pixelsize);
 
 			/* apply the shade/color to make the wireframe line: */
 			if (! color) {
-				memset(src, shade, (x1-x0)*pixelsize);
+				memset(src, shade, (size_t)(x1-x0)*pixelsize);
 			} else {
 				char *csrc = src;
 				unsigned short *usp;
@@ -1043,7 +1043,7 @@ if (0) fprintf(stderr, "  DrawBox: %04dx%04d+%04d+%04d B=%d rest=%d lw=%d %.4f\n
 			/* apply black border for lw >= 2 */
 			if (lw > 1) {
 				if (yu == yblack) {
-					memset(src, 0, (x1-x0)*pixelsize);
+					memset(src, 0, (size_t)(x1-x0)*pixelsize);
 				}
 				if (xblack1 >= 0) {
 					src = src + (xblack1 - x0)*pixelsize;
@@ -1095,7 +1095,7 @@ if (db) dtime0(&tm);
 		dst = main_fb + y * main_bytes_per_line + x1 * pixelsize;
 
 		if (do_cmp == 0 || !mark) {
-			memcpy(dst, src, (x2 - x1)*pixelsize);
+			memcpy(dst, src, (size_t)(x2 - x1)*pixelsize);
 
 		} else if (do_cmp == 1) {
 			if (memcmp(dst, src, (x2 - x1)*pixelsize)) {
@@ -1105,7 +1105,7 @@ if (db) dtime0(&tm);
 				if (ymax == -1 || y > ymax) {
 					ymax = y;
 				}
-				memcpy(dst, src, (x2 - x1)*pixelsize);
+				memcpy(dst, src, (size_t)(x2 - x1)*pixelsize);
 			}
 
 		} else if (do_cmp == 2) {
@@ -1125,7 +1125,7 @@ if (db) dtime0(&tm);
 				}
 				src2 = src + shift*pixelsize;
 				dst2 = dst + shift*pixelsize;
-				if (memcmp(dst2, src2, n*pixelsize)) {
+				if (memcmp(dst2, src2, (size_t)n*pixelsize)) {
 					if (ymin == -1 || y < ymin) {
 						ymin = y;
 					}
@@ -1138,7 +1138,7 @@ if (db) dtime0(&tm);
 					if (xmax == -1 || xhi > xmax) {
 						xmax = xhi;
 					}
-					memcpy(dst2, src2, n*pixelsize);
+					memcpy(dst2, src2, (size_t)n*pixelsize);
 				}
 			}
 		}
@@ -8220,7 +8220,7 @@ void set_ncache_xrootpmap(void) {
 		dst = main_fb + y1 * main_bytes_per_line;
 		line = 0;
 		while (line++ < dpy_y) {
-			memcpy(dst, src, dpy_x * pixelsize);
+			memcpy(dst, src, (size_t)dpy_x * pixelsize);
 			src += image->bytes_per_line;
 			dst += main_bytes_per_line;
 		}

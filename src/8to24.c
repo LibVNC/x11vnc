@@ -276,7 +276,7 @@ static void pfb(int fac, char **fb, int *w, int *h)  {
 		if (*fb) {
 			free(*fb);
 		}
-		*fb = (char *) calloc(fac * dpy_x * dpy_y, 1);
+		*fb = (char *) calloc((size_t)fac * dpy_x * dpy_y, 1);
 		*w = dpy_x;
 		*h = dpy_y;
 	}
@@ -830,12 +830,12 @@ static XImage *p_xi(XImage *xi, Visual *visual, int win_depth, int *w) {
 		}
 		if (win_depth != 24) {
 			if (win_depth > 8) {
-				d = (char *) malloc(dpy_x * 2);
+				d = (char *) malloc((size_t)dpy_x * 2);
 			} else {
-				d = (char *) malloc(dpy_x * 1);
+				d = (char *) malloc((size_t)dpy_x * 1);
 			}
 		} else {
-			d = (char *) malloc(dpy_x * 4);
+			d = (char *) malloc((size_t)dpy_x * 4);
 		}
 		*w = dpy_x;
 		xi = XCreateImage(dpy, visual, win_depth, ZPixmap, 0, d,
@@ -962,7 +962,7 @@ if (db24 > 2) fprintf(stderr, "avoid bad match...\n");
 			xh = x2;
 		}
 		w2 = xh - xl;
-		if (memcmp(dst, src, fac * w2)) {
+		if (memcmp(dst, src, (size_t)fac * w2)) {
 			if (inrun) {
 				rx2 = xh;
 			} else {
@@ -1386,8 +1386,8 @@ static int get_cmap(int j, Colormap cmap) {
 	if (!color_init) {
 		int cm;
 		for (cm = 0; cm < CMAPMAX; cm++) {
-			color[cm] = (XColor *) malloc(ncolor * sizeof(XColor));
-			rgb[cm] = (unsigned int *) malloc(ncolor * sizeof(unsigned int));
+			color[cm] = (XColor *) malloc((size_t)ncolor * sizeof(XColor));
+			rgb[cm] = (unsigned int *) malloc((size_t)ncolor * sizeof(unsigned int));
 		}
 		color_init = 1;
 	}
@@ -1534,12 +1534,12 @@ static XImage *cmap_xi(XImage *xi, Window win, int win_depth) {
 		return (XImage *) NULL;
 	}
 	if (win_depth == 24) {
-		d = (char *) malloc(dpy_x * dpy_y * 4);
+		d = (char *) malloc((size_t)dpy_x * dpy_y * 4);
 	} else if (win_depth <= 16) {
 		if (win_depth > 8) {
-			d = (char *) malloc(dpy_x * dpy_y * 2);
+			d = (char *) malloc((size_t)dpy_x * dpy_y * 2);
 		} else {
-			d = (char *) malloc(dpy_x * dpy_y * 1);
+			d = (char *) malloc((size_t)dpy_x * dpy_y * 1);
 		}
 	} else {
 		return (XImage *) NULL;
@@ -1707,8 +1707,8 @@ if (db24) fprintf(stderr, "xi: wrong depth: %d\n", xi->depth);
 			poll_Bpl = poll24_fb_w * 4;
 
 			for (line = 0; line < h; line++) {
-				memcpy(dst,  src, w * ps1);
-				memcpy(poll, src, w * ps1);
+				memcpy(dst,  src, (size_t)w * ps1);
+				memcpy(poll, src, (size_t)w * ps1);
 
 				src += xi->bytes_per_line;
 				dst += main_bytes_per_line * fac;
@@ -1863,7 +1863,7 @@ if (db24 > 1) fprintf(stderr, "bpp8to24 %d %d %d %d %.4f\n", x1, y1, x2, y2, dno
 
 		/* otherwise, the pixel data as is */
 		for (line = 0; line < h; line++) {
-			memcpy(dst, src, w * pixelsize);
+			memcpy(dst, src, (size_t)w * pixelsize);
 			src += main_bytes_per_line;
 			dst += main_bytes_per_line;
 		}
