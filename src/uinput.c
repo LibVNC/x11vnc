@@ -1302,6 +1302,8 @@ static int lookup_code(int keysym) {
 
 	switch(keysym) {
 #ifdef UINPUT_OK
+	case XK_Super_L: return KEY_LEFTMETA;
+	case XK_Super_R: return KEY_RIGHTMETA;
 	case XK_Escape:	return KEY_ESC;
 	case XK_1:		return KEY_1;
 	case XK_2:		return KEY_2;
@@ -1501,6 +1503,8 @@ while (<>) {
 This only handles US kbd, we would need a kbd database in general...
 Ugh: parse dumpkeys(1) or -fookeys /usr/share/keymaps/i386/qwerty/dk.kmap.gz
 
+XK_Super_L	KEY_LEFTMETA
+XK_Super_R	KEY_RIGHTMETA
 XK_Escape	KEY_ESC
 XK_1		KEY_1
 XK_2		KEY_2
