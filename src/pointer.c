@@ -630,7 +630,9 @@ static void pipe_pointer(int mask, int x, int y, rfbClientPtr client) {
 	} else if (pipeinput_int == PIPEINPUT_CONSOLE) {
 		console_pointer_command(mask, x, y, client);
 	} else if (pipeinput_int == PIPEINPUT_UINPUT) {
-		uinput_pointer_command(mask, x, y, client);
+		// uinput_pointer_command(mask, x, y, client);
+		update_x11_pointer_position(x, y, client);
+		update_x11_pointer_mask(mask, client);
 	} else if (pipeinput_int == PIPEINPUT_MACOSX) {
 		macosx_pointer_command(mask, x, y, client);
 	} else if (pipeinput_int == PIPEINPUT_VNC) {
