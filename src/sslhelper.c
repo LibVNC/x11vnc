@@ -1596,7 +1596,7 @@ static int switch_to_anon_dh(void) {
 	if (ssl_client_mode) {
 		return 1;
 	}
-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)
 	/* Security level must be set to 0 for unauthenticated suites. */
 	SSL_CTX_set_security_level(ctx, 0);
 #endif
