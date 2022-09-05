@@ -74,6 +74,7 @@ so, delete this exception statement from your version.
 #define PIPEINPUT_UINPUT	0x3
 #define PIPEINPUT_MACOSX	0x4
 #define PIPEINPUT_VNC		0x5
+#define PIPEINPUT_UINPUTX	0x6
 
 #define MAX_BUTTONS 7
 

@@ -5351,6 +5351,14 @@ is the /dev/input/uinput device file (you may need to
 create it with "mknod /dev/input/uinput c 10 223"
 and insert the module with "modprobe uinput".
 .IP
+If cmd begins with "UINPUTX" then the Linux uinput
+module is used to insert both keystroke
+to the Linux console (see \fB-rawfb\fR above), but mouse events
+stay with xinput for better scrolling. The keyboard input is
+usually the /dev/input/uinput device file (you may need to
+create it with "mknod /dev/input/uinput c 10 223"
+and insert the module with "modprobe uinput".
+.IP
 The UINPUT mode currently only does US keyboards (a
 scan code option may be added), and not all keysyms
 are supported.  But it is probably more accurate than

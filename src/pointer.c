@@ -630,7 +630,8 @@ static void pipe_pointer(int mask, int x, int y, rfbClientPtr client) {
 	} else if (pipeinput_int == PIPEINPUT_CONSOLE) {
 		console_pointer_command(mask, x, y, client);
 	} else if (pipeinput_int == PIPEINPUT_UINPUT) {
-		// uinput_pointer_command(mask, x, y, client);
+		uinput_pointer_command(mask, x, y, client);
+	} else if (pipeinput_int == PIPEINPUT_UINPUTX) {
 		update_x11_pointer_position(x, y, client);
 		update_x11_pointer_mask(mask, client);
 	} else if (pipeinput_int == PIPEINPUT_MACOSX) {
@@ -1095,6 +1096,14 @@ if (0) fprintf(stderr, "initialize_pipeinput: %s -- %s\n", pipeinput_str, p);
 			parse_uinput_str(q+1);
 		}
 		pipeinput_int = PIPEINPUT_UINPUT;
+		initialize_uinput();
+		return;
+	} else if (strstr(p, "UINPUTX") == p) {
+		char *q = strchr(p, ':');
+		if (q) {
+			parse_uinput_str(q+1);
+		}
+		pipeinput_int = PIPEINPUT_UINPUTX;
 		initialize_uinput();
 		return;
 	} else if (strstr(p, "MACOSX") == p) {
