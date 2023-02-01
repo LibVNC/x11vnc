@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/LibVNC/x11vnc.svg?branch=master)](https://travis-ci.org/LibVNC/x11vnc)
 
-**The project currently is unmaintained and is looking for a new maintainer, please see
-https://github.com/LibVNC/x11vnc/issues/186**
+**❗ The project currently is unmaintained and is looking for a new maintainer, please see
+https://github.com/LibVNC/x11vnc/issues/186 ❗**
 
 This is x11vnc with its development continued by LibVNC and the GitHub community.
 While 0.9.13 was the last release by the original author Karl Runge, 0.9.14 was
