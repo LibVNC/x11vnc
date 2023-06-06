@@ -2130,6 +2130,19 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 	if (sscanf(str, "shm:%d", &shmid) == 1) {
 		/* shm:N */
 #if HAVE_XSHM || HAVE_SHMAT
+		/* try to use shm key*/
+		key_t shmkey = 0;
+		size_t size = 0;
+		int newshmid = -1;
+		
+		shmkey = shmid;
+		size = w * h * b / 8;
+		newshmid = shmget(shmkey, size, 0);
+		if (newshmid != -1) {
+			rfbLog("rawfb: use %d as shm key, shmid is %d \n", shmid, newshmid);
+			shmid = newshmid;
+		}
+		
 		raw_fb_addr = (char *) shmat(shmid, 0, SHM_RDONLY);
 		if (! raw_fb_addr) {
 			rfbLogEnable(1);

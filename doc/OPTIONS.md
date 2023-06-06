@@ -4395,8 +4395,12 @@ Options:
                        whole frame).
 
                        For shared memory segments string is of the form:
-                       "shm:N@WxHxB" which specifies a shmid N and with
+                       "shm:N@WxHxB" which specifies a shm key(or a shmid) N and with
                        WxHxB as above.  See shmat(1) and ipcs(1)
+					   
+					   Since shm key can be defined constantly, you should use 
+					   shm key rather than shmid. Unless you have a special purpose, 
+					   a mutable shmid may cause problems.
 
                        If you do not supply a type "map" is assumed if
                        the file exists (see the next paragraphs for some
