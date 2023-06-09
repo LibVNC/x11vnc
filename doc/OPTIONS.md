@@ -4398,13 +4398,13 @@ Options:
                        "shm:N@WxHxB" which specifies a shm key(or a shmid) N and with
                        WxHxB as above.  See shmat(1) and ipcs(1)
 					   
-					   Since shm key can be defined constantly, you should use 
-					   shm key rather than shmid. Unless you have a special purpose, 
-					   a mutable shmid may cause problems.
+                      Since shm key can be defined constantly, you should use 
+                      shm key rather than shmid. Unless you have a special purpose, 
+                      a mutable shmid may cause problems.
 
-					   If there is a new desktop like Wayland, use "drm:" to access 
-					   GPU FrameBuffer. If you do not know the GPU path, just use 
-					   "/dev/dri/card0".
+                      If there is a new desktop like Wayland, use "drm:" to access 
+                      GPU FrameBuffer. If you do not know the GPU path, just use 
+                      "/dev/dri/card0@WxHxB".
 
                        If you do not supply a type "map" is assumed if
                        the file exists (see the next paragraphs for some

@@ -2135,12 +2135,11 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 #if HAVE_XSHM || HAVE_SHMAT
 		/* try to use shm key*/
 		key_t shmkey = 0;
-		size_t size = 0;
 		int newshmid = -1;
 		
 		shmkey = shmid;
-		size = w * h * b / 8;
-		newshmid = shmget(shmkey, size, 0);
+
+		newshmid = shmget(shmkey, 0, 0);
 		if (newshmid != -1) {
 			rfbLog("rawfb: use %d as shm key, shmid is %d \n", shmid, newshmid);
 			shmid = newshmid;
