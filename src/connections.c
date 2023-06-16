@@ -2574,7 +2574,7 @@ char *get_repeater_string(char *str, int *len) {
 		if (pren > 0 && pren <= 16384) {
 			prestring_len = pren;
 			ptmp = (char *) calloc(prestring_len+1, 1);
-			snprintf(prestring, prestring_len, "%s", equals+1);
+			snprintf(ptmp, prestring_len, "%s", equals+1);
 			which = 3;
 		}
 	}
