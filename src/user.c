@@ -3049,7 +3049,7 @@ int wait_for_client(int *argc, char** argv, int http) {
 	initialize_screen(argc, argv, fb_image);
 
 	if (! inetd && ! use_openssl) {
-		if (! screen->port || screen->listenSock < 0) {
+		if (! screen->port || (screen->listenSock < 0 && screen->listen6Sock < 0)) {
 			if (got_rfbport && got_rfbport_val == 0) {
 				;
 			} else if (ipv6_listen && ipv6_listen_fd >= 0) {

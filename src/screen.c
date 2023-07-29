@@ -3727,6 +3727,11 @@ void initialize_screen(int *argc, char **argv, XImage *fb) {
 		defer_update = screen->deferUpdateTime;
 	}
 
+	// from the man page:
+	// "IPv6 address is listened on for incoming connections.
+	//  The same port number as IPv4 is used."
+	screen->ipv6port = (!ipv6_listen || noipv6) ? (-1) : screen->port;
+
 	if (noipv4 || getenv("IPV4_FAILS")) {
 		rfbBool ap = screen->autoPort;
 		int port = screen->port;
@@ -3753,7 +3758,7 @@ void initialize_screen(int *argc, char **argv, XImage *fb) {
 			https_port(0);
 		}
 	} else {
-		if (ipv6_listen) {
+		if (ipv6_listen && !noipv6 && screen->listen6Sock < 0) {
 			int fd = -1;
 			if (screen->port <= 0) {
 				if (got_rfbport) {

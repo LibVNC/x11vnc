@@ -4962,8 +4962,10 @@ int main(int argc, char* argv[]) {
 	    argv_vnc[argc_vnc++] = strdup("-listen");
 	    argv_vnc[argc_vnc++] = strdup(listen_str);
 #ifdef LIBVNCSERVER_IPv6
-	    argv_vnc[argc_vnc++] = strdup("-listenv6");
-	    argv_vnc[argc_vnc++] = strdup(listen_str);
+		if (! noipv6 && ipv6_listen) {
+			argv_vnc[argc_vnc++] = strdup("-listenv6");
+			argv_vnc[argc_vnc++] = strdup(listen_str);
+		}
 #endif
 	    allow_list = strdup("127.0.0.1");
 	}
@@ -5909,7 +5911,7 @@ int main(int argc, char* argv[]) {
 		}
 	}
 	if (! inetd && ! use_openssl) {
-		if (! screen->port || screen->listenSock < 0) {
+		if (! screen->port || (screen->listenSock < 0 && screen->listen6Sock < 0)) {
 			if (got_rfbport && got_rfbport_val == 0) {
 				;
 			} else if (ipv6_listen && ipv6_listen_fd >= 0) {
