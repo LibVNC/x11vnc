@@ -2036,6 +2036,30 @@ static void check_guess_auth_file(void)  {
 	}
 }
 
+void validate_listeners_or_exit() {
+	if (! inetd && ! use_openssl) {
+		if (! screen->port || (screen->listenSock < 0 && screen->listen6Sock < 0)) {
+			if (got_rfbport && got_rfbport_val == 0) {
+				rfbLog("Info: listening suppressed; see '-connect' and\n");
+				rfbLog("  and '-connect_or_exit' for details.\n");
+			} else if (ipv6_listen && ipv6_listen_fd >= 0) {
+				rfbLog("Info: listening only on IPv6 interface.\n");
+			} else {
+				rfbLogEnable(1);
+				rfbLog("Error: could not obtain any listening port.\n");
+				if (!got_rfbport && !got_ipv6_listen) {
+#if X11VNC_IPV6
+					rfbLog("If this system is IPv6-only, use the -6 option.\n");
+#else
+					rfbLog("Sorry, this build does not support IPv6.\n");
+#endif
+				}
+				clean_up_exit(1);
+			}
+		}
+	}
+}
+
 extern int is_decimal(char *);
 
 int main(int argc, char* argv[]) {
@@ -5910,27 +5934,8 @@ int main(int argc, char* argv[]) {
 			accept_openssl(OPENSSL_INETD, -1);
 		}
 	}
-	if (! inetd && ! use_openssl) {
-		if (! screen->port || (screen->listenSock < 0 && screen->listen6Sock < 0)) {
-			if (got_rfbport && got_rfbport_val == 0) {
-				rfbLog("Info: listening suppressed; see '-connect' and\n");
-				rfbLog("  and '-connect_or_exit' for details.\n");
-			} else if (ipv6_listen && ipv6_listen_fd >= 0) {
-				rfbLog("Info: listening only on IPv6 interface.\n");
-			} else {
-				rfbLogEnable(1);
-				rfbLog("Error: could not obtain any listening port.\n");
-				if (!got_rfbport && !got_ipv6_listen) {
-#if X11VNC_IPV6
-					rfbLog("If this system is IPv6-only, use the -6 option.\n");
-#else
-					rfbLog("Sorry, this build does not support IPv6.\n");
-#endif
-				}
-				clean_up_exit(1);
-			}
-		}
-	}
+
+	validate_listeners_or_exit();
 
 #ifdef MACOSX
 	if (remote_cmd || query_cmd) {
