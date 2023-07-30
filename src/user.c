@@ -3051,14 +3051,19 @@ int wait_for_client(int *argc, char** argv, int http) {
 	if (! inetd && ! use_openssl) {
 		if (! screen->port || (screen->listenSock < 0 && screen->listen6Sock < 0)) {
 			if (got_rfbport && got_rfbport_val == 0) {
-				;
+				rfbLog("Info: listening suppressed; see '-connect' and\n");
+				rfbLog("  and '-connect_or_exit' for details.\n");
 			} else if (ipv6_listen && ipv6_listen_fd >= 0) {
-				rfbLog("Info: listening on IPv6 interface only.  (wait for client)\n");
+				rfbLog("Info: listening only on IPv6 interface.\n");
 			} else {
 				rfbLogEnable(1);
-				rfbLog("Error: could not obtain listening port.  (wait for client)\n");
+				rfbLog("Error: could not obtain any listening port.\n");
 				if (!got_rfbport && !got_ipv6_listen) {
+#if X11VNC_IPV6
 					rfbLog("If this system is IPv6-only, use the -6 option.\n");
+#else
+					rfbLog("Sorry, this build does not support IPv6.\n");
+#endif
 				}
 				clean_up_exit(1);
 			}
