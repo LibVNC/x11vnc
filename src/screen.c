@@ -2286,7 +2286,7 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 	else if (strstr(str, "drm:") == str ) {
 		/* drm:D */
 		/* drm:/dev/dri/card0 */
-
+#if HAVE_LIBDRM
 		q = strchr(str, ':');
 		q++;
 		
@@ -2377,6 +2377,12 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 
 		raw_fb_addr = (char*)map;
 		last_mode = RAWFB_DRM;
+#else
+		rfbLogEnable(1);
+		rfbLog("x11vnc was compiled without drm support.\n");
+		rfbLogPerror("drmModeGetResources");
+		clean_up_exit(1);
+#endif
 
 	} 
 	else {

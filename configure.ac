@@ -24,7 +24,7 @@ AC_ARG_WITH(ssl,
 
 AH_TEMPLATE(HAVE_LIBDRM, [drm library present])
 AC_ARG_WITH(drm,
-[  --without-drm           disable support for openssl libdrm]
+[  --without-drm           disable support for library libdrm]
 [  --with-drm=DIR          use drm include/library files in DIR],,)
 
 
@@ -73,7 +73,7 @@ if test "x$with_drm" != "xno"; then
 	if test -z "$HAVE_LIBC_DRM"; then
 		AC_CHECK_LIB(drm, drmModeGetResources,
 			DRM_LIBS="-ldrm"
-			[AC_DEFINE(HAVE_LIBDRM)], ,)
+			[AC_DEFINE(HAVE_LIBDRM) HAVE_LIBDRM="true"], ,)
 
 
 		CPPFLAGS="$saved_CPPFLAGS -I/usr/include/drm/"
