@@ -69,6 +69,13 @@ so, delete this exception statement from your version.
 #include <rfb/rfb.h>
 #include <rfb/rfbregion.h>
 
+#if HAVE_LIBDRM
+/* drm access */
+#include <sys/ioctl.h>
+#include <xf86drm.h>
+#include <xf86drmMode.h>
+
+#endif
 
 /* we can now build under --without-x: */
 #if HAVE_X11

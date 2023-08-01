@@ -4395,8 +4395,16 @@ Options:
                        whole frame).
 
                        For shared memory segments string is of the form:
-                       "shm:N@WxHxB" which specifies a shmid N and with
+                       "shm:N@WxHxB" which specifies a shm key(or a shmid) N and with
                        WxHxB as above.  See shmat(1) and ipcs(1)
+					   
+                      Since shm key can be defined constantly, you should use 
+                      shm key rather than shmid. Unless you have a special purpose, 
+                      a mutable shmid may cause problems.
+
+                      If there is a new desktop like Wayland, use "drm:" to access 
+                      GPU FrameBuffer. If you do not know the GPU path, just use 
+                      "/dev/dri/card0@WxHxB".
 
                        If you do not supply a type "map" is assumed if
                        the file exists (see the next paragraphs for some
@@ -4447,6 +4455,7 @@ Options:
 
                        Examples:
                            -rawfb shm:210337933@800x600x32:ff/ff00/ff0000
+                           -rawfb drm:/dev/dri/card0@800x600x32:ff/ff00/ff0000
                            -rawfb map:/dev/fb0@1024x768x32
                            -rawfb map:/dev/fb0@800x480x16#800x960
                            -rawfb map:/tmp/Xvfb_screen0@640x480x8+3232

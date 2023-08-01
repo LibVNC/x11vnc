@@ -22,6 +22,12 @@ AC_ARG_WITH(ssl,
 [  --without-ssl           disable support for openssl libssl]
 [  --with-ssl=DIR          use openssl include/library files in DIR],,)
 
+AH_TEMPLATE(HAVE_LIBDRM, [drm library present])
+AC_ARG_WITH(drm,
+[  --without-drm           disable support for library libdrm]
+[  --with-drm=DIR          use drm include/library files in DIR],,)
+
+
 if test "x$with_crypto" != "xno" -a "x$with_ssl" != "xno"; then
 	if test ! -z "$with_ssl" -a "x$with_ssl" != "xyes"; then
 		saved_CPPFLAGS="$CPPFLAGS"
@@ -58,6 +64,22 @@ if test "x$with_crypt" != "xno"; then
 	fi
 fi
 AC_SUBST(CRYPT_LIBS)
+
+AH_TEMPLATE(HAVE_LIBDRM, [libdrm library present])
+AC_ARG_WITH(drm,
+[  --without-drm         disable support for libdrm],,)
+if test "x$with_drm" != "xno"; then
+	AC_CHECK_FUNCS([drm], HAVE_LIBC_DRM="true")
+	if test -z "$HAVE_LIBC_DRM"; then
+		AC_CHECK_LIB(drm, drmModeGetResources,
+			DRM_LIBS="-ldrm"
+			[AC_DEFINE(HAVE_LIBDRM) HAVE_LIBDRM="true"], ,)
+
+
+		CPPFLAGS="$saved_CPPFLAGS -I/usr/include/drm/"
+	fi
+fi
+AC_SUBST(DRM_LIBS)
 
 AH_TEMPLATE(HAVE_X509_PRINT_EX_FP, [open ssl X509_print_ex_fp available])
 if test "x$with_ssl" != "xno"; then

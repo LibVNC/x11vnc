@@ -1636,6 +1636,7 @@ void linux_dev_fb_msg(char* q) {
 #define RAWFB_MMAP 1
 #define RAWFB_FILE 2
 #define RAWFB_SHM  3
+#define RAWFB_DRM  4
 
 XImage *initialize_raw_fb(int reset) {
 	char *str, *rstr, *q;
@@ -1934,6 +1935,7 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 	 * -rawfb shm:163938442@640x480x32:ff/ff00/ff0000+3000
 	 * -rawfb map:/path/to/file@640x480x32:ff/ff00/ff0000
 	 * -rawfb file:/path/to/file@640x480x32:ff/ff00/ff0000
+	 * -rawfb drm:/dev/dri/card0@640x480x32:ff/ff00/ff0000
 	 */
 
 	if (raw_fb_full_str) {
@@ -2110,7 +2112,8 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 	}
 
 	if (strstr(str, "shm:") != str && strstr(str, "mmap:") != str &&
-	    strstr(str, "map:") != str && strstr(str, "file:") != str) {
+	    strstr(str, "map:") != str && strstr(str, "file:") != str &&
+		strstr(str, "drm:") != str ) {
 		/* hmmm, not following directions, see if map: applies */
 		struct stat sbuf;
 		if (stat(str, &sbuf) == 0) {
@@ -2130,6 +2133,18 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 	if (sscanf(str, "shm:%d", &shmid) == 1) {
 		/* shm:N */
 #if HAVE_XSHM || HAVE_SHMAT
+		/* try to use shm key*/
+		key_t shmkey = 0;
+		int newshmid = -1;
+		
+		shmkey = shmid;
+
+		newshmid = shmget(shmkey, 0, 0);
+		if (newshmid != -1) {
+			rfbLog("rawfb: use %d as shm key, shmid is %d \n", shmid, newshmid);
+			shmid = newshmid;
+		}
+		
 		raw_fb_addr = (char *) shmat(shmid, 0, SHM_RDONLY);
 		if (! raw_fb_addr) {
 			rfbLogEnable(1);
@@ -2266,7 +2281,111 @@ if (db) fprintf(stderr, "initialize_raw_fb reset\n");
 			rfbLog("rawfb: seek file: %s\n", q);
 			rfbLog("   W: %d H: %d B: %d sz: %d\n", w, h, b, size);
 		}
-	} else {
+	}
+
+	else if (strstr(str, "drm:") == str ) {
+		/* drm:D */
+		/* drm:/dev/dri/card0 */
+#if HAVE_LIBDRM
+		q = strchr(str, ':');
+		q++;
+		
+		/* open DRM device */
+		int fd = open(q, O_RDWR | O_CLOEXEC);
+		if (fd < 0) {
+			rfbLogEnable(1);
+			rfbLog("can not open drm device: %s\n", str);
+			clean_up_exit(1);
+		}
+
+		/* get current CRTC  */
+		drmModeRes* res = drmModeGetResources(fd);
+		if (!res) {
+			rfbLogEnable(1);
+			rfbLog("can not read drm device: %s\n", str);
+			clean_up_exit(1);
+		}
+
+		/* get first crtc */
+		/* drmModeCrtc* crtc = drmModeGetCrtc(fd, res->crtcs[0]);  */
+		drmModeCrtc* crtc = 0;
+		drmModeFB* fb = 0;
+		int dma_buf_fd = 0;
+		rfbLog("drm crtc count:%d\n", res->count_crtcs);
+		for (int i = 0; i < res->count_crtcs; i++) {
+
+			crtc = drmModeGetCrtc(fd, res->crtcs[i]);
+			if (crtc->mode_valid && crtc->buffer_id != 0) {
+
+				fb = drmModeGetFB(fd, crtc->buffer_id);
+
+				struct drm_prime_handle prime_handle = {
+					.handle = fb->handle,
+					.fd = -1,
+					.flags = 0
+				};
+
+				if (ioctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &prime_handle) < 0) {
+					drmModeFreeFB(fb);
+					drmModeFreeCrtc(crtc);
+					crtc = NULL;
+				}
+				else{
+					dma_buf_fd = prime_handle.fd;
+					break;
+					
+				}
+				
+				
+			}
+			
+		}
+		
+		if (!crtc) {
+			rfbLogEnable(1);
+			rfbLog("no valid crtc for drm device: %s\n", str);
+			clean_up_exit(1);
+		}
+		
+		if (!dma_buf_fd) {
+			rfbLogEnable(1);
+			rfbLog("open CRTC err, please turn on your display. ");
+			clean_up_exit(1);
+		}
+				
+		
+		
+		/* get  DMA-BUF size */
+		off_t size = lseek(dma_buf_fd, 0, SEEK_END);
+		lseek(dma_buf_fd, 0, SEEK_SET);
+		rfbLog("dma buffer (%d) size=%ld\n", dma_buf_fd, size);
+
+		/* mapping DMA-BUF to memory */
+		void* map = mmap(NULL, size, PROT_READ, MAP_SHARED, dma_buf_fd, 0);
+		if (map == MAP_FAILED) {
+			rfbLogEnable(1);
+			rfbLog("mmap failed for drm device: %s\n", str);
+			clean_up_exit(1);
+		}
+
+		/* clean resouces */
+		/* close(dma_buf_fd); */
+		drmModeFreeFB(fb);
+		drmModeFreeCrtc(crtc);
+		drmModeFreeResources(res);
+		close(fd);
+
+		raw_fb_addr = (char*)map;
+		last_mode = RAWFB_DRM;
+#else
+		rfbLogEnable(1);
+		rfbLog("x11vnc was compiled without drm support.\n");
+		rfbLogPerror("drmModeGetResources");
+		clean_up_exit(1);
+#endif
+
+	} 
+	else {
 		rfbLogEnable(1);
 		rfbLog("invalid rawfb str: %s\n", str);
 		clean_up_exit(1);

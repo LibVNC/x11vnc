@@ -140,6 +140,7 @@ AM_CPPFLAGS = \
 x11vnc_LDADD = \
 	$(LDADD) \
 	@SSL_LIBS@ \
+	@DRM_LIBS@ \
 	@CRYPT_LIBS@ \
 	@X_LIBS@ \
 	@AVAHI_LIBS@ \
