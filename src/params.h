@@ -75,7 +75,7 @@ so, delete this exception statement from your version.
 #define PIPEINPUT_MACOSX	0x4
 #define PIPEINPUT_VNC		0x5
 
-#define MAX_BUTTONS 7
+#define MAX_BUTTONS 8
 
 #define ROTATE_NONE		0
 #define ROTATE_X		1
