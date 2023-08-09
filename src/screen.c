@@ -93,6 +93,9 @@ rfbBool vnc_reflect_send_cuttext(char *str, int len);
 static void debug_colormap(XImage *fb);
 static void set_visual(char *str);
 static void nofb_hook(rfbClientPtr cl);
+#if HAVE_SETDESKTOPSIZE
+static int set_desktop_size_hook(int width, int height, int numScreens, rfbExtDesktopScreen* extDesktopScreens, rfbClientPtr cl);
+#endif
 static void remove_fake_fb(void);
 static void install_fake_fb(int w, int h, int bpp);
 static void initialize_snap_fb(void);
@@ -819,6 +822,25 @@ void free_old_fb(void) {
 		}
 	}
 }
+
+#if HAVE_SETDESKTOPSIZE
+static int set_desktop_size_hook(int width, int height, int numScreens, rfbExtDesktopScreen* extDesktopScreens, rfbClientPtr cl)
+{
+    int i;
+
+    rfbLog("Received SetDesktopSize message from client requesting (%dx%d) framebuffer with screen configuration:\n", width, height);
+    for (i=0; i<numScreens; i++) {
+        rfbLog("- id: %d resolution: %dx%d x offset: %d y offset: %d flags: %d\n", extDesktopScreens[i].id, extDesktopScreens[i].width,
+               extDesktopScreens[i].height, extDesktopScreens[i].x, extDesktopScreens[i].y, extDesktopScreens[i].flags);
+    }
+    if (cl->viewOnly) {
+        rfbLog("Denying setDesktopSize request as client is view-only\n");
+        return rfbExtDesktopSize_ResizeProhibited;
+    }
+
+    return xrandr_set_scale_from(width, height) ? rfbExtDesktopSize_Success : rfbExtDesktopSize_InvalidScreenLayout;
+}
+#endif
 
 static char _lcs_tmp[128];
 static int _bytes0_size = 128, _bytes0[128];
@@ -3796,6 +3818,11 @@ void initialize_screen(int *argc, char **argv, XImage *fb) {
 	screen->ptrAddEvent = pointer_event;
 	screen->setXCutText = xcut_receive;
 	screen->setTranslateFunction = set_xlate_wrapper;
+#if HAVE_SETDESKTOPSIZE
+	if (enable_setdesktopsize) {
+		screen->setDesktopSizeHook = set_desktop_size_hook;
+	}
+#endif
 
 	screen->kbdReleaseAllKeys = kbd_release_all_keys; 
 	screen->setSingleWindow = set_single_window; 
