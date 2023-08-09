@@ -5705,6 +5705,9 @@ program that will inject or otherwise process mouse and keystroke
 input.) Some useful -pipeinput schemes, VID, CONSOLE, and UINPUT, have
 since been built into x11vnc for convenience.
 
+As of Sept/2022 UINPUTX scheme has been added to -pipeinput for better
+scrolling capabilities via xinput while using uinput for keyboard keystrokes.
+
 This non-X mode for x11vnc is somewhat experimental because it is so
 removed in scope from the intended usage of the tool. Incomplete
 attempt is made to make all of the other options consistent with non-X
@@ -5926,7 +5929,9 @@ and mouse input and so it preferred when accessing graphical (e.g.
 Qt-embedded) linux console apps. See -pipeinput UINPUT below for
 more information on this mode (you may want to also use the
 -nodragging and -cursor none options.) Use "console0", etc or
--pipeinput CONSOLE to force the /dev/ttyN method.
+-pipeinput CONSOLE to force the /dev/ttyN method. Another option
+if you only need keystrokes over uinput is to use
+-pipeinput INPUTX and it will keep the mouse working over xinput.
 
 Note you can change VT remotely using the chvt(1) command.
 Sometimes switching out and back corrects the framebuffer state.
