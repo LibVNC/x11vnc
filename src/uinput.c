@@ -430,6 +430,8 @@ int initialize_uinput(void) {
 	ioctl(fd, UI_SET_EVBIT, EV_REL);
 	ioctl(fd, UI_SET_RELBIT, REL_X);
 	ioctl(fd, UI_SET_RELBIT, REL_Y);
+	ioctl(fd, UI_SET_RELBIT, REL_WHEEL);
+	ioctl(fd, UI_SET_RELBIT, REL_WHEEL_HI_RES);
 
 	ioctl(fd, UI_SET_EVBIT, EV_KEY);
 
@@ -987,9 +989,19 @@ static void button_click(int down, int btn) {
 	} else if (btn == 3) {
 		ev.code = BTN_RIGHT;
 	} else if (btn == 4) {
-		ev.code = BTN_FORWARD;
+		ev.code = REL_WHEEL;
+		ev.type = EV_REL;
+		ev.value = 1;
+		write(d, &ev, sizeof(ev));
+		ev.code = REL_WHEEL_HI_RES;
+		ev.value = 120;
 	} else if (btn == 5) {
-		ev.code = BTN_BACK;
+		ev.code = REL_WHEEL;
+		ev.type = EV_REL;
+		ev.value = -1;
+		write(d, &ev, sizeof(ev));
+		ev.code = REL_WHEEL_HI_RES;
+		ev.value = -120;
 	} else {
 		return;
 	}
