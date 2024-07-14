@@ -2926,7 +2926,7 @@ static void pipe_keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 		v4l_key_command(down, keysym, client);
 	} else if (pipeinput_int == PIPEINPUT_CONSOLE) {
 		console_key_command(down, keysym, client);
-	} else if (pipeinput_int == PIPEINPUT_UINPUT) {
+	} else if (pipeinput_int == PIPEINPUT_UINPUT || pipeinput_int == PIPEINPUT_UINPUTX) {
 		uinput_key_command(down, keysym, client);
 	} else if (pipeinput_int == PIPEINPUT_MACOSX) {
 		macosx_key_command(down, keysym, client);
