@@ -1,3 +1,38 @@
+x11vnc 0.9.17	2025-04-11
+
+Release Notes
+
+New Features:
+
+    Added option for sending multi-touch commands in uinput.
+    Introduced mousewheel support in uinput.
+    Support for up to 8 mouse buttons and XK_Super_L/R mapping to Meta keys during pipeinput/uinput.
+    Experimental support for double-buffered framebuffer and rawfb DRM/shm key options.
+    Support for OpenBSD in shm_clear.
+
+Bug Fixes:
+    Fixed TLS handshake errors with OpenSSL 1.1.x and LibreSSL compatibility issues.
+    Addressed snprintf null destination pointer issue and xfc NULL pointer dereference in cursor.
+    Resolved various allocation and multiplication overflow bugs.
+    Fixed format string issues with size_t arguments and corrected acute accents in man pages.
+    Limited access to shared memory segments to the current user and addressed overly long Unix socket names.
+
+Documentation & Maintenance:
+
+    Refactored and updated README with clearer notes on maintainership, Intel quirks, and FAQs about driver lags.
+    Removed executable bit from text files, fixed typos, and clarified password limit/error messages.
+    Updated issue templates and added FUNDING.yml for community contributions.
+    Keywords added to x11vnc.desktop file.
+
+Other Changes:
+
+    Fixed build issues on 32-bit architectures with 64-bit time_t and support for builds using -fno-common.
+    Addressed gcc -no-common build compatibility.
+
+
+-----------------------------------------------------------------------------
+
+
 x11vnc 0.9.16	2019-01-05
 
 New in the 0.9.16 x11vnc release:

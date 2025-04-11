@@ -1,5 +1,5 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT(x11vnc, 0.9.16, https://github.com/LibVNC/x11vnc)
+AC_INIT(x11vnc, 0.9.17, https://github.com/LibVNC/x11vnc)
 AM_INIT_AUTOMAKE([subdir-objects])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AM_CONFIG_HEADER(config.h)
