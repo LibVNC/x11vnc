@@ -4111,7 +4111,7 @@ void print_help(int mode) {
 "                       with a long build running in it continuously streaming\n"
 "                       text output.  By default x11vnc will try to detect this\n"
 "                       (3 screen polls in a row each longer than 0.25 sec with\n"
-"                       no user input), and sleep up to 1.5 secs to let things\n"
+"                       no user input), and sleep up to 100 ms to let things\n"
 "                       \"catch up\".  Use this option to disable that detection.\n"
 "-slow_fb time          Floating point time in seconds to delay all screen\n"
 "                       polling.  For special purpose usage where a low frame\n"

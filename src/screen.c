@@ -4417,8 +4417,8 @@ if (0 && dt > 0.0) fprintf(stderr, "dt: %.5f %.4f\n", dt, dnowx());
 			msec = 1.5 * msec;
 			set_xdamage_mark(0, 0, dpy_x, dpy_y);
 		}
-		if (msec > 1500) {
-			msec = 1500;
+		if (msec > 100) {
+			msec = 100;
 		}
 		if (msec < waitms) {
 			msec = waitms;

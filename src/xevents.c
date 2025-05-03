@@ -1787,7 +1787,7 @@ void xcut_receive(char *text, int len, rfbClientPtr cl) {
 	X_LOCK;
 
 	/* associate this text with PRIMARY (and SECONDARY...) */
-	if (set_primary && ! own_primary && selwin != None) {
+	if (set_primary && selwin != None) {
 		own_primary = 1;
 		/* we need to grab the PRIMARY selection */
 		XSetSelectionOwner(dpy, XA_PRIMARY, selwin, CurrentTime);
@@ -1797,7 +1797,7 @@ void xcut_receive(char *text, int len, rfbClientPtr cl) {
 		}
 	}
 
-	if (set_clipboard && ! own_clipboard && clipboard_atom != None && selwin != None) {
+	if (set_clipboard && clipboard_atom != None && selwin != None) {
 		own_clipboard = 1;
 		/* we need to grab the CLIPBOARD selection */
 		XSetSelectionOwner(dpy, clipboard_atom, selwin, CurrentTime);

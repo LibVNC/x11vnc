@@ -182,7 +182,7 @@ void selection_request(XEvent *ev, char *type) {
 		ret = XChangeProperty(ev->xselectionrequest.display,
 		    ev->xselectionrequest.requestor,
 		    ev->xselectionrequest.property,
-		    ev->xselectionrequest.target, 32, PropModeReplace,
+		    XA_ATOM, 32, PropModeReplace,
 		    (unsigned char *) targets, 2);
 		if (debug_sel) {
 			rfbLog("TARGETS: XChangeProperty() -> %d -- sz1: %d  sz2: %d\n",
