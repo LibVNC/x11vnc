@@ -1387,7 +1387,7 @@ Bool XInputQueryVersion_wr(Display *dpy, int *maj, int *min) {
 #if NO_X11
 	rfbLog("This x11vnc was built without X11 support (-rawfb only).\n");
 	if (!dpy || !maj || !min) {}
-	return NULL;
+	return False;
 #else
 	int ignore;
 	if(! XQueryExtension (dpy, "XInputExtension", &ignore, &ignore, &ignore))
