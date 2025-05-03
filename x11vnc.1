@@ -3365,6 +3365,14 @@ If you do not want the cursor shape to be rotated
 prefix \fIstring\fR with "nc:", e.g. "nc:+90",
 "nc:xy", etc.
 .PP
+\fB-setdesktopsize\fR
+.IP
+Allow client to change framebuffer resolution to fit
+size of client window. x11vnc will use xrandr commands
+to change the X framebuffer size. The mode of the physical
+screen will not be changed, but scaling will be used to
+display the new framebuffer size on the physical screen.
+.PP
 \fB-padgeom\fR \fIWxH\fR
 .IP
 Whenever a new vncviewer connects, the framebuffer is

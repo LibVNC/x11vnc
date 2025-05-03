@@ -3893,6 +3893,12 @@ int main(int argc, char* argv[]) {
 			grab_buster = 0;
 			continue;
 		}
+#if HAVE_SETDESKTOPSIZE
+		if (!strcmp(arg, "-setdesktopsize")) {
+			enable_setdesktopsize = 1;
+			continue;
+		}
+#endif
 		if (!strcmp(arg, "-snapfb")) {
 			use_snapfb = 1;
 			continue;

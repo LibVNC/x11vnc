@@ -246,6 +246,7 @@ char *xrandr_mode = NULL;
 char *pad_geometry = NULL;
 time_t pad_geometry_time = 0;
 int use_snapfb = 0;
+int enable_setdesktopsize = 0;
 
 int use_xrecord = 0;
 int noxrecord = 0;
