@@ -496,7 +496,6 @@ if test $inaddrt = no ; then
 fi
 # Checks for library functions.
 AC_FUNC_MEMCMP
-AC_FUNC_STAT
 AC_FUNC_STRFTIME
 AC_FUNC_VPRINTF
 AC_FUNC_FORK
