@@ -76,7 +76,7 @@ if test "x$with_drm" != "xno"; then
 			[AC_DEFINE(HAVE_LIBDRM) HAVE_LIBDRM="true"], ,)
 
 
-		CPPFLAGS="$saved_CPPFLAGS -I/usr/include/drm/"
+		CPPFLAGS="$saved_CPPFLAGS -I/usr/include/drm/ -I/usr/include/libdrm/"
 	fi
 fi
 AC_SUBST(DRM_LIBS)
