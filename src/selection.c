@@ -302,7 +302,7 @@ void cutbuffer_send(void) {
 #else
 	Atom type;
 	int format, slen, dlen, len;
-	unsigned long nitems = 0, bytes_after = 0;
+	unsigned long nitems = 0, nitems_read = 0, bytes_after = 0;
 	unsigned char* data = NULL;
 
 	cutbuffer_str[0] = '\0';
@@ -313,7 +313,7 @@ void cutbuffer_send(void) {
 	/* read the property value into cutbuffer_str: */
 	do {
 		if (XGetWindowProperty(dpy, DefaultRootWindow(dpy),
-		    XA_CUT_BUFFER0, nitems/4, PROP_MAX/16, False,
+		    XA_CUT_BUFFER0, nitems_read/4, PROP_MAX/16, False,
 		    AnyPropertyType, &type, &format, &nitems, &bytes_after,
 		    &data) == Success) {
 
@@ -329,6 +329,7 @@ void cutbuffer_send(void) {
 			slen += dlen;
 			cutbuffer_str[slen] = '\0';
 			XFree_wr(data);
+			nitems_read += nitems;
 		}
 	} while (bytes_after > 0);
 
@@ -381,7 +382,7 @@ void selection_send(XEvent *ev) {
 	int format, slen, dlen, oldlen, newlen, toobig = 0, len;
 	static int err = 0, sent_one = 0;
 	char before[CHKSZ], after[CHKSZ];
-	unsigned long nitems = 0, bytes_after = 0;
+	unsigned long nitems = 0, nitems_read = 0, bytes_after = 0;
 	unsigned char* data = NULL;
 	char *selection_str;
 
@@ -421,7 +422,7 @@ void selection_send(XEvent *ev) {
 	/* read in the current value of PRIMARY or CLIPBOARD: */
 	do {
 		if (XGetWindowProperty(dpy, ev->xselection.requestor,
-		    ev->xselection.property, nitems/4, PROP_MAX/16, True,
+		    ev->xselection.property, nitems_read/4, PROP_MAX/16, True,
 		    AnyPropertyType, &type, &format, &nitems, &bytes_after,
 		    &data) == Success) {
 
@@ -445,6 +446,7 @@ if (debug_sel) fprintf(stderr, "selection_send: data: '%s' dlen: %d nitems: %lu 
 			slen += dlen;
 			selection_str[slen] = '\0';
 			XFree_wr(data);
+			nitems_read += nitems;
 		}
 	} while (bytes_after > 0);
 
