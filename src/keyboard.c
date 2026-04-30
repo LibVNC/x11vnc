@@ -1370,7 +1370,7 @@ xkbmodifiers[]    For the KeySym bound to this (keycode,group,level) store
 					kc1_control = kc;
 				}
 			}
-			if (ks == XK_Caps_Lock || ks == XK_Caps_Lock) {
+			if (ks == XK_Caps_Lock) {
 				if (kc1_caplock == -1) {
 					kc1_caplock = kc;
 				}
