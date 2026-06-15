@@ -6608,7 +6608,7 @@ manually.
 Let's call the binary x11vnc.static. Place it on a webserver
 somewhere. It may be possible to retrieve it via scp(1) too.
 
-During the install you need to get a shell to retreive x11vnc.static
+During the install you need to get a shell to retrieve x11vnc.static
 and run it.
 
 If the Solaris install is an older X-based one, there will be a menu
