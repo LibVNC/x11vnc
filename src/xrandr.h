@@ -49,6 +49,8 @@ extern Time xrandr_cfg_time;
 extern void initialize_xrandr(void);
 extern int check_xrandr_event(char *msg);
 extern int known_xrandr_mode(char *s);
+extern rfbBool xrandr_set_scale_from(int w, int h);
+extern void xrandr_reset_scaling();
 
 #define XRANDR_SET_TRAP_RET(x,y)  \
 	if (subwin || xrandr) { \
