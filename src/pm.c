@@ -237,7 +237,7 @@ static void check_dpms(void) {
 	}
 
 	if (force_dpms || (client_dpms && client_count)) {
-		static int last_enable = 0;
+		static time_t last_enable = 0;
 		if (time(NULL) > last_enable) {
 			set_dpms_mode("enable");
 			last_enable = time(NULL);
