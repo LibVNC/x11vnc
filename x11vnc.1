@@ -3587,8 +3587,11 @@ Default: \fB-noskip_dups\fR
 If a Keysym is received from a VNC viewer and that
 Keysym does not exist in the X server, then add the
 Keysym to the X server's keyboard mapping on an unused
-key.  Added Keysyms will be removed periodically and
-also when x11vnc exits.  Default: \fB-add_keysyms\fR
+key.  When no unused key is left, the added key that
+was used longest ago (and is not pressed) is given
+the new Keysym, so typing does not stop once the
+unused keys are taken.  Added Keysyms will be removed
+periodically and also when x11vnc exits.  Default: \fB-add_keysyms\fR
 .PP
 \fB-clear_mods\fR
 .IP

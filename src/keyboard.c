@@ -62,6 +62,7 @@ void autorepeat(int restore, int bequiet);
 void check_add_keysyms(void);
 int add_keysym(KeySym keysym);
 void delete_added_keycodes(int bequiet);
+static void delete_unpressed_added_keycodes(int bequiet);
 void initialize_remap(char *infile);
 int sloppy_key_check(int key, rfbBool down, rfbKeySym keysym, int *new_kc);
 void switch_to_xkb_if_better(void);
@@ -462,7 +463,7 @@ void check_add_keysyms(void) {
 		 */
 		if (now > last_keyboard_input + 5 && count >= 8) {
 			X_LOCK;
-			delete_added_keycodes(quiet);
+			delete_unpressed_added_keycodes(quiet);
 			X_UNLOCK;
 		}
 		last_check = now;
@@ -470,11 +471,159 @@ void check_add_keysyms(void) {
 }
 
 static KeySym added_keysyms[0x100];
+#if !NO_X11
+/* when each added keycode was last used, so the oldest can be reused */
+static unsigned long added_last_use[0x100];
+static unsigned long added_use_clock = 0;
+#endif
 
 /* these are just for rfbLog messages: */
 static KeySym alltime_added_keysyms[1024];
 static int alltime_len = 1024;
 static int alltime_num = 0;
+
+#if !NO_X11
+static int keysyms_include(KeySym *syms, int nsyms, KeySym keysym) {
+	int i;
+
+	for (i=0; i < nsyms; i++) {
+		if (syms[i] == keysym) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+/* whether keycode kc produces keysym now, since other clients may remap it */
+static int keycode_holds_keysym(int kc, KeySym keysym) {
+	int syms_per_keycode, holds;
+	KeySym *syms = XGetKeyboardMapping(dpy, kc, 1, &syms_per_keycode);
+
+	if (syms == NULL) {
+		return 0;
+	}
+	holds = keysyms_include(syms, syms_per_keycode, keysym);
+	XFree_wr(syms);
+	return holds;
+}
+#endif	/* !NO_X11 */
+
+/*
+ * The keycode lookup tables are only rebuilt after MappingNotify, so they
+ * can still show a keysym on a keycode we have since given another one.
+ * When they name a keycode we added for a keysym other than the one we
+ * gave it, ask the X server: if the keycode really produces that keysym,
+ * another client has remapped it and it is no longer ours; if not, the
+ * match is stale.  Call with the X lock held.
+ */
+static int added_keycode_stale(int kc, KeySym keysym) {
+#if NO_X11
+	if (!kc || !keysym) {}
+	return 0;
+#else
+	if (kc <= 0 || kc >= 0x100 || added_keysyms[kc] == NoSymbol) {
+		return 0;
+	}
+	if (added_keysyms[kc] == keysym) {
+		added_last_use[kc] = ++added_use_clock;
+		return 0;
+	}
+	if (keycode_holds_keysym(kc, keysym)) {
+		/* a pressed one stays ours until its release has found it */
+		if (! keycode_state[kc]) {
+			added_keysyms[kc] = NoSymbol;
+		}
+		return 0;
+	}
+	return 1;
+#endif
+}
+
+/*
+ * The keycode we added for keysym, or 0.  A pressed keycode is returned
+ * even if another client remapped it, so its release goes to the key that
+ * went down.  This is all a key release uses: a release never maps a
+ * keycode.  Call with the X lock held.
+ */
+static int added_keycode_for(KeySym keysym) {
+#if NO_X11
+	if (!keysym) {}
+	return 0;
+#else
+	int n;
+
+	if (keysym == NoSymbol) {
+		return 0;
+	}
+	/* there can be a race before MappingNotify */
+	for (n=0; n < 0x100; n++) {
+		if (added_keysyms[n] != keysym) {
+			continue;
+		}
+		if (keycode_state[n] || keycode_holds_keysym(n, keysym)) {
+			added_last_use[n] = ++added_use_clock;
+			return n;
+		}
+		/* another client remapped it, so it is no longer ours */
+		added_keysyms[n] = NoSymbol;
+	}
+	return 0;
+#endif
+}
+
+#if !NO_X11
+static void map_added_keysym(int kc, KeySym keysym, int syms_per_keycode,
+    int reused) {
+	static int reuse_msg = 0;
+	int i, j, didmsg = 0;
+	char *str;
+	KeySym newks[8];
+
+	for (i=0; i<8; i++) {
+		newks[i] = NoSymbol;
+	}
+	if (add_keysyms == 2) {
+		newks[0] = keysym;	/* XXX remove me */
+	} else {
+		for(i=0; i < syms_per_keycode; i++) {
+			newks[i] = keysym;
+			if (i >= 7) break;
+		}
+	}
+
+	XChangeKeyboardMapping(dpy, kc, syms_per_keycode, newks, 1);
+
+	if (alltime_num >= alltime_len) {
+		didmsg = 1;	/* something weird */
+	} else {
+		for (j=0; j<alltime_num; j++) {
+			if (alltime_added_keysyms[j] == keysym) {
+				didmsg = 1;
+				break;
+			}
+		}
+	}
+	if (! didmsg && ! reused) {
+		str = XKeysymToString(keysym);
+		rfbLog("added missing keysym to X display: %03d "
+		    "0x%x \"%s\"\n", kc, keysym, str ? str : "null");
+
+		if (alltime_num < alltime_len) {
+			alltime_added_keysyms[alltime_num++] = keysym;
+		}
+	}
+	/* once only: logging every reuse would record what is typed */
+	if (reused && (! reuse_msg || debug_keyboard)) {
+		rfbLog("no empty keycodes left, reusing added keycode %03d\n",
+		    kc);
+		reuse_msg = 1;
+	}
+
+	XFlush_wr(dpy);
+	added_keysyms[kc] = keysym;
+	added_last_use[kc] = ++added_use_clock;
+}
+#endif	/* !NO_X11 */
 
 int add_keysym(KeySym keysym) {
 	static int first = 1;
@@ -506,11 +655,9 @@ int add_keysym(KeySym keysym) {
 	if (keysym == NoSymbol) {
 		return 0;
 	}
-	/* there can be a race before MappingNotify */
-	for (n=0; n < 0x100; n++) {
-		if (added_keysyms[n] == keysym) {
-			return n;
-		}
+	ret = added_keycode_for(keysym);
+	if (ret) {
+		return ret;
 	}
 
 	XDisplayKeycodes(dpy, &minkey, &maxkey);
@@ -518,9 +665,7 @@ int add_keysym(KeySym keysym) {
 	    &syms_per_keycode);
 
 	for (kc = minkey+1; kc <= maxkey; kc++) {
-		int i, j, didmsg = 0, is_empty = 1;
-		char *str;
-		KeySym newks[8];
+		int is_empty = 1;
 
 		for (n=0; n < syms_per_keycode; n++) {
 			if (keymap[ (kc-minkey) * syms_per_keycode + n]
@@ -533,45 +678,39 @@ int add_keysym(KeySym keysym) {
 			continue;
 		}
 
-		for (i=0; i<8; i++) {
-			newks[i] = NoSymbol;
-		}
-		if (add_keysyms == 2) {
-			newks[0] = keysym;	/* XXX remove me */
-		} else {
-			for(i=0; i < syms_per_keycode; i++) {
-				newks[i] = keysym;
-				if (i >= 7) break;
-			}
-		}
-
-		XChangeKeyboardMapping(dpy, kc, syms_per_keycode,
-		    newks, 1);
-
-		if (alltime_num >= alltime_len) {
-			didmsg = 1;	/* something weird */
-		} else {
-			for (j=0; j<alltime_num; j++) {
-				if (alltime_added_keysyms[j] == keysym) {
-					didmsg = 1;
-					break;
-				}
-			}
-		}
-		if (! didmsg) {
-			str = XKeysymToString(keysym);
-			rfbLog("added missing keysym to X display: %03d "
-			    "0x%x \"%s\"\n", kc, keysym, str ? str : "null");
-
-			if (alltime_num < alltime_len) {
-				alltime_added_keysyms[alltime_num++] = keysym;
-			}
-		}
-
-		XFlush_wr(dpy);
-		added_keysyms[kc] = keysym;
+		map_added_keysym(kc, keysym, syms_per_keycode, 0);
 		ret = kc;
 		break;
+	}
+
+	/*
+	 * No empty keycode is left.  Rather than drop the keystroke, reuse
+	 * the keycode we added that was used longest ago.  One that is still
+	 * pressed is never taken, and one that another client has remapped
+	 * since is no longer ours.
+	 */
+	if (! ret) {
+		int oldest = 0;
+
+		for (kc = minkey+1; kc <= maxkey && kc < 0x100; kc++) {
+			if (added_keysyms[kc] == NoSymbol || keycode_state[kc]) {
+				continue;
+			}
+			if (! keysyms_include(
+			    &keymap[ (kc-minkey) * syms_per_keycode ],
+			    syms_per_keycode, added_keysyms[kc])) {
+				added_keysyms[kc] = NoSymbol;
+				continue;
+			}
+			if (! oldest ||
+			    added_last_use[kc] < added_last_use[oldest]) {
+				oldest = kc;
+			}
+		}
+		if (oldest) {
+			map_added_keysym(oldest, keysym, syms_per_keycode, 1);
+			ret = oldest;
+		}
 	}
 	XFree_wr(keymap);
 	return ret;
@@ -627,6 +766,17 @@ void delete_added_keycodes(int bequiet) {
 	int kc;
 	for (kc = 0; kc < 0x100; kc++) {
 		if (added_keysyms[kc] != NoSymbol) {
+			delete_keycode(kc, bequiet);
+			added_keysyms[kc] = NoSymbol;
+		}
+	}
+}
+
+/* the periodic clearing keeps pressed keys, so their release finds them */
+static void delete_unpressed_added_keycodes(int bequiet) {
+	int kc;
+	for (kc = 0; kc < 0x100; kc++) {
+		if (added_keysyms[kc] != NoSymbol && ! keycode_state[kc]) {
 			delete_keycode(kc, bequiet);
 			added_keysyms[kc] = NoSymbol;
 		}
@@ -1684,6 +1834,9 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 			if (keysym != xkbkeysyms[kc][grp][lvl]) {
 				continue;
 			}
+			if (added_keycode_stale(kc, keysym)) {
+				continue;
+			}
 			/* got a keysym match */
 			state = xkbstate[kc][grp][lvl];
 
@@ -1754,7 +1907,14 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 	}
 
 	if (!found && add_keysyms && keysym && ! IsModifierKey(keysym)) {
-		int new_kc = add_keysym(keysym);
+		int new_kc = down ? add_keysym(keysym) : added_keycode_for(keysym);
+		if (new_kc == 0 && ! down && sloppy_keys) {
+			/* let -sloppy_keys send it to the one key that is down */
+			int sloppy_kc;
+			if (sloppy_key_check(0, down, keysym, &sloppy_kc)) {
+				new_kc = sloppy_kc;
+			}
+		}
 		if (new_kc != 0) {
 			found = 1;
 			kc_f[0] = new_kc;
@@ -2727,12 +2887,17 @@ static void modifier_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 		k = XKeysymToKeycode(dpy, (KeySym) keysym);
 		X_UNLOCK;
 	}
+	X_LOCK;
+	if (k != NoSymbol && added_keycode_stale((int) k, keysym)) {
+		k = NoSymbol;
+	}
 	if (k == NoSymbol && add_keysyms && ! IsModifierKey(keysym)) {
-		int new_kc = add_keysym(keysym);
+		int new_kc = down ? add_keysym(keysym) : added_keycode_for(keysym);
 		if (new_kc) {
 			k = new_kc;
 		}
 	}
+	X_UNLOCK;
 
 	if (sloppy_keys) {
 		int new_kc;
@@ -3409,8 +3574,11 @@ void keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 
 	k = XKeysymToKeycode(dpy, (KeySym) keysym);
 
+	if (k != NoSymbol && added_keycode_stale((int) k, keysym)) {
+		k = NoSymbol;
+	}
 	if (k == NoSymbol && add_keysyms && ! IsModifierKey(keysym)) {
-		int new_kc = add_keysym(keysym);
+		int new_kc = down ? add_keysym(keysym) : added_keycode_for(keysym);
 		if (new_kc) {
 			k = new_kc;
 		}
