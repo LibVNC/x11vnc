@@ -476,6 +476,8 @@ static KeySym added_keysyms[0x100];
 static unsigned long added_last_use[0x100];
 static unsigned long added_use_clock = 0;
 #endif
+/* a keycode was just given a keysym, see keymap_settle() */
+static int keymap_settle_pending = 0;
 
 /* these are just for rfbLog messages: */
 static KeySym alltime_added_keysyms[1024];
@@ -572,6 +574,51 @@ static int added_keycode_for(KeySym keysym) {
 }
 
 #if !NO_X11
+/* milliseconds to wait after mapping a keysym, X11VNC_KEYMAP_SETTLE_MS */
+static int keymap_settle_ms(void) {
+	static int ms = -1;
+
+	if (ms < 0) {
+		char *env = getenv("X11VNC_KEYMAP_SETTLE_MS");
+
+		ms = env ? atoi(env) : 0;
+		if (ms < 0) {
+			ms = 0;
+		} else if (ms > 100) {
+			ms = 100;
+		}
+	}
+	return ms;
+}
+#endif	/* !NO_X11 */
+
+/*
+ * Give clients a moment to read a mapping we just made before the key
+ * arrives.  Some keep a second copy of the keymap on another X connection
+ * (GTK in Chromium) and would otherwise read the key with the keysym it
+ * had before.  Call with the X lock held; it is kept while waiting.
+ */
+static void keymap_settle(void) {
+#if NO_X11
+	keymap_settle_pending = 0;
+	return;
+#else
+	int ms;
+
+	if (! keymap_settle_pending) {
+		return;
+	}
+	keymap_settle_pending = 0;
+	ms = keymap_settle_ms();
+	if (ms <= 0) {
+		return;
+	}
+	XSync(dpy, False);
+	usleep(ms * 1000);
+#endif
+}
+
+#if !NO_X11
 static void map_added_keysym(int kc, KeySym keysym, int syms_per_keycode,
     int reused) {
 	static int reuse_msg = 0;
@@ -622,6 +669,7 @@ static void map_added_keysym(int kc, KeySym keysym, int syms_per_keycode,
 	XFlush_wr(dpy);
 	added_keysyms[kc] = keysym;
 	added_last_use[kc] = ++added_use_clock;
+	keymap_settle_pending = 1;
 }
 #endif	/* !NO_X11 */
 
@@ -1908,6 +1956,7 @@ static void xkb_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 
 	if (!found && add_keysyms && keysym && ! IsModifierKey(keysym)) {
 		int new_kc = down ? add_keysym(keysym) : added_keycode_for(keysym);
+		keymap_settle();
 		if (new_kc == 0 && ! down && sloppy_keys) {
 			/* let -sloppy_keys send it to the one key that is down */
 			int sloppy_kc;
@@ -2897,6 +2946,7 @@ static void modifier_tweak_keyboard(rfbBool down, rfbKeySym keysym,
 			k = new_kc;
 		}
 	}
+	keymap_settle();
 	X_UNLOCK;
 
 	if (sloppy_keys) {
@@ -3579,6 +3629,7 @@ void keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 	}
 	if (k == NoSymbol && add_keysyms && ! IsModifierKey(keysym)) {
 		int new_kc = down ? add_keysym(keysym) : added_keycode_for(keysym);
+		keymap_settle();
 		if (new_kc) {
 			k = new_kc;
 		}
