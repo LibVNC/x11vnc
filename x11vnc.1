@@ -3587,8 +3587,18 @@ Default: \fB-noskip_dups\fR
 If a Keysym is received from a VNC viewer and that
 Keysym does not exist in the X server, then add the
 Keysym to the X server's keyboard mapping on an unused
-key.  Added Keysyms will be removed periodically and
-also when x11vnc exits.  Default: \fB-add_keysyms\fR
+key.  When no unused key is left, the added key that
+was used longest ago (and is not pressed) is given
+the new Keysym, so typing does not stop once the
+unused keys are taken.  Added Keysyms will be removed
+periodically and also when x11vnc exits.
+Some applications read the keymap through a second
+X connection (e.g. Chromium through GTK) and can see
+a reused key with its old Keysym for a moment.  Set
+the env. var X11VNC_KEYMAP_SETTLE_MS=N to wait N ms
+(at most 100) after each key is mapped; 20 is enough
+for Chromium.  x11vnc does nothing else while it
+waits, and by default it does not wait.  Default: \fB-add_keysyms\fR
 .PP
 \fB-clear_mods\fR
 .IP
