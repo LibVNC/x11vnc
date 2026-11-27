@@ -25,6 +25,10 @@
 #undef  HAVE_FBPM
 #define HAVE_FBPM 0
 
+#ifndef NeedFunctionPrototypes
+#define NeedFunctionPrototypes 1
+#endif
+
 /* default keysyms */
 #if 0
 /* XXX go with the subset in rfb/keysym.h for now */

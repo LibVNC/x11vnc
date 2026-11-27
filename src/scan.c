@@ -45,6 +45,7 @@ so, delete this exception statement from your version.
 #include "unixpw.h"
 #include "screen.h"
 #include "macosx.h"
+#include "macosx_sck.h"
 #include "userinput.h"
 
 /*
@@ -2717,6 +2718,17 @@ static void snap_all_rawfb(void) {
 	static char *unclipped_dst = NULL;
 	static int unclipped_len = 0;
 
+#ifdef MACOSX
+	extern void macosx_cglion_snap(void);
+	extern void macosx_sck_snap(void);
+	extern int macosx_sck_active(void);
+	if (macosx_console && macosx_sck_active()) {
+		macosx_sck_snap();
+	} else if (macosx_console && macosx_read_cglion) {
+		macosx_cglion_snap();
+	}
+#endif
+
 	dst = snap->data;
 
 	if (xform24to32 && bpp == 32) {
@@ -2737,7 +2749,15 @@ static void snap_all_rawfb(void) {
 	}
 		
 	if (! raw_fb_seek) {
-		memcpy(dst, raw_fb_addr + raw_fb_offset, sz);
+		if (pixelsize > 0 && wdpy_x > 0 && wdpy_y > 0 &&
+		    wdpy_x <= snap->width && wdpy_y <= snap->height &&
+		    (unsigned int) wdpy_x * (unsigned int) pixelsize <=
+		    (unsigned int) raw_fb_bytes_per_line && raw_fb_addr != NULL) {
+			copy_raw_fb(snap, 0, 0, (unsigned int) wdpy_x,
+			    (unsigned int) wdpy_y);
+		} else if (raw_fb_addr != NULL) {
+			memcpy(dst, raw_fb_addr + raw_fb_offset, sz);
+		}
 
 	} else {
 		int len = sz, del = 0;
@@ -3207,10 +3227,16 @@ static int scan_display(int ystart, int rescan) {
 	int x, y, w, n;
 	int tile_count = 0;
 	int nodiffs = 0, diff_hint;
+	int full_scan = 0;
 	int xd_check = 0, xd_freq = 1;
 	static int xd_tck = 0;
 
-	y = ystart;
+#ifdef MACOSX
+	if (macosx_console && macosx_sck_active()) {
+		full_scan = 1;
+	}
+#endif
+	y = full_scan ? 0 : ystart;
 
 	g_now = dnow();
 
@@ -3223,7 +3249,7 @@ static int scan_display(int ystart, int rescan) {
 
 	while (y < dpy_y) {
 
-		if (use_xdamage) {
+		if (use_xdamage && ! full_scan) {
 			XD_tot++;
 			xd_check = 0;
 			if (xdamage_hint_skip(y)) {
@@ -3308,7 +3334,11 @@ if (ncdb) fprintf(stderr, "\n*** SCAN_DISPLAY CHECK_NCACHE/%d *** %d rescan=%d\n
 			/* no changes anywhere in scan line */
 			nodiffs = 1;
 			if (! rescan) {
-				y += NSCAN;
+				if (full_scan) {
+					y++;
+				} else {
+					y += NSCAN;
+				}
 				continue;
 			}
 		}
@@ -3331,7 +3361,6 @@ if (ncdb) fprintf(stderr, "\n*** SCAN_DISPLAY CHECK_NCACHE/%d *** %d rescan=%d\n
 
 			if (rescan) {
 				if (nodiffs || tile_has_diff[n]) {
-					tile_count += tile_has_diff[n];
 					x += NSCAN;
 					continue;
 				}
@@ -3355,21 +3384,27 @@ if (ncdb) fprintf(stderr, "\n*** SCAN_DISPLAY CHECK_NCACHE/%d *** %d rescan=%d\n
 			if (diff_hint || memcmp(dst, src, (size_t)w * pixelsize)) {
 				/* found a difference, record it: */
 				if (! blackouts) {
+					if (! tile_has_diff[n]) {
+						tile_count++;
+					}
 					tile_has_diff[n] = 1;
-					tile_count++;		
 				} else {
-					if (blackout_line_cmpskip(n, x, y,
+					if (! blackout_line_cmpskip(n, x, y,
 					    dst, src, w, pixelsize)) {
-						tile_has_diff[n] = 0;
-					} else {
+						if (! tile_has_diff[n]) {
+							tile_count++;
+						}
 						tile_has_diff[n] = 1;
-						tile_count++;		
 					}
 				}
 			}
 			x += NSCAN;
 		}
-		y += NSCAN;
+		if (full_scan) {
+			y++;
+		} else {
+			y += NSCAN;
+		}
 	}
 
 	X_UNLOCK;

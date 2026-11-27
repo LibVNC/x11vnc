@@ -4813,7 +4813,22 @@ void watch_loop(void) {
 			}
 
 			if (use_snapfb) {
-				int t, tries = 3;
+				int t, tries = 1;
+#ifdef MACOSX
+				{
+					extern int macosx_sck_active(void);
+					if (! macosx_console ||
+					    (! macosx_read_cglion && ! macosx_sck_active())) {
+						tries = 3;
+					}
+				}
+#endif
+				if (getenv("X11VNC_SNAP_SCAN_TRIES")) {
+					tries = atoi(getenv("X11VNC_SNAP_SCAN_TRIES"));
+					if (tries < 1) {
+						tries = 1;
+					}
+				}
 				copy_snap();
 				for (t=0; t < tries; t++) {
 					tile_diffs = scan_for_updates(0);

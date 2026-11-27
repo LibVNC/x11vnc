@@ -718,7 +718,13 @@ static void copy_raw_fb_24_to_32(XImage *dest, int x, int y, unsigned int w,
 }
 
 #ifdef MACOSX
-void macosx_copy_opengl(char *, int, int, unsigned int, unsigned int);
+	int macosx_copy_opengl(char *, int, int, unsigned int, unsigned int);
+	void macosx_copy_cglion(char *, int, int, unsigned int, unsigned int);
+	int macosx_sck_active(void);
+	int macosx_sck_copy(char *, int, int, unsigned int, unsigned int);
+
+void macosx_opengl_fini(void);
+void macosx_cglion_init(void);
 #endif
 
 void copy_raw_fb(XImage *dest, int x, int y, unsigned int w, unsigned int h) {
@@ -728,9 +734,23 @@ void copy_raw_fb(XImage *dest, int x, int y, unsigned int w, unsigned int h) {
 	static int db = -1;
 
 #ifdef MACOSX
-	if (macosx_console && macosx_read_opengl) {
-		macosx_copy_opengl(dest->data, x, y, w, h);
-		return;
+	if (macosx_console) {
+		if (macosx_sck_active() &&
+		    macosx_sck_copy(dest->data, x, y, w, h)) {
+			return;
+		}
+		if (macosx_read_opengl) {
+			if (macosx_copy_opengl(dest->data, x, y, w, h)) {
+				return;
+			}
+			macosx_opengl_fini();
+			macosx_read_opengl = 0;
+			macosx_cglion_init();
+		}
+		if (macosx_read_cglion) {
+			macosx_copy_cglion(dest->data, x, y, w, h);
+			return;
+		}
 	}
 #endif
 
