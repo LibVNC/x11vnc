@@ -330,8 +330,10 @@ if (0) fprintf(stderr, "\ndone:                               %.4f\n", dnowx());
 	cursor_position(x, y, client);
 
 	/* change the cursor shape if necessary */
-	rc = set_cursor(x, y, get_which_cursor());
-	cursor_changes += rc;
+	if (show_cursor) {
+		rc = set_cursor(x, y, get_which_cursor());
+		cursor_changes += rc;
+	}
 
 	last_event = last_input = last_pointer_input = time(NULL);
 }

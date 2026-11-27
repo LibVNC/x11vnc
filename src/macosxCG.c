@@ -45,6 +45,7 @@ void macosxCG_dummy(void) {}
 #include <ApplicationServices/ApplicationServices.h>
 #include <Cocoa/Cocoa.h>
 #include <Carbon/Carbon.h>
+#include "macosx_sck.h"
 
 void macosxCG_init(void);
 void macosxCG_fini(void);
@@ -66,6 +67,7 @@ void macosxCG_keysym_inject(int down, unsigned int keysym);
 void macosxCG_keycode_inject(int down, int keycode);
 
 CGDirectDisplayID displayID = 0;
+CGFloat displayScale = 1;
 
 extern void macosx_log(char *);
 extern int collect_non_X_xdamage(int x_in, int y_in, int w_in, int h_in, int call);
@@ -132,6 +134,7 @@ void macosxCG_refresh_callback_off(void) {
 
 extern int macosx_noscreensaver;
 extern int macosx_read_opengl;
+extern int macosx_read_cglion;
 extern int macosx_read_rawfb;
 
 extern void macosxGCS_initpb(void);
@@ -142,10 +145,18 @@ extern void macosxCGP_screensaver_timer_off(void);
 extern void macosxCGP_screensaver_timer_on(void);
 extern void macosx_opengl_init(void);
 extern void macosx_opengl_fini(void);
+extern void macosx_cglion_init(void);
+extern void macosx_cglion_fini(void);
 
 int x11vnc_macosx_no_deprecated_localevents = 0;
 int x11vnc_macosx_no_deprecated_postevents  = 0;
 int x11vnc_macosx_no_deprecated_framebuffer = 0;
+
+CGFloat scalingFactor()
+{
+	CGFloat scale = 1.1;
+	return scale;
+}
 
 void macosxCG_init(void) {
 
@@ -194,9 +205,12 @@ void macosxCG_init(void) {
 		}
 #endif
 
-		macosx_opengl_init();
+		if (! macosx_sck_init()) {
+			macosx_log("macosxCG_init: ScreenCaptureKit unavailable, using CGLion.\n");
+		}
+		macosx_cglion_init();
 
-		if (!macosx_read_opengl) {
+		if (!macosx_sck_active() && !macosx_read_cglion) {
 			char *addr = macosxCG_get_fb_addr();
 			if (addr == NULL) {
 				macosx_log("macosxCG_init: could not get raw framebuffer address / CGDisplayBaseAddress().\n");
@@ -221,7 +235,9 @@ void macosxCG_fini(void) {
 		macosxCGP_screensaver_timer_off();
 	}
 	macosxCG_refresh_callback_off();
+	macosx_sck_fini();
 	macosx_opengl_fini();
+	macosx_cglion_fini();
 	displayID = 0;
 }
 
@@ -310,27 +326,70 @@ extern int macosx_opengl_get_bpp();
 extern int macosx_opengl_get_bps();
 extern int macosx_opengl_get_spp();
 
+extern int macosx_cglion_get_width(void);
+extern int macosx_cglion_get_height(void);
+extern int macosx_cglion_get_bpp(void);
+extern int macosx_cglion_get_bps(void);
+extern int macosx_cglion_get_spp(void);
+extern int macosx_cglion_get_Bpl(void);
+
 #if X11VNC_MACOSX_NO_DEPRECATED_FRAMEBUFFER || X11VNC_MACOSX_NO_DEPRECATED
 
 char *macosxCG_get_fb_addr(void) {
 	return NULL;
 }
 int macosxCG_CGDisplayPixelsWide(void) {
+	if (macosx_sck_active()) {
+		return macosx_sck_get_width();
+	}
+	if (macosx_read_cglion) {
+		return macosx_cglion_get_width();
+	}
 	return macosx_opengl_get_width();
 }
 int macosxCG_CGDisplayPixelsHigh(void) {
+	if (macosx_sck_active()) {
+		return macosx_sck_get_height();
+	}
+	if (macosx_read_cglion) {
+		return macosx_cglion_get_height();
+	}
 	return macosx_opengl_get_height();
 }
 int macosxCG_CGDisplayBitsPerPixel(void) {
+	if (macosx_sck_active()) {
+		return macosx_sck_get_bpp();
+	}
+	if (macosx_read_cglion) {
+		return macosx_cglion_get_bpp();
+	}
 	return macosx_opengl_get_bpp();
 }
 int macosxCG_CGDisplayBitsPerSample(void) {
+	if (macosx_sck_active()) {
+		return 8;
+	}
+	if (macosx_read_cglion) {
+		return macosx_cglion_get_bps();
+	}
 	return macosx_opengl_get_bps();
 }
 int macosxCG_CGDisplaySamplesPerPixel(void) {
+	if (macosx_sck_active()) {
+		return 3;
+	}
+	if (macosx_read_cglion) {
+		return macosx_cglion_get_spp();
+	}
 	return macosx_opengl_get_spp();
 }
 int macosxCG_CGDisplayBytesPerRow(void) {
+	if (macosx_sck_active()) {
+		return macosx_sck_get_Bpl();
+	}
+	if (macosx_read_cglion) {
+		return macosx_cglion_get_Bpl();
+	}
 	return macosx_opengl_get_width() * macosx_opengl_get_bpp() / 8;
 }
 
@@ -349,40 +408,66 @@ char *macosxCG_get_fb_addr(void) {
 		macosx_log("CGDisplayBaseAddress disabled by OpenGL.\n");
 		return NULL;
 	}
+	if (macosx_read_cglion) {
+		macosx_log("CGDisplayBaseAddress disabled by CGLion.\n");
+		return NULL;
+	}
+	if (macosx_sck_active()) {
+		macosx_log("CGDisplayBaseAddress disabled by ScreenCaptureKit.\n");
+		return NULL;
+	}
 	return (char *) CGDisplayBaseAddress(displayID);
 }
 
 int macosxCG_CGDisplayPixelsWide(void) {
+	if (macosx_sck_active()) {
+		return macosx_sck_get_width();
+	}
 	if ((0 && macosx_read_opengl) || x11vnc_macosx_no_deprecated_framebuffer) {
 		return macosx_opengl_get_width();
 	}
 	return (int) CGDisplayPixelsWide(displayID);
 }
 int macosxCG_CGDisplayPixelsHigh(void) {
+	if (macosx_sck_active()) {
+		return macosx_sck_get_height();
+	}
 	if ((0 && macosx_read_opengl) || x11vnc_macosx_no_deprecated_framebuffer) {
 		return macosx_opengl_get_height();
 	}
 	return (int) CGDisplayPixelsHigh(displayID);
 }
 int macosxCG_CGDisplayBitsPerPixel(void) {
+	if (macosx_sck_active()) {
+		return macosx_sck_get_bpp();
+	}
 	if ((0 && macosx_read_opengl) || x11vnc_macosx_no_deprecated_framebuffer) {
 		return macosx_opengl_get_bpp();
 	}
 	return (int) CGDisplayBitsPerPixel(displayID);
 }
 int macosxCG_CGDisplayBitsPerSample(void) {
+	if (macosx_sck_active()) {
+		return 8;
+	}
 	if (macosx_read_opengl || x11vnc_macosx_no_deprecated_framebuffer) {
 		return macosx_opengl_get_bps();
 	}
 	return (int) CGDisplayBitsPerSample(displayID);
 }
 int macosxCG_CGDisplaySamplesPerPixel(void) {
+	if (macosx_sck_active()) {
+		return 3;
+	}
 	if (macosx_read_opengl || x11vnc_macosx_no_deprecated_framebuffer) {
 		return macosx_opengl_get_spp();
 	}
 	return (int) CGDisplaySamplesPerPixel(displayID);
 }
 int macosxCG_CGDisplayBytesPerRow(void) {
+	if (macosx_sck_active()) {
+		return macosx_sck_get_Bpl();
+	}
 	if (macosx_read_opengl || x11vnc_macosx_no_deprecated_framebuffer) {
 		return macosx_opengl_get_width() * macosx_opengl_get_bpp()/8;
 	}
@@ -497,12 +582,17 @@ int macosxCG_get_cursor(void) {
 	last_cursor_seed = cursor_seed;
 	last_fetch = now;
 
-	if (CGSGetGlobalCursorDataSize(conn, &datasize) != kCGErrorSuccess) {
+	if (CGSGetGlobalCursorDataSize(conn, &datasize) != kCGErrorSuccess ||
+	    datasize <= 0) {
 		macosx_log("CGSGetGlobalCursorDataSize error\n");
 		return which;
 	}
 
-	data = (unsigned char*) malloc(datasize);
+	data = (unsigned char*) malloc((size_t) datasize);
+	if (data == NULL) {
+		macosx_log("CGSGetGlobalCursorData malloc error\n");
+		return which;
+	}
 
 	err = CGSGetGlobalCursorData(conn, data, &datasize, &row_bytes,
 	    &rect, &hot, &cdepth, &comps, &bpcomp);
@@ -512,6 +602,7 @@ int macosxCG_get_cursor(void) {
 #endif
 	if (err != kCGErrorSuccess) {
 		macosx_log("CGSGetGlobalCursorData error\n");
+		free(data);
 		return which;
 	}
 
@@ -523,9 +614,14 @@ int macosxCG_get_cursor(void) {
 		/* pad it out to unsigned long array size (like xfixes) */
 		int i;
 		unsigned char *dsave;
-		unsigned char *data64 = (unsigned char*) malloc(2 *datasize);
+		unsigned char *data64 = (unsigned char*) malloc(2 * (size_t) datasize);
 		unsigned int  *uI = (unsigned int  *) data;
-		unsigned long *uL = (unsigned long *) data64;
+		unsigned long *uL;
+		if (data64 == NULL) {
+			free(data);
+			return which;
+		}
+		uL = (unsigned long *) data64;
 		for (i=0; i < datasize/4; i++) {
 			uL[i] = uI[i];
 		}

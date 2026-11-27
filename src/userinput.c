@@ -5935,6 +5935,9 @@ int lookup_win_index(Window win) {
 	for (k = 0; k < NRECENT; k++) {
 		if (recent[k] == win) {
 			int k2 = recidx[k];
+			if (k2 < 0 || k2 >= cache_list_num) {
+				continue;
+			}
 			if (cache_list[k2].win == win) {
 				idx = k2;
 if (0) fprintf(stderr, "recentA(shortcut): %d  0x%lx\n", idx, win);
@@ -9477,6 +9480,9 @@ if (ncdb) fprintf(stderr, "M Ev_tmp2[%d] = %d\n", add, i);
 				}
 			}
 			if (!oku && !okm) {
+				continue;
+			}
+			if (k >= cnt) {
 				continue;
 			}
 			j = Ev_tmp2[k++];

@@ -23,18 +23,20 @@
 */
 
 #include <string.h>
-#ifdef HAVE_X11
-#include <X11/Xproto.h> 
-#include <X11/keysym.h> 
+
+#include "x11vnc.h"
+
+#if !NO_X11
+#include <X11/Xproto.h>
+#include <X11/keysym.h>
 #endif
 
-#include "x11vnc.h" 
 #include "cursor.h"
 #include "cleanup.h"
 #include "win_utils.h"
 #include "xi2_devices.h" 
 
-#ifdef HAVE_LIBXCURSOR
+#if !NO_X11 && HAVE_LIBXCURSOR
 #include <X11/Xcursor/Xcursor.h> 
 #ifdef HAVE_CAIRO
 #include <cairo.h>

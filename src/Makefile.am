@@ -8,7 +8,10 @@ FRAMEWORKS = \
 	-framework ApplicationServices \
 	-framework Carbon \
 	-framework IOKit \
-	-framework Cocoa
+	-framework Cocoa \
+	-framework CoreMedia \
+	-framework CoreVideo \
+	-weak_framework ScreenCaptureKit
 
 if OSX_OPENGL
 FRAMEWORKS += -framework OpenGL
@@ -63,6 +66,8 @@ x11vnc_SOURCES = \
 	macosx.h \
 	macosx_opengl.c \
 	macosx_opengl.h \
+	macosx_sck.c \
+	macosx_sck.h \
 	nox11_funcs.h \
 	nox11.h \
 	options.c \

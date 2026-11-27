@@ -596,6 +596,298 @@ void macosxGCS_poll_pb(void) {
 	[pool release];
    }
 }
+
+static int macosx_cglion_width = 0;
+static int macosx_cglion_height = 0;
+static int macosx_cglion_bpp = 0;
+static int macosx_cglion_Bpl = 0;
+
+int macosx_cglion_set_dpy_params(void)  {
+#ifdef MAC_OS_X_VERSION_10_6
+  SInt32 version = 0;
+  Gestalt( gestaltSystemVersion, &version );
+  BOOL v1070 = ( version >= 0x1070 );
+  if (v1070) {
+	CGImageRef img;
+	int nw, nh;
+	static int first = 1;
+
+	nw = CGDisplayPixelsWide(displayID);
+	nh = CGDisplayPixelsHigh(displayID);
+
+	if (first) fprintf(stderr, "macosx_cglion_init: trying to initialize cglion screen capture.\n");
+	if (first || getenv("X11VNC_DEBUG_CGLION")) {
+		fprintf(stderr, "macosx_cglion_set_dpy_params: MainDisplayID=0x%x active: %d width: %d height: %d\n",
+		    displayID, CGDisplayIsActive(displayID), nw, nh);
+	}
+	first = 0;
+
+	if (getenv("X11VNC_FORCE_CGLION")) {
+		fprintf(stderr, "macosx_cglion_set_dpy_params: forcing cglion mode\n");
+		macosx_cglion_width  = nw;
+		macosx_cglion_height = nh;
+		macosx_cglion_bpp    = atoi(getenv("X11VNC_FORCE_CGLION"));
+		if (macosx_cglion_bpp < 8) {
+			macosx_cglion_bpp = 32;
+		}
+		return 1;
+	}
+	if (nw == 0 || nh == 0) {
+		fprintf(stderr, "macosx_cglion_set_dpy_params: predict CGDisplayCreateImage will fail.\n");
+		fprintf(stderr, "macosx_cglion_set_dpy_params: not creating image for cglion.\n");
+		return 0;
+	}
+
+        displayScale = scalingFactor();
+        if (displayScale > 1.1) {
+                fprintf(stderr, "Detected HiDPI Display with scaling factor of %f\n", displayScale);
+        }
+
+        if (displayScale > 1.0) {
+                size_t width = nw;
+                size_t height = nh;
+                CGImageRef image = CGDisplayCreateImage(displayID);
+                CGColorSpaceRef colorspace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
+                CGContextRef context = CGBitmapContextCreate(NULL, width, height,
+                                                             CGImageGetBitsPerComponent(image),
+                                                             CGImageGetBytesPerRow(image),
+                                                             colorspace,
+                                                             kCGImageAlphaNoneSkipLast);
+
+                CGColorSpaceRelease(colorspace);
+                if (context == NULL) {
+                    fprintf(stderr, "There was an error getting screen shot\n");
+                    return 0;
+                }
+                CGContextDrawImage(context, CGRectMake(0, 0, width, height), image);
+                img = CGBitmapContextCreateImage(context);
+                CGContextRelease(context);
+		CGImageRelease(image);
+        } else {
+                img = CGDisplayCreateImage(displayID);
+        }
+
+	macosx_cglion_width = 0;
+	macosx_cglion_height = 0;
+	macosx_cglion_bpp = 0;
+	macosx_cglion_Bpl = 0;
+
+	if (img != NULL) {
+		macosx_cglion_width  = CGImageGetWidth(img);
+		macosx_cglion_height = CGImageGetHeight(img);
+		macosx_cglion_bpp    = CGImageGetBitsPerPixel(img);
+		macosx_cglion_Bpl    = CGImageGetBytesPerRow(img);
+		CGImageRelease(img);
+		return 1;
+	}
+  }
+  else
+	return 0;
+#endif
+	return 0;
+}
+
+extern int macosx_read_cglion, macosx_no_cglion;
+
+static char *cglion_snap_fb = NULL;
+static int cglion_snap_w = 0, cglion_snap_h = 0;
+static int cglion_snap_bpl = 0, cglion_snap_bpp = 0;
+static int cglion_snap_valid = 0;
+
+static void macosx_cglion_snap_common(CGColorSpaceRef colorspace)  {
+#ifdef MAC_OS_X_VERSION_10_6
+	int w, h, bpp, bpl;
+	size_t sz;
+	CGImageRef image;
+	CGContextRef context;
+	CFAbsoluteTime t0;
+	static int dbg = 0;
+
+	if (! macosx_read_cglion) {
+		return;
+	}
+	w = macosx_cglion_width;
+	h = macosx_cglion_height;
+	bpp = macosx_cglion_bpp;
+	if (w <= 0 || h <= 0 || bpp < 8) {
+		cglion_snap_valid = 0;
+		return;
+	}
+	bpl = w * (bpp / 8);
+	sz = (size_t) bpl * (size_t) h;
+
+	if (cglion_snap_fb == NULL || cglion_snap_bpl != bpl ||
+	    cglion_snap_h != h || cglion_snap_bpp != bpp) {
+		char *tmp = (char *) realloc(cglion_snap_fb, sz + 4);
+		if (tmp == NULL) {
+			cglion_snap_valid = 0;
+			return;
+		}
+		cglion_snap_fb = tmp;
+		cglion_snap_w = w;
+		cglion_snap_h = h;
+		cglion_snap_bpl = bpl;
+		cglion_snap_bpp = bpp;
+	}
+
+	t0 = CFAbsoluteTimeGetCurrent();
+	image = CGDisplayCreateImage(displayID);
+	if (image == NULL) {
+		cglion_snap_valid = 0;
+		return;
+	}
+	context = CGBitmapContextCreate(cglion_snap_fb, (size_t) w, (size_t) h, 8,
+	    (size_t) bpl, colorspace,
+	    kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipFirst);
+	if (context == NULL) {
+		CGImageRelease(image);
+		cglion_snap_valid = 0;
+		return;
+	}
+	CGContextDrawImage(context, CGRectMake(0, 0, w, h), image);
+	CGContextRelease(context);
+	CGImageRelease(image);
+	cglion_snap_valid = 1;
+	if (dbg++ < 5) {
+		fprintf(stderr, "macosx_cglion_snap: copied screen in %.4f sec %dx%d bpp=%d Bpl=%d\n",
+		    CFAbsoluteTimeGetCurrent() - t0, w, h, bpp, bpl);
+	}
+#else
+	(void) colorspace;
+#endif
+}
+
+void macosx_cglion_snap(void)  {
+#ifdef MAC_OS_X_VERSION_10_6
+	CGColorSpaceRef colorspace = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
+	if (colorspace == NULL) {
+		colorspace = CGColorSpaceCreateDeviceRGB();
+	}
+	macosx_cglion_snap_common(colorspace);
+	if (colorspace != NULL) {
+		CGColorSpaceRelease(colorspace);
+	}
+#endif
+}
+
+char *macosx_cglion_fb_addr(void)  {
+	if (! cglion_snap_valid || cglion_snap_fb == NULL) {
+		return NULL;
+	}
+	return cglion_snap_fb;
+}
+
+int macosx_cglion_fb_Bpl(void)  {
+	return cglion_snap_bpl;
+}
+
+void macosx_cglion_init(void)  {
+	macosx_read_cglion = 0;
+	if (macosx_no_cglion) {
+		return;
+	}
+	if (macosx_cglion_set_dpy_params()) {
+		macosx_read_cglion = 1;
+	}
+	fprintf(stderr, "macosx_cglion_init: use_cglion=%d: width %d, height %d, bpp %d, Bpl %d\n",
+	    macosx_read_cglion, macosx_cglion_width, macosx_cglion_height,
+	    macosx_cglion_bpp, macosx_cglion_Bpl);
+}
+
+void macosx_cglion_fini(void)  {
+	macosx_read_cglion = 0;
+	cglion_snap_valid = 0;
+}
+
+int macosx_cglion_get_width(void) {
+	macosx_cglion_set_dpy_params();
+	return macosx_cglion_width;
+}
+
+int macosx_cglion_get_height(void) {
+	macosx_cglion_set_dpy_params();
+	return macosx_cglion_height;
+}
+
+int macosx_cglion_get_Bpl(void) {
+	macosx_cglion_set_dpy_params();
+	return macosx_cglion_Bpl;
+}
+
+int macosx_cglion_get_bpp(void) {
+	macosx_cglion_set_dpy_params();
+	if (macosx_cglion_bpp > 0) {
+		return macosx_cglion_bpp;
+	} else {
+		return 32;
+	}
+}
+
+int macosx_cglion_get_bps(void) {
+	return 8;
+}
+
+int macosx_cglion_get_spp(void) {
+	return 3;
+}
+
+void macosx_copy_cglion(char *dest, int x, int y, unsigned int w, unsigned int h) {
+#ifdef MAC_OS_X_VERSION_10_6
+	char *fb = macosx_cglion_fb_addr();
+	if (fb != NULL) {
+		int pixelsize = cglion_snap_bpp / 8;
+		int bpl = macosx_cglion_fb_Bpl();
+		const char *src = fb + (size_t) bpl * (size_t) y +
+		    (size_t) pixelsize * (size_t) x;
+		char *dst = dest;
+		while (h--) {
+			memcpy(dst, src, (size_t) w * (size_t) pixelsize);
+			dst += (size_t) w * (size_t) pixelsize;
+			src += (size_t) bpl;
+		}
+		return;
+	}
+
+	CGRect r = CGRectMake(x, y, w, h);
+
+        CGImageRef img;
+        if (displayScale > 1.0) {
+            CGImageRef image = CGDisplayCreateImageForRect(displayID, r);
+            CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
+            CGBitmapInfo bitmapInfo = kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipFirst;
+            CGContextRef context = CGBitmapContextCreate(NULL, w, h, 8, w * 4,colorspace, bitmapInfo);
+            CGColorSpaceRelease(colorspace);
+            if (context == NULL) {
+                fprintf(stderr, "There was an error getting scaled images\n");
+                return;
+            }
+            CGContextDrawImage(context, CGRectMake(0, 0, w, h), image);
+            img = CGBitmapContextCreateImage(context);
+            CGContextRelease(context);
+		CGImageRelease(image);
+        } else {
+            img = CGDisplayCreateImageForRect(displayID, r);
+        }
+
+	CGDataProviderRef provide = CGImageGetDataProvider(img);
+	CFDataRef data = CGDataProviderCopyData(provide);
+	int img_Bpl = CGImageGetBytesPerRow(img);
+	int img_bpp = CGImageGetBitsPerPixel(img);
+	int img_width = w*(img_bpp/8);
+	const char *src = [(NSData *)data bytes];
+
+	char *dst = dest;
+	while (h--) {
+		memcpy(dst, src, img_width);
+		dst += img_width;
+		src += img_Bpl;
+	}
+	CGImageRelease(img);
+	[(id)data release];
+#else
+	if (dest && x && y && w && h) {}
+#endif
+}
 #endif
 
 #endif	/* __APPLE__ */
